@@ -1,0 +1,35 @@
+{
+    "name": "@arch/generator-mvc",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "sideEffects": false,
+    "engines": {
+        "node": ">=20"
+    },
+    "scripts": {
+        "build": "pnpm build:js && pnpm build:types",
+        "build:js": "tsup",
+        "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
+        "dev": "tsup --watch",
+        "typecheck": "tsc --noEmit",
+        "clean": "pnpm exec rimraf dist .turbo *.tsbuildinfo"
+    },
+    "dependencies": {
+        "@arch/contracts": "workspace:*",
+        "@arch/core": "workspace:*",
+        "@arch/language-registry": "workspace:*"
+    },
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        },
+        "./package.json": "./package.json"
+    }
+}

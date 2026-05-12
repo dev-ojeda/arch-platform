@@ -1,0 +1,17 @@
+{
+    "extends": "./tsconfig.base.json",
+    "compilerOptions": {
+        "noEmit": true,
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "types": [
+            "node"
+        ]
+    },
+    "include": [
+        "tsup.base.ts",
+        "**/*.config.mts",
+        "**/*.config.ts",
+        "scripts/**/*.ts"
+    ]
+}

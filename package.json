@@ -1,0 +1,50 @@
+{
+    "name": "arch-platform",
+    "private": true,
+    "version": "0.1.0",
+    "packageManager": "pnpm@10.0.0",
+    "engines": {
+        "node": ">=20"
+    },
+    "scripts": {
+        "build": "turbo run build",
+        "dev": "turbo run dev --parallel",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "test:coverage": "vitest run --coverage",
+        "typecheck": "turbo run typecheck",
+        "lint": "turbo run lint",
+        "clean": "powershell -ExecutionPolicy Bypass -File scripts/clean.ps1",
+        "clean:deep": "powershell -ExecutionPolicy Bypass -File scripts/clean-deep.ps1",
+        "clean:artifacts": "pnpm exec rimraf --glob \"packages/**/src/**/*.js\" \"packages/**/src/**/*.d.ts\" \"generators/**/src/**/*.js\" \"generators/**/src/**/*.d.ts\" \"apps/**/src/**/*.js\" \"apps/**/src/**/*.d.ts\"",
+        "cruiser": "depcruise . --config .dependency-cruiser.cjs",
+        "cruiser:err": "depcruise . --config .dependency-cruiser.cjs --output-type err",
+        "cruiser:html": "depcruise . --config .dependency-cruiser.cjs --output-type html > dependency-report.html",
+        "cruiser:graph": "depcruise . --config .dependency-cruiser.cjs --output-type dot | dot -T svg > dependency-graph.svg",
+        "cruiser:arch": "depcruise . --config .dependency-cruiser.cjs --output-type archi"
+    },
+    "devDependencies": {
+        "@types/node": "^24.12.3",
+        "@vitest/coverage-v8": "^4.1.6",
+        "@vscode/test-electron": "^2.5.2",
+        "dependency-cruiser": "^17.0.0",
+        "esbuild-visualizer": "^0.7.0",
+        "rimraf": "^6.0.1",
+        "tsup": "^8.5.1",
+        "tsx": "^4.21.0",
+        "turbo": "^2.9.9",
+        "typescript": "^5.9.2",
+        "vitest": "^4.1.6"
+    },
+    "pnpm": {
+        "overrides": {
+            "vitest": "4.1.6",
+            "@vitest/coverage-v8": "4.1.6"
+        },
+        "onlyBuiltDependencies": [
+            "esbuild",
+            "keytar",
+            "@vscode/vsce-sign"
+        ]
+    }
+}

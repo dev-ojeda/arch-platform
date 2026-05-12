@@ -1,0 +1,18 @@
+{
+    "typescript.preferences.preferTypeOnlyAutoImports": true,
+    "typescript.preferences.importModuleSpecifierEnding": "js",
+    "editor.snippetSuggestions": "top",
+    "ruff.format.preview": true,
+    "[markdown]": {
+        "editor.unicodeHighlight.ambiguousCharacters": false,
+        "editor.unicodeHighlight.invisibleCharacters": false,
+        "diffEditor.ignoreTrimWhitespace": false,
+        "editor.wordWrap": "on",
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.quickSuggestions": {
+            "comments": "off",
+            "strings": "off",
+            "other": "off"
+        }
+    }
+}

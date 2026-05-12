@@ -1,0 +1,26 @@
+{
+    "files": [],
+    "references": [
+        {
+            "path": "./tsconfig.tools.json"
+        },
+        {
+            "path": "./packages/contracts"
+        },
+        {
+            "path": "./packages/application"
+        },
+        {
+            "path": "./packages/core"
+        },
+        {
+            "path": "./packages/language-registry"
+        },
+        {
+            "path": "./generators/mvc"
+        },
+        {
+            "path": "./apps/vscode-extension"
+        }
+    ]
+}

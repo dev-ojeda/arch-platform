@@ -1,0 +1,46 @@
+{
+    "name": "arch-generator",
+    "displayName": "Architecture Generator",
+    "description": "Extensible architecture scaffolding platform for VSCode",
+    "version": "0.1.0",
+    "private": true,
+    "publisher": "dev-ojeda",
+    "license": "MIT",
+    "type": "commonjs",
+    "sideEffects": false,
+    "engines": {
+        "node": ">=20",
+        "vscode": "^1.90.0"
+    },
+    "main": "./dist/extension.js",
+    "files": [
+        "dist"
+    ],
+    "activationEvents": [
+        "onCommand:archgen.generate"
+    ],
+    "contributes": {
+        "commands": [
+            {
+                "command": "archgen.generate",
+                "title": "Generate Architecture"
+            }
+        ]
+    },
+    "scripts": {
+        "build": "node esbuild.cjs",
+        "dev": "node esbuild.cjs --watch",
+        "typecheck": "tsc --noEmit",
+        "package": "vsce package",
+        "clean": "rimraf dist .turbo *.tsbuildinfo"
+    },
+    "devDependencies": {
+        "@arch/contracts": "workspace:*",
+        "@arch/core": "workspace:*",
+        "@arch/language-registry": "workspace:*",
+        "@types/node": "^24.0.0",
+        "@types/vscode": "^1.90.0",
+        "@vscode/vsce": "^3.6.2",
+        "esbuild": "^0.27.0"
+    }
+}

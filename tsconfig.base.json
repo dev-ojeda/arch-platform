@@ -1,0 +1,32 @@
+{
+    "compilerOptions": {
+        "target": "ES2022",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "moduleDetection": "force",
+        "verbatimModuleSyntax": true,
+        "strict": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "types": [
+            "node"
+        ],
+        "baseUrl": ".",
+        "paths": {
+            "@arch/contracts": [
+                "packages/contracts/src"
+            ],
+            "@arch/application": [
+                "packages/application/src"
+            ],
+            "@arch/language-registry": [
+                "packages/language-registry/src"
+            ],
+            "@arch/core": [
+                "packages/core/src"
+            ]
+        }
+    }
+}
