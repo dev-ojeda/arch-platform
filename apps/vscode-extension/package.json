@@ -16,6 +16,11 @@
     "files": [
         "dist"
     ],
+    "categories": [
+        "Other",
+        "Snippets",
+        "Programming Languages"
+    ],
     "activationEvents": [
         "onCommand:archgen.generate"
     ],
@@ -34,10 +39,17 @@
         "package": "vsce package",
         "clean": "rimraf dist .turbo *.tsbuildinfo"
     },
+    "dependencies": {
+        "@arch/contracts": "workspace:*",
+        "@arch/core": "workspace:*",
+        "@arch/language-registry": "workspace:*",
+        "@arch/application": "workspace:*"
+    },
     "devDependencies": {
         "@arch/contracts": "workspace:*",
         "@arch/core": "workspace:*",
         "@arch/language-registry": "workspace:*",
+        "@arch/application": "workspace:*",
         "@types/node": "^24.0.0",
         "@types/vscode": "^1.90.0",
         "@vscode/vsce": "^3.6.2",

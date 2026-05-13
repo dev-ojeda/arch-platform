@@ -1,10 +1,15 @@
 // packages\application\src\ports\filesystem\filesystem.port.ts
+
+export interface WriteFileInput {
+    path: string;
+    content: string;
+}
 export interface FileSystemPort {
     readFile(path: string): Promise<string>;
 
-    writeFile(
-        path: string,
-        content: string
+    writeFiles(
+        files: WriteFileInput[],
+        destination: string,
     ): Promise<void>;
 
     createDirectory(path: string): Promise<void>;

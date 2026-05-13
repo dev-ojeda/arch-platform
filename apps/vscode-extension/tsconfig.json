@@ -1,11 +1,8 @@
 {
-    "extends": "../../tsconfig.base.json",
+    "extends": "../../config/tsconfig/vscode.json",
     "compilerOptions": {
-        "module": "CommonJS",
-        "moduleResolution": "Node",
-        "verbatimModuleSyntax": false,
-        "rootDir": "src",
-        "outDir": "dist",
+        "rootDir": "./src",
+        "outDir": "./dist",
         "types": [
             "node",
             "vscode"
@@ -14,5 +11,13 @@
     },
     "include": [
         "src"
+    ],
+    "references": [
+        {
+            "path": "../../packages/core"
+        },
+        {
+            "path": "../../packages/application"
+        }
     ]
 }

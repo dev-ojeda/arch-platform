@@ -3,12 +3,10 @@
     "compilerOptions": {
         "module": "CommonJS",
         "moduleResolution": "Node",
-        "rootDir": "src",
-        "outDir": "dist",
-        "declaration": false,
-        "sourceMap": false
-    },
-    "include": [
-        "src"
-    ]
+        "declaration": true,
+        "sourceMap": true,
+        "composite": true,
+        "verbatimModuleSyntax": false,
+        "ignoreDeprecations": "6.0"
+    }
 }
