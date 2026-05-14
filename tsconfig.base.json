@@ -18,14 +18,17 @@
             "@arch/contracts": [
                 "packages/contracts/src"
             ],
+            "@arch/core": [
+                "packages/core/src"
+            ],
             "@arch/application": [
                 "packages/application/src"
             ],
-            "@arch/language-registry": [
-                "packages/language-registry/src"
+            "@arch/infrastructure": [
+                "packages/infrastructure/src"
             ],
-            "@arch/core": [
-                "packages/core/src"
+            "@arch/generator-mvc": [
+                "packages/generators/mvc/src"
             ]
         }
     }

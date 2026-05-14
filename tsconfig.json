@@ -14,10 +14,10 @@
             "path": "./packages/core"
         },
         {
-            "path": "./packages/language-registry"
+            "path": "./packages/infrastructure"
         },
         {
-            "path": "./generators/mvc"
+            "path": "./packages/generators/mvc"
         },
         {
             "path": "./apps/vscode-extension"

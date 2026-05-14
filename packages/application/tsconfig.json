@@ -18,6 +18,12 @@
     "references": [
         {
             "path": "../contracts"
+        },
+        {
+            "path": "../core"
+        },
+        {
+            "path": "../infrastructure"
         }
     ]
 }

@@ -6,19 +6,29 @@ const fs = require('node:fs/promises')
 
 const path = require('node:path')
 
-const watch = process.argv.includes('--watch')
+const watch =
+    process.argv.includes('--watch')
 
-const rootDir = __dirname
+const appDir =
+    __dirname
 
-const templatesSource = path.resolve(
-    rootDir,
-    '../../generators/templates'
-)
+const repoRoot =
+    path.resolve(
+        appDir,
+        '../..'
+    )
 
-const templatesDestination = path.resolve(
-    rootDir,
-    'dist/templates'
-)
+const templatesSource =
+    path.resolve(
+        repoRoot,
+        'templates'
+    )
+
+const templatesDestination =
+    path.resolve(
+        appDir,
+        'dist/templates'
+    )
 
 async function copyTemplates() {
 
@@ -41,45 +51,49 @@ async function copyTemplates() {
 
 async function build() {
 
-    const ctx = await esbuild.context({
+    const ctx =
+        await esbuild.context({
 
-        entryPoints: [
-            'src/extension.ts'
-        ],
+            entryPoints: [
+                'src/extension.ts'
+            ],
 
-        outfile:
-            'dist/extension.js',
+            outfile:
+                'dist/extension.js',
 
-        bundle: true,
+            bundle: true,
 
-        treeShaking: true,
+            treeShaking: true,
 
-        minify: false,
+            minify: false,
 
-        sourcemap: false,
+            sourcemap: false,
 
-        legalComments: 'none',
+            legalComments:
+                'none',
 
-        platform: 'node',
+            platform: 'node',
 
-        target: 'node20',
+            target: 'node20',
 
-        format: 'cjs',
+            format: 'cjs',
 
-        external: [
-            'vscode'
-        ],
+            external: [
+                'vscode'
+            ],
 
-        mainFields: [
-            'module',
-            'main'
-        ],
+            mainFields: [
+                'module',
+                'main'
+            ],
 
-        tsconfig:
-            '../../tsconfig.base.json',
+            tsconfig:
+                '../../tsconfig.base.json',
 
-        logLevel: 'info'
-    })
+            logLevel:
+                'info'
+        })
+
     if (watch) {
 
         await copyTemplates()

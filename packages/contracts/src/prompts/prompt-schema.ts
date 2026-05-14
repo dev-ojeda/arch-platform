@@ -1,8 +1,17 @@
-// prompt-schema.ts
+// packages\contracts\src\prompts\prompt-schema.ts
 
-import type { PromptField } from './prompt-field.js'
+import type {
+    PromptField
+} from './prompt-field.js'
 
-export interface PromptSchema {
+import type {
+    NamedVariables
+} from '../variables/named-variables.js'
+
+export interface PromptSchema<
+    TValues extends NamedVariables =
+        NamedVariables
+> {
     id: string
 
     title: string
@@ -11,5 +20,5 @@ export interface PromptSchema {
 
     version?: string
 
-    fields: PromptField[]
+    fields: PromptField<TValues>[]
 }

@@ -1,1 +1,0 @@
-export * from './local-template-registry.adapter.js';

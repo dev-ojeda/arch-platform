@@ -3,17 +3,17 @@
 import * as path from 'path'
 
 import type {
-    StackDefinition
+    TechnologyStack
 } from '@arch/contracts'
 
 export function resolveTemplateDir(
     generatorRoot: string,
-    stack: StackDefinition
+    stack: TechnologyStack
 ) {
     return path.join(
         generatorRoot,
         'templates',
-        stack.language,
-        stack.framework ?? 'default'
+        stack.languageId,
+        stack.frameworkId ?? 'default'
     )
 }

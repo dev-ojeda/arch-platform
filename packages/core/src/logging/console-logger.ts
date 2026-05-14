@@ -3,7 +3,6 @@ import type {
 } from '@arch/contracts'
 
 export const consoleLogger: Logger = {
-
     info(message) {
         console.log(message)
     },
@@ -14,5 +13,8 @@ export const consoleLogger: Logger = {
 
     error(message) {
         console.error(message)
+    },
+    debug: function (message: string, meta?: Record<string, unknown>): void {
+        throw new Error('Function not implemented.')
     }
 }

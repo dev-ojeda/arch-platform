@@ -20,9 +20,6 @@
     "references": [
         {
             "path": "../contracts"
-        },
-        {
-            "path": "../language-registry"
         }
     ]
 }

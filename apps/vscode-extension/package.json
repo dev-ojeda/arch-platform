@@ -42,13 +42,12 @@
     "dependencies": {
         "@arch/contracts": "workspace:*",
         "@arch/core": "workspace:*",
-        "@arch/language-registry": "workspace:*",
-        "@arch/application": "workspace:*"
+        "@arch/application": "workspace:*",
+        "@arch/infrastructure": "workspace:*"
     },
     "devDependencies": {
         "@arch/contracts": "workspace:*",
         "@arch/core": "workspace:*",
-        "@arch/language-registry": "workspace:*",
         "@arch/application": "workspace:*",
         "@types/node": "^24.0.0",
         "@types/vscode": "^1.90.0",

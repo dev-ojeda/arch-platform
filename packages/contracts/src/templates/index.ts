@@ -1,1 +1,5 @@
+export * from './file-definition.js'
 export * from './template-definition.js'
+export * from './template-manifest.js'
+export * from './template-search-query.js'
+export * from './resolved-template-variables.js'

@@ -1,4 +1,5 @@
 // apps\vscode-extension\src\composition\container.ts
+import { NodeFileSystemAdapter } from '../../../../packages/infrastructure/src/index.js';
 import {
     VSCodeNotificationAdapter
 } from '../adapters/vscode/notifications/vscode-notification.adapter.js';
@@ -7,9 +8,6 @@ import {
     VSCodeWorkspaceAdapter
 } from '../adapters/vscode/workspace/vscode-workspace.adapter.js';
 
-import {
-    NodeFileSystemAdapter
-} from '../infrastructure/filesystem/node-filesystem.adapter';
 
 export function createContainer() {
 

@@ -1,4 +1,4 @@
 packages:
-- apps/*
 - packages/*
-- generators/*
+- packages/generators/*
+- apps/*

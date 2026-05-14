@@ -1,11 +1,11 @@
-// template-definition.ts
+// packages\contracts\src\templates\template-definition.ts
 
 import type { PromptValues } from '../prompts/prompt-values.js'
 
 export interface TemplateDefinition {
-    source: string
+    templatePath: string
 
-    destination: string
+    outputPath: string
 
     overwrite?: boolean
 

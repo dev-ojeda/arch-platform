@@ -1,6 +1,18 @@
-// boolean-field.ts
+// packages\contracts\src\prompts\boolean-field.ts
+import type {
+    NamedVariables
+} from '../variables/named-variables.js'
 
-import type { PromptFieldBase } from './prompt-field-base.js'
+import type {
+    PromptFieldBase
+} from './prompt-field-base.js'
 
-export interface BooleanField
-    extends PromptFieldBase<'boolean', boolean> {}
+export interface BooleanField<
+    TValues extends NamedVariables =
+    NamedVariables
+>
+    extends PromptFieldBase<
+        TValues,
+        'boolean',
+        boolean
+    > { }

@@ -1,60 +1,57 @@
 // packages/core/variables/build-variables.ts
-
 import type {
     GenerationContext,
-    NamedVariables
-} from '@arch/contracts'
-
-import {
-    getLanguage
-} from '@arch/language-registry'
-
-import type {
+    LanguageConvention,
+    NamedVariables,
     ResolvedTemplateVariables
-} from './types.js'
+} from '@arch/contracts'
 
 export function buildVariables<
     TVariables extends NamedVariables
 >(
-    ctx: GenerationContext<TVariables>
+    ctx: GenerationContext<TVariables>,
+
+    language: LanguageConvention
 ): ResolvedTemplateVariables<TVariables> {
 
-    /*
-     * Backward compatibility
-     */
-    const languageId =
-        ctx.stack?.language ??
-        'typescript'
-
-    const language =
-        getLanguage(languageId)
-
-    const name =
-        ctx.variables.name
+    const resourceName =
+        String(
+            ctx.variables.name
+        )
 
     return {
 
         ...ctx.variables,
 
         className:
-            language.formatName(name),
+            language.formatName(
+                resourceName
+            ),
 
         controllerName:
-            language.controllerName(name),
+            language.controllerName(
+                resourceName
+            ),
 
         serviceName:
-            language.serviceName(name),
+            language.serviceName(
+                resourceName
+            ),
 
         repositoryName:
-            language.repositoryName(name),
+            language.repositoryName(
+                resourceName
+            ),
 
         modelName:
-            language.modelName(name),
+            language.modelName(
+                resourceName
+            ),
 
-        extension:
-            language.extension,
+        fileExtension:
+            language.fileExtension,
 
-        folders:
-            language.folderLayout()
+        folderLayout:
+            language.folderLayout
     }
 }

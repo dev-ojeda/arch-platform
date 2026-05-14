@@ -8,7 +8,7 @@ import {
 
 import {
     resolveOutputPath
-} from '../../engine/output/output-path.js'
+} from '../../output/output-path.js'
 
 describe(
     'resolveOutputPath',

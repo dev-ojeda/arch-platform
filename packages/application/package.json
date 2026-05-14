@@ -21,7 +21,10 @@
         "clean": "pnpm exec rimraf dist .turbo *.tsbuildinfo"
     },
     "dependencies": {
-        "@arch/contracts": "workspace:*"
+        "@arch/contracts": "workspace:*",
+        "@arch/core": "workspace:*",
+        "@arch/infrastructure": "workspace:*",
+        "handlebars": "^4.7.9"
     },
     "exports": {
         ".": {

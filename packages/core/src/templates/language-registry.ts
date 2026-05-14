@@ -1,17 +1,17 @@
 // packages\core\src\templates\language-registry.ts
-import type { LanguageAdapter } from '@arch/contracts'
+import type { LanguageConvention } from '@arch/contracts'
 
-const registry = new Map<string, LanguageAdapter>()
+const registry = new Map<string, LanguageConvention>()
 
 export function registerLanguage(
-    adapter: LanguageAdapter
+    adapter: LanguageConvention
 ) {
     registry.set(adapter.id, adapter)
 }
 
 export function getLanguage(
     id: string
-): LanguageAdapter {
+): LanguageConvention {
 
     const adapter = registry.get(id)
 

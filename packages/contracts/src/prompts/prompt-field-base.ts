@@ -1,14 +1,17 @@
-// prompt-field-base.ts
+// packages\contracts\src\prompts\prompt-field-base.ts
 
-import type { PromptValues } from './prompt-values.js'
+import type {
+    NamedVariables
+} from '../variables/named-variables.js'
 
 export interface PromptFieldBase<
+    TValues extends NamedVariables,
     TType,
     TValue
 > {
     type: TType
 
-    name: string
+    name: keyof TValues
 
     message: string
 
@@ -19,7 +22,7 @@ export interface PromptFieldBase<
     defaultValue?: TValue
 
     when?: (
-        values: PromptValues
+        values: TValues
     ) => boolean | Promise<boolean>
 
     transform?: (
@@ -28,7 +31,7 @@ export interface PromptFieldBase<
 
     validate?: (
         value: TValue,
-        values: PromptValues
+        values: TValues
     ) =>
         | string
         | undefined

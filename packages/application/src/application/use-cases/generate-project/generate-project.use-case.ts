@@ -1,40 +1,85 @@
-import type { TemplateRegistryPort, NotificationPort, FileSystemPort } from "../../ports/index.js";
-import type { PromptPort } from "../../ports/prompt/index.js";
-import type { TemplateRendererPort } from "../../ports/renderer/renderer.port.js";
+// packages\application\src\application\use-cases\generate-project\generate-project.use-case.ts
+import type {
+  GeneratorDefinition,
+  Logger,
+  NamedVariables
+} from '@arch/contracts'
+
+import type {
+  GeneratorRegistry
+} from '@arch/core'
+
+import type {
+  GeneratorRuntime
+} from '../../runtime/generator-runtime.js'
+
+export interface GenerateProjectRequest {
+
+  generatorId: string
+
+  targetDir: string
+
+  logger?: Logger
+
+  signal?: AbortSignal
+}
 
 export class GenerateProjectUseCase {
+
   constructor(
-    private readonly prompts: PromptPort,
-    private readonly templates: TemplateRegistryPort,
-    private readonly renderer: TemplateRendererPort,
-    private readonly filesystem: FileSystemPort,
-    private readonly notifications: NotificationPort,
+
+      private readonly registry:
+          GeneratorRegistry,
+
+      private readonly runtime:
+          GeneratorRuntime
   ) {}
 
-  async execute(): Promise<void> {
-    const config =
-      await this.prompts.askGenerateProjectData();
+  async execute(
+      request:
+          GenerateProjectRequest
+  ): Promise<void> {
 
-    const template =
-      await this.templates.get(config.template);
+      const generator =
+          this.registry.get(
+              request.generatorId
+          )
 
-    const renderedFiles =
-      await this.renderer.render(
-        template.files.map((file) => ({
-          template: file.content,
-          variables: {
-            projectName: config.projectName,
-          },
-        })),
-      );
+      if (!generator) {
 
-    await this.filesystem.writeFiles(
-      renderedFiles,
-      config.projectName,
-    );
+          throw new Error(
+              `Generator not found: ${request.generatorId}`
+          )
+      }
 
-    await this.notifications.info(
-      "Project generated successfully",
-    );
+      await this.runGenerator(
+          generator,
+          request
+      )
+  }
+
+  private async runGenerator<
+      TVariables extends NamedVariables
+  >(
+      generator:
+          GeneratorDefinition<TVariables>,
+
+      request:
+          GenerateProjectRequest
+  ): Promise<void> {
+
+      await this.runtime.execute(
+          generator,
+          {
+              targetDir:
+                  request.targetDir,
+
+              logger:
+                  request.logger,
+
+              signal:
+                  request.signal
+          }
+      )
   }
 }
