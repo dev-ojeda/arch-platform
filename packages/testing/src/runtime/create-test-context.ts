@@ -1,0 +1,63 @@
+// packages/testing/src/runtime/create-test-context.ts
+
+import type {
+  GenerationContext,
+  LoggerPort,
+  NamedVariables,
+  FileSystemPort,
+  TechnologyStack
+}
+from '@arch/contracts'
+
+import {
+  createMemoryFilesystem
+}
+from '../filesystem/create-memory-filesystem.js'
+
+import {
+  TestLogger
+}
+from '../logging/test-logger.js'
+import { createTestTechnologyStack } from './create-test-technology-stack.js'
+
+export interface CreateTestContextOptions {
+
+  variables?: NamedVariables
+  targetDir?: string
+  logger?: LoggerPort
+  fs?: FileSystemPort
+  stack?: TechnologyStack
+  signal?: AbortSignal
+}
+
+export function createTestContext<
+  TVariables extends NamedVariables
+>(
+  options: CreateTestContextOptions = {}
+): GenerationContext<TVariables> {
+
+  return {
+
+    fs:
+        options.fs
+        ?? createMemoryFilesystem(),
+
+    logger:
+        options.logger
+        ?? new TestLogger(),
+
+    targetDir:
+        options.targetDir
+        ?? '/workspace',
+
+    variables:
+        (options.variables ?? {}) as TVariables,
+
+    stack:
+        options.stack
+        ?? createTestTechnologyStack(),
+
+    signal:
+        options.signal
+}
+}

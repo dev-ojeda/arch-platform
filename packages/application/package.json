@@ -23,7 +23,7 @@
     "dependencies": {
         "@arch/contracts": "workspace:*",
         "@arch/core": "workspace:*",
-        "@arch/infrastructure": "workspace:*",
+        "@arch/testing": "workspace:*",
         "handlebars": "^4.7.9"
     },
     "exports": {

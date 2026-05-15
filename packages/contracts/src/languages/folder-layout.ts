@@ -1,16 +1,17 @@
+//packages\contracts\src\languages\folder-layout.ts
 import type {
-  VariableValue
-} from '../variables/named-variables.js'
+  VariableObject
+}
+from '../variables/variable-value.js'
 
-export interface FolderLayout {
+export interface FolderLayout
+extends VariableObject {
 
-  [key: string]: VariableValue
+  readonly controller: string
 
-  controller: string
+  readonly service: string
 
-  service: string
+  readonly repository: string
 
-  repository: string
-
-  model: string
+  readonly model: string
 }

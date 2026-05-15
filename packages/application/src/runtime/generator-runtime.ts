@@ -5,19 +5,10 @@ import type {
     FileSystemPort,
     GenerationContext,
     GeneratorDefinition,
-    Logger,
+    LoggerPort,
     NamedVariables,
     TechnologyStack
 } from '@arch/contracts'
-
-import {
-    consoleLogger,
-    type LanguageConventionRegistry
-} from '@arch/core'
-
-import {
-    NodeFileSystemAdapter
-} from '@arch/infrastructure'
 
 import {
     PromptEngine,
@@ -27,6 +18,7 @@ import {
 import {
     generateFiles
 } from '../pipeline/generate-files.js'
+import { consoleLogger, type LanguageConventionRegistry } from '@arch/core'
 
 export interface GeneratorRuntimeOptions {
 
@@ -47,7 +39,7 @@ export interface GeneratorExecutionContext {
 
     fs?: FileSystemPort
 
-    logger?: Logger
+    logger?: LoggerPort
 
     signal?: AbortSignal
 }

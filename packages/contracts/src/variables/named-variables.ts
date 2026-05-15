@@ -1,19 +1,12 @@
-// packages\contracts\src\variables\named-variables.ts
-export type VariableValue =
-    | string
-    | number
-    | boolean
-    | null
-    | undefined
-    | VariableObject
-    | VariableValue[]
+// packages/contracts/src/variables/named-variables.ts
 
-export interface VariableObject {
-    [key: string]: VariableValue
+import type {
+    VariableValue
 }
+from './variable-value.js'
 
-export type NamedVariables =
-    Record<
-        string,
+export interface NamedVariables {
+
+    readonly [key: string]:
         VariableValue
-    >
+}

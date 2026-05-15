@@ -23,7 +23,7 @@
             "path": "../core"
         },
         {
-            "path": "../infrastructure"
+            "path": "../testing"
         }
     ]
 }

@@ -1,27 +1,31 @@
+// packages/contracts/src/templates/resolved-template-variables.ts
+
 import type {
   FolderLayout
-} from '../languages/folder-layout.js'
+}
+from '../languages/folder-layout.js'
 
 import type {
   NamedVariables
-} from '../variables/named-variables.js'
+}
+from '../variables/named-variables.js'
 
 export interface DerivedTemplateVariables
 extends NamedVariables {
 
-  className: string
+  readonly className: string
 
-  controllerName: string
+  readonly controllerName: string
 
-  serviceName: string
+  readonly serviceName: string
 
-  repositoryName: string
+  readonly repositoryName: string
 
-  modelName: string
+  readonly modelName: string
 
-  fileExtension: string
+  readonly fileExtension: string
 
-  folderLayout: FolderLayout
+  readonly folderLayout: FolderLayout
 }
 
 export type ResolvedTemplateVariables<

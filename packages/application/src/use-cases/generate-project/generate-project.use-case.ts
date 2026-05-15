@@ -1,85 +1,91 @@
-// packages\application\src\application\use-cases\generate-project\generate-project.use-case.ts
-import type {
-  GeneratorDefinition,
-  Logger,
-  NamedVariables
-} from '@arch/contracts'
+// packages/application/src/application/use-cases/generate-project/generate-project.use-case.ts
 
 import type {
-  GeneratorRegistry
-} from '@arch/core'
+    GeneratorDefinition,
+    LoggerPort,
+    NamedVariables
+}
+from '@arch/contracts'
+
+import {
+    GeneratorNotFoundError,
+
+    type GeneratorRegistry
+}
+from '@arch/core'
 
 import type {
-  GeneratorRuntime
-} from '../../runtime/generator-runtime.js'
+    GeneratorRuntime
+}
+from '../../runtime/generator-runtime.js'
 
 export interface GenerateProjectRequest {
 
-  generatorId: string
+    readonly generatorId: string
 
-  targetDir: string
+    readonly targetDir: string
 
-  logger?: Logger
+    readonly logger?: LoggerPort
 
-  signal?: AbortSignal
+    readonly signal?: AbortSignal
 }
 
 export class GenerateProjectUseCase {
 
-  constructor(
+    constructor(
 
-      private readonly registry:
-          GeneratorRegistry,
+        private readonly registry:
+            GeneratorRegistry,
 
-      private readonly runtime:
-          GeneratorRuntime
-  ) {}
+        private readonly runtime:
+            GeneratorRuntime
+    ) { }
 
-  async execute(
-      request:
-          GenerateProjectRequest
-  ): Promise<void> {
+    async execute(
+        request:
+            GenerateProjectRequest
+    ): Promise<void> {
 
-      const generator =
-          this.registry.get(
-              request.generatorId
-          )
+        const generator =
+            this.registry.get(
+                request.generatorId
+            )
 
-      if (!generator) {
+        if (!generator) {
 
-          throw new Error(
-              `Generator not found: ${request.generatorId}`
-          )
-      }
+            throw new GeneratorNotFoundError(
+                request.generatorId
+            )
+        }
 
-      await this.runGenerator(
-          generator,
-          request
-      )
-  }
+        await this.runGenerator(
+            generator,
+            request
+        )
+    }
 
-  private async runGenerator<
-      TVariables extends NamedVariables
-  >(
-      generator:
-          GeneratorDefinition<TVariables>,
+    private async runGenerator<
+        TVariables extends NamedVariables
+    >(
+        generator:
+            GeneratorDefinition<TVariables>,
 
-      request:
-          GenerateProjectRequest
-  ): Promise<void> {
+        request:
+            GenerateProjectRequest
+    ): Promise<void> {
 
-      await this.runtime.execute(
-          generator,
-          {
-              targetDir:
-                  request.targetDir,
+        await this.runtime.execute(
+            generator,
+            {
+                targetDir:
+                    request.targetDir,
 
-              logger:
-                  request.logger,
+                logger:
+                    request.logger,
 
-              signal:
-                  request.signal
-          }
-      )
-  }
+                signal:
+                    request.signal
+            }
+        )
+    }
 }

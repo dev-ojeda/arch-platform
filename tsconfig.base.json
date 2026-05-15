@@ -29,6 +29,9 @@
             ],
             "@arch/generator-mvc": [
                 "packages/generators/mvc/src/index.ts"
+            ],
+            "@arch/testing": [
+                "packages/testing/src/index.ts"
             ]
         }
     }

@@ -1,0 +1,36 @@
+{
+  "name": "@arch/testing",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm build:js && pnpm build:types",
+    "build:js": "tsup",
+    "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
+    "clean": "rimraf dist",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@arch/contracts": "workspace:*",
+    "@arch/core": "workspace:*",
+    "@arch/infrastructure": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^24.12.3",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.2",
+    "vitest": "^4.1.6"
+  }
+}

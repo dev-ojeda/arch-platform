@@ -4,8 +4,8 @@ import type {
 } from '../filesystem/filesystem.port.js'
 
 import type {
-    Logger
-} from '../logging/logger.js'
+    LoggerPort
+} from '../logging/logger.port.js'
 
 import type {
     TechnologyStack
@@ -20,21 +20,21 @@ export interface GenerationContext<
     NamedVariables
 > {
 
-    variables:
-    TVariables
+    readonly variables:
+        TVariables
 
-    targetDir:
-    string
+    readonly targetDir:
+        string
 
-    logger:
-    Logger
+    readonly logger:
+        LoggerPort
 
-    fs:
-    FileSystemPort
+    readonly fs:
+        FileSystemPort
 
-    stack:
-    TechnologyStack
+    readonly stack:
+        TechnologyStack
 
-    signal?:
-    AbortSignal
+    readonly signal?:
+        AbortSignal
 }

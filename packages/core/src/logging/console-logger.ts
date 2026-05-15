@@ -1,8 +1,8 @@
 import type {
-    Logger
+    LoggerPort
 } from '@arch/contracts'
 
-export const consoleLogger: Logger = {
+export const consoleLogger: LoggerPort = {
     info(message) {
         console.log(message)
     },

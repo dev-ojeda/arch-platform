@@ -1,6 +1,6 @@
 // packages\contracts\src\stacks\technology-stack.ts
 export interface TechnologyStack {
-  id: string
+  id?: string
 
   languageId: string
 

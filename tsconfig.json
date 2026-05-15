@@ -20,7 +20,10 @@
             "path": "./packages/generators/mvc"
         },
         {
+            "path": "./packages/testing"
+        },
+        {
             "path": "./apps/vscode-extension"
-        }
+        },
     ]
 }
