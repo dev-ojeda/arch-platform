@@ -7,12 +7,12 @@ import {
 
 import type {
     DirectoryEntry,
-    FileSystemAdapter,
+    FileSystemPort,
     WriteFileOptions
 } from '@arch/contracts'
 
 export class NodeFileSystemAdapter
-implements FileSystemAdapter {
+implements FileSystemPort {
 
     async read(
         filePath: string

@@ -2,13 +2,13 @@
 import * as path from 'node:path'
 
 import type {
-    FileSystemAdapter
+    FileSystemPort
 } from '@arch/contracts'
-import { EmptyTemplateError } from '@arch/core'
+import { InvalidGeneratorDefinitionError } from '@arch/core'
 
 export async function loadTemplate(
 
-    fs: FileSystemAdapter,
+    fs: FileSystemPort,
 
     templateDir: string,
 
@@ -25,7 +25,7 @@ export async function loadTemplate(
 
     if (!template.trim()) {
 
-        throw new EmptyTemplateError(
+        throw new InvalidGeneratorDefinitionError(
             `Template is empty: ${templatePath}`
         )
     }

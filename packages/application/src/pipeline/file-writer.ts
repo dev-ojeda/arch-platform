@@ -1,15 +1,15 @@
 // packages\application\src\application\pipeline\file-writer.ts
 
 import type {
-  FileSystemAdapter
+  FileSystemPort
 } from '@arch/contracts'
 
 import type {
   GeneratedFile
-} from './generated-file.js'
+} from './artifacts/generated-file.js'
 
 export async function writeGeneratedFiles(
-  fs: FileSystemAdapter,
+  fs: FileSystemPort,
 
   files: GeneratedFile[]
 ): Promise<void> {

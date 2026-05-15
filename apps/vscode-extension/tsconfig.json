@@ -14,6 +14,9 @@
     ],
     "references": [
         {
+            "path": "../../packages/contracts"
+        },
+        {
             "path": "../../packages/core"
         },
         {
@@ -21,6 +24,9 @@
         },
         {
             "path": "../../packages/infrastructure"
+        },
+        {
+            "path": "../../packages/generators/mvc"
         }
     ]
 }

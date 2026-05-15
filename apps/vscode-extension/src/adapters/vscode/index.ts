@@ -1,2 +1,1 @@
-export * from './notifications/index.js';
-export * from './workspace/index.js';
+export * from './commands/index.js';

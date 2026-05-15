@@ -1,13 +1,20 @@
-// packages\core\src\errors\generation\generation-errors.ts
+// packages/core/src/errors/generation/generation-errors.ts
 
 import { BaseError }
 from '../base-error.js'
+import type { GenerationErrorCode } from './generation-error-codes.js'
 
-export class GenerationError
-extends BaseError {
+
+export abstract class GenerationError
+extends BaseError<
+    GenerationErrorCode
+> {
+
+    readonly code: GenerationErrorCode
 
     constructor(
         message: string,
+        code: GenerationErrorCode,
         options?: {
             cause?: unknown
         }
@@ -17,89 +24,10 @@ extends BaseError {
             message,
             options
         )
+
+        this.code =
+            code
     }
 }
 
 
-export class GenerationCancelledError
-extends GenerationError {
-
-    constructor() {
-
-        super(
-            'Generation cancelled'
-        )
-
-        this.name =
-            'GenerationCancelledError'
-    }
-}
-
-export class InvalidOutputPathError
-extends GenerationError {
-
-    readonly outputPath: string
-
-    constructor(
-        outputPath: string
-    ) {
-
-        super(
-            `Invalid output path: ${outputPath}`
-        )
-
-        this.outputPath =
-            outputPath
-    }
-}
-
-export class EmptyTemplateError
-extends GenerationError {
-
-    readonly outputPath: string
-
-    constructor(
-        outputPath: string
-    ) {
-
-        super(
-            `Invalid output path: ${outputPath}`
-        )
-
-        this.outputPath =
-            outputPath
-    }
-}
-
-export class TemplateNotFoundError
-extends GenerationError {
-
-    readonly outputPath: string
-
-    constructor(
-        outputPath: string
-    ) {
-
-        super(
-            `Invalid output path: ${outputPath}`
-        )
-
-        this.outputPath =
-            outputPath
-    }
-}
-
-export class FileWriteError
-extends GenerationError {
-
-    constructor(
-        outputPath: string,
-        cause?: unknown
-    ) {
-
-        super(
-            `Failed to write file: ${outputPath}`,
-            { cause }
-        )
-    }
-}

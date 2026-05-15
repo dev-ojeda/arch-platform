@@ -1,7 +1,7 @@
-// packages/core/src/generation/output-path.ts
+// packages\core\src\output\output-path.ts
 
 import * as path from 'node:path'
-import { InvalidOutputPathError } from '../errors/generation/generation-errors.js'
+import { InvalidGeneratorDefinitionError } from '../errors/validation/invalid-generator-definition.error.js'
 
 
 export function sanitizeRelativePath(
@@ -36,7 +36,7 @@ export function ensureSafeOutputPath(
         path.isAbsolute(relative)
     ) {
 
-        throw new InvalidOutputPathError(
+        throw new InvalidGeneratorDefinitionError(
             `Invalid output path: ${relativeOutputPath}`
         )
     }

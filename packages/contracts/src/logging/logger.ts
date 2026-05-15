@@ -1,4 +1,4 @@
-// packages\contracts\src\logger.ts
+// packages\contracts\src\logging\logger.ts
 export interface Logger {
     debug(
         message: string,

@@ -6,6 +6,7 @@ import type {
     PromptField,
     PromptSchema,
     SelectField,
+    SelectOption,
     StringField
 } from '@arch/contracts'
 
@@ -20,7 +21,9 @@ export interface PromptAdapter {
     select<
         TValues extends NamedVariables
     >(
-        field: SelectField<TValues>
+        field: SelectField<TValues>,
+
+        options: SelectOption[]
     ): Promise<string | undefined>
 
     boolean<
@@ -38,7 +41,7 @@ export class PromptEngine {
 
     constructor(
         private readonly adapter: PromptAdapter
-    ) {}
+    ) { }
 
     async collect<
         TValues extends NamedVariables
@@ -161,14 +164,18 @@ export class PromptEngine {
         values: TValues
     ): Promise<string> {
 
-        await this.resolveSelectOptions(
-            field,
-            values
-        )
+        const options =
+            await this.resolveSelectOptions(
+                field,
+                values
+            )
 
         const value =
             (
-                await this.adapter.select(field)
+                await this.adapter.select(
+                    field,
+                    options
+                )
             ) ??
             (
                 field.defaultValue
@@ -202,17 +209,21 @@ export class PromptEngine {
         TValues extends NamedVariables
     >(
         field: SelectField<TValues>,
+
         values: TValues
-    ): Promise<void> {
+    ): Promise<SelectOption[]> {
 
         if (
             typeof field.options !==
             'function'
         ) {
-            return
+
+            return field.options
         }
 
-        await field.options(values)
+        return await field.options(
+            values
+        )
     }
 
     private validateRequired<

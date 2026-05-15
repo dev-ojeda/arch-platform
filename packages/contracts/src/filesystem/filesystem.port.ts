@@ -19,7 +19,7 @@ export interface DirectoryEntry {
     isDirectory: boolean
 }
 
-export interface FileSystemAdapter {
+export interface FileSystemPort {
 
     read(
         path: string

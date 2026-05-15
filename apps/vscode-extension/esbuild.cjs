@@ -67,7 +67,7 @@ async function build() {
 
             minify: false,
 
-            sourcemap: false,
+            sourcemap: true,
 
             legalComments:
                 'none',

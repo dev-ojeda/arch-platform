@@ -1,4 +1,4 @@
-// generators/mvc/src/files.ts
+// packages\generators\mvc\src\definition\files.ts
 import type {
     FileDefinition,
     ResolvedTemplateVariables
@@ -12,28 +12,36 @@ export const mvcFiles:
     readonly FileDefinition<
         ResolvedTemplateVariables<MvcVariables>
     >[] = [
-        {
-            template: 'controller.hbs',
 
-            output:
-                '{{folderLayout.controller}}/{{controllerName}}{{fileExtension}}'
-        },
-        {
-            template: 'service.hbs',
+    {
+        template:
+            'frameworks/express/controller.hbs',
 
-            output:
-                '{{folderLayout.service}}/{{serviceName}}{{fileExtension}}'
-        },
-        {
-            template: 'repository.hbs',
+        output:
+            '{{folderLayout.controller}}/{{controllerName}}{{fileExtension}}'
+    },
 
-            output:
-                '{{folderLayout.repository}}/{{repositoryName}}{{fileExtension}}'
-        },
-        {
-            template: 'model.hbs',
+    {
+        template:
+            'frameworks/express/service.hbs',
 
-            output:
-                '{{folderLayout.model}}/{{modelName}}{{fileExtension}}'
-        }
-    ]
+        output:
+            '{{folderLayout.service}}/{{serviceName}}{{fileExtension}}'
+    },
+
+    {
+        template:
+            'frameworks/express/repository.hbs',
+
+        output:
+            '{{folderLayout.repository}}/{{repositoryName}}{{fileExtension}}'
+    },
+
+    {
+        template:
+            'frameworks/express/model.hbs',
+
+        output:
+            '{{folderLayout.model}}/{{modelName}}{{fileExtension}}'
+    }
+]

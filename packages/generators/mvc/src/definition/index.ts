@@ -1,3 +1,4 @@
+// packages\generators\mvc\src\definition\index.ts
 import type {
   GeneratorDefinition
 } from '@arch/contracts'

@@ -1,0 +1,18 @@
+export const FILESYSTEM_ERROR_CODES = {
+
+    FILE_ALREADY_EXISTS:
+        'FILESYSTEM_FILE_ALREADY_EXISTS',
+
+    WRITE_FAILED:
+        'FILESYSTEM_WRITE_FAILED',
+
+    INVALID_PATH:
+        'VALIDATION_FILESYSTEM_INVALID_PATH'
+
+} as const
+
+
+export type FileSystemErrorCode =
+    typeof FILESYSTEM_ERROR_CODES[
+    keyof typeof FILESYSTEM_ERROR_CODES
+    ]

@@ -2,7 +2,7 @@
 import * as path from 'node:path'
 
 import type {
-    FileSystemAdapter,
+    FileSystemPort,
     GenerationContext,
     GeneratorDefinition,
     Logger,
@@ -38,14 +38,14 @@ export interface GeneratorRuntimeOptions {
     LanguageConventionRegistry
 
     defaultFs?:
-    FileSystemAdapter
+    FileSystemPort
 }
 
 export interface GeneratorExecutionContext {
 
     targetDir: string
 
-    fs?: FileSystemAdapter
+    fs?: FileSystemPort
 
     logger?: Logger
 
@@ -201,7 +201,7 @@ export class GeneratorRuntime {
         if (!fs) {
 
             throw new Error(
-                'FileSystemAdapter not configured'
+                'FileSystemPort not configured'
             )
         }
 

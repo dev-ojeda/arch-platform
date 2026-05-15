@@ -1,4 +1,4 @@
-// packages\application\src\application\pipeline\generate-files.ts
+// packages\application\src\pipeline\generate-files.ts
 import * as path from 'node:path'
 
 import type {
@@ -11,17 +11,17 @@ import type {
 
 import {
   buildVariables,
-  EmptyTemplateError,
   GenerationCancelledError,
   resolveOutputPath,
   runAfterWriteHook,
-  runBeforeWriteHook
+  runBeforeWriteHook,
+  InvalidGeneratorDefinitionError
 } from '@arch/core'
 
 import {
   writeGeneratedFiles
 } from './file-writer.js'
-import type { GeneratedFile } from './generated-file.js'
+import type { GeneratedFile } from './artifacts/generated-file.js'
 import { renderTemplate } from '../templates/template-engine.js'
 export interface GenerateFilesOptions {
 
@@ -194,7 +194,7 @@ async function loadTemplate<TVariables extends NamedVariables>(
     return template
   }
 
-  throw new EmptyTemplateError(
+  throw new InvalidGeneratorDefinitionError(
     templatePath
   )
 }

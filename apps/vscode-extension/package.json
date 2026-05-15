@@ -18,37 +18,45 @@
     ],
     "categories": [
         "Other",
-        "Snippets",
-        "Programming Languages"
+        "Snippets"
+    ],
+    "keywords": [
+        "architecture",
+        "generator",
+        "scaffolding",
+        "typescript",
+        "mvc",
+        "clean-architecture",
+        "codegen"
     ],
     "activationEvents": [
-        "onCommand:archgen.generate"
+        "onCommand:arch.generateProject"
     ],
     "contributes": {
         "commands": [
             {
-                "command": "archgen.generate",
-                "title": "Generate Architecture"
+                "command": "arch.generateProject",
+                "title": "ARCH: Generate Project"
             }
         ]
     },
     "scripts": {
-        "build": "node esbuild.cjs",
-        "dev": "node esbuild.cjs --watch",
+        "clean": "rimraf dist .turbo",
+        "clean:ts": "rimraf tsconfig.tsbuildinfo",
         "typecheck": "tsc --noEmit",
-        "package": "vsce package",
-        "clean": "rimraf dist .turbo *.tsbuildinfo"
+        "bundle": "node esbuild.cjs",
+        "build": "pnpm clean && pnpm typecheck && pnpm bundle",
+        "dev": "node esbuild.cjs --watch",
+        "package": "vsce package"
     },
     "dependencies": {
+        "@arch/application": "workspace:*",
         "@arch/contracts": "workspace:*",
         "@arch/core": "workspace:*",
-        "@arch/application": "workspace:*",
+        "@arch/generator-mvc": "workspace:*",
         "@arch/infrastructure": "workspace:*"
     },
     "devDependencies": {
-        "@arch/contracts": "workspace:*",
-        "@arch/core": "workspace:*",
-        "@arch/application": "workspace:*",
         "@types/node": "^24.0.0",
         "@types/vscode": "^1.90.0",
         "@vscode/vsce": "^3.6.2",

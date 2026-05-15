@@ -1,6 +1,6 @@
 // packages\contracts\src\runtime\generation-context.ts
 import type {
-    FileSystemAdapter
+    FileSystemPort
 } from '../filesystem/filesystem.port.js'
 
 import type {
@@ -30,7 +30,7 @@ export interface GenerationContext<
     Logger
 
     fs:
-    FileSystemAdapter
+    FileSystemPort
 
     stack:
     TechnologyStack

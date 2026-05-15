@@ -3,14 +3,15 @@
 import * as vscode from 'vscode'
 
 import type {
-    PromptAdapter
-} from '@arch/core'
-
-import type {
     BooleanField,
     SelectField,
+    SelectOption,
     StringField
 } from '@arch/contracts'
+
+import type {
+    PromptAdapter
+} from '@arch/application'
 
 export class VSCodePromptAdapter
 implements PromptAdapter {
@@ -19,38 +20,61 @@ implements PromptAdapter {
         field: StringField
     ): Promise<string | undefined> {
 
-        return vscode.window.showInputBox({
+        console.log(
+            '[arch] prompt input:',
+            field.name
+        )
 
-            title: field.message,
+        return await vscode.window.showInputBox({
 
-            prompt: field.description,
+            prompt:
+                field.message,
+
+            placeHolder:
+                field.description,
 
             value:
                 field.defaultValue
+                    ?.toString(),
+
+            ignoreFocusOut:
+                true
         })
     }
 
     async select(
-        field: SelectField
+        field: SelectField,
+
+        options: SelectOption[]
     ): Promise<string | undefined> {
 
-        const options =
-            typeof field.options === 'function'
-                ? await field.options()
-                : field.options
+        console.log(
+            '[arch] prompt select:',
+            field.name
+        )
 
         const selected =
             await vscode.window.showQuickPick(
 
                 options.map(option => ({
 
-                    label: option.label,
+                    label:
+                        option.label,
 
-                    value: option.value
+                    description:
+                        option.value,
+
+                    value:
+                        option.value
                 })),
 
                 {
-                    title: field.message
+
+                    title:
+                        field.message,
+
+                    ignoreFocusOut:
+                        true
                 }
             )
 
@@ -61,25 +85,32 @@ implements PromptAdapter {
         field: BooleanField
     ): Promise<boolean | undefined> {
 
+        console.log(
+            '[arch] prompt boolean:',
+            field.name
+        )
+
         const selected =
             await vscode.window.showQuickPick(
 
                 [
                     {
                         label: 'Yes',
-
                         value: true
                     },
-
                     {
                         label: 'No',
-
                         value: false
                     }
                 ],
 
                 {
-                    title: field.message
+
+                    title:
+                        field.message,
+
+                    ignoreFocusOut:
+                        true
                 }
             )
 

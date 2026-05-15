@@ -6,6 +6,7 @@
         "declaration": true,
         "declarationMap": false,
         "sourceMap": false,
-        "noEmitOnError": true
+        "noEmitOnError": true,
+        "emitDeclarationOnly": false
     }
 }

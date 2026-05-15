@@ -11,7 +11,11 @@
             ],
             "outFiles": [
                 "${workspaceFolder}/apps/vscode-extension/dist/**/*.js"
-            ]
+            ],
+            "preLaunchTask": "turbo: build",
+            "sourceMaps": true,
+            "smartStep": true,
+            "internalConsoleOptions": "neverOpen"
         }
     ]
 }

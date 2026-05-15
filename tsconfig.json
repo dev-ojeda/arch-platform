@@ -8,10 +8,10 @@
             "path": "./packages/contracts"
         },
         {
-            "path": "./packages/application"
+            "path": "./packages/core"
         },
         {
-            "path": "./packages/core"
+            "path": "./packages/application"
         },
         {
             "path": "./packages/infrastructure"

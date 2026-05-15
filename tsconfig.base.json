@@ -16,19 +16,19 @@
         "baseUrl": ".",
         "paths": {
             "@arch/contracts": [
-                "packages/contracts/src"
+                "packages/contracts/src/index.ts"
             ],
             "@arch/core": [
-                "packages/core/src"
+                "packages/core/src/index.ts"
             ],
             "@arch/application": [
-                "packages/application/src"
+                "packages/application/src/index.ts"
             ],
             "@arch/infrastructure": [
-                "packages/infrastructure/src"
+                "packages/infrastructure/src/index.ts"
             ],
             "@arch/generator-mvc": [
-                "packages/generators/mvc/src"
+                "packages/generators/mvc/src/index.ts"
             ]
         }
     }

@@ -1,28 +1,97 @@
 // apps\vscode-extension\src\composition\container.ts
-import { NodeFileSystemAdapter } from '../../../../packages/infrastructure/src/index.js';
-import {
-    VSCodeNotificationAdapter
-} from '../adapters/vscode/notifications/vscode-notification.adapter.js';
+import * as path from 'node:path'
+
+import type {
+    ExtensionContext
+} from 'vscode'
 
 import {
-    VSCodeWorkspaceAdapter
-} from '../adapters/vscode/workspace/vscode-workspace.adapter.js';
+    GeneratorRegistry,
+    LanguageConventionRegistry,
+    TypeScriptConvention
+} from '@arch/core'
 
+import {
+    GeneratorRuntime,
+    GenerateProjectUseCase
+} from '@arch/application'
 
-export function createContainer() {
+import {
+    NodeFileSystemAdapter
+} from '@arch/infrastructure'
 
-    const notifications =
-        new VSCodeNotificationAdapter();
+import {
+    registerMvcGenerator
+} from '@arch/generator-mvc'
 
-    const workspace =
-        new VSCodeWorkspaceAdapter();
+import {
+    VSCodePromptAdapter
+} from '../adapters/vscode-prompt-adapter.js'
 
-    const filesystem =
-        new NodeFileSystemAdapter();
+export interface Container {
+
+    generateProjectUseCase:
+        GenerateProjectUseCase
+}
+
+export function createContainer(
+    context: ExtensionContext
+): Container {
+
+    /*
+     * Language registry
+     */
+    const languageRegistry =
+        new LanguageConventionRegistry()
+
+    languageRegistry.register(
+        new TypeScriptConvention()
+    )
+
+    /*
+     * Generator registry
+     */
+    const generatorRegistry =
+        new GeneratorRegistry()
+
+    registerMvcGenerator(
+        generatorRegistry
+    )
+
+    /*
+     * Runtime
+     */
+    const runtime =
+        new GeneratorRuntime({
+
+            promptAdapter:
+                new VSCodePromptAdapter(),
+
+            templateRoot:
+                path.resolve(
+                    context.extensionPath,
+                    'dist/templates'
+                ),
+
+            languageRegistry,
+
+            defaultFs:
+                new NodeFileSystemAdapter()
+        })
+
+    /*
+     * Use cases
+     */
+    const generateProjectUseCase =
+        new GenerateProjectUseCase(
+
+            generatorRegistry,
+
+            runtime
+        )
 
     return {
-        notifications,
-        workspace,
-        filesystem
-    };
+
+        generateProjectUseCase
+    }
 }
