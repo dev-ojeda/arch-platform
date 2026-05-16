@@ -17,7 +17,7 @@ from '@arch/core'
 import type {
     GeneratorRuntime
 }
-from '../../runtime/generator-runtime.js'
+from '../../generation/runtime/generator-runtime.js'
 
 export interface GenerateProjectRequest {
 

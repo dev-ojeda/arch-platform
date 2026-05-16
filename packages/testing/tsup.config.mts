@@ -1,12 +1,8 @@
-import {
-    defineConfig
-}
+import { defineConfig }
     from 'tsup'
 
-import {
-    baseConfig
-}
-    from '../../tsup.base.mjs'
+import { baseConfig }
+    from '../../tsup.base.js'
 
 export default defineConfig({
 
@@ -14,8 +10,5 @@ export default defineConfig({
 
     entry: [
         'src/index.ts'
-    ],
-
-    tsconfig:
-        './tsconfig.build.json'
+    ]
 })

@@ -3,18 +3,10 @@
     "compilerOptions": {
         "rootDir": "./src",
         "outDir": "./dist",
-        "declaration": true,
-        "emitDeclarationOnly": false,
         "tsBuildInfoFile": "./dist/.tsbuildinfo"
     },
     "include": [
         "src"
-    ],
-    "exclude": [
-        "dist",
-        "node_modules",
-        "**/*.test.ts",
-        "**/__tests__/**"
     ],
     "references": [
         {

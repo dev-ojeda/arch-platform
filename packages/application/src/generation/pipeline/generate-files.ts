@@ -22,7 +22,7 @@ import {
   writeGeneratedFiles
 } from './file-writer.js'
 import type { GeneratedFile } from './artifacts/generated-file.js'
-import { renderTemplate } from '../templates/template-engine.js'
+import { renderTemplate } from '../../templates/template-engine.js'
 export interface GenerateFilesOptions {
 
   language:

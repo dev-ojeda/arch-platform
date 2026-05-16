@@ -1,9 +1,6 @@
 // packages\core\tsup.config.mts
-import { defineConfig }
-    from 'tsup'
-
-import { baseConfig }
-    from '../../tsup.base.mjs'
+import { defineConfig } from 'tsup'
+import { baseConfig } from '../../tsup.base'
 
 export default defineConfig({
 

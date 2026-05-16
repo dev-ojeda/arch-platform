@@ -4,6 +4,7 @@
     "private": true,
     "type": "module",
     "main": "./dist/index.js",
+    "module": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "files": [
         "dist"
@@ -19,8 +20,11 @@
         }
     },
     "scripts": {
-        "build": "tsup",
+        "clean": "rimraf dist",
+        "build:js": "tsup",
+        "build:types": "tsc -p tsconfig.build.json",
+        "build": "pnpm clean && pnpm build:js && pnpm build:types",
         "dev": "tsup --watch",
-        "typecheck": "tsc --noEmit"
+        "typecheck": "tsc -p tsconfig.build.json --noEmit"
     }
 }

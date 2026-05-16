@@ -10,9 +10,15 @@
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "resolveJsonModule": true,
+        "ignoreDeprecations": "6.0",
         "types": [
             "node"
         ],
-        "baseUrl": "."
+        "baseUrl": ".",
+        "paths": {
+            "@arch/*": [
+                "packages/*/src"
+            ]
+        }
     }
 }

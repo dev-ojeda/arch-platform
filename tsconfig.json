@@ -5,25 +5,22 @@
             "path": "./tsconfig.tools.json"
         },
         {
-            "path": "./packages/contracts"
+            "path": "./packages/contracts/src"
         },
         {
-            "path": "./packages/core"
+            "path": "./packages/core/src"
         },
         {
-            "path": "./packages/application"
+            "path": "./packages/application/src"
         },
         {
-            "path": "./packages/infrastructure"
+            "path": "./packages/infrastructure/src"
         },
         {
-            "path": "./packages/generators/mvc"
+            "path": "./packages/generators/mvc/src"
         },
         {
-            "path": "./packages/testing"
-        },
-        {
-            "path": "./apps/vscode-extension"
-        },
+            "path": "./packages/testing/src"
+        }
     ]
 }

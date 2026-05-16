@@ -1,14 +1,18 @@
 {
-    "extends": "./base.json",
-  
-    "compilerOptions": {
-  
-      "declaration": true,
-  
-      "declarationMap": false,
-  
-      "sourceMap": false,
-  
-      "noEmitOnError": true
-    }
+  "extends": "./base.json",
+
+  "compilerOptions": {
+
+    "composite": true,
+
+    "incremental": true,
+
+    "declaration": true,
+
+    "declarationMap": false,
+
+    "sourceMap": false,
+
+    "noEmitOnError": true
   }
+}

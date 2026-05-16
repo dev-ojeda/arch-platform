@@ -29,24 +29,24 @@ export interface GeneratorDefinition<
     NamedVariables
 > {
 
-    descriptor:
+    readonly descriptor:
     GeneratorDescriptor
 
-    schema:
+    readonly schema:
     PromptSchema<TValues>
 
-    templates:
+    readonly templates:
     readonly FileDefinition<
         ResolvedTemplateVariables<TValues>
     >[]
 
-    hooks?:
+    readonly hooks?:
     GeneratorHooks<TValues>
 
-    capabilities?:
+    readonly capabilities?:
     GeneratorCapabilities
 
-    metadata?:
+    readonly metadata?:
     Readonly<
         Record<string, unknown>
     >

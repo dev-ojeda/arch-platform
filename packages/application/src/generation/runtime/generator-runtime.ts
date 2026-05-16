@@ -1,19 +1,17 @@
 // packages\application\src\application\runtime\generator-runtime.ts
 import * as path from 'node:path'
 
-import type {
-    FileSystemPort,
-    GenerationContext,
-    GeneratorDefinition,
-    LoggerPort,
-    NamedVariables,
-    TechnologyStack
-} from '@arch/contracts'
-
 import {
     PromptEngine,
-    type PromptAdapter
-} from '../orchestration/prompt-engine.js'
+    type FileSystemPort,
+    type GenerationContext,
+    type GeneratorDefinition,
+    type LoggerPort,
+    type NamedVariables,
+    type PromptAdapter,
+    type TechnologyStack
+} from '@arch/contracts'
+
 
 import {
     generateFiles
