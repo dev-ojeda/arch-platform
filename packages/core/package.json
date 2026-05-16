@@ -13,12 +13,9 @@
         "node": ">=20"
     },
     "scripts": {
-        "build": "pnpm build:js && pnpm build:types",
-        "build:js": "tsup",
-        "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
+        "build": "tsup",
         "dev": "tsup --watch",
-        "typecheck": "tsc --noEmit",
-        "clean": "pnpm exec rimraf dist .turbo *.tsbuildinfo"
+        "typecheck": "tsc --noEmit"
     },
     "dependencies": {
         "@arch/contracts": "workspace:*",

@@ -1,5 +1,4 @@
-import { GenerationCancelledError } from "../errors/generation/generation-cancelled.error.js";
-
+import { GenerationCancelledError } from "../../errors/generation/generation-cancelled.error.js";
 
 
 export function assertNotCancelled(

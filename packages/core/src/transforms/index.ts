@@ -1,1 +1,1 @@
-export * from './content-transformer.js'
+// Auto-generated index

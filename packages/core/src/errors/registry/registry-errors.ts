@@ -3,7 +3,7 @@
 import {
     BaseError
 }
-    from '../base-error.js'
+    from '../base/base-error.js'
 
 export const REGISTRY_ERROR_CODES = {
 

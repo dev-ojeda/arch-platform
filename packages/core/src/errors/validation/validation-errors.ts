@@ -1,6 +1,5 @@
-import { BaseError }
-from '../base-error.js'
 
+import { BaseError } from '../base/base-error.js'
 import type {
     ValidationErrorCode
 }

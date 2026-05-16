@@ -1,7 +1,7 @@
 // packages\core\src\output\output-path.ts
 
 import * as path from 'node:path'
-import { InvalidGeneratorDefinitionError } from '../errors/validation/invalid-generator-definition.error.js'
+import { InvalidGeneratorDefinitionError } from '../../errors/validation/invalid-generator-definition.error.js'
 
 
 export function sanitizeRelativePath(

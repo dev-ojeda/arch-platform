@@ -4,11 +4,8 @@ import type {
   NamedVariables
 }
 from '@arch/contracts'
+import { isReservedTemplateVariable } from '../reserved/is-reserved-template-variable.js'
 
-import {
-  isReservedTemplateVariable
-}
-from './is-reserved-template-variable.js'
 
 export function validateTemplateVariables(
   variables: NamedVariables

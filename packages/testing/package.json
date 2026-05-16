@@ -15,10 +15,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm build:js && pnpm build:types",
-    "build:js": "tsup",
-    "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
-    "clean": "rimraf dist",
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
   },

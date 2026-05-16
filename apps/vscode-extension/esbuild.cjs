@@ -79,7 +79,12 @@ async function build() {
             format: 'cjs',
 
             external: [
-                'vscode'
+                'vscode',
+                '@arch/contracts',
+                '@arch/core',
+                '@arch/application',
+                '@arch/infrastructure',
+                '@arch/generator-mvc'
             ],
 
             mainFields: [

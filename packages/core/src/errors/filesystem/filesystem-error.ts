@@ -1,5 +1,5 @@
 import { BaseError }
-from '../base-error.js'
+from '../base/base-error.js'
 
 import type {
   FileSystemErrorCode

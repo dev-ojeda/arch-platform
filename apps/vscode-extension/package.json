@@ -7,9 +7,8 @@
     "publisher": "dev-ojeda",
     "license": "MIT",
     "type": "commonjs",
-    "sideEffects": false,
     "engines": {
-        "node": ">=20",
+        "node": ">=18",
         "vscode": "^1.90.0"
     },
     "main": "./dist/extension.js",
@@ -41,12 +40,14 @@
         ]
     },
     "scripts": {
+        "rebuild": "pnpm clean && pnpm build",
+        "build": "pnpm typecheck && pnpm bundle",
         "clean": "rimraf dist .turbo",
         "clean:ts": "rimraf tsconfig.tsbuildinfo",
         "typecheck": "tsc --noEmit",
         "bundle": "node esbuild.cjs",
-        "build": "pnpm clean && pnpm typecheck && pnpm bundle",
         "dev": "node esbuild.cjs --watch",
+        "prepackage": "pnpm build",
         "package": "vsce package"
     },
     "dependencies": {

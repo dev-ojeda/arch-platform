@@ -8,7 +8,7 @@ import {
 
 import {
     resolveOutputPath
-} from '../output-path.js'
+} from '../../generation/output/output-path.ts'
 
 describe(
     'resolveOutputPath',

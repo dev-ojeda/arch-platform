@@ -13,26 +13,6 @@
         "types": [
             "node"
         ],
-        "baseUrl": ".",
-        "paths": {
-            "@arch/contracts": [
-                "packages/contracts/src/index.ts"
-            ],
-            "@arch/core": [
-                "packages/core/src/index.ts"
-            ],
-            "@arch/application": [
-                "packages/application/src/index.ts"
-            ],
-            "@arch/infrastructure": [
-                "packages/infrastructure/src/index.ts"
-            ],
-            "@arch/generator-mvc": [
-                "packages/generators/mvc/src/index.ts"
-            ],
-            "@arch/testing": [
-                "packages/testing/src/index.ts"
-            ]
-        }
+        "baseUrl": "."
     }
 }

@@ -1,8 +1,11 @@
 // tsup.base.mts
-import type { Options }
-    from 'tsup'
+import type {
+    Options
+}
+from 'tsup'
 
-export const baseConfig: Options = {
+export const baseConfig:
+Options = {
 
     format: ['esm'],
 
@@ -26,5 +29,5 @@ export const baseConfig: Options = {
 
     skipNodeModulesBundle: true,
 
-    dts: false
+    dts: true
 }

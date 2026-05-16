@@ -2,8 +2,9 @@
     "$schema": "https://turbo.build/schema.json",
     "globalDependencies": [
         "pnpm-lock.yaml",
-        "tsconfig.base.json",
-        "tsup.base.mts"
+        "config/tsconfig/base.json",
+        "tsup.base.mts",
+        ".env*"
     ],
     "tasks": {
         "build": {
@@ -17,7 +18,8 @@
                 "tsup.config.*"
             ],
             "outputs": [
-                "dist/**"
+                "dist/**",
+                "!dist/**/*.tsbuildinfo"
             ]
         },
         "typecheck": {
@@ -41,6 +43,9 @@
         },
         "cruiser": {
             "outputs": []
+        },
+        "clean": {
+            "cache": false
         }
     }
 }

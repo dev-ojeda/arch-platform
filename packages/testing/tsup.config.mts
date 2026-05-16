@@ -1,9 +1,11 @@
-// packages\contracts\tsup.config.mts
-
-import { defineConfig }
+import {
+    defineConfig
+}
     from 'tsup'
 
-import { baseConfig }
+import {
+    baseConfig
+}
     from '../../tsup.base.mjs'
 
 export default defineConfig({
@@ -12,5 +14,8 @@ export default defineConfig({
 
     entry: [
         'src/index.ts'
-    ]
+    ],
+
+    tsconfig:
+        './tsconfig.build.json'
 })

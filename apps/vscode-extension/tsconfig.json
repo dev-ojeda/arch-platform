@@ -7,26 +7,10 @@
             "node",
             "vscode"
         ],
-        "noEmit": true
+        "noEmit": true,
+        "verbatimModuleSyntax": false
     },
     "include": [
-        "src"
-    ],
-    "references": [
-        {
-            "path": "../../packages/contracts"
-        },
-        {
-            "path": "../../packages/core"
-        },
-        {
-            "path": "../../packages/application"
-        },
-        {
-            "path": "../../packages/infrastructure"
-        },
-        {
-            "path": "../../packages/generators/mvc"
-        }
+        "src/**/*.ts"
     ]
 }

@@ -1,5 +1,8 @@
-export * from './language-registry.js'
-export * from './template-resolver.js'
-export * from './is-reserved-template-variable.js'
-export * from './validate-template-variables.js'
+// Auto-generated index
+
+export * from './internal/index.js'
+export * from './language/index.js'
+export * from './reserved/index.js'
+export * from './resolution/index.js'
+export * from './validation/index.js'
 

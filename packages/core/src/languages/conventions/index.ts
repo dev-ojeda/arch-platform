@@ -1,1 +1,1 @@
-export * from './typescript.convention.js'
+// Auto-generated index
