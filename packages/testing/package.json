@@ -27,6 +27,7 @@
   "dependencies": {
     "@arch/contracts": "workspace:*",
     "@arch/core": "workspace:*",
+    "@arch/application": "workspace:*",
     "@arch/infrastructure": "workspace:*"
   },
   "devDependencies": {

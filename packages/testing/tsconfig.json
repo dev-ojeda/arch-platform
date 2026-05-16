@@ -21,6 +21,9 @@
     },
     {
       "path": "../infrastructure"
+    },
+    {
+      "path": "../application"
     }
   ]
 }
