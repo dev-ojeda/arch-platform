@@ -1,4 +1,4 @@
-
+// packages\application\src\generation\testing\test-pipeline-builder.ts
 import type {
   GenerationPipelineStep,
   GeneratorDefinition,
@@ -7,6 +7,7 @@ import type {
 import { InMemoryGeneratorRegistry } from '../registry/in-memory-generator-registry.js'
 import { GenerationPipeline } from '../pipeline/generation-pipeline.js'
 import { LoadGeneratorStep } from '../steps/load-generator.step.js'
+import { ValidateGeneratorStep } from '../steps/validate-generator.step.js'
 
 
 export class TestPipelineBuilder {
@@ -76,7 +77,7 @@ export class TestPipelineBuilder {
         new LoadGeneratorStep(
           this.registry
         ),
-
+        new ValidateGeneratorStep(),
         ...this.steps
       ])
 
