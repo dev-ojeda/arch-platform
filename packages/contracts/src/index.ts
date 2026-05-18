@@ -1,4 +1,5 @@
 export * from "./configuration/index.js";
+export * from "./diagnostics/index.js";
 export * from "./filesystem/index.js";
 export * from "./generation/index.js";
 export * from "./generators/index.js";
@@ -10,5 +11,6 @@ export * from "./pipeline/index.js";
 export * from "./prompts/index.js";
 export * from "./renderer/index.js";
 export * from "./stacks/index.js";
+export * from "./telemetry/index.js";
 export * from "./templates/index.js";
 export * from "./variables/index.js";

@@ -3,8 +3,10 @@
 import type {
   FileSystemPort,
   GenerationContext,
+  GenerationDiagnostic,
   LoggerPort,
   NamedVariables,
+  StepExecutionMetric,
   TechnologyStack,
 } from "@arch/contracts";
 import { createMemoryFilesystem } from "../filesystem/create-memory-filesystem.js";
@@ -25,6 +27,10 @@ export interface CreateTestContextOptions<
   stack?: TechnologyStack;
 
   signal?: AbortSignal;
+
+  diagnostics?: GenerationDiagnostic;
+
+  metrics?: StepExecutionMetric;
 }
 
 export function createTestContext<TVariables extends NamedVariables>(
@@ -46,5 +52,9 @@ export function createTestContext<TVariables extends NamedVariables>(
     files: [],
 
     metadata: new Map<string, unknown>(),
+
+    diagnostics: [],
+
+    metrics: [],
   };
 }
