@@ -1,27 +1,15 @@
 // packages/application/src/generation/steps/resolve-variables.step.ts
 
 import type {
+  GenerationContext,
   GenerationPipelineStep,
-  PipelineContext
-}
-from '@arch/contracts'
+} from "@arch/contracts";
 
-import {
-  deriveTemplateVariables
-}
-from '../variables/derive-template-variables.js'
+import { deriveTemplateVariables } from "../variables/derive-template-variables.js";
 
-export class ResolveVariablesStep
-implements GenerationPipelineStep {
-
-  async execute(
-    context: PipelineContext
-  ): Promise<void> {
-
-    context.resolvedVariables =
-      deriveTemplateVariables(
-
-        context.variables
-      )
+export class ResolveVariablesStep implements GenerationPipelineStep {
+  readonly name = "resolve-variable";
+  async execute(context: GenerationContext): Promise<void> {
+    context.resolvedVariables = deriveTemplateVariables(context.variables);
   }
 }

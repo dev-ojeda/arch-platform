@@ -1,21 +1,15 @@
 // packages\testing\src\pipeline\steps\execute-step.ts
 import type {
+  GenerationContext,
   GenerationPipelineStep,
-  PipelineContext
-} from '@arch/contracts'
+} from "@arch/contracts";
 
 export async function executeStep(
+  step: GenerationPipelineStep,
 
-  step:
-  GenerationPipelineStep,
+  context: GenerationContext
+): Promise<GenerationContext> {
+  await step.execute(context);
 
-  context:
-  PipelineContext
-): Promise<PipelineContext> {
-
-  await step.execute(
-    context
-  )
-
-  return context
+  return context;
 }

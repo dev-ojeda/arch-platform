@@ -1,129 +1,71 @@
 // packages/application/src/generation/steps/__tests__/resolve-templates.step.test.ts
 
-import {
-  describe,
-  expect,
-  it
-}
-from 'vitest'
+import { describe, expect, it } from "vitest";
 
-import type {
-  PipelineContext
-}
-from '@arch/contracts'
+import type { GenerationContext } from "@arch/contracts";
 
-import {
-  ResolveTemplatesStep
-}
-from '../resolve-templates.step.js'
+import { ResolveTemplatesStep } from "../resolve-templates.step.js";
 
-import {
-  testGenerator
-}
-from '@arch/testing'
+import { testGenerator } from "@arch/testing";
 
-import {
-  createTestPipelineContext
-}
-from '@arch/testing'
+import { createTestPipelineContext } from "@arch/testing";
 
-describe(
-  'ResolveTemplatesStep',
-  () => {
+describe("ResolveTemplatesStep", () => {
+  it("resolves generator templates", async () => {
+    const context: GenerationContext = {
+      ...createTestPipelineContext({
+        variables: {
+          name: "user",
+        },
+      }),
 
-    it(
-      'resolves generator templates',
-      async () => {
+      generator: testGenerator,
 
-        const context:
-        PipelineContext = {
+      resolvedVariables: {
+        name: "user",
 
-          ...createTestPipelineContext({
+        className: "User",
 
-            variables: {
+        controllerName: "UserController",
 
-              name: 'user'
-            }
-          }),
+        serviceName: "UserService",
 
-          generator:
-            testGenerator,
+        repositoryName: "UserRepository",
 
-          resolvedVariables: {
+        modelName: "User",
 
-            name:
-              'user',
+        fileExtension: ".ts",
 
-            className:
-              'User',
+        folderLayout: {
+          controller: "controllers",
 
-            controllerName:
-              'UserController',
+          service: "services",
 
-            serviceName:
-              'UserService',
+          repository: "repositories",
 
-            repositoryName:
-              'UserRepository',
+          model: "models",
+        },
+      },
+    };
 
-            modelName:
-              'User',
+    const step = new ResolveTemplatesStep();
 
-            fileExtension:
-              '.ts',
+    await step.execute(context);
 
-            folderLayout: {
+    expect(context.resolvedTemplates).toBeDefined();
 
-              controller:
-                'controllers',
+    expect(context.resolvedTemplates).toHaveLength(
+      testGenerator.templates.length
+    );
 
-              service:
-                'services',
+    expect(context.resolvedTemplates).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          outputPath: expect.any(String),
 
-              repository:
-                'repositories',
-
-              model:
-                'models'
-            }
-          }
-        }
-
-        const step =
-          new ResolveTemplatesStep()
-
-        await step.execute(
-          context
-        )
-
-        expect(
-          context.resolvedTemplates
-        ).toBeDefined()
-
-        expect(
-          context.resolvedTemplates
-        ).toHaveLength(
-
-          testGenerator.templates.length
-        )
-
-        expect(
-          context.resolvedTemplates
-        ).toEqual(
-
-          expect.arrayContaining([
-
-            expect.objectContaining({
-
-              outputPath:
-                expect.any(String),
-
-              template:
-                expect.any(Object)
-            })
-          ])
-        )
-      }
-    )
-  }
-)
+          template: expect.any(Object),
+        }),
+      ])
+    );
+  });
+});
