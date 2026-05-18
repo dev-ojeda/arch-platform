@@ -5,7 +5,7 @@ import {
   it
 } from 'vitest'
 import { TestPipelineBuilder } from '../../../../testing/test-pipeline-builder.js'
-import { testGenerator } from '../../../../testing/test-generator.js'
+import { testGenerator } from '@arch/testing'
 
 describe(
   'LoadGeneratorStep',

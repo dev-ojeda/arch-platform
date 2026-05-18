@@ -1,6 +1,11 @@
-// packages\testing\src\pipeline\create-test-pipeline-context.ts
+// packages/testing/src/pipeline/create-test-pipeline-context.ts
+
 import type {
+
+  NamedVariables,
+
   PipelineContext
+
 }
 from '@arch/contracts'
 
@@ -9,12 +14,27 @@ import {
 }
 from '../runtime/create-test-context.js'
 
-export function createTestPipelineContext():
-PipelineContext {
+export interface CreateTestPipelineContextOptions {
+
+  variables?:
+    NamedVariables
+}
+
+export function
+createTestPipelineContext(
+
+  options:
+  CreateTestPipelineContextOptions = {}
+
+): PipelineContext {
 
   return {
 
-    ...createTestContext(),
+    ...createTestContext({
+
+      variables:
+        options.variables
+    }),
 
     generatorId:
       'test-generator'

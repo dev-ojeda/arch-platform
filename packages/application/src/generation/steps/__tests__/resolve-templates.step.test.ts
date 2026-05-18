@@ -5,23 +5,27 @@ import {
   expect,
   it
 }
-  from 'vitest'
+from 'vitest'
 
 import type {
   PipelineContext
 }
-  from '@arch/contracts'
+from '@arch/contracts'
 
 import {
   ResolveTemplatesStep
 }
-  from '../resolve-templates.step.js'
+from '../resolve-templates.step.js'
 
 import {
   testGenerator
 }
-  from '../../../../testing/test-generator.js'
-import { createTestPipelineContext } from '@arch/testing'
+from '@arch/testing'
+
+import {
+  createTestPipelineContext
+}
+from '@arch/testing'
 
 describe(
   'ResolveTemplatesStep',
@@ -32,12 +36,57 @@ describe(
       async () => {
 
         const context:
-          PipelineContext = {
+        PipelineContext = {
 
-          ...createTestPipelineContext(),
+          ...createTestPipelineContext({
+
+            variables: {
+
+              name: 'user'
+            }
+          }),
 
           generator:
-            testGenerator
+            testGenerator,
+
+          resolvedVariables: {
+
+            name:
+              'user',
+
+            className:
+              'User',
+
+            controllerName:
+              'UserController',
+
+            serviceName:
+              'UserService',
+
+            repositoryName:
+              'UserRepository',
+
+            modelName:
+              'User',
+
+            fileExtension:
+              '.ts',
+
+            folderLayout: {
+
+              controller:
+                'controllers',
+
+              service:
+                'services',
+
+              repository:
+                'repositories',
+
+              model:
+                'models'
+            }
+          }
         }
 
         const step =
@@ -54,6 +103,7 @@ describe(
         expect(
           context.resolvedTemplates
         ).toHaveLength(
+
           testGenerator.templates.length
         )
 

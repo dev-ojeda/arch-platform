@@ -1,32 +1,24 @@
 // packages\contracts\src\pipeline\pipeline-context.ts
-import type { GeneratorDefinition } from "../generators/generator-definition.js"
-import type { GenerationContext } from "../runtime/generation-context.js"
-import type {
-  ResolvedTemplate
-}
-from './resolved-template.js'
+import type { GeneratorDefinition } from "../generators/generator-definition.js";
 
-/**
- * Shared mutable state used across
- * generation pipeline execution.
- */
-export interface PipelineContext
-extends GenerationContext {
+import type { GenerationContext } from "../runtime/generation-context.js";
 
-  /**
-   * Target generator identifier.
-   */
-  generatorId: string
+import type { ResolvedTemplate } from "./resolved-template.js";
 
-  /**
-   * Loaded generator definition.
-   */
-  generator?:
-  GeneratorDefinition
+import type { NamedVariables } from "../variables/named-variables.js";
 
-  /**
-   * Resolved execution plan for templates/files.
-   */
-  resolvedTemplates?:
-  readonly ResolvedTemplate[]
+import type { ResolvedTemplateVariables } from "../templates/resolved-template-variables.js";
+
+export interface PipelineContext<
+  TVariables extends NamedVariables = NamedVariables
+> extends GenerationContext<TVariables> {
+  generatorId: string;
+
+  generator?: GeneratorDefinition<TVariables>;
+
+  resolvedVariables?: ResolvedTemplateVariables<TVariables>;
+
+  resolvedTemplates?: readonly ResolvedTemplate<
+    ResolvedTemplateVariables<TVariables>
+  >[];
 }

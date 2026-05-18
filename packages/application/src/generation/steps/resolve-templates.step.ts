@@ -1,8 +1,8 @@
-// packages\application\src\generation\steps\resolve-templates.step.ts
+// packages/application/src/generation/steps/resolve-templates.step.ts
+
 import type {
   GenerationPipelineStep,
-  PipelineContext,
-  ResolvedTemplate
+  PipelineContext
 }
 from '@arch/contracts'
 
@@ -10,6 +10,11 @@ import {
   GeneratorValidationError
 }
 from '../errors/generator-validation-error.js'
+
+import {
+  resolveTemplateDefinition
+}
+from '../templates/resolve-template-definition.js'
 
 export class ResolveTemplatesStep
 implements GenerationPipelineStep {
@@ -28,18 +33,30 @@ implements GenerationPipelineStep {
         'Generator not loaded'
       )
     }
-    
-    const resolved:
-    ResolvedTemplate[] =
+
+    const variables =
+      context.resolvedVariables
+
+    if (!variables) {
+
+      throw new GeneratorValidationError(
+
+        'Resolved variables not available'
+      )
+    }
+
+    const resolved =
 
       generator.templates.map(
-        template => ({
 
-          template,
+        template =>
 
-          outputPath:
-            template.output
-        })
+          resolveTemplateDefinition(
+
+            template,
+
+            variables
+          )
       )
 
     context.resolvedTemplates =

@@ -7,6 +7,10 @@
   "editor.suggestSelection": "first",
   "editor.tabSize": 2,
   "editor.snippetSuggestions": "top",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "editor.stickyScroll.enabled": true,
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
   "window.zoomLevel": -1,
@@ -16,11 +20,15 @@
   "git.confirmForcePush": false,
   "typescript.preferences.preferTypeOnlyAutoImports": true,
   "typescript.preferences.importModuleSpecifierEnding": "js",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.tsserver.experimental.enableProjectDiagnostics": false,
   "javascript.updateImportsOnFileMove.enabled": "always",
   "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
   "typescript.tsserver.maxTsServerMemory": 4096,
   "ruff.format.preview": true,
   "powershell.integratedConsole.focusConsoleOnExecute": false,
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
   "files.associations": {
     "*.scpt": "shellscript",
     "*.ts": "typescript",
@@ -47,10 +55,12 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
   },
   "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
   },
   "[markdown]": {
     "editor.wordWrap": "on",
@@ -81,11 +91,15 @@
   "search.exclude": {
     "**/dist": true,
     "**/.turbo": true,
-    "**/coverage": true
+    "**/coverage": true,
+    "**/.pnpm-store": true
   },
   "files.watcherExclude": {
     "**/.turbo/**": true,
-    "**/dist/**": true
+    "**/dist/**": true,
+    "**/coverage/**": true,
+    "**/.pnpm-store/**": true,
+    "**/node_modules/**": true
   },
   "better-comments.multilineComments": true,
   "better-comments.highlightPlainText": false,
@@ -180,5 +194,6 @@
     "**/utils", // any utils directory at any depth
     "src/**/*.ts" // all TypeScript files under src
   ],
-  "task.quickOpen.skip": true
+  "task.quickOpen.skip": true,
+  "testing.automaticallyOpenPeekView": "never"
 }
