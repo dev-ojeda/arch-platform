@@ -1,5 +1,6 @@
 // packages/contracts/src/generation/generation-context.ts
 import type { GenerationDiagnostic } from "../diagnostics/generation-diagnostic.js";
+import type { GenerationEventBus } from "../events/generation-event-bus.js";
 import type { FileSystemPort } from "../filesystem/filesystem.port.js";
 import type { GeneratedFile } from "../generation/generated-file.js";
 import type { GeneratorDefinition } from "../generators/generator-definition.js";
@@ -23,14 +24,18 @@ export interface GenerationContext<
   readonly targetDir: string;
 
   readonly signal?: AbortSignal;
+  /*
+   * Runtime Services
+   */
 
+  readonly logger: LoggerPort;
+
+  readonly eventBus: GenerationEventBus;
   /*
    * Infrastructure
    */
 
   readonly fs: FileSystemPort;
-
-  readonly logger: LoggerPort;
 
   /*
    * Generator
@@ -70,7 +75,7 @@ export interface GenerationContext<
    * Runtime Metadata
    */
 
-  metadata?: Map<string, unknown>;
+  metadata: Map<string, unknown>;
 
   /*
    * Runtime Diagnostics

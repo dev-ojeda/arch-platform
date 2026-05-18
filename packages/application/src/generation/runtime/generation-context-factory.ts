@@ -7,7 +7,7 @@ import type {
   NamedVariables,
 } from "@arch/contracts";
 
-import { consoleLogger } from "@arch/core";
+import { consoleLogger, InMemoryGenerationEventBus } from "@arch/core";
 
 export class GenerationContextFactory {
   constructor(private readonly defaultFs: FileSystemPort) {}
@@ -31,6 +31,8 @@ export class GenerationContextFactory {
       diagnostics: [],
 
       metrics: [],
+
+      eventBus: new InMemoryGenerationEventBus(),
     };
   }
 }

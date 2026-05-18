@@ -1,4 +1,5 @@
 // packages\testing\src\index.ts
+export * from "./events/index.js";
 export * from "./filesystem/index.js";
 export * from "./fixtures/index.js";
 export * from "./logging/index.js";

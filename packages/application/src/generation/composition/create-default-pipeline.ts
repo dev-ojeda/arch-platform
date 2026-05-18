@@ -17,6 +17,7 @@ import { ResolveTemplatesStep } from "../steps/resolve-templates.step.js";
 import { RenderFilesStep } from "../steps/render-files.step.js";
 
 import { CompositeGenerationHooks } from "../hooks/composite-generation-hooks.js";
+import { EventGenerationHooks } from "../hooks/event-generation-hooks.js";
 import { TelemetryGenerationHooks } from "../hooks/telemetry-generation-hooks.js";
 import { WriteFilesStep } from "../steps/write-files.step.js";
 
@@ -31,6 +32,8 @@ export function createDefaultPipeline(
     new LoggingGenerationHooks(),
 
     new TelemetryGenerationHooks(),
+
+    new EventGenerationHooks(),
   ]);
 
   return new GenerationPipeline(
