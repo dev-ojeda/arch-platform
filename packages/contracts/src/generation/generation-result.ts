@@ -1,10 +1,15 @@
 // packages/contracts/src/generation/generation-result.ts
+
+import type { GenerationReport } from "../reports/generation-report.js";
+
 export interface GenerationResult {
-  success: boolean;
+  readonly success: boolean;
 
-  generatedFiles: readonly string[];
+  readonly generatedFiles: readonly string[];
 
-  duration: number;
+  readonly duration: number;
 
-  warnings: readonly string[];
+  readonly warnings: readonly string[];
+
+  readonly report: GenerationReport;
 }

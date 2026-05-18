@@ -11,6 +11,7 @@ export * from "./notification/index.js";
 export * from "./pipeline/index.js";
 export * from "./prompts/index.js";
 export * from "./renderer/index.js";
+export * from "./reports/index.js";
 export * from "./stacks/index.js";
 export * from "./telemetry/index.js";
 export * from "./templates/index.js";
