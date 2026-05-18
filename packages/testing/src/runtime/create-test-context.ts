@@ -1,63 +1,50 @@
 // packages/testing/src/runtime/create-test-context.ts
 
 import type {
+  FileSystemPort,
   GenerationContext,
   LoggerPort,
   NamedVariables,
-  FileSystemPort,
-  TechnologyStack
-}
-from '@arch/contracts'
+  TechnologyStack,
+} from "@arch/contracts";
+import { createMemoryFilesystem } from "../filesystem/create-memory-filesystem.js";
+import { TestLogger } from "../logging/test-logger.js";
+import { createTestTechnologyStack } from "./create-test-technology-stack.js";
 
-import {
-  createMemoryFilesystem
-}
-from '../filesystem/create-memory-filesystem.js'
+export interface CreateTestContextOptions<
+  TVariables extends NamedVariables = NamedVariables
+> {
+  variables?: TVariables;
 
-import {
-  TestLogger
-}
-from '../logging/test-logger.js'
-import { createTestTechnologyStack } from './create-test-technology-stack.js'
+  targetDir?: string;
 
-export interface CreateTestContextOptions {
+  logger?: LoggerPort;
 
-  variables?: NamedVariables
-  targetDir?: string
-  logger?: LoggerPort
-  fs?: FileSystemPort
-  stack?: TechnologyStack
-  signal?: AbortSignal
+  fs?: FileSystemPort;
+
+  stack?: TechnologyStack;
+
+  signal?: AbortSignal;
 }
 
-export function createTestContext<
-  TVariables extends NamedVariables
->(
-  options: CreateTestContextOptions = {}
+export function createTestContext<TVariables extends NamedVariables>(
+  options: CreateTestContextOptions<TVariables> = {}
 ): GenerationContext<TVariables> {
-
   return {
+    fs: options.fs ?? createMemoryFilesystem(),
 
-    fs:
-        options.fs
-        ?? createMemoryFilesystem(),
+    logger: options.logger ?? new TestLogger(),
 
-    logger:
-        options.logger
-        ?? new TestLogger(),
+    targetDir: options.targetDir ?? "/workspace",
 
-    targetDir:
-        options.targetDir
-        ?? '/workspace',
+    variables: (options.variables ?? {}) as TVariables,
 
-    variables:
-        (options.variables ?? {}) as TVariables,
+    stack: options.stack ?? createTestTechnologyStack(),
 
-    stack:
-        options.stack
-        ?? createTestTechnologyStack(),
+    signal: options.signal,
 
-    signal:
-        options.signal
-}
+    files: [],
+
+    metadata: new Map<string, unknown>(),
+  };
 }
