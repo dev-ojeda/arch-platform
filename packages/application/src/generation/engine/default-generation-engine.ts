@@ -5,7 +5,10 @@ import type { GenerationRequest, GenerationResult } from "@arch/contracts";
 import type { GenerationEngine } from "./generation-engine.js";
 
 import type { GenerationPipeline } from "../pipeline/generation-pipeline.js";
+
 import type { GenerationContextFactory } from "../runtime/generation-context-factory.js";
+
+import { createGenerationReport } from "../reports/create-generation-report.js";
 
 export class DefaultGenerationEngine implements GenerationEngine {
   constructor(
@@ -22,14 +25,32 @@ export class DefaultGenerationEngine implements GenerationEngine {
     try {
       await this.pipeline.execute(context);
 
+      const duration = Date.now() - startedAt;
+
+      const report = createGenerationReport(
+        context,
+
+        {
+          success: true,
+
+          duration,
+        }
+      );
+
       return {
         success: true,
 
-        generatedFiles: context.files.map((file) => file.path),
+        generatedFiles: report.generatedFiles,
 
-        duration: Date.now() - startedAt,
+        duration: report.duration,
 
-        warnings: [],
+        warnings: report.diagnostics
+
+          .filter((diagnostic) => diagnostic.level === "warning")
+
+          .map((diagnostic) => diagnostic.message),
+
+        report,
       };
     } catch (error) {
       context.logger.error("Generation failed", {
@@ -38,16 +59,32 @@ export class DefaultGenerationEngine implements GenerationEngine {
         message: error instanceof Error ? error.message : String(error),
       });
 
+      const duration = Date.now() - startedAt;
+
+      const report = createGenerationReport(
+        context,
+
+        {
+          success: false,
+
+          duration,
+        }
+      );
+
       return {
         success: false,
 
-        generatedFiles: [],
+        generatedFiles: report.generatedFiles,
 
-        duration: Date.now() - startedAt,
+        duration: report.duration,
 
-        warnings: [
-          error instanceof Error ? error.message : "Unknown generation error",
-        ],
+        warnings: report.diagnostics
+
+          .filter((diagnostic) => diagnostic.level === "warning")
+
+          .map((diagnostic) => diagnostic.message),
+
+        report,
       };
     }
   }
