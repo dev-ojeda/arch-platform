@@ -1,135 +1,184 @@
 {
+  "editor.autoClosingBrackets": "always",
+  "editor.autoClosingQuotes": "always",
+  "editor.formatOnSave": false,
+  "editor.minimap.enabled": false,
+  "editor.fontSize": 18,
+  "editor.suggestSelection": "first",
+  "editor.tabSize": 2,
+  "editor.snippetSuggestions": "top",
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "window.zoomLevel": -1,
+  "workbench.startupEditor": "readme",
+  "debug.inlineValues": "on",
+  "git.autoStash": true,
+  "git.confirmForcePush": false,
+  "typescript.preferences.preferTypeOnlyAutoImports": true,
+  "typescript.preferences.importModuleSpecifierEnding": "js",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+  "typescript.tsserver.maxTsServerMemory": 4096,
+  "ruff.format.preview": true,
+  "powershell.integratedConsole.focusConsoleOnExecute": false,
+  "files.associations": {
+    "*.scpt": "shellscript",
+    "*.ts": "typescript",
+    "*.js": "javascript",
+    "*.bat": "bat",
+    "*.yml": "yaml",
+    ".npmrc": "ini"
+  },
+  "indentRainbow.includedLanguages": [
+    "jsonc",
+    "typescript",
+    "javascript",
+    "yaml",
+    "bat",
+    "eslint",
+    "ini"
+  ],
+  "task.quickOpen.history": 30,
+  "task.allowAutomaticTasks": "on",
+  "markdown.styles": [
+    "https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+  ],
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.unicodeHighlight.ambiguousCharacters": false,
+    "editor.unicodeHighlight.invisibleCharacters": false,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    }
+  },
+  "[bat]": {
+    "files.eol": "\n",
+    "editor.autoIndent": "full",
     "editor.autoClosingBrackets": "always",
-    "editor.autoClosingQuotes": "always",
-    "editor.formatOnSave": false,
-    "editor.minimap.enabled": false,
-    "editor.suggestSelection": "first",
-    "editor.tabSize": 2,
-    "explorer.confirmDelete": false,
-    "explorer.confirmDragAndDrop": false,
-    "typescript.preferences.preferTypeOnlyAutoImports": true,
-    "typescript.preferences.importModuleSpecifierEnding": "js",
-    "editor.snippetSuggestions": "top",
-    "ruff.format.preview": true,
-    "files.associations": {
-        "*.scpt": "shellscript"
+    "editor.formatOnType": true,
+    "editor.tabCompletion": "onlySnippets",
+    "editor.autoClosingComments": "beforeWhitespace",
+    "editor.autoClosingOvertype": "auto",
+    "editor.autoClosingDelete": "always",
+    "editor.snippetSuggestions": "inline",
+    "editor.suggest.insertMode": "replace",
+    "editor.fontSize": 18,
+    "diffEditor.ignoreTrimWhitespace": true,
+    "editor.defaultFormatter": "toramameseven.bat-tools"
+  },
+  "search.exclude": {
+    "**/dist": true,
+    "**/.turbo": true,
+    "**/coverage": true
+  },
+  "files.watcherExclude": {
+    "**/.turbo/**": true,
+    "**/dist/**": true
+  },
+  "better-comments.multilineComments": true,
+  "better-comments.highlightPlainText": false,
+  "better-comments.tags": [
+    {
+      "tag": "!",
+      "color": "#FF5555",
+      "strikethrough": false,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": true,
+      "italic": false
     },
-    "git.autoStash": true,
-    "git.confirmForcePush": false,
-    "javascript.updateImportsOnFileMove.enabled": "always",
-    "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
-    "window.zoomLevel": 0,
-    "workbench.startupEditor": "readme",
-    "indentRainbow.includedLanguages": [
-        "jsonc",
-        "typescript",
-        "javascript",
-        "yaml",
-        "bat",
-        "eslint"
-    ],
-    "[javascript]": {
-        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    {
+      "tag": "?",
+      "color": "#61AFEF",
+      "strikethrough": false,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": true,
+      "italic": false
     },
-    "[markdown]": {
-        "editor.unicodeHighlight.ambiguousCharacters": false,
-        "editor.unicodeHighlight.invisibleCharacters": false,
-        "diffEditor.ignoreTrimWhitespace": false,
-        "editor.wordWrap": "on",
-        "editor.defaultFormatter": "charliermarsh.ruff",
-        "editor.quickSuggestions": {
-            "comments": "off",
-            "strings": "off",
-            "other": "off"
-        }
+    {
+      "tag": "todo",
+      "color": "#FFB86C",
+      "strikethrough": false,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": true,
+      "italic": false
     },
-    "[jsonc]": {
-        "editor.quickSuggestions": {
-            "strings": true
-        },
-        "editor.suggest.insertMode": "replace",
-        "editor.autoIndent": "full",
-        "diffEditor.ignoreTrimWhitespace": true,
-        "editor.autoClosingBrackets": "always",
-        "editor.formatOnType": true,
-        "editor.tabCompletion": "onlySnippets",
-        "editor.autoClosingComments": "beforeWhitespace",
-        "editor.autoClosingOvertype": "auto",
-        "editor.autoClosingDelete": "always",
-        "editor.snippets.codeActions.enabled": true,
-        "editor.snippetSuggestions": "inline",
-        "editor.fontSize": 18,
-        "editor.defaultFormatter": "vscode.json-language-features"
+    {
+      "tag": "fix",
+      "color": "#FF6B6B",
+      "strikethrough": false,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": true,
+      "italic": false
     },
-    "debug.inlineValues": "on",
-    "[bat]": {
-        "files.eol": "\n",
-        "editor.defaultColorDecorators": "auto",
-        "editor.defaultFormatter": "toramameseven.bat-tools",
-        "editor.autoIndent": "full",
-        "diffEditor.ignoreTrimWhitespace": true,
-        "editor.suggest.insertMode": "replace",
-        "editor.autoClosingBrackets": "always",
-        "editor.formatOnType": true,
-        "editor.tabCompletion": "onlySnippets",
-        "editor.autoClosingComments": "beforeWhitespace",
-        "editor.autoClosingOvertype": "auto",
-        "editor.autoClosingDelete": "always",
-        "editor.snippets.codeActions.enabled": true,
-        "editor.snippetSuggestions": "inline",
-        "editor.fontSize": 20,
+    {
+      "tag": "hack",
+      "color": "#E06C75",
+      "strikethrough": false,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": true,
+      "italic": true
     },
-    "markdown.styles": [
-        "https://use.fontawesome.com/releases/v5.7.1/css/all.css"
-    ],
-    "powershell.integratedConsole.focusConsoleOnExecute": false,
-    "better-comments.multilineComments": true,
-    "better-comments.highlightPlainText": false,
-    "better-comments.tags": [
-        {
-            "tag": "!",
-            "color": "#FF2D00",
-            "strikethrough": false,
-            "underline": false,
-            "backgroundColor": "transparent",
-            "bold": false,
-            "italic": false
-        },
-        {
-            "tag": "?",
-            "color": "#3498DB",
-            "strikethrough": false,
-            "underline": false,
-            "backgroundColor": "transparent",
-            "bold": false,
-            "italic": false
-        },
-        {
-            "tag": "//",
-            "color": "#474747",
-            "strikethrough": true,
-            "underline": false,
-            "backgroundColor": "transparent",
-            "bold": false,
-            "italic": false
-        },
-        {
-            "tag": "todo",
-            "color": "#FF8C00",
-            "strikethrough": false,
-            "underline": false,
-            "backgroundColor": "transparent",
-            "bold": false,
-            "italic": false
-        },
-        {
-            "tag": "*",
-            "color": "#98C379",
-            "strikethrough": false,
-            "underline": false,
-            "backgroundColor": "transparent",
-            "bold": false,
-            "italic": false
-        }
-    ]
+    {
+      "tag": "perf",
+      "color": "#C678DD",
+      "strikethrough": false,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": true,
+      "italic": false
+    },
+    {
+      "tag": "deprecated",
+      "color": "#7F848E",
+      "strikethrough": true,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": false,
+      "italic": true
+    },
+    {
+      "tag": "*",
+      "color": "#98C379",
+      "strikethrough": false,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": false,
+      "italic": false
+    }
+  ],
+  "todo-tree.general.tags": [
+    "todo",
+    "fix",
+    "hack",
+    "perf",
+    "deprecated"
+  ],
+  "autoPathHeader.ignoredDirectories": [
+    "temp", // simple directory
+    "**/node_modules", // glob: anywhere in workspace
+    "dist/*" // glob: immediate children of dist
+  ],
+  "autoPathHeader.allowedOnlyDirectories": [
+    "src", // only src folder
+    "**/utils", // any utils directory at any depth
+    "src/**/*.ts" // all TypeScript files under src
+  ],
+  "task.quickOpen.skip": true
 }

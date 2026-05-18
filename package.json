@@ -29,6 +29,8 @@
         "@vscode/test-electron": "^2.5.2",
         "dependency-cruiser": "^17.0.0",
         "esbuild-visualizer": "^0.7.0",
+        "eslint-import-resolver-node": "^0.4.0",
+        "eslint-plugin-import": "^2.32.0",
         "rimraf": "^6.0.1",
         "tsup": "^8.5.1",
         "tsx": "^4.21.0",

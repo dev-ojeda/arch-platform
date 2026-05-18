@@ -1,46 +1,36 @@
 // vitest.shared.ts
+import { defineConfig } from "vitest/config";
 
-import { defineConfig }
-  from 'vitest/config'
+export const sharedVitestConfig = defineConfig({
+  test: {
+    environment: "node",
 
-export const sharedVitestConfig =
-  defineConfig({
+    globals: true,
 
-    test: {
+    pool: "forks",
 
-      environment:
-        'node',
+    testTimeout: 10000,
 
-      globals: true,
+    setupFiles: ["./vitest.setup.ts"],
 
-      pool:
-        'forks',
+    sequence: {
+      concurrent: false,
+    },
 
-      testTimeout:
-        10000,
+    coverage: {
+      provider: "v8",
 
-      coverage: {
+      reporter: ["text", "html", "json-summary"],
+      include: ["src/**/*.ts"],
+      exclude: [
+        "**/*.test.ts",
 
-        provider:
-          'v8',
+        "**/__tests__/**",
 
-        reporter: [
+        "**/dist/**",
 
-          'text',
-
-          'html'
-        ],
-
-        exclude: [
-
-          '**/*.test.ts',
-
-          '**/__tests__/**',
-
-          '**/dist/**',
-
-          '**/node_modules/**'
-        ]
-      }
-    }
-  })
+        "**/node_modules/**",
+      ],
+    },
+  },
+});

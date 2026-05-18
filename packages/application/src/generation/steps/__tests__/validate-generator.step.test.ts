@@ -4,17 +4,12 @@ import {
   it
 } from 'vitest'
 
-import {
-  ValidateGeneratorStep
-} from '../validate-generator.step.js'
-
-import {
-  GeneratorValidationError
-} from '../../errors/generator-validation-error.js'
 
 import type {
   PipelineContext
 } from '@arch/contracts'
+import { GeneratorValidationError } from '../../errors/generator-validation-error.js'
+import { ValidateGeneratorStep } from '../validate-generator.step.js'
 
 describe(
   'ValidateGeneratorStep',

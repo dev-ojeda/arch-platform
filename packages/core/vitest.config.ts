@@ -1,3 +1,4 @@
+// packages\core\vitest.config.ts
 import {
   defineConfig,
   mergeConfig

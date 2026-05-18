@@ -1,26 +1,25 @@
 import type { Options } from "tsup";
 
 export const baseConfig: Options = {
+  format: ["esm"],
 
-    format: ['esm'],
+  target: "node20",
 
-    target: 'node20',
+  platform: "node",
 
-    platform: 'node',
+  clean: true,
 
-    clean: true,
+  sourcemap: false,
 
-    sourcemap: false,
+  treeshake: false,
 
-    treeshake: false,
+  splitting: false,
 
-    splitting: false,
+  minify: false,
 
-    minify: false,
+  metafile: false,
 
-    metafile: false,
+  bundle: true,
 
-    bundle: false,
-
-    dts: false
-}
+  dts: false,
+};

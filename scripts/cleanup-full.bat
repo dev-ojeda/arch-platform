@@ -1,27 +1,45 @@
 @echo off
 setlocal EnableDelayedExpansion
 
-title Arch Platform Cleanup
+title Arch Platform Full Cleanup
 
 echo.
 echo ==========================================
-echo   LIMPIEZA TOTAL WORKSPACE
+echo   FULL CLEANUP WORKSPACE / MONOREPO
 echo ==========================================
 echo.
+
+:: ==========================================
+:: CONTADORES
+:: ==========================================
 
 set /a DIRS_REMOVED=0
 set /a FILES_REMOVED=0
 
 :: ==========================================
-:: DIRECTORIOS
+:: DIRECTORIOS A ELIMINAR
 :: ==========================================
 
-for %%N in (node_modules dist build coverage .turbo .next .cache .vite .nx) do (
+for %%N in (
+    node_modules
+    dist
+    build
+    coverage
+    .turbo
+    .next
+    .cache
+    .vite
+    .nx
+    .parcel-cache
+    .swc
+) do (
 
-    echo [INFO] Eliminando carpetas %%N ...
+    echo [INFO] Buscando %%N ...
 
     for /f "delims=" %%D in ('dir /s /b /ad %%N 2^>nul') do (
+
         echo [DEL] %%D
+
         rmdir /s /q "%%D" 2>nul
 
         if not exist "%%D" (
@@ -33,15 +51,20 @@ for %%N in (node_modules dist build coverage .turbo .next .cache .vite .nx) do (
 )
 
 :: ==========================================
-:: ARCHIVOS
+:: ARCHIVOS A ELIMINAR
 :: ==========================================
 
-for %%P in (*.tsbuildinfo .eslintcache) do (
+for %%P in (
+    *.tsbuildinfo
+    .eslintcache
+) do (
 
-    echo [INFO] Eliminando %%P ...
+    echo [INFO] Buscando %%P ...
 
     for /f "delims=" %%F in ('dir /s /b %%P 2^>nul') do (
+
         echo [DEL] %%F
+
         del /f /q "%%F" 2>nul
 
         if not exist "%%F" (
@@ -53,13 +76,16 @@ for %%P in (*.tsbuildinfo .eslintcache) do (
 )
 
 :: ==========================================
-:: LIMPIEZA PNPM STORE (opcional)
+:: LIMPIEZA PNPM STORE
 :: ==========================================
 
-echo [INFO] Limpieza store pnpm...
-pnpm store prune
+where pnpm >nul 2>nul
 
-echo.
+if %ERRORLEVEL%==0 (
+    echo [INFO] Ejecutando pnpm store prune...
+    pnpm store prune
+    echo.
+)
 
 :: ==========================================
 :: RESUMEN

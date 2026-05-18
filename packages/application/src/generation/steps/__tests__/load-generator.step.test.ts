@@ -4,8 +4,8 @@ import {
   expect,
   it
 } from 'vitest'
-import { TestPipelineBuilder } from '../../testing/test-pipeline-builder.js'
-import { testGenerator } from '../../testing/test-generator.js'
+import { TestPipelineBuilder } from '../../../../testing/test-pipeline-builder.js'
+import { testGenerator } from '../../../../testing/test-generator.js'
 
 describe(
   'LoadGeneratorStep',

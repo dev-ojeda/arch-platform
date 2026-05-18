@@ -1,117 +1,345 @@
+/** @type {import("dependency-cruiser").IConfiguration} */
+
+const SRC = "^packages/.+/src"
+
 module.exports = {
     forbidden: [
-        {
-            name: 'no-circular',
+        /**
+         * ============================================================
+         * CIRCULAR DEPENDENCIES
+         * ============================================================
+         */
 
-            severity: 'error',
+        {
+            name: "no-circular",
+
+            comment:
+                "Circular dependencies increase coupling and break architectural boundaries.",
+
+            severity: "error",
 
             from: {},
 
             to: {
-                circular: true
-            }
-        },
-
-        {
-            name: 'no-orphans',
-
-            severity: 'warn',
-
-            from: {
-                orphan: true,
-
-                pathNot: [
-                    '(^|/)(index)\\.(ts|js)$',
-
-                    '\\.d\\.ts$',
-
-                    'eslint\\.config\\.js$',
-                    'vitest\\.config\\.ts$',
-                    'vitest\\.workspace\\.ts$',
-
-                    '\\.dependency-cruiser\\.cjs$'
-                ]
+                circular: true,
             },
-
-            to: {}
         },
 
-        {
-            name: 'domain-no-infrastructure',
+        /**
+         * ============================================================
+         * LAYERING RULES
+         * ============================================================
+         */
 
-            severity: 'error',
+        {
+            name: "contracts-independent",
+
+            comment:
+                "Contracts must remain completely isolated from other layers.",
+
+            severity: "error",
 
             from: {
-                path: '^packages/domain'
+                path: "^packages/contracts/src",
             },
 
             to: {
-                path: '^packages/infrastructure'
-            }
+                pathNot: "^packages/contracts/src",
+            },
         },
 
         {
-            name: 'domain-no-application',
+            name: "core-no-application",
 
-            severity: 'error',
+            comment:
+                "Core layer must not depend on application layer.",
+
+            severity: "error",
 
             from: {
-                path: '^packages/domain'
+                path: "^packages/core/src",
             },
 
             to: {
-                path: '^packages/application'
-            }
+                path: "^packages/application/src",
+            },
         },
 
         {
-            name: 'application-no-vscode',
+            name: "application-no-infrastructure",
 
-            severity: 'error',
+            comment:
+                "Application layer must not depend directly on infrastructure.",
+
+            severity: "error",
 
             from: {
-                path: '^packages/application'
+                path: "^packages/application/src",
             },
 
             to: {
-                path: '^vscode$'
-            }
+                path: "^packages/infrastructure/src",
+            },
         },
 
         {
-            name: 'apps-through-application',
+            name: "application-no-vscode",
 
-            severity: 'warn',
+            comment:
+                "Application layer must remain editor agnostic.",
+
+            severity: "error",
 
             from: {
-                path: '^apps'
+                path: "^packages/application/src",
             },
 
             to: {
-                path: '^packages/domain'
-            }
-        }
+                path: "vscode",
+            },
+        },
+
+        /**
+         * ============================================================
+         * DOMAIN PROTECTION
+         * ============================================================
+         */
+
+        {
+            name: "domain-no-node-builtins",
+
+            comment:
+                "Domain layers must not depend on Node.js runtime infrastructure.",
+
+            severity: "error",
+
+            from: {
+                path: "^packages/(core|contracts|application)/src",
+            },
+
+            to: {
+                path:
+                    "^(fs|fs/promises|child_process|cluster|dgram|net|tls)$",
+            },
+        },
+
+        /**
+         * ============================================================
+         * PACKAGE BOUNDARIES
+         * ============================================================
+         */
+
+        {
+            name: "no-internal-imports",
+
+            comment:
+                "Internal modules must not be imported outside their package.",
+
+            severity: "error",
+
+            to: {
+                path: "src/internal",
+            },
+        },
+
+        {
+            name: "no-deep-package-imports",
+        
+            comment:
+                "Consumers must import from public package entrypoints only.",
+        
+            severity: "error",
+        
+            from: {
+                path: "^packages",
+            },
+        
+            to: {
+                path: "^@arch/.+/src/",
+            },
+        },
+
+        {
+            name: "no-cross-package-relative-imports",
+
+            comment:
+                "Cross-package imports must use workspace aliases instead of relative paths.",
+
+            severity: "error",
+
+            from: {
+                path: "^packages",
+            },
+
+            to: {
+                path: "^\\.\\./\\.\\./",
+            },
+        },
+
+        /**
+         * ============================================================
+         * GENERATORS
+         * ============================================================
+         */
+
+        {
+            name: "generators-no-filesystem",
+
+            comment:
+                "Generators should not directly manipulate filesystem infrastructure.",
+
+            severity: "warn",
+
+            from: {
+                path: "^packages/generators/src",
+            },
+
+            to: {
+                path: "^(fs|path)$",
+            },
+        },
+
+        {
+            name: "generators-no-infrastructure",
+
+            comment:
+                "Generators should depend on ports/contracts instead of infrastructure.",
+
+            severity: "warn",
+
+            from: {
+                path: "^packages/generators/src",
+            },
+
+            to: {
+                path: "^packages/infrastructure/src",
+            },
+        },
+
+        /**
+         * ============================================================
+         * TESTING
+         * ============================================================
+         */
+
+        {
+            name: "tests-no-internal-access",
+
+            comment:
+                "Tests should avoid coupling to internal implementation details.",
+
+            severity: "warn",
+
+            from: {
+                path: "(__tests__|\\.test\\.ts$|\\.spec\\.ts$)",
+            },
+
+            to: {
+                path: "src/internal",
+            },
+        },
+
+        /**
+         * ============================================================
+         * ARCHITECTURE SMELLS
+         * ============================================================
+         */
+
+        {
+            name: "shared-package-warning",
+        
+            comment:
+                "Shared/common/utils packages tend to become architectural dumping grounds.",
+        
+            severity: "info",
+        
+            from: {
+                path: "^packages",
+            },
+        
+            to: {
+                path: "^packages/(shared|common|utils|helpers)",
+            },
+        },
     ],
 
+    allowed: [],
+
     options: {
+        /**
+         * ============================================================
+         * TYPESCRIPT
+         * ============================================================
+         */
+
         tsPreCompilationDeps: true,
 
+        combinedDependencies: true,
+
+        /**
+         * ============================================================
+         * RESOLUTION
+         * ============================================================
+         */
+
+        enhancedResolveOptions: {
+            exportsFields: ["exports"],
+
+            conditionNames: [
+                "import",
+                "require",
+                "node",
+                "default",
+            ],
+
+            extensions: [
+                ".ts",
+                ".tsx",
+                ".js",
+                ".mjs",
+                ".cjs",
+            ],
+        },
+
+        /**
+         * ============================================================
+         * IGNORE
+         * ============================================================
+         */
+
         doNotFollow: {
-            path: 'node_modules'
+            path: ["node_modules"],
         },
 
         exclude: {
             path: [
-                'dist',
-                '\\.turbo',
-                'node_modules'
-            ]
+                "node_modules",
+                "dist",
+                "build",
+                "coverage",
+
+                "\\.test\\.ts$",
+                "\\.spec\\.ts$",
+
+                "vitest\\.config",
+                "tsup\\.config",
+                "eslint\\.config",
+
+                "scripts",
+                "docs",
+            ],
         },
+
+        /**
+         * ============================================================
+         * REPORTING
+         * ============================================================
+         */
 
         reporterOptions: {
             dot: {
-                collapsePattern: 'node_modules/[^/]+'
-            }
-        }
-    }
-};
+                collapsePattern: "node_modules/[^/]+",
+            },
+        },
+    },
+}

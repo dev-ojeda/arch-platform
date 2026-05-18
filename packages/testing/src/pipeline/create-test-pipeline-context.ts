@@ -1,16 +1,22 @@
+// packages\testing\src\pipeline\create-test-pipeline-context.ts
 import type {
   PipelineContext
-} from '@arch/contracts'
+}
+from '@arch/contracts'
+
+import {
+  createTestContext
+}
+from '../runtime/create-test-context.js'
 
 export function createTestPipelineContext():
 PipelineContext {
 
   return {
 
-    generatorId: 'test-generator',
+    ...createTestContext(),
 
-    workspacePath: '/virtual-workspace',
-
-    variables: {}
+    generatorId:
+      'test-generator'
   }
 }

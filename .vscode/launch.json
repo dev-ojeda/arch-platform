@@ -9,10 +9,15 @@
             "args": [
                 "--extensionDevelopmentPath=${workspaceFolder}/apps/vscode-extension"
             ],
+            "cwd": "${workspaceFolder}",
             "outFiles": [
                 "${workspaceFolder}/apps/vscode-extension/dist/**/*.js"
             ],
-            "preLaunchTask": "turbo: build",
+            "resolveSourceMapLocations": [
+                "${workspaceFolder}/**",
+                "!**/node_modules/**"
+            ],
+            "preLaunchTask": "build:vscode-extension",
             "sourceMaps": true,
             "smartStep": true,
             "internalConsoleOptions": "neverOpen"

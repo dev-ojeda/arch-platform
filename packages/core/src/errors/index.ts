@@ -1,5 +1,3 @@
-// Auto-generated index
-
 export * from './base/index.js'
 export * from './filesystem/index.js'
 export * from './generation/index.js'

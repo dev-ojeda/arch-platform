@@ -1,51 +1,156 @@
 {
-    "$schema": "https://turbo.build/schema.json",
-    "globalDependencies": [
-        "pnpm-lock.yaml",
-        "config/tsconfig/base.json",
-        "tsup.base.mts",
-        ".env*"
-    ],
-    "tasks": {
-        "build": {
-            "dependsOn": [
-                "^build"
-            ],
-            "inputs": [
-                "src/**",
-                "package.json",
-                "tsconfig.json",
-                "tsup.config.*"
-            ],
-            "outputs": [
-                "dist/**",
-                "!dist/**/*.tsbuildinfo"
-            ]
-        },
-        "typecheck": {
-            "dependsOn": [
-                "^typecheck"
-            ],
-            "outputs": []
-        },
-        "lint": {
-            "outputs": []
-        },
-        "test": {
-            "dependsOn": [
-                "build"
-            ],
-            "outputs": []
-        },
-        "dev": {
-            "cache": false,
-            "persistent": true
-        },
-        "cruiser": {
-            "outputs": []
-        },
-        "clean": {
-            "cache": false
-        }
+  "$schema": "https://turbo.build/schema.json",
+
+  "globalDependencies": [
+    "pnpm-lock.yaml",
+    "config/tsconfig/base.json",
+    "tsconfig.base.json",
+    "vitest.shared.ts",
+    "vitest.setup.ts",
+    "tsup.base.ts",
+    ".env*"
+  ],
+
+  "tasks": {
+
+    "build": {
+
+      "dependsOn": [
+        "^build"
+      ],
+
+      "inputs": [
+
+        "src/**",
+
+        "testing/**",
+
+        "package.json",
+
+        "tsconfig.json",
+
+        "tsconfig.*",
+
+        "tsup.config.*"
+      ],
+
+      "outputs": [
+
+        "dist/**",
+
+        "!dist/**/*.tsbuildinfo"
+      ]
+    },
+
+    "typecheck": {
+
+      "dependsOn": [
+        "^typecheck"
+      ],
+
+      "inputs": [
+
+        "src/**",
+
+        "testing/**",
+
+        "*.json",
+
+        "tsconfig.*"
+      ],
+
+      "outputs": []
+    },
+
+    "lint": {
+
+      "inputs": [
+
+        "src/**",
+
+        "testing/**",
+
+        "*.json",
+
+        ".eslintrc.*",
+
+        "eslint.config.*"
+      ],
+
+      "outputs": []
+    },
+
+    "test": {
+
+      "dependsOn": [
+        "build"
+      ],
+
+      "inputs": [
+
+        "src/**",
+
+        "testing/**",
+
+        "**/*.test.ts",
+
+        "**/*.snap",
+
+        "vitest.config.*"
+      ],
+
+      "outputs": []
+    },
+
+    "coverage": {
+
+      "dependsOn": [
+        "build"
+      ],
+
+      "inputs": [
+
+        "src/**",
+
+        "testing/**",
+
+        "**/*.test.ts",
+
+        "**/*.snap",
+
+        "vitest.config.*"
+      ],
+
+      "outputs": [
+
+        "coverage/**"
+      ]
+    },
+
+    "dev": {
+
+      "cache": false,
+
+      "persistent": true
+    },
+
+    "cruiser": {
+
+      "inputs": [
+
+        "src/**",
+
+        "testing/**",
+
+        ".dependency-cruiser.*"
+      ],
+
+      "outputs": []
+    },
+
+    "clean": {
+
+      "cache": false
     }
+  }
 }

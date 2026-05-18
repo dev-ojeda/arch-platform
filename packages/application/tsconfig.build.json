@@ -3,17 +3,21 @@
 
   "compilerOptions": {
 
-      "declaration": true,
+    "declaration": true,
 
-      "emitDeclarationOnly": true,
-
-      "outDir": "./dist"
+    "emitDeclarationOnly": true
   },
 
   "exclude": [
-      "dist",
-      "node_modules",
-      "**/*.test.ts",
-      "**/__tests__/**"
+
+    "dist",
+
+    "node_modules",
+
+    "testing",
+
+    "**/*.test.ts",
+
+    "**/__tests__/**"
   ]
 }
