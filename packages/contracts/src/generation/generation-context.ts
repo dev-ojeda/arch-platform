@@ -1,4 +1,5 @@
 // packages/contracts/src/generation/generation-context.ts
+import type { GenerationDiagnostic } from "../diagnostics/generation-diagnostic.js";
 import type { FileSystemPort } from "../filesystem/filesystem.port.js";
 import type { GeneratedFile } from "../generation/generated-file.js";
 import type { GeneratorDefinition } from "../generators/generator-definition.js";
@@ -7,6 +8,7 @@ import type { LoggerPort } from "../logging/logger.port.js";
 import type { ResolvedTemplate } from "../pipeline/resolved-template.js";
 
 import type { TechnologyStack } from "../stacks/technology-stack.js";
+import type { StepExecutionMetric } from "../telemetry/step-execution-metric.js";
 import type { ResolvedTemplateVariables } from "../templates/resolved-template-variables.js";
 
 import type { NamedVariables } from "../variables/named-variables.js";
@@ -69,4 +71,14 @@ export interface GenerationContext<
    */
 
   metadata?: Map<string, unknown>;
+
+  /*
+   * Runtime Diagnostics
+   */
+  diagnostics: GenerationDiagnostic[];
+
+  /*
+   * Runtime Metrics
+   */
+  metrics: StepExecutionMetric[];
 }

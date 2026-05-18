@@ -1,9 +1,10 @@
 // packages/application/src/generation/hooks/logging-generation-hooks.ts
 
-import type {
-  GenerationContext,
-  GenerationHooks,
-  GenerationPipelineStep,
+import {
+  reportDiagnostic,
+  type GenerationContext,
+  type GenerationHooks,
+  type GenerationPipelineStep,
 } from "@arch/contracts";
 
 export class LoggingGenerationHooks implements GenerationHooks {
@@ -16,6 +17,13 @@ export class LoggingGenerationHooks implements GenerationHooks {
 
     context: GenerationContext
   ): Promise<void> {
+    reportDiagnostic(context, {
+      level: "info",
+
+      message: `Running ${step.name}`,
+
+      step: step.name,
+    });
     context.logger.debug(`[arch] running ${step.name}`);
   }
 
@@ -28,6 +36,11 @@ export class LoggingGenerationHooks implements GenerationHooks {
 
     context: GenerationContext
   ): Promise<void> {
+    reportDiagnostic(context, {
+      level: "error",
+
+      message: error instanceof Error ? error.message : String(error),
+    });
     context.logger.error("[arch] generation failed", {
       error: error instanceof Error ? error.message : String(error),
     });

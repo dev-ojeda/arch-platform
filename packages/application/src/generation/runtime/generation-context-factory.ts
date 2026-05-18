@@ -27,6 +27,10 @@ export class GenerationContextFactory {
       files: [],
 
       metadata: new Map(),
+
+      diagnostics: [],
+
+      metrics: [],
     };
   }
 }
