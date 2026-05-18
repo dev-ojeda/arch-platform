@@ -10,7 +10,7 @@ import type {
 import { ValidateGeneratorStep } from "../src/generation/steps/validate-generator.step.js";
 
 import { createTestContext, createTestPromptResolver } from "@arch/testing";
-import { GenerationPipeline } from "../src/generation/engine/pipeline/generation-pipeline.js";
+import { GenerationPipeline } from "../src/generation/pipeline/generation-pipeline.js";
 import { ResolvePromptsStep } from "../src/generation/steps/resolve-prompts.step.js";
 import { ResolveTemplatesStep } from "../src/generation/steps/resolve-templates.step.js";
 import { ResolveVariablesStep } from "../src/generation/steps/resolve-variables.step.js";

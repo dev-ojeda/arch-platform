@@ -2,6 +2,7 @@ export * from "./configuration/index.js";
 export * from "./filesystem/index.js";
 export * from "./generation/index.js";
 export * from "./generators/index.js";
+export * from "./hooks/index.js";
 export * from "./languages/index.js";
 export * from "./logging/index.js";
 export * from "./notification/index.js";

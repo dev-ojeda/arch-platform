@@ -4,8 +4,8 @@ import type { GenerationRequest, GenerationResult } from "@arch/contracts";
 
 import type { GenerationEngine } from "./generation-engine.js";
 
+import type { GenerationPipeline } from "../pipeline/generation-pipeline.js";
 import type { GenerationContextFactory } from "../runtime/generation-context-factory.js";
-import type { GenerationPipeline } from "./pipeline/generation-pipeline.js";
 
 export class DefaultGenerationEngine implements GenerationEngine {
   constructor(

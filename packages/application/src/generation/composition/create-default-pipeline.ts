@@ -2,6 +2,10 @@
 
 import type { PromptResolver } from "@arch/contracts";
 
+import { GenerationPipeline } from "../pipeline/generation-pipeline.js";
+
+import { LoggingGenerationHooks } from "../hooks/logging-generation-hooks.js";
+
 import { ValidateGeneratorStep } from "../steps/validate-generator.step.js";
 
 import { ResolvePromptsStep } from "../steps/resolve-prompts.step.js";
@@ -12,7 +16,6 @@ import { ResolveTemplatesStep } from "../steps/resolve-templates.step.js";
 
 import { RenderFilesStep } from "../steps/render-files.step.js";
 
-import { GenerationPipeline } from "../engine/pipeline/generation-pipeline.js";
 import { WriteFilesStep } from "../steps/write-files.step.js";
 
 export interface PipelineDependencies {
@@ -22,17 +25,23 @@ export interface PipelineDependencies {
 export function createDefaultPipeline(
   dependencies: PipelineDependencies
 ): GenerationPipeline {
-  return new GenerationPipeline([
-    new ValidateGeneratorStep(),
+  const hooks = new LoggingGenerationHooks();
 
-    new ResolvePromptsStep(dependencies.promptResolver),
+  return new GenerationPipeline(
+    [
+      new ValidateGeneratorStep(),
 
-    new ResolveVariablesStep(),
+      new ResolvePromptsStep(dependencies.promptResolver),
 
-    new ResolveTemplatesStep(),
+      new ResolveVariablesStep(),
 
-    new RenderFilesStep(),
+      new ResolveTemplatesStep(),
 
-    new WriteFilesStep(),
-  ]);
+      new RenderFilesStep(),
+
+      new WriteFilesStep(),
+    ],
+
+    hooks
+  );
 }
