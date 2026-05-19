@@ -1,3 +1,81 @@
+// commitlint.config.cjs
+
+/** @type {import('@commitlint/types').UserConfig} */
 module.exports = {
   extends: ["@commitlint/config-conventional"],
+
+  rules: {
+    /*
+     * type(scope): subject
+     */
+
+    "type-enum": [
+      2,
+      "always",
+      [
+        "feat",
+        "fix",
+        "refactor",
+        "perf",
+        "test",
+        "docs",
+        "build",
+        "ci",
+        "chore",
+        "revert"
+      ]
+    ],
+
+    "scope-enum": [
+      2,
+      "always",
+      [
+        "application",
+        "contracts",
+        "core",
+        "generators",
+        "infrastructure",
+        "scripts",
+        "shared",
+        "testing",
+        "workspace",
+        "monorepo",
+
+        /*
+         * sub-scopes / domain scopes
+         */
+
+        "application/engine",
+        "application/runtime",
+        "application/pipeline",
+
+        "contracts/generation",
+        "contracts/runtime",
+
+        "core/cancellation",
+        "core/errors",
+        "core/runtime",
+
+        "testing/unit",
+        "testing/integration",
+
+        "infrastructure/logging",
+        "infrastructure/persistence"
+      ]
+    ],
+
+    "scope-case": [2, "always", "kebab-case"],
+
+    "subject-case": [
+      2,
+      "never",
+      ["start-case", "pascal-case", "upper-case"]
+    ],
+
+    "subject-empty": [2, "never"],
+
+    "type-empty": [2, "never"],
+
+    "header-max-length": [2, "always", 100]
+  }
 };

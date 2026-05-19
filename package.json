@@ -45,6 +45,8 @@
   },
   "pnpm": {
     "overrides": {
+      "lodash": "^4.17.24",
+      "tmp": "^0.2.4",
       "vitest": "4.1.6",
       "@vitest/coverage-v8": "4.1.6"
     },
