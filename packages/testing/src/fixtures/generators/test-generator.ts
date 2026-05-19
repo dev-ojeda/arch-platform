@@ -1,52 +1,32 @@
 // packages\testing\src\fixtures\generators\test-generator.ts
-import type {
-  GeneratorDefinition
-}
-from '@arch/contracts'
+import type { GeneratorDefinition } from "@arch/contracts";
 
-export const testGenerator:
-GeneratorDefinition = {
-
+export const testGenerator: GeneratorDefinition = {
   descriptor: {
+    id: "test-generator",
 
-    id:
-      'test-generator',
+    displayName: "Test Generator",
 
-    displayName:
-      'Test Generator',
+    version: "1.0.0",
 
-    version:
-      '1.0.0',
+    languages: ["typescript"],
 
-    languages: [
-      'typescript'
-    ],
-
-    frameworks: [
-      'vitest'
-    ]
+    frameworks: ["vitest"],
   },
 
   schema: {
+    id: "test-schema",
 
-    id:
-      'test-schema',
+    title: "Test Schema",
 
-    title:
-      'Test Schema',
-
-    fields: []
+    fields: [],
   },
 
   templates: [
-
     {
+      template: "service.hbs",
 
-      template:
-        'service.hbs',
-
-      output:
-        '{{folderLayout.service}}/{{serviceName}}{{fileExtension}}'
-    }
-  ]
-}
+      output: "{{folderLayout.service}}/{{serviceName}}{{fileExtension}}",
+    },
+  ],
+};

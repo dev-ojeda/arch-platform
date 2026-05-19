@@ -14,7 +14,12 @@ import { GenerationPipeline } from "../src/generation/pipeline/generation-pipeli
 import { ResolvePromptsStep } from "../src/generation/steps/resolve-prompts.step.js";
 import { ResolveTemplatesStep } from "../src/generation/steps/resolve-templates.step.js";
 import { ResolveVariablesStep } from "../src/generation/steps/resolve-variables.step.js";
-import { RenderFilesStep, WriteFilesStep } from "../src/index.js";
+import {
+  createRuntime,
+  RenderFilesStep,
+  WriteFilesStep,
+} from "../src/index.js";
+import type { TestPipelineExecution } from "./test-pipeline-execution.js";
 
 export class TestPipelineBuilder {
   private readonly steps: GenerationPipelineStep[] = [];
@@ -22,7 +27,7 @@ export class TestPipelineBuilder {
   private readonly promptResolver = createTestPromptResolver();
 
   private context = this.createContext();
-
+  private readonly runtime = createRuntime();
   private createContext(): GenerationContext {
     return createTestContext();
   }
@@ -61,15 +66,21 @@ export class TestPipelineBuilder {
     ];
   }
 
-  async execute(): Promise<GenerationContext> {
-    const pipeline = new GenerationPipeline([
-      ...this.createDefaultSteps(),
+  async execute(): Promise<TestPipelineExecution> {
+    const pipeline = new GenerationPipeline(
+      [...this.createDefaultSteps(), ...this.steps],
 
-      ...this.steps,
-    ]);
+      undefined,
+
+      this.runtime.runtimeEvents
+    );
 
     await pipeline.execute(this.context);
 
-    return this.context;
+    return {
+      context: this.context,
+
+      runtime: this.runtime,
+    };
   }
 }

@@ -18,7 +18,9 @@
     "build:types": "tsc -p tsconfig.build.json",
     "build": "pnpm clean && pnpm build:js && pnpm build:types",
     "dev": "tsup --watch",
-    "typecheck": "tsc -p tsconfig.build.json --noEmit"
+    "typecheck": "tsc -p tsconfig.build.json --noEmit",
+    "test": "vitest --project application",
+    "test:coverage": "vitest run --project application --coverage"
   },
   "dependencies": {
     "@arch/contracts": "workspace:*",

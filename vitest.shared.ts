@@ -1,4 +1,5 @@
 // vitest.shared.ts
+
 import { defineConfig } from "vitest/config";
 
 export const sharedVitestConfig = defineConfig({
@@ -9,11 +10,9 @@ export const sharedVitestConfig = defineConfig({
 
     pool: "forks",
 
-    testTimeout: 10000,
+    testTimeout: 10_000,
 
     passWithNoTests: true,
-
-    setupFiles: ["./vitest.setup.ts"],
 
     sequence: {
       concurrent: false,
@@ -24,14 +23,18 @@ export const sharedVitestConfig = defineConfig({
 
       reporter: ["text", "html", "json-summary"],
 
-      include: ["src/**/*.ts"],
-
       exclude: [
         "**/*.test.ts",
 
+        "**/*.spec.ts",
+
         "**/__tests__/**",
 
+        "**/*.d.ts",
+
         "**/dist/**",
+
+        "**/coverage/**",
 
         "**/node_modules/**",
       ],

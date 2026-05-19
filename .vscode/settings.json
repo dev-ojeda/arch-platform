@@ -1,42 +1,4 @@
 {
-  "editor.autoClosingBrackets": "always",
-  "editor.autoClosingQuotes": "always",
-  "editor.formatOnSave": false,
-  "editor.minimap.enabled": false,
-  "editor.fontSize": 18,
-  "editor.suggestSelection": "first",
-  "editor.tabSize": 2,
-  "editor.snippetSuggestions": "top",
-  "editor.codeActionsOnSave": {
-    "source.organizeImports": "explicit"
-  },
-  "editor.stickyScroll.enabled": true,
-  "explorer.confirmDelete": false,
-  "explorer.confirmDragAndDrop": false,
-  "window.zoomLevel": -1,
-  "workbench.startupEditor": "readme",
-  "debug.inlineValues": "on",
-  "git.autoStash": true,
-  "git.confirmForcePush": false,
-  "typescript.preferences.preferTypeOnlyAutoImports": true,
-  "typescript.preferences.importModuleSpecifierEnding": "js",
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.tsserver.experimental.enableProjectDiagnostics": false,
-  "javascript.updateImportsOnFileMove.enabled": "always",
-  "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
-  "typescript.tsserver.maxTsServerMemory": 4096,
-  "ruff.format.preview": true,
-  "powershell.integratedConsole.focusConsoleOnExecute": false,
-  "files.insertFinalNewline": true,
-  "files.trimTrailingWhitespace": true,
-  "files.associations": {
-    "*.scpt": "shellscript",
-    "*.ts": "typescript",
-    "*.js": "javascript",
-    "*.bat": "bat",
-    "*.yml": "yaml",
-    ".npmrc": "ini"
-  },
   "indentRainbow.includedLanguages": [
     "jsonc",
     "typescript",
@@ -46,61 +8,6 @@
     "eslint",
     "ini"
   ],
-  "task.quickOpen.history": 30,
-  "task.allowAutomaticTasks": "on",
-  "markdown.styles": [
-    "https://use.fontawesome.com/releases/v5.7.1/css/all.css"
-  ],
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true
-  },
-  "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true
-  },
-  "[markdown]": {
-    "editor.wordWrap": "on",
-    "editor.unicodeHighlight.ambiguousCharacters": false,
-    "editor.unicodeHighlight.invisibleCharacters": false,
-    "diffEditor.ignoreTrimWhitespace": false,
-    "editor.quickSuggestions": {
-      "comments": "off",
-      "strings": "off",
-      "other": "off"
-    }
-  },
-  "[bat]": {
-    "files.eol": "\n",
-    "editor.autoIndent": "full",
-    "editor.autoClosingBrackets": "always",
-    "editor.formatOnType": true,
-    "editor.tabCompletion": "onlySnippets",
-    "editor.autoClosingComments": "beforeWhitespace",
-    "editor.autoClosingOvertype": "auto",
-    "editor.autoClosingDelete": "always",
-    "editor.snippetSuggestions": "inline",
-    "editor.suggest.insertMode": "replace",
-    "editor.fontSize": 18,
-    "diffEditor.ignoreTrimWhitespace": true,
-    "editor.defaultFormatter": "toramameseven.bat-tools"
-  },
-  "search.exclude": {
-    "**/dist": true,
-    "**/.turbo": true,
-    "**/coverage": true,
-    "**/.pnpm-store": true
-  },
-  "files.watcherExclude": {
-    "**/.turbo/**": true,
-    "**/dist/**": true,
-    "**/coverage/**": true,
-    "**/.pnpm-store/**": true,
-    "**/node_modules/**": true
-  },
   "better-comments.multilineComments": true,
   "better-comments.highlightPlainText": false,
   "better-comments.tags": [
@@ -175,35 +82,6 @@
       "backgroundColor": "transparent",
       "bold": false,
       "italic": false
-    }
-  ],
-  "todo-tree.general.tags": [
-    "todo",
-    "fix",
-    "hack",
-    "perf",
-    "deprecated"
-  ],
-  "autoPathHeader.ignoredDirectories": [
-    "temp", // simple directory
-    "**/node_modules", // glob: anywhere in workspace
-    "dist/*" // glob: immediate children of dist
-  ],
-  "autoPathHeader.allowedOnlyDirectories": [
-    "src", // only src folder
-    "**/utils", // any utils directory at any depth
-    "src/**/*.ts" // all TypeScript files under src
-  ],
-  "task.quickOpen.skip": true,
-  "testing.automaticallyOpenPeekView": "never",
-  "folderTemplates.structures":[
-    {
-      "structure": [
-        {
-          "fileName": "index.ts",
-          "template": "export * from './';"
-        }
-      ]
     }
   ]
 }

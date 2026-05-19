@@ -1,57 +1,41 @@
 // packages\contracts\src\filesystem\filesystem.port.ts
 
-import type {
-    OverwritePolicy
-} from './overwrite-policy.js'
+import type { OverwritePolicy } from "./overwrite-policy.js";
 
 export interface WriteFileOptions {
-
-    overwrite?:
-        OverwritePolicy
+  overwrite?: OverwritePolicy;
 }
 
 export interface DirectoryEntry {
+  name: string;
 
-    name: string
+  path: string;
 
-    path: string
-
-    isDirectory: boolean
+  isDirectory: boolean;
 }
 
 export interface FileSystemPort {
+  read(strPath: string): Promise<string>;
 
-    read(
-        path: string
-    ): Promise<string>
+  write(
+    strPath: string,
 
-    write(
-        path: string,
+    content: string,
 
-        content: string,
+    options?: WriteFileOptions
+  ): Promise<void>;
 
-        options?: WriteFileOptions
-    ): Promise<void>
+  copy(
+    source: string,
 
-    copy(
-        source: string,
+    destination: string
+  ): Promise<void>;
 
-        destination: string
-    ): Promise<void>
+  createDirectory(strPath: string): Promise<void>;
 
-    createDirectory(
-        path: string
-    ): Promise<void>
+  exists(strPath: string): Promise<boolean>;
 
-    exists(
-        path: string
-    ): Promise<boolean>
+  remove(strPath: string): Promise<void>;
 
-    remove(
-        path: string
-    ): Promise<void>
-
-    readDirectory(
-        path: string
-    ): Promise<DirectoryEntry[]>
+  readDirectory(strPath: string): Promise<DirectoryEntry[]>;
 }

@@ -13,7 +13,7 @@ describe("ResolveTemplatesStep", () => {
         name: "user",
       },
     });
-
+    console.debug("context", context);
     context.generator = testGenerator;
 
     context.resolvedVariables = {
@@ -43,21 +43,15 @@ describe("ResolveTemplatesStep", () => {
     };
 
     const step = new ResolveTemplatesStep();
-
+    console.debug("context", context);
     await step.execute(context);
 
-    expect(
-      context.resolvedTemplates
-    ).toEqual(
-    
+    expect(context.resolvedTemplates).toEqual(
       expect.arrayContaining([
-    
         expect.objectContaining({
-    
-          outputPath:
-            'services/UserService.ts'
-        })
+          outputPath: "services/UserService.ts",
+        }),
       ])
-    )
+    );
   });
 });
