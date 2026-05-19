@@ -2,10 +2,28 @@
 
 import type { GenerationContext, StepExecutionMetric } from "@arch/contracts";
 
-export function recordStepMetric(
+import { publishGenerationEvent } from "../events/publish-generation-event.js";
+
+export async function recordStepMetric(
   context: GenerationContext,
 
   metric: StepExecutionMetric
-): void {
+): Promise<void> {
   context.metrics.push(metric);
+
+  await publishGenerationEvent(
+    context,
+
+    "STEP_METRIC_RECORDED",
+
+    {
+      step: metric.step,
+
+      duration: metric.duration,
+
+      startedAt: metric.startedAt,
+
+      completedAt: metric.finishedAt,
+    }
+  );
 }
