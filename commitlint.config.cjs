@@ -22,8 +22,8 @@ module.exports = {
         "build",
         "ci",
         "chore",
-        "revert"
-      ]
+        "revert",
+      ],
     ],
 
     "scope-enum": [
@@ -41,13 +41,10 @@ module.exports = {
         "workspace",
         "monorepo",
 
-        /*
-         * sub-scopes / domain scopes
-         */
-
         "application/engine",
         "application/runtime",
         "application/pipeline",
+        "application/testing",
 
         "contracts/generation",
         "contracts/runtime",
@@ -58,24 +55,21 @@ module.exports = {
 
         "testing/unit",
         "testing/integration",
+        "testing/runtime",
 
         "infrastructure/logging",
-        "infrastructure/persistence"
-      ]
+        "infrastructure/persistence",
+      ],
     ],
 
     "scope-case": [2, "always", "kebab-case"],
 
-    "subject-case": [
-      2,
-      "never",
-      ["start-case", "pascal-case", "upper-case"]
-    ],
+    "subject-case": [2, "never", ["start-case", "pascal-case", "upper-case"]],
 
     "subject-empty": [2, "never"],
 
     "type-empty": [2, "never"],
 
-    "header-max-length": [2, "always", 100]
-  }
+    "header-max-length": [2, "always", 100],
+  },
 };
