@@ -10,6 +10,7 @@ export * from "./languages/index.js";
 export * from "./logging/index.js";
 export * from "./notification/index.js";
 export * from "./pipeline/index.js";
+export * from "./profiles/index.js";
 export * from "./prompts/index.js";
 export * from "./renderer/index.js";
 export * from "./reports/index.js";

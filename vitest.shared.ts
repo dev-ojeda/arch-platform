@@ -11,6 +11,8 @@ export const sharedVitestConfig = defineConfig({
 
     testTimeout: 10000,
 
+    passWithNoTests: true,
+
     setupFiles: ["./vitest.setup.ts"],
 
     sequence: {
@@ -21,7 +23,9 @@ export const sharedVitestConfig = defineConfig({
       provider: "v8",
 
       reporter: ["text", "html", "json-summary"],
+
       include: ["src/**/*.ts"],
+
       exclude: [
         "**/*.test.ts",
 
