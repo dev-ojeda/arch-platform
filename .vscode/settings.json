@@ -195,5 +195,15 @@
     "src/**/*.ts" // all TypeScript files under src
   ],
   "task.quickOpen.skip": true,
-  "testing.automaticallyOpenPeekView": "never"
+  "testing.automaticallyOpenPeekView": "never",
+  "folderTemplates.structures":[
+    {
+      "structure": [
+        {
+          "fileName": "index.ts",
+          "template": "export * from './';"
+        }
+      ]
+    }
+  ]
 }

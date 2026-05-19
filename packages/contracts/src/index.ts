@@ -1,6 +1,7 @@
 export * from "./configuration/index.js";
 export * from "./diagnostics/index.js";
 export * from "./events/index.js";
+export * from "./exporters/index.js";
 export * from "./filesystem/index.js";
 export * from "./generation/index.js";
 export * from "./generators/index.js";
