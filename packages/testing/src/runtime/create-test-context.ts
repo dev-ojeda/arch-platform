@@ -1,63 +1,97 @@
 // packages/testing/src/runtime/create-test-context.ts
 
 import type {
+  FileSystemPort,
   GenerationContext,
+  GenerationDiagnostic,
+  GenerationEventBus,
   LoggerPort,
   NamedVariables,
-  FileSystemPort,
-  TechnologyStack
+  StepExecutionMetric,
+  TechnologyStack,
+} from "@arch/contracts";
+
+import { createMemoryFilesystem } from "../filesystem/create-memory-filesystem.js";
+
+import { TestLogger } from "../logging/test-logger.js";
+
+import { InMemoryGenerationEventBus } from "@arch/core";
+import { createTestTechnologyStack } from "./create-test-technology-stack.js";
+
+export interface CreateTestContextOptions<
+  TVariables extends NamedVariables = NamedVariables
+> {
+  variables?: TVariables;
+
+  targetDir?: string;
+
+  logger?: LoggerPort;
+
+  fs?: FileSystemPort;
+
+  stack?: TechnologyStack;
+
+  signal?: AbortSignal;
+
+  diagnostics?: GenerationDiagnostic[];
+
+  metrics?: StepExecutionMetric[];
+
+  eventBus?: GenerationEventBus;
 }
-from '@arch/contracts'
 
-import {
-  createMemoryFilesystem
-}
-from '../filesystem/create-memory-filesystem.js'
-
-import {
-  TestLogger
-}
-from '../logging/test-logger.js'
-import { createTestTechnologyStack } from './create-test-technology-stack.js'
-
-export interface CreateTestContextOptions {
-
-  variables?: NamedVariables
-  targetDir?: string
-  logger?: LoggerPort
-  fs?: FileSystemPort
-  stack?: TechnologyStack
-  signal?: AbortSignal
-}
-
-export function createTestContext<
-  TVariables extends NamedVariables
->(
-  options: CreateTestContextOptions = {}
+export function createTestContext<TVariables extends NamedVariables>(
+  options: CreateTestContextOptions<TVariables> = {}
 ): GenerationContext<TVariables> {
-
   return {
+    /*
+     * Infrastructure
+     */
 
-    fs:
-        options.fs
-        ?? createMemoryFilesystem(),
+    fs: options.fs ?? createMemoryFilesystem(),
 
-    logger:
-        options.logger
-        ?? new TestLogger(),
+    /*
+     * Runtime Services
+     */
 
-    targetDir:
-        options.targetDir
-        ?? '/workspace',
+    logger: options.logger ?? new TestLogger(),
 
-    variables:
-        (options.variables ?? {}) as TVariables,
+    eventBus: options.eventBus ?? new InMemoryGenerationEventBus(),
 
-    stack:
-        options.stack
-        ?? createTestTechnologyStack(),
+    /*
+     * Request
+     */
 
-    signal:
-        options.signal
-}
+    targetDir: options.targetDir ?? "/workspace",
+
+    signal: options.signal,
+
+    /*
+     * Generator State
+     */
+
+    variables: (options.variables ?? {}) as TVariables,
+
+    stack: options.stack ?? createTestTechnologyStack(),
+
+    /*
+     * Runtime Artifacts
+     */
+
+    files: [],
+
+    /*
+     * Runtime Metadata
+     */
+
+    metadata: new Map<string, unknown>(),
+
+    /*
+     * Runtime Observability
+     */
+
+    diagnostics: options.diagnostics ?? [],
+
+    metrics: options.metrics ?? [],
+  };
 }

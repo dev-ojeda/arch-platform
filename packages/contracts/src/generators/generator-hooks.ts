@@ -1,28 +1,22 @@
 // packages/contracts/src/generators/generator-hooks.ts
 
-import type { NamedVariables }
-from '../variables/named-variables.js'
-
-export interface FileHookContext<
-    TValues extends NamedVariables =
-        NamedVariables
-> {
-    variables: TValues
-
-    outputPath: string
-
-    content: string
-}
+import type { GenerationContext } from "../generation/generation-context.js";
+import type { NamedVariables } from "../variables/named-variables.js";
 
 export interface GeneratorHooks<
-    TValues extends NamedVariables =
-        NamedVariables
+  TValues extends NamedVariables = NamedVariables
 > {
-    beforeGenerate?: (
-        variables: TValues
-    ) => Promise<void>
+  beforeInitialize?(context: GenerationContext<TValues>): Promise<void>;
 
-    afterGenerate?: (
-        variables: TValues
-    ) => Promise<void>
+  beforeRender?(context: GenerationContext<TValues>): Promise<void>;
+
+  afterRender?(context: GenerationContext<TValues>): Promise<void>;
+
+  beforeWrite?(context: GenerationContext<TValues>): Promise<void>;
+
+  afterWrite?(context: GenerationContext<TValues>): Promise<void>;
+
+  onSuccess?(context: GenerationContext<TValues>): Promise<void>;
+
+  onError?(error: unknown, context: GenerationContext<TValues>): Promise<void>;
 }

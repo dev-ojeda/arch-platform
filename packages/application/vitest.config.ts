@@ -11,7 +11,7 @@ export default mergeConfig(
     test: {
       name: "application",
 
-      setupFiles: ["./vitest.setup.ts"],
+      setupFiles: ["../../vitest.setup.ts", "./vitest.setup.ts"],
 
       include: ["src/**/*.test.ts", "testing/**/*.test.ts"],
     },

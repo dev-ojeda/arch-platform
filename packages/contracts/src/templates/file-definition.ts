@@ -1,45 +1,26 @@
 // packages\contracts\src\templates\file-definition.ts
-import type {
-    OverwritePolicy
-} from '../filesystem/overwrite-policy.js'
+import type { OverwritePolicy } from "../filesystem/overwrite-policy.js";
+import type { FileHookContext } from "../generation/generation-file-hook-context.js";
 
-import type {
-    NamedVariables
-} from '../variables/named-variables.js'
-
-import type {
-    FileHookContext
-} from '../generators/generator-hooks.js'
+import type { NamedVariables } from "../variables/named-variables.js";
 
 export interface FileDefinition<
-    TVariables extends NamedVariables =
-        NamedVariables
+  TVariables extends NamedVariables = NamedVariables
 > {
+  template: string;
 
-    template: string
+  output: string;
 
-    output: string
+  condition?: (variables: TVariables) => boolean | Promise<boolean>;
 
-    condition?: (
-        variables: TVariables
-    ) =>
-        | boolean
-        | Promise<boolean>
+  overwrite?: OverwritePolicy;
 
-    overwrite?: OverwritePolicy
+  transform?: (
+    content: string,
+    variables: TVariables
+  ) => string | Promise<string>;
 
-    transform?: (
-        content: string,
-        variables: TVariables
-    ) =>
-        | string
-        | Promise<string>
+  beforeWrite?: (ctx: FileHookContext<TVariables>) => Promise<void>;
 
-    beforeWrite?: (
-        ctx: FileHookContext<TVariables>
-    ) => Promise<void>
-
-    afterWrite?: (
-        ctx: FileHookContext<TVariables>
-    ) => Promise<void>
+  afterWrite?: (ctx: FileHookContext<TVariables>) => Promise<void>;
 }

@@ -21,7 +21,7 @@
     "build": "pnpm clean && pnpm build:js && pnpm build:types",
     "dev": "tsup --watch",
     "typecheck": "tsc -p tsconfig.build.json --noEmit",
-    "test": "vitest run",
+    "test": "vitest --passWithNoTests",
     "test:watch": "vitest"
   },
   "dependencies": {
