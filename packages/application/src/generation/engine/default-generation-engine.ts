@@ -1,6 +1,10 @@
 // packages/application/src/application/engine/default-generation-engine.ts
 
-import type { GenerationRequest, GenerationResult } from "@arch/contracts";
+import type {
+  GenerationReportExporter,
+  GenerationRequest,
+  GenerationResult,
+} from "@arch/contracts";
 
 import type { GenerationEngine } from "./generation-engine.js";
 
@@ -10,11 +14,15 @@ import type { GenerationContextFactory } from "../runtime/generation-context-fac
 
 import { createGenerationReport } from "../reports/create-generation-report.js";
 
+import { runGenerationReportExporters } from "../../generation/exporters/run-generation-report-exporters.js";
+
 export class DefaultGenerationEngine implements GenerationEngine {
   constructor(
     private readonly pipeline: GenerationPipeline,
 
-    private readonly contextFactory: GenerationContextFactory
+    private readonly contextFactory: GenerationContextFactory,
+
+    private readonly exporters: readonly GenerationReportExporter[] = []
   ) {}
 
   async generate(request: GenerationRequest): Promise<GenerationResult> {
@@ -25,33 +33,13 @@ export class DefaultGenerationEngine implements GenerationEngine {
     try {
       await this.pipeline.execute(context);
 
-      const duration = Date.now() - startedAt;
-
-      const report = createGenerationReport(
+      return await this.createResult(
         context,
 
-        {
-          success: true,
+        true,
 
-          duration,
-        }
+        startedAt
       );
-
-      return {
-        success: true,
-
-        generatedFiles: report.generatedFiles,
-
-        duration: report.duration,
-
-        warnings: report.diagnostics
-
-          .filter((diagnostic) => diagnostic.level === "warning")
-
-          .map((diagnostic) => diagnostic.message),
-
-        report,
-      };
     } catch (error) {
       context.logger.error("Generation failed", {
         name: error instanceof Error ? error.name : "UnknownError",
@@ -59,33 +47,55 @@ export class DefaultGenerationEngine implements GenerationEngine {
         message: error instanceof Error ? error.message : String(error),
       });
 
-      const duration = Date.now() - startedAt;
-
-      const report = createGenerationReport(
+      return await this.createResult(
         context,
 
-        {
-          success: false,
+        false,
 
-          duration,
-        }
+        startedAt
       );
-
-      return {
-        success: false,
-
-        generatedFiles: report.generatedFiles,
-
-        duration: report.duration,
-
-        warnings: report.diagnostics
-
-          .filter((diagnostic) => diagnostic.level === "warning")
-
-          .map((diagnostic) => diagnostic.message),
-
-        report,
-      };
     }
+  }
+
+  private async createResult(
+    context: ReturnType<GenerationContextFactory["create"]>,
+
+    success: boolean,
+
+    startedAt: number
+  ): Promise<GenerationResult> {
+    const duration = Date.now() - startedAt;
+
+    const report = createGenerationReport(
+      context,
+
+      {
+        success,
+
+        duration,
+      }
+    );
+
+    await runGenerationReportExporters(
+      this.exporters,
+
+      report
+    );
+
+    return {
+      success,
+
+      generatedFiles: report.generatedFiles,
+
+      duration: report.duration,
+
+      warnings: report.diagnostics
+
+        .filter((diagnostic) => diagnostic.level === "warning")
+
+        .map((diagnostic) => diagnostic.message),
+
+      report,
+    };
   }
 }
