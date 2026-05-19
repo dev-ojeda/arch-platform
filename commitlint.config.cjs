@@ -35,6 +35,7 @@ module.exports = {
         "core",
         "generators",
         "infrastructure",
+        "platform-model",
         "scripts",
         "shared",
         "testing",

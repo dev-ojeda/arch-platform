@@ -30,7 +30,8 @@ npm-debug.log
 testem.log
 typings/
 .angular/
-
+.vscode/
+arch-platform.code-workspace
 # e2e
 e2e/*.js
 e2e/*.map
