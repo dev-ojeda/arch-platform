@@ -1,30 +1,21 @@
-// packages\core\vitest.config.ts
-import {
-  defineConfig,
-  mergeConfig
-}
-from 'vitest/config'
+// packages/core/vitest.config.ts
 
-import {
-  sharedVitestConfig
-}
-from '../../vitest.shared.js'
+import { defineConfig, mergeConfig } from "vitest/config";
+
+import { sharedVitestConfig } from "../../vitest.shared";
 
 export default mergeConfig(
-
   sharedVitestConfig,
 
   defineConfig({
-
     test: {
+      name: "core",
 
-      name:
-        'core',
+      include: ["src/**/*.test.ts", "src/**/*.spec.ts"],
 
-      include: [
-
-        'src/**/*.test.ts'
-      ]
-    }
+      coverage: {
+        include: ["src/**/*.ts"],
+      },
+    },
   })
-)
+);

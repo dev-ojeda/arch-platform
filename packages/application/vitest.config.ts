@@ -2,7 +2,7 @@
 
 import { defineConfig, mergeConfig } from "vitest/config";
 
-import { sharedVitestConfig } from "../../vitest.shared.js";
+import { sharedVitestConfig } from "../../vitest.shared";
 
 export default mergeConfig(
   sharedVitestConfig,
@@ -11,9 +11,31 @@ export default mergeConfig(
     test: {
       name: "application",
 
-      setupFiles: ["../../vitest.setup.ts", "./vitest.setup.ts"],
+      setupFiles: ["../../vitest.setup.ts"],
 
-      include: ["src/**/*.test.ts", "testing/**/*.test.ts"],
+      include: [
+        "src/**/*.test.ts",
+
+        "src/**/*.spec.ts",
+
+        "testing/**/*.test.ts",
+
+        "testing/**/*.spec.ts",
+      ],
+
+      coverage: {
+        include: ["src/**/*.ts"],
+
+        thresholds: {
+          lines: 40,
+
+          functions: 25,
+
+          statements: 40,
+
+          branches: 25,
+        },
+      },
     },
   })
 );

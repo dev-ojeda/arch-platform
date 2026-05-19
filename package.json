@@ -11,6 +11,8 @@
     "dev": "turbo run dev --parallel",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:coverage:runtime": "vitest run --project application --coverage",
+    "test:coverage:core": "vitest run --project core --coverage",
     "test:coverage": "vitest run --coverage",
     "typecheck": "turbo run typecheck",
     "lint": "turbo run lint",
