@@ -2,6 +2,7 @@ export * from "./composition/index.js";
 export * from "./engine/index.js";
 export * from "./errors/index.js";
 export * from "./events/index.js";
+export * from "./exporters/index.js";
 export * from "./hooks/index.js";
 export * from "./pipeline/index.js";
 export * from "./registry/index.js";
