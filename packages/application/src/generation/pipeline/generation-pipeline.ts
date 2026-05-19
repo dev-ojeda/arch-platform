@@ -6,6 +6,8 @@ import type {
   GenerationPipelineStep,
 } from "@arch/contracts";
 
+import { measureStepExecution } from "../telemetry/measure-step-execution.js";
+
 export class GenerationPipeline {
   constructor(
     private readonly steps: readonly GenerationPipelineStep[],
@@ -18,18 +20,28 @@ export class GenerationPipeline {
       await this.hooks?.beforePipeline?.(context);
 
       for (const step of this.steps) {
-        await this.hooks?.beforeStep?.(step, context);
+        await measureStepExecution(
+          context,
 
-        await step.execute(context);
+          step,
 
-        await this.hooks?.afterStep?.(step, context);
+          async () => {
+            await this.hooks?.beforeStep?.(step, context);
+
+            await step.execute(context);
+
+            await this.hooks?.afterStep?.(step, context);
+          }
+        );
       }
 
-      await this.hooks?.afterPipeline?.(context);
+      await this.hooks?.onSuccess?.(context);
     } catch (error) {
       await this.hooks?.onError?.(error, context);
 
       throw error;
+    } finally {
+      await this.hooks?.afterPipeline?.(context);
     }
   }
 }
