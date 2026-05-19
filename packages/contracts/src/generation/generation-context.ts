@@ -7,6 +7,8 @@ import type { GeneratorDefinition } from "../generators/generator-definition.js"
 
 import type { LoggerPort } from "../logging/logger.port.js";
 import type { ResolvedTemplate } from "../pipeline/resolved-template.js";
+import type { GenerationCancellationReason } from "../runtime/generation-cancellation-reason.js";
+import type { GenerationTimeoutPolicy } from "../runtime/generation-timeout-policy.js";
 
 import type { TechnologyStack } from "../stacks/technology-stack.js";
 import type { StepExecutionMetric } from "../telemetry/step-execution-metric.js";
@@ -86,4 +88,10 @@ export interface GenerationContext<
    * Runtime Metrics
    */
   metrics: StepExecutionMetric[];
+
+  timeoutPolicy?: GenerationTimeoutPolicy;
+
+  cancelled?: boolean;
+
+  cancellationReason?: GenerationCancellationReason;
 }
