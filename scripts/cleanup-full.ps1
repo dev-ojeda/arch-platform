@@ -4,6 +4,7 @@ $ErrorActionPreference = "SilentlyContinue"
 
 $directories = @(
     "node_modules",
+    ".pnpm",
     "dist",
     "build",
     "coverage",
@@ -18,7 +19,8 @@ $directories = @(
 
 $files = @(
     "*.tsbuildinfo",
-    ".eslintcache"
+    ".eslintcache",
+    "pnpm-lock.yaml"
 )
 
 $removedDirectories = 0

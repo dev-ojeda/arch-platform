@@ -1,6 +1,9 @@
+// tsup.base.ts
 import type { Options } from "tsup";
 
 export const baseConfig: Options = {
+  entry: ["src/index.ts"],
+
   format: ["esm"],
 
   target: "node20",
@@ -9,7 +12,7 @@ export const baseConfig: Options = {
 
   clean: true,
 
-  sourcemap: false,
+  sourcemap: true,
 
   treeshake: false,
 
@@ -19,7 +22,10 @@ export const baseConfig: Options = {
 
   metafile: false,
 
-  bundle: true,
+  bundle: false,
 
-  dts: false,
+  dts: true,
+
+  shims: false,
+
 };
