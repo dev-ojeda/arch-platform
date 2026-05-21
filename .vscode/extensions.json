@@ -1,0 +1,17 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "vitest.explorer",
+    "eamodio.gitlens",
+    "usernamehw.errorlens",
+    "gruntfuggly.todo-tree",
+    "aaron-bond.better-comments",
+    "mikestead.dotenv",
+    "redhat.vscode-yaml"
+  ],
+
+  "unwantedRecommendations": [
+    "hookyqr.beautify"
+  ]
+}

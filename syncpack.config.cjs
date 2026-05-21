@@ -1,10 +1,12 @@
 /** @type {import("syncpack").RcFile} */
 module.exports = {
+  formatRepository: true,
+  sortExports: true,
   versionGroups: [
     {
       label: "Use workspace protocol internally",
       dependencies: ["$LOCAL"],
-      dependencyTypes: ["dependencies", "devDependencies", "peerDependencies"],
+      dependencyTypes: ["prod", "dev", "peer"],
       pinVersion: "workspace:*"
     }
   ],
@@ -27,7 +29,11 @@ module.exports = {
   sortAz: [
     "name",
     "version",
+    "private",
+    "type",
+    "packageManager",
     "scripts",
+    "exports",
     "dependencies",
     "devDependencies",
     "peerDependencies"

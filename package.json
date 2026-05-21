@@ -1,34 +1,6 @@
 {
   "name": "arch-platform",
-  "private": true,
   "version": "0.1.0",
-  "packageManager": "pnpm@10.33.3",
-  "engines": {
-    "node": ">=20"
-  },
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage:runtime": "vitest run --project application --coverage",
-    "test:coverage:core": "vitest run --project core --coverage",
-    "test:coverage": "vitest run --coverage",
-    "typecheck": "turbo run typecheck",
-    "lint": "turbo run lint",
-    "clean": "powershell -ExecutionPolicy Bypass -File scripts/clean.ps1",
-    "clean:deep": "powershell -ExecutionPolicy Bypass -File scripts/clean-deep.ps1",
-    "clean:artifacts": "rimraf packages/**/dist apps/**/dist",
-    "cruiser": "depcruise . --config .dependency-cruiser.cjs",
-    "cruiser:err": "depcruise . --config .dependency-cruiser.cjs --output-type err",
-    "cruiser:html": "depcruise . --config .dependency-cruiser.cjs --output-type html > dependency-report.html",
-    "cruiser:graph": "depcruise . --config .dependency-cruiser.cjs --output-type dot | dot -T svg > dependency-graph.svg",
-    "cruiser:arch": "depcruise . --config .dependency-cruiser.cjs --output-type archi",
-    "prepare": "husky || true",
-    "syncpack:lint": "syncpack lint",
-    "syncpack:fix": "syncpack fix-mismatches",
-    "syncpack:format": "syncpack format"
-  },
   "devDependencies": {
     "@changesets/cli": "catalog:",
     "@commitlint/cli": "catalog:",
@@ -50,5 +22,33 @@
     "turbo": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@10.33.3",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "clean": "powershell -ExecutionPolicy Bypass -File scripts/clean.ps1",
+    "clean:artifacts": "rimraf packages/**/dist apps/**/dist",
+    "clean:deep": "powershell -ExecutionPolicy Bypass -File scripts/clean-deep.ps1",
+    "cruiser": "depcruise . --config .dependency-cruiser.cjs",
+    "cruiser:arch": "depcruise . --config .dependency-cruiser.cjs --output-type archi",
+    "cruiser:err": "depcruise . --config .dependency-cruiser.cjs --output-type err",
+    "cruiser:graph": "depcruise . --config .dependency-cruiser.cjs --output-type dot | dot -T svg > dependency-graph.svg",
+    "cruiser:html": "depcruise . --config .dependency-cruiser.cjs --output-type html > dependency-report.html",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "prepare": "husky || true",
+    "syncpack:fix": "syncpack fix",
+    "syncpack:format": "syncpack format",
+    "syncpack:lint": "syncpack lint",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:core": "vitest run --project core --coverage",
+    "test:coverage:runtime": "vitest run --project application --coverage",
+    "test:watch": "vitest",
+    "typecheck": "turbo run typecheck"
   }
 }
