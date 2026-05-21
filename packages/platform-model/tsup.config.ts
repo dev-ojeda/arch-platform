@@ -1,13 +1,12 @@
-import { defineConfig } from "tsup";
+// packages\platform-model\tsup.config.ts
 
-import { baseConfig } from "../../tsup.base";
+import { defineConfig } from "tsup";
+import { baseConfig } from "../../tsup.base.ts";
 
 export default defineConfig({
   ...baseConfig,
 
-  bundle: true,
-
-  splitting: false,
+  tsconfig: "./tsconfig.build.json",
 
   entry: ["src/index.ts"],
 });

@@ -1,12 +1,12 @@
 // packages\core\tsup.config.mts
 import { defineConfig } from 'tsup'
-import { baseConfig } from '../../tsup.base.js'
+import { baseConfig } from '../../tsup.base.ts'
 
 export default defineConfig({
 
-    ...baseConfig,
+  ...baseConfig,
 
-    entry: [
-        'src/index.ts'
-    ]
+  tsconfig: "./tsconfig.build.json",
+
+  entry: ["src/index.ts"],
 })
