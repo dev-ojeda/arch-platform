@@ -1,97 +1,270 @@
 {
   "version": "2.0.0",
+
   "tasks": [
+
+    // -------------------------------------------------------------------------
+    // WATCH
+    // -------------------------------------------------------------------------
+
+    {
+      "label": "watch:vscode-extension",
+
+      "type": "shell",
+
+      "command": "pnpm --filter @arch/vscode-extension dev",
+
+      "isBackground": true,
+
+      "problemMatcher": "$tsc-watch",
+
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
+    },
+
+    // -------------------------------------------------------------------------
+    // CLEANUP
+    // -------------------------------------------------------------------------
+
     {
       "label": "cleanup:fast",
+
+      "icon": {
+        "id": "trashcan",
+        "color": "terminal.ansiYellow"
+      },
+
       "type": "shell",
+
       "command": "powershell",
+
       "args": [
         "-ExecutionPolicy",
         "Bypass",
         "-File",
         "${workspaceFolder}/scripts/cleanup-fast.ps1"
       ],
-      "problemMatcher": []
+
+      "problemMatcher": [],
+
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
     },
+
     {
       "label": "cleanup:full",
+
+      "icon": {
+        "id": "trash",
+        "color": "terminal.ansiRed"
+      },
+
       "type": "shell",
+
       "command": "powershell",
+
       "args": [
         "-ExecutionPolicy",
         "Bypass",
         "-File",
-        
         "${workspaceFolder}/scripts/cleanup-full.ps1"
       ],
-      "problemMatcher": []
+
+      "problemMatcher": [],
+
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
     },
+
+    // -------------------------------------------------------------------------
+    // PACKAGE MANAGEMENT
+    // -------------------------------------------------------------------------
+
     {
       "label": "install",
+
+      "icon": {
+        "id": "package",
+        "color": "terminal.ansiGreen"
+      },
+
       "type": "shell",
+
       "command": "pnpm install",
-      "problemMatcher": []
+
+      "problemMatcher": [],
+
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
     },
+
+    // -------------------------------------------------------------------------
+    // BUILD
+    // -------------------------------------------------------------------------
+
     {
       "label": "build",
+
+      "icon": {
+        "id": "tools",
+        "color": "terminal.ansiBlue"
+      },
+
       "type": "shell",
+
       "command": "pnpm build",
+
       "problemMatcher": [],
+
       "group": {
         "kind": "build",
         "isDefault": false
+      },
+
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
       }
     },
+
+    // -------------------------------------------------------------------------
+    // VALIDATION
+    // -------------------------------------------------------------------------
+
     {
-      "label": "typecheck",
+      "label": "validate:typecheck",
+
+      "icon": {
+        "id": "check-all",
+        "color": "terminal.ansiCyan"
+      },
+
       "type": "shell",
+
       "command": "pnpm typecheck",
+
       "problemMatcher": "$tsc",
+
       "group": {
         "kind": "test",
         "isDefault": false
+      },
+
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
       }
     },
+
     {
-      "label": "deps:validate",
+      "label": "validate:dependencies",
+
+      "icon": {
+        "id": "inspect",
+        "color": "terminal.ansiMagenta"
+      },
+
       "type": "shell",
+
       "command": "pnpm cruiser",
-      "problemMatcher": []
-    },
-    {
-      "label": "test",
-      "type": "shell",
-      "command": "pnpm test",
+
       "problemMatcher": [],
+
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+
+    {
+      "label": "validate:test",
+
+      "icon": {
+        "id": "beaker",
+        "color": "terminal.ansiGreen"
+      },
+
+      "type": "shell",
+
+      "command": "pnpm test",
+
+      "problemMatcher": [],
+
       "group": {
         "kind": "test",
         "isDefault": true
+      },
+
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
       }
     },
+
+    // -------------------------------------------------------------------------
+    // WORKSPACE
+    // -------------------------------------------------------------------------
+
     {
       "label": "workspace:reset",
+
       "type": "shell",
+
       "dependsOrder": "sequence",
+
       "dependsOn": [
         "cleanup:fast",
         "install",
         "build"
       ],
+
+      "command": "echo workspace reset completed",
+
       "problemMatcher": [],
-      "command": "echo workspace reset completed"
+
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
     },
+
     {
       "label": "workspace:validate",
+
       "type": "shell",
+
       "dependsOrder": "sequence",
+
       "dependsOn": [
-        "typecheck",
-        "deps:validate",
-        "test",
+        "validate:typecheck",
+        "validate:dependencies",
+        "validate:test",
         "build"
       ],
+
+      "command": "echo workspace validation completed",
+
       "problemMatcher": [],
-      "command": "echo workspace validation completed"
+
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
     }
   ]
 }

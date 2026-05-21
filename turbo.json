@@ -2,146 +2,71 @@
   "$schema": "https://turbo.build/schema.json",
 
   "globalDependencies": [
+    "package.json",
     "pnpm-lock.yaml",
     "config/tsconfig/base.json",
     "tsconfig.base.json",
     "vitest.shared.ts",
     "vitest.setup.ts",
-    "tsup.base.ts",
-    ".env*"
+    "tsup.base.ts"
   ],
 
+  "globalEnv": ["NODE_ENV", "CI"],
+
   "tasks": {
-
     "build": {
+      "dependsOn": ["^build"],
 
-      "dependsOn": [
-        "^build"
-      ],
+      "inputs": ["$TURBO_DEFAULT$", "src/**", "testing/**", "tsup.config.*"],
 
-      "inputs": [
-
-        "src/**",
-
-        "testing/**",
-
-        "package.json",
-
-        "tsconfig.json",
-
-        "tsconfig.*",
-
-        "tsup.config.*"
-      ],
-
-      "outputs": [
-
-        "dist/**",
-
-        "!dist/**/*.tsbuildinfo"
-      ]
+      "outputs": ["dist/**", "!dist/**/*.tsbuildinfo"]
     },
 
     "typecheck": {
+      "dependsOn": ["^build"],
 
-      "dependsOn": [
-        "^typecheck"
-      ],
-
-      "inputs": [
-
-        "src/**",
-
-        "testing/**",
-
-        "*.json",
-
-        "tsconfig.*"
-      ],
+      "inputs": ["$TURBO_DEFAULT$", "src/**", "testing/**"],
 
       "outputs": []
     },
 
     "lint": {
-
-      "inputs": [
-
-        "src/**",
-
-        "testing/**",
-
-        "*.json",
-
-        ".eslintrc.*",
-
-        "eslint.config.*"
-      ],
+      "inputs": ["$TURBO_DEFAULT$", "src/**", "testing/**"],
 
       "outputs": []
     },
 
     "test": {
-
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["^build", "build"],
 
       "inputs": [
-
+        "$TURBO_DEFAULT$",
         "src/**",
-
         "testing/**",
-
         "**/*.test.ts",
-
-        "**/*.snap",
-
-        "vitest.config.*"
+        "**/*.snap"
       ],
 
       "outputs": []
     },
 
     "coverage": {
+      "dependsOn": ["test"],
 
-      "dependsOn": [
-        "build"
-      ],
-
-      "inputs": [
-
-        "src/**",
-
-        "testing/**",
-
-        "**/*.test.ts",
-
-        "**/*.snap",
-
-        "vitest.config.*"
-      ],
-
-      "outputs": [
-
-        "coverage/**"
-      ]
+      "outputs": ["coverage/**"]
     },
 
     "dev": {
-
       "cache": false,
 
       "persistent": true
     },
 
     "cruiser": {
-
       "inputs": [
-
+        "$TURBO_DEFAULT$",
         "src/**",
-
         "testing/**",
-
         ".dependency-cruiser.*"
       ],
 
@@ -149,8 +74,9 @@
     },
 
     "clean": {
+      "cache": false,
 
-      "cache": false
+      "outputs": []
     }
   }
 }

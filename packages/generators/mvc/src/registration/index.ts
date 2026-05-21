@@ -1,1 +1,3 @@
-export * from './register.js'
+// packages/generators/mvc/src/registration/index.ts
+
+export * from './register.js';

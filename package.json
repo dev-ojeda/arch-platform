@@ -2,7 +2,7 @@
   "name": "arch-platform",
   "private": true,
   "version": "0.1.0",
-  "packageManager": "pnpm@10.0.0",
+  "packageManager": "pnpm@10.33.3",
   "engines": {
     "node": ">=20"
   },
@@ -18,44 +18,37 @@
     "lint": "turbo run lint",
     "clean": "powershell -ExecutionPolicy Bypass -File scripts/clean.ps1",
     "clean:deep": "powershell -ExecutionPolicy Bypass -File scripts/clean-deep.ps1",
-    "clean:artifacts": "pnpm exec rimraf --glob \"packages/**/src/**/*.js\" \"packages/**/src/**/*.d.ts\" \"generators/**/src/**/*.js\" \"generators/**/src/**/*.d.ts\" \"apps/**/src/**/*.js\" \"apps/**/src/**/*.d.ts\"",
+    "clean:artifacts": "rimraf packages/**/dist apps/**/dist",
     "cruiser": "depcruise . --config .dependency-cruiser.cjs",
     "cruiser:err": "depcruise . --config .dependency-cruiser.cjs --output-type err",
     "cruiser:html": "depcruise . --config .dependency-cruiser.cjs --output-type html > dependency-report.html",
     "cruiser:graph": "depcruise . --config .dependency-cruiser.cjs --output-type dot | dot -T svg > dependency-graph.svg",
     "cruiser:arch": "depcruise . --config .dependency-cruiser.cjs --output-type archi",
-    "prepare": "husky"
+    "prepare": "husky || true",
+    "syncpack:lint": "syncpack lint",
+    "syncpack:fix": "syncpack fix-mismatches",
+    "syncpack:format": "syncpack format"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.31.0",
-    "@commitlint/cli": "^21.0.1",
-    "@commitlint/config-conventional": "^21.0.1",
-    "@types/node": "^24.12.3",
-    "@vitest/coverage-v8": "^4.1.6",
-    "@vscode/test-electron": "^2.5.2",
-    "dependency-cruiser": "^17.0.0",
-    "esbuild-visualizer": "^0.7.0",
-    "eslint-import-resolver-node": "^0.4.0",
-    "eslint-plugin-import": "^2.32.0",
-    "husky": "^9.1.7",
-    "rimraf": "^6.0.1",
-    "tsup": "^8.5.1",
-    "tsx": "^4.21.0",
-    "turbo": "^2.9.9",
-    "typescript": "^5.9.2",
-    "vitest": "^4.1.6"
-  },
-  "pnpm": {
-    "overrides": {
-      "lodash": "^4.17.24",
-      "tmp": "^0.2.4",
-      "vitest": "4.1.6",
-      "@vitest/coverage-v8": "4.1.6"
-    },
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "keytar",
-      "@vscode/vsce-sign"
-    ]
+    "@changesets/cli": "catalog:",
+    "@commitlint/cli": "catalog:",
+    "@commitlint/config-conventional": "catalog:",
+    "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "@vscode/test-electron": "catalog:",
+    "dependency-cruiser": "catalog:",
+    "esbuild-visualizer": "catalog:",
+    "eslint": "catalog:",
+    "eslint-import-resolver-node": "catalog:",
+    "eslint-plugin-import": "catalog:",
+    "husky": "catalog:",
+    "prettier": "catalog:",
+    "rimraf": "catalog:",
+    "syncpack": "catalog:",
+    "tsup": "catalog:",
+    "tsx": "catalog:",
+    "turbo": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }

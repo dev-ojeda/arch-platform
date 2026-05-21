@@ -1,3 +1,188 @@
+# =============================================================================
+# PNPM WORKSPACE CONFIGURATION
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# WORKSPACE PACKAGES
+# -----------------------------------------------------------------------------
+# Define los paquetes que forman parte del monorepo.
+# PNPM detectará automáticamente los package.json dentro de estas rutas.
 packages:
 - packages/*
 - packages/generators/*
+# - apps/*
+
+# -----------------------------------------------------------------------------
+# SHARED DEPENDENCY CATALOG
+# -----------------------------------------------------------------------------
+# Catálogo centralizado de versiones reutilizables.
+# Permite mantener consistencia de dependencias entre todos los paquetes
+# del workspace utilizando:
+#
+#   "dependency": "catalog:"
+#
+# Facilita upgrades masivos y evita version drift.
+catalog:
+
+  # ---------------------------------------------------------------------------
+  # RELEASE / VERSIONING
+  # ---------------------------------------------------------------------------
+
+  # Gestión de versionado y changelogs automatizados.
+  "@changesets/cli": 2.31.0
+
+  # ---------------------------------------------------------------------------
+  # GIT / COMMITS / CONVENTIONAL COMMITS
+  # ---------------------------------------------------------------------------
+
+  # CLI para validación de mensajes de commit.
+  "@commitlint/cli": 21.0.1
+
+  # Reglas Conventional Commits estándar.
+  "@commitlint/config-conventional": 21.0.1
+
+  # Hooks Git modernos.
+  husky: 9.1.7
+  prettier: 3.6.2
+
+  # ---------------------------------------------------------------------------
+  # TYPESCRIPT / NODE
+  # ---------------------------------------------------------------------------
+
+  # Tipos oficiales de Node.js.
+  "@types/node": 24.12.4
+
+  # Compilador TypeScript.
+  typescript: 5.9.3
+
+  # Ejecución directa de archivos TS/ESM sin compilación previa.
+  tsx: 4.22.0
+
+  # Bundler TypeScript ultra rápido.
+  tsup: 8.5.1
+
+  # ---------------------------------------------------------------------------
+  # TESTING
+  # ---------------------------------------------------------------------------
+
+  # Framework de testing moderno compatible con Vite.
+  vitest: 4.1.7
+
+  # Provider de cobertura basado en V8.
+  "@vitest/coverage-v8": 4.1.7
+
+  # ---------------------------------------------------------------------------
+  # VSCODE / EXTENSION DEVELOPMENT
+  # ---------------------------------------------------------------------------
+
+  # Testing automatizado para extensiones VSCode.
+  "@vscode/test-electron": 2.5.2
+
+  # ---------------------------------------------------------------------------
+  # LINTING / CODE QUALITY
+  # ---------------------------------------------------------------------------
+
+  # Linter principal JavaScript/TypeScript.
+  eslint: 9.39.1
+
+  # Reglas ESLint para imports ESModules/CommonJS.
+  eslint-plugin-import: 2.32.0
+
+  # Resolver de módulos Node.js para eslint-plugin-import.
+  eslint-import-resolver-node: 0.4.0
+
+  # ---------------------------------------------------------------------------
+  # DEPENDENCY ANALYSIS / ARCHITECTURE
+  # ---------------------------------------------------------------------------
+
+  # Análisis de dependencias y arquitectura del código.
+  dependency-cruiser: 17.4.0
+
+  # Visualización de bundles generados por esbuild.
+  esbuild-visualizer: 0.7.0
+
+  # ---------------------------------------------------------------------------
+  # BUILD / TASK ORCHESTRATION
+  # ---------------------------------------------------------------------------
+
+  # Orquestador de pipelines monorepo.
+  turbo: 2.9.14
+
+  # ---------------------------------------------------------------------------
+  # UTILITIES
+  # ---------------------------------------------------------------------------
+
+  # Eliminación multiplataforma de archivos/directorios.
+  rimraf: 6.1.3
+
+  # Validación y sincronización de versiones package.json.
+  syncpack: 15.3.1
+
+# -----------------------------------------------------------------------------
+# ONLY BUILT DEPENDENCIES
+# -----------------------------------------------------------------------------
+# Lista de dependencias permitidas para ejecutar scripts de build/install
+# nativos (postinstall, install scripts, compilación binaria, etc).
+#
+# Mejora seguridad y control de supply chain evitando builds inesperados.
+onlyBuiltDependencies:
+
+# Bundler nativo de alto rendimiento.
+- esbuild
+
+# Acceso seguro a credenciales del sistema operativo.
+- keytar
+
+# Firma de extensiones VSCode.
+- "@vscode/vsce-sign"
+
+# Compilador SWC nativo.
+- "@swc/core"
+
+# -----------------------------------------------------------------------------
+# SUPPORTED ARCHITECTURES
+# -----------------------------------------------------------------------------
+# Restringe instalación de paquetes a arquitecturas específicas.
+# Útil para evitar instalación de binarios incompatibles.
+supportedArchitectures:
+
+  # Sistemas operativos soportados.
+  os:
+  - win32
+  # Arquitecturas CPU soportadas.
+  cpu:
+  - x64
+
+# -----------------------------------------------------------------------------
+# PEER DEPENDENCY RULES
+# -----------------------------------------------------------------------------
+# Configuración de manejo de peerDependencies.
+peerDependencyRules:
+
+  # Ignora warnings de peerDependencies faltantes.
+  # Útil en plugins, librerías compartidas o tooling interno.
+  ignoreMissing:
+
+  # ESLint puede ser provisto por el workspace root.
+  - eslint
+
+  # TypeScript puede existir sólo en paquetes específicos.
+  - typescript
+
+# -----------------------------------------------------------------------------
+# OVERRIDES
+# -----------------------------------------------------------------------------
+# Fuerza versiones específicas globalmente en TODO el workspace.
+#
+# Muy útil para:
+# - Parches de seguridad
+# - Resolver incompatibilidades
+# - Evitar múltiples versiones
+# - Estandarizar tooling
+overrides:
+
+  # Fix/version pin de lodash.
+  lodash: ^4.17.24
+
+  # Fix/version pin de tmp.
+  tmp: ^0.2.4

@@ -1,7 +1,6 @@
 import { defineConfig } from 'tsup'
 
-import { baseConfig }
-from '../../../tsup.base.js'
+import { baseConfig } from '../../../tsup.base.ts'
 
 export default defineConfig({
 

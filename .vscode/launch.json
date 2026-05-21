@@ -1,26 +1,65 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Run Architecture Generator",
-            "type": "extensionHost",
-            "request": "launch",
-            "runtimeExecutable": "${execPath}",
-            "args": [
-                "--extensionDevelopmentPath=${workspaceFolder}/apps/vscode-extension"
-            ],
-            "cwd": "${workspaceFolder}",
-            "outFiles": [
-                "${workspaceFolder}/apps/vscode-extension/dist/**/*.js"
-            ],
-            "resolveSourceMapLocations": [
-                "${workspaceFolder}/**",
-                "!**/node_modules/**"
-            ],
-            "preLaunchTask": "build:vscode-extension",
-            "sourceMaps": true,
-            "smartStep": true,
-            "internalConsoleOptions": "neverOpen"
-        }
-    ]
+  "version": "0.2.0",
+
+  "configurations": [
+
+    // -------------------------------------------------------------------------
+    // VSCODE EXTENSION HOST
+    // -------------------------------------------------------------------------
+
+    {
+      "name": "Run Architecture Generator",
+
+      "type": "extensionHost",
+
+      "request": "launch",
+
+      "runtimeExecutable": "${execPath}",
+
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/apps/vscode-extension"
+      ],
+
+      "cwd": "${workspaceFolder}",
+
+      "outFiles": [
+        "${workspaceFolder}/apps/vscode-extension/dist/**/*.js"
+      ],
+
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ],
+
+      "preLaunchTask": "watch:vscode-extension",
+
+      "sourceMaps": true,
+
+      "smartStep": true,
+
+      "internalConsoleOptions": "neverOpen",
+
+      "env": {
+        "NODE_ENV": "development",
+        "ARCH_PLATFORM_DEBUG": "true"
+      }
+    }
+  ],
+
+  "compounds": [
+
+    // -------------------------------------------------------------------------
+    // FULL PLATFORM DEVELOPMENT
+    // -------------------------------------------------------------------------
+
+    {
+      "name": "Platform Full Dev",
+
+      "stopAll": true,
+
+      "configurations": [
+        "Run Architecture Generator"
+      ]
+    }
+  ]
 }

@@ -1,7 +1,7 @@
-// packages\contracts\tsup.config.mts
+// packages\contracts\tsup.config.ts
 
 import { defineConfig } from "tsup";
-import { baseConfig } from "../../tsup.base";
+import { baseConfig } from "../../tsup.base.ts";
 
 export default defineConfig({
   ...baseConfig,

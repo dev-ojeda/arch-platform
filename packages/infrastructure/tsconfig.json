@@ -1,19 +1,15 @@
 {
-    "extends": "../../config/tsconfig/library.json",
-    "compilerOptions": {
-        "rootDir": "./src",
-        "outDir": "./dist",
-        "tsBuildInfoFile": "./dist/.tsbuildinfo"
-    },
-    "include": [
-        "src"
-    ],
-    "references": [
-        {
-            "path": "../contracts"
-        },
-        {
-            "path": "../core"
-        }
-    ]
+  "extends": "../../tsconfig.base.json",
+
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+
+  "include": ["src/**/*.ts"],
+
+  "exclude": [
+    "dist",
+    "node_modules"
+  ]
 }

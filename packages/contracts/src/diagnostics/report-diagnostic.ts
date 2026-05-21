@@ -1,9 +1,7 @@
 // packages/application/src/generation/diagnostics/report-diagnostic.ts
 
-import type {
-  GenerationContext,
-  GenerationDiagnosticLevel,
-} from "@arch/contracts";
+import type { GenerationContext } from "../generation/generation-context.js";
+import type { GenerationDiagnosticLevel } from "./generation-diagnostic-level.js";
 
 export interface ReportDiagnosticOptions {
   level: GenerationDiagnosticLevel;
