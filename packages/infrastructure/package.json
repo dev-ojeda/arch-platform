@@ -1,23 +1,12 @@
 {
   "name": "@arch/infrastructure",
   "version": "0.1.0",
-  "private": true,
-  "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
-  "publishConfig": {
-    "access": "public"
-  },
-  "sideEffects": false,
-  "engines": {
-    "node": ">=20"
-  },
   "dependencies": {
     "@arch/contracts": "workspace:*",
     "@arch/core": "workspace:*"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "exports": {
     ".": {
@@ -25,13 +14,21 @@
       "import": "./dist/index.js"
     }
   },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "private": true,
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
-    "clean": "rimraf dist",
-
     "build": "tsup",
-
+    "clean": "rimraf dist",
     "dev": "tsup --watch",
-
     "typecheck": "tsc -p tsconfig.build.json --noEmit"
-  }
+  },
+  "sideEffects": false,
+  "type": "module",
+  "types": "./dist/index.d.ts"
 }
