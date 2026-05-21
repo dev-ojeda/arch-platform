@@ -1,66 +1,70 @@
 {
-    "name": "arch-generator",
-    "displayName": "Architecture Generator",
-    "description": "Extensible architecture scaffolding platform for VSCode",
-    "version": "0.1.0",
-    "private": true,
-    "publisher": "dev-ojeda",
-    "license": "MIT",
-    "type": "commonjs",
-    "engines": {
-        "node": ">=18",
-        "vscode": "^1.90.0"
-    },
-    "main": "./dist/extension.js",
-    "files": [
-        "dist"
-    ],
-    "categories": [
-        "Other",
-        "Snippets"
-    ],
-    "keywords": [
-        "architecture",
-        "generator",
-        "scaffolding",
-        "typescript",
-        "mvc",
-        "clean-architecture",
-        "codegen"
-    ],
-    "activationEvents": [
-        "onCommand:arch.generateProject"
-    ],
-    "contributes": {
-        "commands": [
-            {
-                "command": "arch.generateProject",
-                "title": "ARCH: Generate Project"
-            }
-        ]
-    },
-    "scripts": {
-        "rebuild": "pnpm clean && pnpm build",
-        "build": "pnpm typecheck && pnpm bundle",
-        "clean": "rimraf dist .turbo",
-        "clean:ts": "rimraf tsconfig.tsbuildinfo",
-        "typecheck": "tsc --noEmit",
-        "bundle": "node esbuild.cjs",
-        "dev": "node esbuild.cjs --watch",
-        "prepackage": "pnpm build",
-        "package": "vsce package"
-    },
-    "dependencies": {
-        "@arch/application": "workspace:*",
-        "@arch/contracts": "workspace:*",
-        "@arch/core": "workspace:*",
-        "@arch/generator-mvc": "workspace:*",
-        "@arch/infrastructure": "workspace:*"
-    },
-    "devDependencies": {
-        "@types/node": "^24.0.0",
-        "@types/vscode": "^1.90.0",
-        "@vscode/vsce": "^3.6.2",
-        "esbuild": "^0.27.0"
-    }
+  "name": "arch-generator",
+  "displayName": "Architecture Generator",
+  "description": "Extensible architecture scaffolding platform for VSCode",
+  "version": "0.1.0",
+  "private": true,
+  "publisher": "dev-ojeda",
+  "license": "MIT",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18",
+    "vscode": "^1.90.0"
+  },
+  "main": "./dist/extension.js",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "categories": [
+    "Other",
+    "Snippets"
+  ],
+  "keywords": [
+    "architecture",
+    "generator",
+    "scaffolding",
+    "typescript",
+    "mvc",
+    "clean-architecture",
+    "codegen"
+  ],
+  "activationEvents": [
+    "onCommand:arch.generateProject"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "arch.generateProject",
+        "title": "ARCH: Generate Project"
+      }
+    ]
+  },
+  "scripts": {
+    "rebuild": "pnpm clean && pnpm build",
+    "build": "pnpm typecheck && pnpm bundle",
+    "clean": "rimraf dist .turbo",
+    "clean:ts": "rimraf tsconfig.tsbuildinfo",
+    "typecheck": "tsc --noEmit",
+    "bundle": "node esbuild.cjs",
+    "dev": "node esbuild.cjs --watch",
+    "prepackage": "pnpm build",
+    "package": "vsce package"
+  },
+  "dependencies": {
+    "@arch/application": "workspace:*",
+    "@arch/contracts": "workspace:*",
+    "@arch/core": "workspace:*",
+    "@arch/generator-mvc": "workspace:*",
+    "@arch/infrastructure": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^3.6.2",
+    "esbuild": "^0.27.0"
+  }
 }
