@@ -1,6 +1,6 @@
 // packages\contracts\src\filesystem\filesystem.port.ts
 
-import type { OverwritePolicy } from "./overwrite-policy.js";
+import type { OverwritePolicy } from './overwrite-policy.js';
 
 export interface WriteFileOptions {
   overwrite?: OverwritePolicy;
@@ -22,13 +22,13 @@ export interface FileSystemPort {
 
     content: string,
 
-    options?: WriteFileOptions
+    options?: WriteFileOptions,
   ): Promise<void>;
 
   copy(
     source: string,
 
-    destination: string
+    destination: string,
   ): Promise<void>;
 
   createDirectory(strPath: string): Promise<void>;

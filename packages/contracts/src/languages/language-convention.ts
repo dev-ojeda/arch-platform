@@ -1,35 +1,21 @@
 // packages\contracts\src\languages\language-convention.ts
 
-import type {
-    FolderLayout
-} from './folder-layout.js'
+import type { FolderLayout } from './folder-layout.js';
 
 export interface LanguageConvention {
+  id: string;
 
-    id: string
+  fileExtension: string;
 
-    fileExtension: string
+  folderLayout: FolderLayout;
 
-    folderLayout:
-        FolderLayout
+  formatName(name: string): string;
 
-    formatName(
-        name: string
-    ): string
+  controllerName(name: string): string;
 
-    controllerName(
-        name: string
-    ): string
+  serviceName(name: string): string;
 
-    serviceName(
-        name: string
-    ): string
+  repositoryName(name: string): string;
 
-    repositoryName(
-        name: string
-    ): string
-
-    modelName(
-        name: string
-    ): string
+  modelName(name: string): string;
 }

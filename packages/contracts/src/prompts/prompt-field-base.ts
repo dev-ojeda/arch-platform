@@ -1,39 +1,23 @@
 // packages\contracts\src\prompts\prompt-field-base.ts
 
-import type {
-    NamedVariables
-} from '../variables/named-variables.js'
+import type { NamedVariables } from '../variables/named-variables.js';
 
-export interface PromptFieldBase<
-    TValues extends NamedVariables,
-    TType,
-    TValue
-> {
-    type: TType
+export interface PromptFieldBase<TValues extends NamedVariables, TType, TValue> {
+  type: TType;
 
-    name: keyof TValues
+  name: keyof TValues;
 
-    message: string
+  message: string;
 
-    description?: string
+  description?: string;
 
-    required?: boolean
+  required?: boolean;
 
-    defaultValue?: TValue
+  defaultValue?: TValue;
 
-    when?: (
-        values: TValues
-    ) => boolean | Promise<boolean>
+  when?: (values: TValues) => boolean | Promise<boolean>;
 
-    transform?: (
-        value: TValue
-    ) => TValue | Promise<TValue>
+  transform?: (value: TValue) => TValue | Promise<TValue>;
 
-    validate?: (
-        value: TValue,
-        values: TValues
-    ) =>
-        | string
-        | undefined
-        | Promise<string | undefined>
+  validate?: (value: TValue, values: TValues) => string | undefined | Promise<string | undefined>;
 }

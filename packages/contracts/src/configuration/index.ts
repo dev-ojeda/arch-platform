@@ -1,1 +1,1 @@
-export * from './configuration.port.js'
+export * from './configuration.port.js';

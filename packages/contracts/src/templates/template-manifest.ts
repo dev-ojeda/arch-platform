@@ -1,4 +1,4 @@
-import type { TemplateDefinition } from "./template-definition.js";
+import type { TemplateDefinition } from './template-definition.js';
 
 export interface TemplateManifest {
   id: string;

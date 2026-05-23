@@ -1,6 +1,9 @@
 {
   "name": "@arch/contracts",
   "version": "0.1.0",
+  "devDependencies": {
+    "@arch/tooling": "workspace:*"
+  },
   "engines": {
     "node": ">=20"
   },
@@ -19,10 +22,13 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsup",
-    "clean": "rimraf dist",
-    "dev": "tsup --watch",
-    "typecheck": "tsc -p tsconfig.build.json --noEmit"
+    "build": "pnpm build:js && pnpm build:types",
+    "build:js": "tsx ../tooling/src/commands/build.ts",
+    "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly",
+    "clean": "tsx ../tooling/src/commands/clean.js",
+    "dev": "tsx ../tooling/src/commands/dev.js",
+    "lint": "tsx ../tooling/src/commands/lint.ts",
+    "typecheck": "tsx ../tooling/src/commands/typecheck.js"
   },
   "sideEffects": false,
   "type": "module",

@@ -1,1 +1,1 @@
-export * from './renderer.port.js'
+export * from './renderer.port.js';

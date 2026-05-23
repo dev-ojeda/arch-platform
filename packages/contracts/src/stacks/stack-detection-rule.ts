@@ -1,5 +1,5 @@
 export interface StackDetectionRule {
-  stackId: string
+  stackId: string;
 
-  patterns: readonly string[]
+  patterns: readonly string[];
 }

@@ -9,7 +9,5 @@ export interface RenderedFile {
 }
 
 export interface TemplateRendererPort {
-  render(
-    files: RenderTemplateInput[],
-  ): Promise<RenderedFile[]>;
+  render(files: RenderTemplateInput[]): Promise<RenderedFile[]>;
 }

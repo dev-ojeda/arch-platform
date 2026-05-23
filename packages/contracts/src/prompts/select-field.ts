@@ -1,33 +1,17 @@
 // packages\contracts\src\prompts\select-field.ts
 
-import type {
-    NamedVariables
-} from '../variables/named-variables.js'
+import type { NamedVariables } from '../variables/named-variables.js';
 
-import type {
-    PromptFieldBase
-} from './prompt-field-base.js'
+import type { PromptFieldBase } from './prompt-field-base.js';
 
 export interface SelectOption {
-    label: string
+  label: string;
 
-    value: string
+  value: string;
 }
 
 export interface SelectField<
-    TValues extends NamedVariables =
-        NamedVariables
->
-extends PromptFieldBase<
-    TValues,
-    'select',
-    string
-> {
-    options:
-        | SelectOption[]
-        | ((
-            values: TValues
-        ) =>
-            | Promise<SelectOption[]>
-            | SelectOption[])
+  TValues extends NamedVariables = NamedVariables,
+> extends PromptFieldBase<TValues, 'select', string> {
+  options: SelectOption[] | ((values: TValues) => Promise<SelectOption[]> | SelectOption[]);
 }

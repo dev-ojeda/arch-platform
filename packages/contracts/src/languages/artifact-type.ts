@@ -1,5 +1,1 @@
-export type ArtifactType =
-    | 'controller'
-    | 'service'
-    | 'repository'
-    | 'model'
+export type ArtifactType = 'controller' | 'service' | 'repository' | 'model';
