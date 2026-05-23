@@ -1,62 +1,105 @@
 // eslint.config.js
-import tseslint from "typescript-eslint";
-import importPlugin from "eslint-plugin-import";
+
+import tseslint from 'typescript-eslint';
+
+import importPlugin from 'eslint-plugin-import';
 
 export default [
   {
-    ignores: [
-      "**/dist/**",
-      "**/coverage/**",
-      "**/.turbo/**",
-      "**/node_modules/**",
-    ],
+    ignores: ['**/dist/**', '**/coverage/**', '**/.turbo/**', '**/node_modules/**'],
   },
 
   {
-    files: ["**/*.ts", "**/*.tsx"],
+    files: ['**/*.ts', '**/*.tsx'],
 
     languageOptions: {
       parser: tseslint.parser,
+
+      parserOptions: {
+        project: './tsconfig.eslint.json',
+
+        tsconfigRootDir: import.meta.dirname,
+
+        sourceType: 'module',
+      },
     },
 
     plugins: {
-      "@typescript-eslint": tseslint.plugin,
+      '@typescript-eslint': tseslint.plugin,
+
       import: importPlugin,
     },
 
     settings: {
-      "import/resolver": {
-        typescript: true,
+      'import/resolver': {
+        typescript: {
+          project: './tsconfig.eslint.json',
+        },
+
         node: true,
       },
     },
 
     rules: {
-      "@typescript-eslint/consistent-type-imports": [
-        "error",
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
         {
-          prefer: "type-imports",
+          prefer: 'type-imports',
         },
       ],
 
-      "@typescript-eslint/no-unused-vars": [
-        "error",
+      '@typescript-eslint/no-unused-vars': [
+        'error',
         {
-          argsIgnorePattern: "^_",
-          varsIgnorePattern: "^_",
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
         },
       ],
 
-      /**
-       * Architecture protection
-       */
+      'import/extensions': [
+        'error',
+        'ignorePackages',
+        {
+          js: 'always',
+          mjs: 'always',
 
-      "import/no-cycle": "error",
+          ts: 'never',
+          tsx: 'never',
+        },
+      ],
 
-      "import/no-self-import": "error",
+      'import/no-cycle': 'error',
 
-      "import/no-duplicates": "error",
-      "import/order": "error",
+      'import/no-self-import': 'error',
+
+      'import/no-duplicates': 'error',
+
+      'import/no-unresolved': 'off',
+
+      'import/order': [
+        'error',
+        {
+          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: true,
+          },
+
+          'newlines-between': 'always',
+        },
+      ],
+
+      'import/first': 'error',
+
+      'import/newline-after-import': 'error',
+
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: ['@arch/*/src/*', '@arch/*/dist/*', '../../*/src/*', '../../*/dist/*'],
+        },
+      ],
     },
   },
 ];

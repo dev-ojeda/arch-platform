@@ -4,38 +4,31 @@ module.exports = {
   sortExports: true,
   versionGroups: [
     {
-      label: "Use workspace protocol internally",
-      dependencies: ["$LOCAL"],
-      dependencyTypes: ["prod", "dev", "peer"],
-      pinVersion: "workspace:*"
-    }
+      label: 'Use workspace protocol internally',
+      dependencies: ['$LOCAL'],
+      dependencyTypes: ['prod', 'dev', 'peer'],
+      pinVersion: 'workspace:*',
+    },
   ],
 
   semverGroups: [
     {
-      label: "Pin internal tooling",
-      dependencies: [
-        "typescript",
-        "vitest",
-        "turbo",
-        "eslint",
-        "prettier",
-        "tsup"
-      ],
-      range: ""
-    }
+      label: 'Pin internal tooling',
+      dependencies: ['typescript', 'vitest', 'turbo', 'eslint', 'prettier', 'tsup'],
+      range: '',
+    },
   ],
 
   sortAz: [
-    "name",
-    "version",
-    "private",
-    "type",
-    "packageManager",
-    "scripts",
-    "exports",
-    "dependencies",
-    "devDependencies",
-    "peerDependencies"
-  ]
+    'name',
+    'version',
+    'private',
+    'type',
+    'packageManager',
+    'scripts',
+    'exports',
+    'dependencies',
+    'devDependencies',
+    'peerDependencies',
+  ],
 };

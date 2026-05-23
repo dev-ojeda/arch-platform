@@ -23,7 +23,7 @@
     },
 
     "typecheck": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^typecheck", "@arch/tooling#build"],
 
       "inputs": ["$TURBO_DEFAULT$", "src/**", "testing/**"],
 
@@ -39,13 +39,7 @@
     "test": {
       "dependsOn": ["^build", "build"],
 
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        "src/**",
-        "testing/**",
-        "**/*.test.ts",
-        "**/*.snap"
-      ],
+      "inputs": ["$TURBO_DEFAULT$", "src/**", "testing/**", "**/*.test.ts", "**/*.snap"],
 
       "outputs": []
     },
@@ -63,12 +57,7 @@
     },
 
     "cruiser": {
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        "src/**",
-        "testing/**",
-        ".dependency-cruiser.*"
-      ],
+      "inputs": ["$TURBO_DEFAULT$", "src/**", "testing/**", ".dependency-cruiser.*"],
 
       "outputs": []
     },

@@ -1,16 +1,13 @@
 {
-    "extends": "./tsconfig.base.json",
+  "extends": "./tsconfig.base.json",
 
-    "compilerOptions": {
+  "compilerOptions": {
+    "noEmit": true,
 
-        "noEmit": true,
+    "module": "ESNext",
 
-        "module": "ESNext",
+    "moduleResolution": "Bundler",
 
-        "moduleResolution": "Bundler",
-
-        "types": [
-            "node"
-        ]
-    }
+    "types": ["node"]
+  }
 }
