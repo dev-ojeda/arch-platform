@@ -1,57 +1,56 @@
 // packages/application/src/generation/steps/__tests__/resolve-template-output-path.step.test.ts
 
-import { describe, expect, it } from "vitest";
+import { createTestPipelineContext, testGenerator } from '@arch/testing';
+import { describe, expect, it } from 'vitest';
 
-import { createTestPipelineContext, testGenerator } from "@arch/testing";
+import { ResolveTemplatesStep } from '../../steps/resolve-templates.step.js';
 
-import { ResolveTemplatesStep } from "../../steps/resolve-templates.step.js";
-
-describe("ResolveTemplatesStep", () => {
-  it("resolves output variables", async () => {
+describe('ResolveTemplatesStep', () => {
+  it('resolves output variables', async () => {
     const context = createTestPipelineContext({
       variables: {
-        name: "user",
+        name: 'user',
       },
     });
-    console.debug("context", context);
+    console.debug('context', context);
     context.generator = testGenerator;
 
     context.resolvedVariables = {
       ...context.variables,
 
-      className: "User",
+      className: 'User',
 
-      controllerName: "UserController",
+      controllerName: 'UserController',
 
-      serviceName: "UserService",
+      serviceName: 'UserService',
 
-      repositoryName: "UserRepository",
+      repositoryName: 'UserRepository',
 
-      modelName: "User",
+      modelName: 'User',
 
-      fileExtension: ".ts",
+      fileExtension: '.ts',
 
       folderLayout: {
-        controller: "controllers",
+        controller: 'controllers',
 
-        service: "services",
+        service: 'services',
 
-        repository: "repositories",
+        repository: 'repositories',
 
-        model: "models",
+        model: 'models',
       },
     };
 
     const step = new ResolveTemplatesStep();
-    console.debug("context", context);
+    console.debug('context', context);
     await step.execute(context);
 
     expect(context.resolvedTemplates).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          outputPath: "services/UserService.ts",
+          outputPath: 'services/UserService.ts',
         }),
-      ])
+      ]),
     );
   });
 });

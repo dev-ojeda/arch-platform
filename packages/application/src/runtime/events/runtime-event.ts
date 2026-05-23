@@ -1,5 +1,5 @@
 // packages/application/src/runtime/events/runtime-event.ts
-import type { RuntimeEventType } from "./runtime-event-types.js";
+import type { RuntimeEventType } from './runtime-event-types.js';
 
 export interface RuntimeEvent {
   executionId: string;

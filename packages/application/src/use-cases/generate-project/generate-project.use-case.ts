@@ -1,10 +1,9 @@
 // packages/application/src/application/use-cases/generate-project/generate-project.use-case.ts
 
-import type { GenerationResult, LoggerPort } from "@arch/contracts";
+import type { GenerationResult, LoggerPort } from '@arch/contracts';
+import { GeneratorNotFoundError, type GeneratorRegistry } from '@arch/core';
 
-import { GeneratorNotFoundError, type GeneratorRegistry } from "@arch/core";
-
-import type { GenerationEngine } from "../../generation/engine/generation-engine.js";
+import type { GenerationEngine } from '../../generation/engine/generation-engine.js';
 
 export interface GenerateProjectRequest {
   readonly generatorId: string;
@@ -20,7 +19,7 @@ export class GenerateProjectUseCase {
   constructor(
     private readonly registry: GeneratorRegistry,
 
-    private readonly engine: GenerationEngine
+    private readonly engine: GenerationEngine,
   ) {}
 
   async execute(request: GenerateProjectRequest): Promise<GenerationResult> {

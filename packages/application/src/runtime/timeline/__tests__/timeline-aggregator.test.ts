@@ -1,30 +1,28 @@
 // packages/application/src/runtime/timeline/__tests__/timeline-aggregator.test.ts
 
-import { describe, expect, it } from "vitest";
+import type { GenerationPipelineStep } from '@arch/contracts';
+import { createTestContext } from '@arch/testing';
+import { describe, expect, it } from 'vitest';
 
-import { createTestContext } from "@arch/testing";
+import { GenerationPipeline } from '../../../generation/pipeline/generation-pipeline.js';
+import { createRuntime } from '../../runtime-bootstrap.js';
 
-import { GenerationPipeline } from "../../../generation/pipeline/generation-pipeline.js";
 
-import { createRuntime } from "../../runtime-bootstrap.js";
-
-import type { GenerationPipelineStep } from "@arch/contracts";
-
-describe("TimelineAggregator", () => {
-  it("builds execution timeline from runtime events", async () => {
+describe('TimelineAggregator', () => {
+  it('builds execution timeline from runtime events', async () => {
     const context = createTestContext();
 
     const runtime = createRuntime();
 
     const steps: GenerationPipelineStep[] = [
       {
-        name: "step-1",
+        name: 'step-1',
 
         async execute() {},
       },
 
       {
-        name: "step-2",
+        name: 'step-2',
 
         async execute() {},
       },
@@ -35,7 +33,7 @@ describe("TimelineAggregator", () => {
 
       undefined,
 
-      runtime.runtimeEvents
+      runtime.runtimeEvents,
     );
 
     await pipeline.execute(context);
@@ -46,22 +44,22 @@ describe("TimelineAggregator", () => {
 
     expect(timelines[0]).toEqual(
       expect.objectContaining({
-        pipelineId: "generation-pipeline",
+        pipelineId: 'generation-pipeline',
 
         steps: expect.arrayContaining([
           expect.objectContaining({
-            stepName: "step-1",
+            stepName: 'step-1',
 
-            status: "success",
+            status: 'success',
           }),
 
           expect.objectContaining({
-            stepName: "step-2",
+            stepName: 'step-2',
 
-            status: "success",
+            status: 'success',
           }),
         ]),
-      })
+      }),
     );
   });
 });

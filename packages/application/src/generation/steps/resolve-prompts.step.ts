@@ -1,13 +1,9 @@
 // packages/application/src/generation/steps/resolve-prompts.step.ts
 
-import type {
-  GenerationContext,
-  GenerationPipelineStep,
-  PromptResolver,
-} from "@arch/contracts";
+import type { GenerationContext, GenerationPipelineStep, PromptResolver } from '@arch/contracts';
 
 export class ResolvePromptsStep implements GenerationPipelineStep {
-  readonly name = "resolve-prompts";
+  readonly name = 'resolve-prompts';
 
   constructor(private readonly prompts: PromptResolver) {}
 
@@ -15,7 +11,7 @@ export class ResolvePromptsStep implements GenerationPipelineStep {
     const generator = context.generator;
 
     if (!generator) {
-      throw new Error("Generator not available");
+      throw new Error('Generator not available');
     }
 
     const variables = await this.prompts.collect(generator.schema);

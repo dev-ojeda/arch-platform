@@ -1,5 +1,5 @@
 // packages/application/src/runtime/timeline/step-timeline.ts
-import type { TimelineStatus } from "./timeline-status.js";
+import type { TimelineStatus } from './timeline-status.js';
 
 export interface StepTimeline {
   stepId: string;

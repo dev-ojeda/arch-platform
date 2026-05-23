@@ -1,13 +1,9 @@
 // packages\core\templates\template-engine.ts
-import Handlebars from 'handlebars'
+import Handlebars from 'handlebars';
 
-export function renderTemplate<
-    TVariables extends object
->(
-    template: string,
-    variables: TVariables
+export function renderTemplate<TVariables extends object>(
+  template: string,
+  variables: TVariables,
 ): string {
-
-    return Handlebars
-        .compile(template)(variables)
+  return Handlebars.compile(template)(variables);
 }

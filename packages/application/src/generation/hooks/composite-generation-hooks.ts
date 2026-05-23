@@ -1,10 +1,6 @@
 // packages/application/src/generation/hooks/composite-generation-hooks.ts
 
-import type {
-  GenerationContext,
-  GenerationHooks,
-  GenerationPipelineStep,
-} from "@arch/contracts";
+import type { GenerationContext, GenerationHooks, GenerationPipelineStep } from '@arch/contracts';
 
 export class CompositeGenerationHooks implements GenerationHooks {
   constructor(private readonly hooks: readonly GenerationHooks[]) {}
@@ -24,7 +20,7 @@ export class CompositeGenerationHooks implements GenerationHooks {
   async beforeStep(
     step: GenerationPipelineStep,
 
-    context: GenerationContext
+    context: GenerationContext,
   ): Promise<void> {
     for (const hook of this.hooks) {
       await hook.beforeStep?.(step, context);
@@ -34,7 +30,7 @@ export class CompositeGenerationHooks implements GenerationHooks {
   async afterStep(
     step: GenerationPipelineStep,
 
-    context: GenerationContext
+    context: GenerationContext,
   ): Promise<void> {
     for (const hook of this.hooks) {
       await hook.afterStep?.(step, context);
@@ -44,7 +40,7 @@ export class CompositeGenerationHooks implements GenerationHooks {
   async onError(
     error: unknown,
 
-    context: GenerationContext
+    context: GenerationContext,
   ): Promise<void> {
     for (const hook of this.hooks) {
       await hook.onError?.(error, context);

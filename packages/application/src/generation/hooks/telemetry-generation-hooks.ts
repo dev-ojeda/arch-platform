@@ -1,12 +1,9 @@
 // packages/application/src/generation/hooks/telemetry-generation-hooks.ts
 
-import type {
-  GenerationContext,
-  GenerationHooks,
-  GenerationPipelineStep,
-} from "@arch/contracts";
+import type { GenerationContext, GenerationHooks, GenerationPipelineStep } from '@arch/contracts';
 
-import { recordStepMetric } from "../telemetry/record-step-metric.js";
+import { recordStepMetric } from '../telemetry/record-step-metric.js';
+
 
 export class TelemetryGenerationHooks implements GenerationHooks {
   private readonly startedAt = new Map<string, number>();
@@ -14,19 +11,19 @@ export class TelemetryGenerationHooks implements GenerationHooks {
   async beforeStep(
     step: GenerationPipelineStep,
 
-    _context: GenerationContext
+    _context: GenerationContext,
   ): Promise<void> {
     this.startedAt.set(
       step.name,
 
-      Date.now()
+      Date.now(),
     );
   }
 
   async afterStep(
     step: GenerationPipelineStep,
 
-    context: GenerationContext
+    context: GenerationContext,
   ): Promise<void> {
     const startedAt = this.startedAt.get(step.name);
 
@@ -47,7 +44,7 @@ export class TelemetryGenerationHooks implements GenerationHooks {
         finishedAt,
 
         duration: finishedAt - startedAt,
-      }
+      },
     );
   }
 }

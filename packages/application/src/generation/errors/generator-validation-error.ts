@@ -1,17 +1,9 @@
-import {
-  GenerationError
-} from './generation-error.js'
+import { GenerationError } from './generation-error.js';
 
-export class GeneratorValidationError
-extends GenerationError {
+export class GeneratorValidationError extends GenerationError {
+  constructor(message: string) {
+    super(message);
 
-  constructor(
-    message: string
-  ) {
-
-    super(message)
-
-    this.name =
-      'GeneratorValidationError'
+    this.name = 'GeneratorValidationError';
   }
 }

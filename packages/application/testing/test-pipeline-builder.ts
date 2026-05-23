@@ -5,21 +5,17 @@ import type {
   GenerationPipelineStep,
   GeneratorDefinition,
   NamedVariables,
-} from "@arch/contracts";
+} from '@arch/contracts';
 
-import { ValidateGeneratorStep } from "../src/generation/steps/validate-generator.step.js";
+import { ValidateGeneratorStep } from '../src/generation/steps/validate-generator.step.js';
 
-import { createTestContext, createTestPromptResolver } from "@arch/testing";
-import { GenerationPipeline } from "../src/generation/pipeline/generation-pipeline.js";
-import { ResolvePromptsStep } from "../src/generation/steps/resolve-prompts.step.js";
-import { ResolveTemplatesStep } from "../src/generation/steps/resolve-templates.step.js";
-import { ResolveVariablesStep } from "../src/generation/steps/resolve-variables.step.js";
-import {
-  createRuntime,
-  RenderFilesStep,
-  WriteFilesStep,
-} from "../src/index.js";
-import type { TestPipelineExecution } from "./test-pipeline-execution.js";
+import { createTestContext, createTestPromptResolver } from '@arch/testing';
+import { GenerationPipeline } from '../src/generation/pipeline/generation-pipeline.js';
+import { ResolvePromptsStep } from '../src/generation/steps/resolve-prompts.step.js';
+import { ResolveTemplatesStep } from '../src/generation/steps/resolve-templates.step.js';
+import { ResolveVariablesStep } from '../src/generation/steps/resolve-variables.step.js';
+import { createRuntime, RenderFilesStep, WriteFilesStep } from '../src/index.js';
+import type { TestPipelineExecution } from './test-pipeline-execution.js';
 
 export class TestPipelineBuilder {
   private readonly steps: GenerationPipelineStep[] = [];
@@ -72,7 +68,7 @@ export class TestPipelineBuilder {
 
       undefined,
 
-      this.runtime.runtimeEvents
+      this.runtime.runtimeEvents,
     );
 
     await pipeline.execute(this.context);

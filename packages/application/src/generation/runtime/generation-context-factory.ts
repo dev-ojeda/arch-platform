@@ -6,15 +6,15 @@ import type {
   GenerationRequest,
   LoggerPort,
   NamedVariables,
-} from "@arch/contracts";
+} from '@arch/contracts';
+import { InMemoryGenerationEventBus } from '@arch/core';
 
-import { InMemoryGenerationEventBus } from "@arch/core";
 
 export class GenerationContextFactory {
   constructor(
     private readonly fs: FileSystemPort,
 
-    private readonly logger: LoggerPort
+    private readonly logger: LoggerPort,
   ) {}
 
   create(request: GenerationRequest): GenerationContext {
