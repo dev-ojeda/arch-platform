@@ -1,34 +1,23 @@
 // packages\core\src\generation\template-loader.ts
-import * as path from 'node:path'
+import * as path from 'node:path';
 
-import type {
-    FileSystemPort
-} from '@arch/contracts'
-import { InvalidGeneratorDefinitionError } from '@arch/core'
+import type { FileSystemPort } from '@arch/contracts';
+import { InvalidGeneratorDefinitionError } from '@arch/core';
 
 export async function loadTemplate(
+  fs: FileSystemPort,
 
-    fs: FileSystemPort,
+  templateDir: string,
 
-    templateDir: string,
-
-    templateName: string
+  templateName: string,
 ): Promise<string> {
+  const templatePath = path.join(templateDir, templateName);
 
-    const templatePath = path.join(
-        templateDir,
-        templateName
-    )
+  const template = await fs.read(templatePath);
 
-    const template =
-        await fs.read(templatePath)
+  if (!template.trim()) {
+    throw new InvalidGeneratorDefinitionError(`Template is empty: ${templatePath}`);
+  }
 
-    if (!template.trim()) {
-
-        throw new InvalidGeneratorDefinitionError(
-            `Template is empty: ${templatePath}`
-        )
-    }
-
-    return template
+  return template;
 }
