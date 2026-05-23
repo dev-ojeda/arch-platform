@@ -2,75 +2,65 @@
 
 /** @type {import('@commitlint/types').UserConfig} */
 module.exports = {
-  extends: ["@commitlint/config-conventional"],
+  extends: ['@commitlint/config-conventional'],
 
   rules: {
     /*
      * type(scope): subject
      */
 
-    "type-enum": [
+    'type-enum': [
       2,
-      "always",
+      'always',
+      ['feat', 'fix', 'refactor', 'perf', 'test', 'docs', 'build', 'ci', 'chore', 'revert'],
+    ],
+
+    'scope-enum': [
+      2,
+      'always',
       [
-        "feat",
-        "fix",
-        "refactor",
-        "perf",
-        "test",
-        "docs",
-        "build",
-        "ci",
-        "chore",
-        "revert",
+        'application',
+        'contracts',
+        'core',
+        'generators',
+        'infrastructure',
+        'platform-model',
+        'scripts',
+        'shared',
+        'testing',
+        'workspace',
+        'monorepo',
+        'tooling',
+
+        'application/engine',
+        'application/runtime',
+        'application/pipeline',
+        'application/testing',
+
+        'contracts/generation',
+        'contracts/runtime',
+
+        'core/cancellation',
+        'core/errors',
+        'core/runtime',
+
+        'testing/unit',
+        'testing/integration',
+        'testing/runtime',
+
+        'infrastructure/logging',
+        'infrastructure/persistence',
       ],
     ],
 
-    "scope-enum": [
-      2,
-      "always",
-      [
-        "application",
-        "contracts",
-        "core",
-        "generators",
-        "infrastructure",
-        "platform-model",
-        "scripts",
-        "shared",
-        "testing",
-        "workspace",
-        "monorepo",
+    'scope-case': [2, 'always', 'kebab-case'],
 
-        "application/engine",
-        "application/runtime",
-        "application/pipeline",
-        "application/testing",
+    'subject-case': [2, 'never', ['start-case', 'pascal-case', 'upper-case']],
 
-        "contracts/generation",
-        "contracts/runtime",
+    'subject-empty': [2, 'never'],
 
-        "core/cancellation",
-        "core/errors",
-        "core/runtime",
+    'type-empty': [2, 'never'],
 
-        "testing/unit",
-        "testing/integration",
-        "testing/runtime",
-
-        "infrastructure/logging",
-        "infrastructure/persistence",
-      ],
-    ],
-
-    "scope-case": [2, "always", "kebab-case"],
-
-    "subject-case": [2, "never", ["start-case", "pascal-case", "upper-case"]],
-
-    "subject-empty": [2, "never"],
-
-    "type-empty": [2, "never"],
-
-    "header-max-length": [2, "always", 100],
+    'header-max-length': [2, 'always', 100],
   },
 };

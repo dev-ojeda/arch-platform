@@ -2,7 +2,6 @@
   "version": "0.2.0",
 
   "configurations": [
-
     // -------------------------------------------------------------------------
     // VSCODE EXTENSION HOST
     // -------------------------------------------------------------------------
@@ -16,20 +15,13 @@
 
       "runtimeExecutable": "${execPath}",
 
-      "args": [
-        "--extensionDevelopmentPath=${workspaceFolder}/apps/vscode-extension"
-      ],
+      "args": ["--extensionDevelopmentPath=${workspaceFolder}/apps/vscode-extension"],
 
       "cwd": "${workspaceFolder}",
 
-      "outFiles": [
-        "${workspaceFolder}/apps/vscode-extension/dist/**/*.js"
-      ],
+      "outFiles": ["${workspaceFolder}/apps/vscode-extension/dist/**/*.js"],
 
-      "resolveSourceMapLocations": [
-        "${workspaceFolder}/**",
-        "!**/node_modules/**"
-      ],
+      "resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"],
 
       "preLaunchTask": "watch:vscode-extension",
 
@@ -47,7 +39,6 @@
   ],
 
   "compounds": [
-
     // -------------------------------------------------------------------------
     // FULL PLATFORM DEVELOPMENT
     // -------------------------------------------------------------------------
@@ -57,9 +48,7 @@
 
       "stopAll": true,
 
-      "configurations": [
-        "Run Architecture Generator"
-      ]
+      "configurations": ["Run Architecture Generator"]
     }
   ]
 }

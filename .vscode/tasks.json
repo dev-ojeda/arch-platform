@@ -1,64 +1,68 @@
 {
   "version": "2.0.0",
+  "options": {
+    "cwd": "${workspaceFolder}",
+    "env": {
+      "FORCE_COLOR": "1"
+    }
+  },
+  "inputs": [
+    {
+      "id": "cleanupDryRun",
 
+      "type": "pickString",
+
+      "description": "Enable DryRun mode?",
+
+      "options": ["", "-DryRun"],
+
+      "default": ""
+    },
+
+    {
+      "id": "cleanupSkipStore",
+
+      "type": "pickString",
+
+      "description": "Skip PNPM store cleanup?",
+
+      "options": ["", "-SkipPnpmStore"],
+
+      "default": ""
+    },
+
+    {
+      "id": "cleanupVerbose",
+
+      "type": "pickString",
+
+      "description": "Enable verbose output?",
+
+      "options": ["", "-VerboseOutput"],
+
+      "default": ""
+    },
+
+    {
+      "id": "turboFilter",
+
+      "type": "promptString",
+
+      "description": "Turbo filter (optional)",
+
+      "default": ""
+    },
+    {
+      "id": "package",
+      "type": "promptString",
+      "description": "Nombre del package"
+    }
+  ],
   "tasks": [
-
-    // -------------------------------------------------------------------------
-    // WATCH
-    // -------------------------------------------------------------------------
-
-    {
-      "label": "watch:vscode-extension",
-
-      "type": "shell",
-
-      "command": "pnpm --filter @arch/vscode-extension dev",
-
-      "isBackground": true,
-
-      "problemMatcher": "$tsc-watch",
-
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "clear": true
-      }
-    },
-
-    // -------------------------------------------------------------------------
-    // CLEANUP
-    // -------------------------------------------------------------------------
-
-    {
-      "label": "cleanup:fast",
-
-      "icon": {
-        "id": "trashcan",
-        "color": "terminal.ansiYellow"
-      },
-
-      "type": "shell",
-
-      "command": "powershell",
-
-      "args": [
-        "-ExecutionPolicy",
-        "Bypass",
-        "-File",
-        "${workspaceFolder}/scripts/cleanup-fast.ps1"
-      ],
-
-      "problemMatcher": [],
-
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "clear": true
-      }
-    },
-
     {
       "label": "cleanup:full",
+
+      "detail": "Perform full workspace cleanup",
 
       "icon": {
         "id": "trash",
@@ -67,13 +71,18 @@
 
       "type": "shell",
 
-      "command": "powershell",
+      "command": "pwsh",
 
       "args": [
+        "-NoProfile",
         "-ExecutionPolicy",
         "Bypass",
         "-File",
-        "${workspaceFolder}/scripts/cleanup-full.ps1"
+        "${workspaceFolder}/scripts/cleanup-full.ps1",
+
+        "${input:cleanupDryRun}",
+        "${input:cleanupSkipStore}",
+        "${input:cleanupVerbose}"
       ],
 
       "problemMatcher": [],
@@ -81,16 +90,64 @@
       "presentation": {
         "reveal": "always",
         "panel": "dedicated",
-        "clear": true
+        "clear": true,
+        "showReuseMessage": false
       }
     },
-
-    // -------------------------------------------------------------------------
-    // PACKAGE MANAGEMENT
-    // -------------------------------------------------------------------------
-
     {
-      "label": "install",
+      "label": "cleanup:turbo-cache",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "if (Test-Path .turbo) { Remove-Item .turbo -Recurse -Force }"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "cleanup:dist",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "./scripts/cleanup/cleanup-dist.ps1"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "validate:lint",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["lint"],
+      "group": "test",
+      "problemMatcher": ["$eslint-stylish"]
+    },
+    {
+      "label": "validate:typecheck",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["typecheck"],
+      "group": "test",
+      "problemMatcher": ["$tsc"]
+    },
+    {
+      "label": "validate:test",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["test"],
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "workspace:install",
+
+      "detail": "Install workspace dependencies",
 
       "icon": {
         "id": "package",
@@ -99,172 +156,57 @@
 
       "type": "shell",
 
-      "command": "pnpm install",
+      "command": "pnpm",
+
+      "args": ["install", "--prefer-offline"],
 
       "problemMatcher": [],
 
       "presentation": {
         "reveal": "always",
-        "panel": "shared"
+        "panel": "dedicated",
+        "clear": true,
+        "showReuseMessage": false
       }
     },
-
-    // -------------------------------------------------------------------------
-    // BUILD
-    // -------------------------------------------------------------------------
-
     {
-      "label": "build",
-
-      "icon": {
-        "id": "tools",
-        "color": "terminal.ansiBlue"
-      },
-
+      "label": "workspace:update",
       "type": "shell",
-
-      "command": "pnpm build",
-
-      "problemMatcher": [],
-
+      "command": "pnpm",
+      "args": ["update", "-r"],
+      "problemMatcher": []
+    },
+    {
+      "label": "platform:build",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["build"],
       "group": {
         "kind": "build",
-        "isDefault": false
-      },
-
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared",
-        "clear": true
-      }
-    },
-
-    // -------------------------------------------------------------------------
-    // VALIDATION
-    // -------------------------------------------------------------------------
-
-    {
-      "label": "validate:typecheck",
-
-      "icon": {
-        "id": "check-all",
-        "color": "terminal.ansiCyan"
-      },
-
-      "type": "shell",
-
-      "command": "pnpm typecheck",
-
-      "problemMatcher": "$tsc",
-
-      "group": {
-        "kind": "test",
-        "isDefault": false
-      },
-
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared",
-        "clear": true
-      }
-    },
-
-    {
-      "label": "validate:dependencies",
-
-      "icon": {
-        "id": "inspect",
-        "color": "terminal.ansiMagenta"
-      },
-
-      "type": "shell",
-
-      "command": "pnpm cruiser",
-
-      "problemMatcher": [],
-
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared",
-        "clear": true
-      }
-    },
-
-    {
-      "label": "validate:test",
-
-      "icon": {
-        "id": "beaker",
-        "color": "terminal.ansiGreen"
-      },
-
-      "type": "shell",
-
-      "command": "pnpm test",
-
-      "problemMatcher": [],
-
-      "group": {
-        "kind": "test",
         "isDefault": true
       },
-
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared",
-        "clear": true
-      }
+      "problemMatcher": ["$tsc"]
     },
-
-    // -------------------------------------------------------------------------
-    // WORKSPACE
-    // -------------------------------------------------------------------------
-
     {
-      "label": "workspace:reset",
-
+      "label": "platform:dev",
       "type": "shell",
-
-      "dependsOrder": "sequence",
-
-      "dependsOn": [
-        "cleanup:fast",
-        "install",
-        "build"
-      ],
-
-      "command": "echo workspace reset completed",
-
-      "problemMatcher": [],
-
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated"
-      }
+      "command": "pnpm",
+      "args": ["dev"],
+      "isBackground": true,
+      "problemMatcher": []
     },
-
     {
-      "label": "workspace:validate",
-
+      "label": "package:build",
       "type": "shell",
-
-      "dependsOrder": "sequence",
-
-      "dependsOn": [
-        "validate:typecheck",
-        "validate:dependencies",
-        "validate:test",
-        "build"
-      ],
-
-      "command": "echo workspace validation completed",
-
-      "problemMatcher": [],
-
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated"
-      }
+      "command": "pnpm",
+      "args": ["--filter", "${input:package}", "build"]
+    },
+    {
+      "label": "package:model:build",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "@arch/platform-model", "build"],
+      "problemMatcher": ["$tsc"]
     }
   ]
 }
