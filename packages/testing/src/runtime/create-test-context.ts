@@ -9,18 +9,15 @@ import type {
   NamedVariables,
   StepExecutionMetric,
   TechnologyStack,
-} from "@arch/contracts";
+} from '@arch/contracts';
+import { InMemoryGenerationEventBus } from '@arch/core';
 
-import { createMemoryFilesystem } from "../filesystem/create-memory-filesystem.js";
+import { createMemoryFilesystem } from '../filesystem/create-memory-filesystem.js';
+import { TestLogger } from '../logging/test-logger.js';
 
-import { TestLogger } from "../logging/test-logger.js";
+import { createTestTechnologyStack } from './create-test-technology-stack.js';
 
-import { InMemoryGenerationEventBus } from "@arch/core";
-import { createTestTechnologyStack } from "./create-test-technology-stack.js";
-
-export interface CreateTestContextOptions<
-  TVariables extends NamedVariables = NamedVariables
-> {
+export interface CreateTestContextOptions<TVariables extends NamedVariables = NamedVariables> {
   variables?: TVariables;
 
   targetDir?: string;
@@ -41,7 +38,7 @@ export interface CreateTestContextOptions<
 }
 
 export function createTestContext<TVariables extends NamedVariables>(
-  options: CreateTestContextOptions<TVariables> = {}
+  options: CreateTestContextOptions<TVariables> = {},
 ): GenerationContext<TVariables> {
   return {
     /*
@@ -62,7 +59,7 @@ export function createTestContext<TVariables extends NamedVariables>(
      * Request
      */
 
-    targetDir: options.targetDir ?? "/workspace",
+    targetDir: options.targetDir ?? '/workspace',
 
     signal: options.signal,
 

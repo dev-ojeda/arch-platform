@@ -1,6 +1,6 @@
 // packages/testing/src/events/recording-generation-event-handler.ts
 
-import type { GenerationEvent, GenerationEventHandler } from "@arch/contracts";
+import type { GenerationEvent, GenerationEventHandler } from '@arch/contracts';
 
 export class RecordingGenerationEventHandler implements GenerationEventHandler {
   readonly events: GenerationEvent[] = [];

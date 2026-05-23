@@ -5,26 +5,24 @@ import type {
   PromptAdapter,
   SelectField,
   StringField,
-} from "@arch/contracts";
+} from '@arch/contracts';
 
-export function createTestPromptAdapter(
-  variables: NamedVariables = {}
-): PromptAdapter {
+export function createTestPromptAdapter(variables: NamedVariables = {}): PromptAdapter {
   return {
     async input<TValues extends NamedVariables>(
-      field: StringField<TValues>
+      field: StringField<TValues>,
     ): Promise<string | undefined> {
       return variables[field.name] as string | undefined;
     },
 
     async select<TValues extends NamedVariables>(
-      field: SelectField<TValues>
+      field: SelectField<TValues>,
     ): Promise<string | undefined> {
       return variables[field.name] as string | undefined;
     },
 
     async boolean<TValues extends NamedVariables>(
-      field: BooleanField<TValues>
+      field: BooleanField<TValues>,
     ): Promise<boolean | undefined> {
       return variables[field.name] as boolean | undefined;
     },
