@@ -1,3 +1,4 @@
 {
+  // packages\application\tsconfig.json
   "extends": "./tsconfig.build.json"
 }
