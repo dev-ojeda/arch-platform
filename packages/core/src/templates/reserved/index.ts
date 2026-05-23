@@ -1,4 +1,3 @@
 // Auto-generated index
 
-export * from './is-reserved-template-variable.js'
-
+export * from './is-reserved-template-variable.js';

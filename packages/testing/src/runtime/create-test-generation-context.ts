@@ -1,13 +1,13 @@
 // packages/testing/src/runtime/create-test-generation-context.ts
 
-import type { GenerationContext, NamedVariables } from "@arch/contracts";
+import type { GenerationContext, NamedVariables } from '@arch/contracts';
 
 const defaultGenerationContext: GenerationContext = {
   /*
    * Request
    */
 
-  targetDir: "/tmp",
+  targetDir: '/tmp',
 
   /*
    * Runtime Services
@@ -62,7 +62,7 @@ const defaultGenerationContext: GenerationContext = {
 };
 
 export function createTestGenerationContext(
-  overrides: Partial<GenerationContext> = {}
+  overrides: Partial<GenerationContext> = {},
 ): GenerationContext {
   return {
     ...defaultGenerationContext,

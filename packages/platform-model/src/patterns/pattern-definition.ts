@@ -1,12 +1,7 @@
 // packages/platform-model/src/patterns/pattern-definition.ts
 
-import type {
-  ArtifactId,
-  CapabilityId,
-  ConventionId,
-  PatternId,
-} from "../shared/identifier.js";
-import type { Metadata } from "../shared/metadata.js";
+import type { ArtifactId, CapabilityId, ConventionId, PatternId } from '../shared/identifier.js';
+import type { Metadata } from '../shared/metadata.js';
 
 export interface PatternDefinition extends Metadata {
   id: PatternId;

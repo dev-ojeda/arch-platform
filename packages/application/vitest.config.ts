@@ -1,30 +1,30 @@
 // packages/application/vitest.config.ts
 
-import { defineConfig, mergeConfig } from "vitest/config";
+import { defineConfig, mergeConfig } from 'vitest/config';
 
-import { sharedVitestConfig } from "../../vitest.shared";
+import { sharedVitestConfig } from '../../vitest.shared';
 
 export default mergeConfig(
   sharedVitestConfig,
 
   defineConfig({
     test: {
-      name: "application",
+      name: 'application',
 
-      setupFiles: ["../../vitest.setup.ts"],
+      setupFiles: ['../../vitest.setup.ts'],
 
       include: [
-        "src/**/*.test.ts",
+        'src/**/*.test.ts',
 
-        "src/**/*.spec.ts",
+        'src/**/*.spec.ts',
 
-        "testing/**/*.test.ts",
+        'testing/**/*.test.ts',
 
-        "testing/**/*.spec.ts",
+        'testing/**/*.spec.ts',
       ],
 
       coverage: {
-        include: ["src/**/*.ts"],
+        include: ['src/**/*.ts'],
 
         thresholds: {
           lines: 40,
@@ -37,5 +37,5 @@ export default mergeConfig(
         },
       },
     },
-  })
+  }),
 );

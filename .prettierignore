@@ -1,0 +1,12 @@
+# Build outputs
+dist
+coverage
+.turbo
+node_modules
+
+# Generated artifacts
+dependency-report.html
+dependency-graph.svg
+
+# Handlebars templates
+templates/**/*.hbs

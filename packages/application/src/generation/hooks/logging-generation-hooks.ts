@@ -5,20 +5,20 @@ import {
   type GenerationContext,
   type GenerationHooks,
   type GenerationPipelineStep,
-} from "@arch/contracts";
+} from '@arch/contracts';
 
 export class LoggingGenerationHooks implements GenerationHooks {
   async beforePipeline(context: GenerationContext): Promise<void> {
-    context.logger.info("[arch] generation started");
+    context.logger.info('[arch] generation started');
   }
 
   async beforeStep(
     step: GenerationPipelineStep,
 
-    context: GenerationContext
+    context: GenerationContext,
   ): Promise<void> {
     reportDiagnostic(context, {
-      level: "info",
+      level: 'info',
 
       message: `Running ${step.name}`,
 
@@ -28,20 +28,20 @@ export class LoggingGenerationHooks implements GenerationHooks {
   }
 
   async afterPipeline(context: GenerationContext): Promise<void> {
-    context.logger.info("[arch] generation completed");
+    context.logger.info('[arch] generation completed');
   }
 
   async onError(
     error: unknown,
 
-    context: GenerationContext
+    context: GenerationContext,
   ): Promise<void> {
     reportDiagnostic(context, {
-      level: "error",
+      level: 'error',
 
       message: error instanceof Error ? error.message : String(error),
     });
-    context.logger.error("[arch] generation failed", {
+    context.logger.error('[arch] generation failed', {
       error: error instanceof Error ? error.message : String(error),
     });
   }

@@ -1,18 +1,13 @@
 // packages/application/src/generation/pipeline/generation-pipeline.ts
 
-import type {
-  GenerationContext,
-  GenerationHooks,
-  GenerationPipelineStep,
-} from "@arch/contracts";
+import { randomUUID } from 'node:crypto';
 
-import { randomUUID } from "node:crypto";
+import type { GenerationContext, GenerationHooks, GenerationPipelineStep } from '@arch/contracts';
 
-import { measureStepExecution } from "../telemetry/measure-step-execution.js";
+import type { RuntimeEventBus } from '../../runtime/events/runtime-event-bus.js';
+import { RuntimeEventTypes } from '../../runtime/events/runtime-event-types.js';
+import { measureStepExecution } from '../telemetry/measure-step-execution.js';
 
-import type { RuntimeEventBus } from "../../runtime/events/runtime-event-bus.js";
-
-import { RuntimeEventTypes } from "../../runtime/events/runtime-event-types.js";
 
 export class GenerationPipeline {
   constructor(
@@ -20,13 +15,13 @@ export class GenerationPipeline {
 
     private readonly hooks?: GenerationHooks,
 
-    private readonly runtimeEvents?: RuntimeEventBus
+    private readonly runtimeEvents?: RuntimeEventBus,
   ) {}
 
   async execute(context: GenerationContext): Promise<void> {
     const executionId = randomUUID();
 
-    const pipelineId = "generation-pipeline";
+    const pipelineId = 'generation-pipeline';
 
     try {
       await this.runtimeEvents?.emit({
@@ -70,7 +65,7 @@ export class GenerationPipeline {
               await step.execute(context);
 
               await this.hooks?.afterStep?.(step, context);
-            }
+            },
           );
 
           await this.runtimeEvents?.emit({

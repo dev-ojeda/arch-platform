@@ -1,18 +1,17 @@
 // packages\application\src\generation\steps\__tests__\validate-generator.step.test.ts
-import { describe, expect, it } from "vitest";
+import type { GenerationContext } from '@arch/contracts';
+import { describe, expect, it } from 'vitest';
 
-import type { GenerationContext } from "@arch/contracts";
-import { GeneratorValidationError } from "../../errors/generator-validation-error.js";
-import { ValidateGeneratorStep } from "../validate-generator.step.js";
+import { GeneratorValidationError } from '../../errors/generator-validation-error.js';
+import { ValidateGeneratorStep } from '../validate-generator.step.js';
 
-describe("ValidateGeneratorStep", () => {
-  it("throws when generator is missing", async () => {
+
+describe('ValidateGeneratorStep', () => {
+  it('throws when generator is missing', async () => {
     const step = new ValidateGeneratorStep();
 
     const context = {} as GenerationContext;
 
-    await expect(step.execute(context)).rejects.toThrow(
-      GeneratorValidationError
-    );
+    await expect(step.execute(context)).rejects.toThrow(GeneratorValidationError);
   });
 });

@@ -1,25 +1,13 @@
 // packages/application/src/generation/templates/resolve-template-output-path.ts
 
-import Handlebars
-from 'handlebars'
+import type { NamedVariables } from '@arch/contracts';
+import Handlebars from 'handlebars';
 
-import type {
-  NamedVariables
-}
-from '@arch/contracts'
 
-export function
-resolveTemplateOutputPath(
+export function resolveTemplateOutputPath(
+  output: string,
 
-  output:
-  string,
-
-  variables:
-  NamedVariables
+  variables: NamedVariables,
 ): string {
-
-  return Handlebars
-    .compile(output)(
-      variables
-    )
+  return Handlebars.compile(output)(variables);
 }

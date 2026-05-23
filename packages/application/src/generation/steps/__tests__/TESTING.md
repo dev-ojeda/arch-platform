@@ -103,7 +103,7 @@ ResolveTemplatesStep
 Los tests utilizan:
 
 ```ts
-createTestPipelineContext()
+createTestPipelineContext();
 ```
 
 para generar un runtime desacoplado del entorno real.
@@ -143,13 +143,11 @@ context.generator
 ## ✅ Assertions principales
 
 ```ts
-expect(context.generator).toBeDefined()
+expect(context.generator).toBeDefined();
 ```
 
 ```ts
-expect(
-  context.generator?.descriptor.id
-).toBe('test-generator')
+expect(context.generator?.descriptor.id).toBe('test-generator');
 ```
 
 ---
@@ -203,30 +201,21 @@ resolvedTemplates
 ### ✅ Assertions principales
 
 ```ts
-expect(
-  context.resolvedTemplates
-).toBeDefined()
+expect(context.resolvedTemplates).toBeDefined();
 ```
 
 ```ts
-expect(
-  context.resolvedTemplates
-).toHaveLength(
-  testGenerator.templates.length
-)
+expect(context.resolvedTemplates).toHaveLength(testGenerator.templates.length);
 ```
 
 ## 🧩 Validación estructural
 
 ```ts
 expect.objectContaining({
+  outputPath: expect.any(String),
 
-  outputPath:
-    expect.any(String),
-
-  template:
-    expect.any(Object)
-})
+  template: expect.any(Object),
+});
 ```
 
 ---
@@ -248,7 +237,7 @@ Validar interpolación semántica de paths de salida.
 El test utiliza:
 
 ```ts
-resolvedVariables
+resolvedVariables;
 ```
 
 con propiedades derivadas como:
@@ -274,11 +263,7 @@ services/UserService.ts
 ## 🎯 Assertion principal
 
 ```ts
-expect(
-  context.resolvedTemplates?.[0]?.outputPath
-).toBe(
-  'services/UserService.ts'
-)
+expect(context.resolvedTemplates?.[0]?.outputPath).toBe('services/UserService.ts');
 ```
 
 ---
@@ -301,7 +286,7 @@ Ejemplo:
 
 ```ts
 {
-  name: 'user'
+  name: 'user';
 }
 ```
 
@@ -379,7 +364,7 @@ ResolveVariablesStep
 por lo que se refactorizó el pipeline para soportar:
 
 ```ts
-resolvedVariables
+resolvedVariables;
 ```
 
 como fase explícita.

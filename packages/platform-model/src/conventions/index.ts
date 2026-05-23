@@ -1,7 +1,6 @@
 // packages/platform-model/src/conventions/index.ts
 
-export * from "./convention-definition.js";
-export * from "./convention-type.js";
-export * from "./folder-convention.js";
-export * from "./naming-convention.js";
-
+export * from './convention-definition.js';
+export * from './convention-type.js';
+export * from './folder-convention.js';
+export * from './naming-convention.js';

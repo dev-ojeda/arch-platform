@@ -1,188 +1,211 @@
 # =============================================================================
 # PNPM WORKSPACE CONFIGURATION
 # =============================================================================
+# Centralized workspace governance for:
+# - dependency management
+# - tooling consistency
+# - supply-chain security
+# - monorepo orchestration
+# - platform runtime standardization
+# =============================================================================
 
 # -----------------------------------------------------------------------------
 # WORKSPACE PACKAGES
 # -----------------------------------------------------------------------------
-# Define los paquetes que forman parte del monorepo.
-# PNPM detectará automáticamente los package.json dentro de estas rutas.
 packages:
-- packages/*
-- packages/generators/*
-# - apps/*
+  # Core platform packages
+  - 'packages/*'
+
+  # Generators / scaffolding
+  - 'packages/generators/*'
+# Future applications
+# - "apps/*"
+
+# Future platform tooling
+# - "tooling/*"
+
+# -----------------------------------------------------------------------------
+# NODE / RUNTIME GOVERNANCE
+# -----------------------------------------------------------------------------
+
+# Enforce consistent Node.js runtime across the workspace.
+nodeVersion: 22.19.0
+
+# Fail installation if Node version does not match.
+engineStrict: true
+
+# Automatically use workspace:* protocol for internal packages.
+saveWorkspaceProtocol: rolling
 
 # -----------------------------------------------------------------------------
 # SHARED DEPENDENCY CATALOG
 # -----------------------------------------------------------------------------
-# Catálogo centralizado de versiones reutilizables.
-# Permite mantener consistencia de dependencias entre todos los paquetes
-# del workspace utilizando:
+# Centralized reusable dependency versions.
+#
+# Usage:
 #
 #   "dependency": "catalog:"
 #
-# Facilita upgrades masivos y evita version drift.
+# Benefits:
+# - prevents dependency drift
+# - simplifies upgrades
+# - standardizes tooling
+# - improves governance
+# -----------------------------------------------------------------------------
 catalog:
-
-  # ---------------------------------------------------------------------------
+  # ===========================================================================
   # RELEASE / VERSIONING
-  # ---------------------------------------------------------------------------
+  # ===========================================================================
 
-  # Gestión de versionado y changelogs automatizados.
-  "@changesets/cli": 2.31.0
+  '@changesets/cli': 2.31.0
 
-  # ---------------------------------------------------------------------------
-  # GIT / COMMITS / CONVENTIONAL COMMITS
-  # ---------------------------------------------------------------------------
+  # ===========================================================================
+  # SOURCE CONTROL / COMMITS
+  # ===========================================================================
 
-  # CLI para validación de mensajes de commit.
-  "@commitlint/cli": 21.0.1
+  '@commitlint/cli': 21.0.1
+  '@commitlint/config-conventional': 21.0.1
 
-  # Reglas Conventional Commits estándar.
-  "@commitlint/config-conventional": 21.0.1
-
-  # Hooks Git modernos.
   husky: 9.1.7
-  prettier: 3.6.2
+  prettier: 3.8.3
 
-  # ---------------------------------------------------------------------------
-  # TYPESCRIPT / NODE
-  # ---------------------------------------------------------------------------
+  # ===========================================================================
+  # TYPESCRIPT / NODE RUNTIME
+  # ===========================================================================
 
-  # Tipos oficiales de Node.js.
-  "@types/node": 24.12.4
+  '@types/node': 24.12.4
 
-  # Compilador TypeScript.
   typescript: 5.9.3
-
-  # Ejecución directa de archivos TS/ESM sin compilación previa.
+  typescript-eslint: 8.59.4
   tsx: 4.22.0
 
-  # Bundler TypeScript ultra rápido.
   tsup: 8.5.1
 
-  # ---------------------------------------------------------------------------
+  # ===========================================================================
   # TESTING
-  # ---------------------------------------------------------------------------
+  # ===========================================================================
 
-  # Framework de testing moderno compatible con Vite.
   vitest: 4.1.7
 
-  # Provider de cobertura basado en V8.
-  "@vitest/coverage-v8": 4.1.7
+  '@vitest/coverage-v8': 4.1.7
 
-  # ---------------------------------------------------------------------------
+  # ===========================================================================
   # VSCODE / EXTENSION DEVELOPMENT
-  # ---------------------------------------------------------------------------
+  # ===========================================================================
 
-  # Testing automatizado para extensiones VSCode.
-  "@vscode/test-electron": 2.5.2
+  '@vscode/test-electron': 2.5.2
 
-  # ---------------------------------------------------------------------------
-  # LINTING / CODE QUALITY
-  # ---------------------------------------------------------------------------
+  # ===========================================================================
+  # LINTING / STATIC ANALYSIS
+  # ===========================================================================
 
-  # Linter principal JavaScript/TypeScript.
   eslint: 9.39.1
 
-  # Reglas ESLint para imports ESModules/CommonJS.
   eslint-plugin-import: 2.32.0
 
-  # Resolver de módulos Node.js para eslint-plugin-import.
   eslint-import-resolver-node: 0.4.0
 
-  # ---------------------------------------------------------------------------
-  # DEPENDENCY ANALYSIS / ARCHITECTURE
-  # ---------------------------------------------------------------------------
+  eslint-import-resolver-typescript: 4.4.4
+  eslint-config-prettier: 10.1.8
+  # ===========================================================================
+  # ARCHITECTURE / DEPENDENCY GOVERNANCE
+  # ===========================================================================
 
-  # Análisis de dependencias y arquitectura del código.
   dependency-cruiser: 17.4.0
 
-  # Visualización de bundles generados por esbuild.
   esbuild-visualizer: 0.7.0
 
-  # ---------------------------------------------------------------------------
-  # BUILD / TASK ORCHESTRATION
-  # ---------------------------------------------------------------------------
-
-  # Orquestador de pipelines monorepo.
-  turbo: 2.9.14
-
-  # ---------------------------------------------------------------------------
-  # UTILITIES
-  # ---------------------------------------------------------------------------
-
-  # Eliminación multiplataforma de archivos/directorios.
-  rimraf: 6.1.3
-
-  # Validación y sincronización de versiones package.json.
   syncpack: 15.3.1
 
+  # ===========================================================================
+  # BUILD / TASK ORCHESTRATION
+  # ===========================================================================
+
+  turbo: 2.9.14
+
+  # ===========================================================================
+  # INTERNAL TOOLING / RUNTIME
+  # ===========================================================================
+
+  execa: 9.6.1
+
+  zod: 4.4.3
+
+  # ===========================================================================
+  # UTILITIES
+  # ===========================================================================
+
+  rimraf: 6.1.3
+
 # -----------------------------------------------------------------------------
-# ONLY BUILT DEPENDENCIES
+# SUPPLY CHAIN / NATIVE BUILD GOVERNANCE
 # -----------------------------------------------------------------------------
-# Lista de dependencias permitidas para ejecutar scripts de build/install
-# nativos (postinstall, install scripts, compilación binaria, etc).
+# Only allow trusted packages to execute install/build scripts.
 #
-# Mejora seguridad y control de supply chain evitando builds inesperados.
+# Helps protect against:
+# - malicious postinstall scripts
+# - unexpected native builds
+# - supply-chain attacks
+# -----------------------------------------------------------------------------
 onlyBuiltDependencies:
+  # Native bundler runtime
+  - esbuild
 
-# Bundler nativo de alto rendimiento.
-- esbuild
+  # Secure OS credential access
+  - keytar
 
-# Acceso seguro a credenciales del sistema operativo.
-- keytar
+  # Fast Rust-based module resolver
+  - unrs-resolver
 
-# Firma de extensiones VSCode.
-- "@vscode/vsce-sign"
+  # VSCode extension signing
+  - '@vscode/vsce-sign'
 
-# Compilador SWC nativo.
-- "@swc/core"
+  # Native SWC compiler
+  - '@swc/core'
 
 # -----------------------------------------------------------------------------
-# SUPPORTED ARCHITECTURES
+# SUPPORTED RUNTIME ARCHITECTURES
 # -----------------------------------------------------------------------------
-# Restringe instalación de paquetes a arquitecturas específicas.
-# Útil para evitar instalación de binarios incompatibles.
 supportedArchitectures:
-
-  # Sistemas operativos soportados.
   os:
-  - win32
-  # Arquitecturas CPU soportadas.
+    - win32
+    - linux
+
   cpu:
-  - x64
+    - x64
+
+# -----------------------------------------------------------------------------
+# HOISTING STRATEGY
+# -----------------------------------------------------------------------------
+# Improve compatibility for tooling ecosystems that expect hoisted deps.
+# -----------------------------------------------------------------------------
+publicHoistPattern:
+  - '*eslint*'
+
+  - '*typescript*'
 
 # -----------------------------------------------------------------------------
 # PEER DEPENDENCY RULES
 # -----------------------------------------------------------------------------
-# Configuración de manejo de peerDependencies.
 peerDependencyRules:
-
-  # Ignora warnings de peerDependencies faltantes.
-  # Útil en plugins, librerías compartidas o tooling interno.
+  # Ignore peer dependency warnings intentionally managed at root.
   ignoreMissing:
+    - eslint
 
-  # ESLint puede ser provisto por el workspace root.
-  - eslint
-
-  # TypeScript puede existir sólo en paquetes específicos.
-  - typescript
+    - typescript
 
 # -----------------------------------------------------------------------------
-# OVERRIDES
+# GLOBAL VERSION OVERRIDES
 # -----------------------------------------------------------------------------
-# Fuerza versiones específicas globalmente en TODO el workspace.
+# Force consistent dependency versions across the entire workspace.
 #
-# Muy útil para:
-# - Parches de seguridad
-# - Resolver incompatibilidades
-# - Evitar múltiples versiones
-# - Estandarizar tooling
+# Useful for:
+# - security patches
+# - dependency deduplication
+# - runtime consistency
+# - tooling standardization
+# -----------------------------------------------------------------------------
 overrides:
-
-  # Fix/version pin de lodash.
   lodash: ^4.17.24
 
-  # Fix/version pin de tmp.
   tmp: ^0.2.4

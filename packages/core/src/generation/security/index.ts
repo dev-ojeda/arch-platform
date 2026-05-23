@@ -1,4 +1,3 @@
 // Auto-generated index
 
-export * from './generation-security.js'
-
+export * from './generation-security.js';

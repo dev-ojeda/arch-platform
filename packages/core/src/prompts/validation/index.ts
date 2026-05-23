@@ -1,4 +1,3 @@
 // Auto-generated index
 
-export * from './prompt-validator.js'
-
+export * from './prompt-validator.js';

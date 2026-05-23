@@ -4,6 +4,5 @@ export interface GenerateProjectPromptResult {
 }
 
 export interface PromptPort {
-  askGenerateProjectData():
-    Promise<GenerateProjectPromptResult>;
+  askGenerateProjectData(): Promise<GenerateProjectPromptResult>;
 }

@@ -1,14 +1,4 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "dist"
-  },
-
-  "include": ["src/**/*.ts"],
-
-  "exclude": [
-    "dist",
-    "node_modules"
-  ]
+  // packages\contracts\tsconfig.json
+  "extends": "./tsconfig.build.json" // packages\contracts\tsconfig.build.json
 }

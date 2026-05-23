@@ -1,4 +1,3 @@
 // Auto-generated index
 
-export * from './generation-hooks.js'
-
+export * from './generation-hooks.js';

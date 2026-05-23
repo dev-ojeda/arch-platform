@@ -1,99 +1,75 @@
 // packages/testing/src/logging/test-logger.ts
 
-import type {
-    LoggerPort
-}
-    from '@arch/contracts'
+import type { LoggerPort } from '@arch/contracts';
 
 export interface TestLogEntry {
+  level: 'debug' | 'info' | 'warn' | 'error';
 
-    level:
-    | 'debug'
-    | 'info'
-    | 'warn'
-    | 'error'
+  message: string;
 
-    message: string
-
-    meta?: Record<string, unknown>
+  meta?: Record<string, unknown>;
 }
 
-export class TestLogger
-    implements LoggerPort {
+export class TestLogger implements LoggerPort {
+  readonly logs: TestLogEntry[] = [];
 
-    readonly logs:
-        TestLogEntry[] = []
+  debug(
+    message: string,
 
-    debug(
-        message: string,
+    meta?: Record<string, unknown>,
+  ): void {
+    this.logs.push({
+      level: 'debug',
 
-        meta?: Record<string, unknown>
-    ): void {
+      message,
 
-        this.logs.push({
+      meta,
+    });
+  }
 
-            level:
-                'debug',
+  info(
+    message: string,
 
-            message,
+    meta?: Record<string, unknown>,
+  ): void {
+    this.logs.push({
+      level: 'info',
 
-            meta
-        })
-    }
+      message,
 
-    info(
-        message: string,
+      meta,
+    });
+  }
 
-        meta?: Record<string, unknown>
-    ): void {
+  warn(
+    message: string,
 
-        this.logs.push({
+    meta?: Record<string, unknown>,
+  ): void {
+    this.logs.push({
+      level: 'warn',
 
-            level:
-                'info',
+      message,
 
-            message,
+      meta,
+    });
+  }
 
-            meta
-        })
-    }
+  error(
+    message: string,
 
-    warn(
-        message: string,
+    meta?: Record<string, unknown>,
+  ): void {
+    this.logs.push({
+      level: 'error',
 
-        meta?: Record<string, unknown>
-    ): void {
+      message,
 
-        this.logs.push({
+      meta,
+    });
+  }
 
-            level:
-                'warn',
-
-            message,
-
-            meta
-        })
-    }
-
-    error(
-        message: string,
-
-        meta?: Record<string, unknown>
-    ): void {
-
-        this.logs.push({
-
-            level:
-                'error',
-
-            message,
-
-            meta
-        })
-    }
-
-    clear(): void {
-
-        this.logs.length = 0
-    }
+  clear(): void {
+    this.logs.length = 0;
+  }
 }

@@ -1,4 +1,3 @@
 // Auto-generated index
 
-export * from './prompt-resolver.js'
-
+export * from './prompt-resolver.js';

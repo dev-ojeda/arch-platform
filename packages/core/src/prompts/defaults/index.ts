@@ -1,4 +1,3 @@
 // Auto-generated index
 
-export * from './prompt-defaults.js'
-
+export * from './prompt-defaults.js';

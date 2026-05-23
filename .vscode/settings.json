@@ -2,271 +2,191 @@
   // -----------------------------------------------------------------------------
   // EDITOR
   // -----------------------------------------------------------------------------
-
-  "editor.autoClosingBrackets": "always",
-  "editor.autoClosingQuotes": "always",
-
   "editor.tabSize": 2,
   "editor.detectIndentation": false,
-
+  "editor.autoClosingBrackets": "always",
+  "editor.autoClosingQuotes": "always",
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.minimap.enabled": false,
+  "editor.stickyScroll.enabled": true,
   "editor.suggestSelection": "first",
   "editor.snippetSuggestions": "top",
-
-  "editor.stickyScroll.enabled": true,
-
-  "editor.minimap.enabled": false,
-
+  "editor.inlineSuggest.enabled": true,
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
   },
-
-  "editor.largeFileOptimizations": true,
-
   // -----------------------------------------------------------------------------
   // WORKBENCH
   // -----------------------------------------------------------------------------
-
   "workbench.startupEditor": "readme",
-
   "window.commandCenter": true,
-
   "debug.inlineValues": "on",
-
   // -----------------------------------------------------------------------------
   // EXPLORER
   // -----------------------------------------------------------------------------
-
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
-
   // -----------------------------------------------------------------------------
   // FILES
   // -----------------------------------------------------------------------------
-
   "files.insertFinalNewline": false,
-
   "files.trimTrailingWhitespace": true,
-
+  "files.eol": "\n",
   "files.exclude": {
     "**/.turbo": true,
-    "**/coverage": true,
-    "**/.pnpm-store": true
+    "**/.pnpm-store": true,
+    "**/coverage": true
   },
-
+  "files.watcherExclude": {
+    "**/.pnpm-store/**": true,
+    "**/.turbo/**": true,
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/coverage/**": true
+  },
   "files.associations": {
-    "*.scpt": "shellscript",
     "*.ts": "typescript",
     "*.js": "javascript",
-    "*.bat": "bat",
     "*.yml": "yaml",
+    "*.bat": "bat",
+    "*.scpt": "shellscript",
     ".npmrc": "ini",
     ".json": "json"
   },
-
-  "files.watcherExclude": {
-    "**/.turbo/**": true,
-    "**/dist/**": true,
-    "**/coverage/**": true,
-    "**/.pnpm-store/**": true,
-    "**/node_modules/**": true
-  },
-
   // -----------------------------------------------------------------------------
   // SEARCH
   // -----------------------------------------------------------------------------
-
+  "search.followSymlinks": false,
   "search.exclude": {
-    "**/dist": true,
-    "**/.turbo": true,
-    "**/coverage": true,
     "**/.pnpm-store": true,
-    "**/.cache": true
+    "**/.turbo": true,
+    "**/.cache": true,
+    "**/coverage": true,
+    "**/dist": true
   },
-
   // -----------------------------------------------------------------------------
   // GIT
   // -----------------------------------------------------------------------------
-
   "git.autoStash": true,
-
   "git.confirmForcePush": false,
-
   "git.openRepositoryInParentFolders": "always",
-
   // -----------------------------------------------------------------------------
   // TASKS
   // -----------------------------------------------------------------------------
-
   "task.allowAutomaticTasks": "on",
-
   "task.quickOpen.history": 30,
-
   "task.quickOpen.skip": true,
-
   // -----------------------------------------------------------------------------
   // TESTING
   // -----------------------------------------------------------------------------
-
   "testing.automaticallyOpenPeekView": "never",
-
   // -----------------------------------------------------------------------------
-  // TYPESCRIPT
+  // TYPESCRIPT / JAVASCRIPT
   // -----------------------------------------------------------------------------
-
   "typescript.disableAutomaticTypeAcquisition": true,
-
   "typescript.tsdk": "node_modules/typescript/lib",
-
   "typescript.tsserver.maxTsServerMemory": 4096,
-
   "typescript.tsserver.experimental.enableProjectDiagnostics": false,
-
   "typescript.tsserver.log": "off",
-
   "typescript.tsserver.watchOptions": {
-    "watchFile": "useFsEvents",
-    "watchDirectory": "useFsEvents"
+    "watchFile": "dynamicPriorityPolling",
+    "watchDirectory": "fixedPollingInterval"
   },
-
   "typescript.preferences.preferTypeOnlyAutoImports": true,
-
   "typescript.preferences.importModuleSpecifierEnding": "js",
-
-  // -----------------------------------------------------------------------------
-  // JAVASCRIPT
-  // -----------------------------------------------------------------------------
-
   "javascript.updateImportsOnFileMove.enabled": "always",
-
   "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
-
   // -----------------------------------------------------------------------------
-  // TERMINAL
+  // TERMINAL / POWERSHELL
   // -----------------------------------------------------------------------------
-
   "terminal.integrated.defaultProfile.windows": "PowerShell",
-
+  "terminal.integrated.enablePersistentSessions": false,
   "terminal.integrated.profiles.windows": {
     "PowerShell": {
-      "source": "PowerShell",
+      "path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
       "icon": "terminal-powershell"
     },
-
     "Command Prompt": {
-      "path": [
-        "${env:windir}\\Sysnative\\cmd.exe",
-        "${env:windir}\\System32\\cmd.exe"
-      ],
-
+      "path": ["${env:windir}\\Sysnative\\cmd.exe", "${env:windir}\\System32\\cmd.exe"],
       "args": [],
-
       "icon": "terminal-cmd",
-
       "overrideName": true
     },
-
     "Git Bash": {
       "source": "Git Bash"
     }
   },
-
+  "powershell.cwd": "${workspaceFolder}",
+  "powershell.powerShellAdditionalExePaths": {
+    "pwsh": "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+  },
+  "powershell.integratedConsole.focusConsoleOnExecute": false,
+  "powershell.promptToUpdatePowerShell": false,
   // -----------------------------------------------------------------------------
   // PACKAGE MANAGERS
   // -----------------------------------------------------------------------------
-
   "npm.autoDetect": "off",
-
   // -----------------------------------------------------------------------------
   // BETTER COMMENTS
   // -----------------------------------------------------------------------------
-
   "better-comments.multilineComments": true,
-
   "better-comments.highlightPlainText": false,
-
   "better-comments.tags": [
     {
       "tag": "!",
       "color": "#FF5555",
       "bold": true
     },
-
     {
       "tag": "?",
       "color": "#61AFEF",
       "bold": true
     },
-
     {
       "tag": "todo",
       "color": "#FFB86C",
       "bold": true
     },
-
     {
       "tag": "fix",
       "color": "#FF6B6B",
       "bold": true
     },
-
     {
       "tag": "hack",
       "color": "#E06C75",
       "bold": true,
       "italic": true
     },
-
     {
       "tag": "perf",
       "color": "#C678DD",
       "bold": true
     },
-
     {
       "tag": "deprecated",
       "color": "#7F848E",
-      "strikethrough": true,
-      "italic": true
+      "italic": true,
+      "strikethrough": true
     },
-
     {
       "tag": "*",
       "color": "#98C379"
     }
   ],
-
   // -----------------------------------------------------------------------------
   // TODO TREE
   // -----------------------------------------------------------------------------
-
-  "todo-tree.general.tags": [
-    "todo",
-    "fix",
-    "hack",
-    "perf",
-    "deprecated"
-  ],
-
+  "todo-tree.general.tags": ["todo", "fix", "hack", "perf", "deprecated"],
   // -----------------------------------------------------------------------------
   // AUTO PATH HEADER
   // -----------------------------------------------------------------------------
-
-  "autoPathHeader.ignoredDirectories": [
-    "temp",
-    "**/node_modules",
-    "dist/*"
-  ],
-
-  "autoPathHeader.allowedOnlyDirectories": [
-    "src",
-    "**/utils",
-    "src/**/*.ts"
-  ],
-
+  "autoPathHeader.ignoredDirectories": ["temp", "**/node_modules", "dist/*"],
+  "autoPathHeader.allowedOnlyDirectories": ["src", "**/utils", "src/**/*.ts"],
   // -----------------------------------------------------------------------------
   // FOLDER TEMPLATES
   // -----------------------------------------------------------------------------
-
   "folderTemplates.structures": [
     {
       "structure": [
@@ -277,70 +197,51 @@
       ]
     }
   ],
-
   // -----------------------------------------------------------------------------
   // RUFF
   // -----------------------------------------------------------------------------
-
   "ruff.format.preview": true,
-
   // -----------------------------------------------------------------------------
   // LANGUAGE SPECIFIC
   // -----------------------------------------------------------------------------
-
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
-
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
-
+  "[powershell]": {
+    "editor.defaultFormatter": "ms-vscode.powershell",
+    "editor.formatOnSave": true
+  },
   "[markdown]": {
     "editor.wordWrap": "on",
-
     "editor.unicodeHighlight.ambiguousCharacters": false,
-
     "editor.unicodeHighlight.invisibleCharacters": false,
-
     "diffEditor.ignoreTrimWhitespace": false,
-
     "editor.quickSuggestions": {
       "comments": "off",
       "strings": "off",
       "other": "off"
     }
   },
-
   "[bat]": {
     "files.eol": "\n",
-
     "editor.autoIndent": "full",
-
     "editor.autoClosingBrackets": "always",
-
-    "editor.formatOnType": true,
-
-    "editor.tabCompletion": "onlySnippets",
-
     "editor.autoClosingComments": "beforeWhitespace",
-
-    "editor.autoClosingOvertype": "auto",
-
     "editor.autoClosingDelete": "always",
-
+    "editor.autoClosingOvertype": "auto",
+    "editor.formatOnType": true,
+    "editor.tabCompletion": "onlySnippets",
     "editor.snippetSuggestions": "inline",
-
     "editor.suggest.insertMode": "replace",
-
     "diffEditor.ignoreTrimWhitespace": true,
-
     "editor.defaultFormatter": "toramameseven.bat-tools"
   }
 }

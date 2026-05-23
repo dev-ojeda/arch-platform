@@ -1,10 +1,8 @@
 // packages/application/src/runtime/runtime-bootstrap.ts
 
-import { InMemoryRuntimeEventBus } from "./events/in-memory-runtime-event-bus.js";
-
-import { TimelineAggregator } from "./timeline/timeline-aggregator.js";
-
-import { TimelineConsoleRenderer } from "./timeline/timeline-console-renderer.js";
+import { InMemoryRuntimeEventBus } from './events/in-memory-runtime-event-bus.js';
+import { TimelineAggregator } from './timeline/timeline-aggregator.js';
+import { TimelineConsoleRenderer } from './timeline/timeline-console-renderer.js';
 
 export interface RuntimeBootstrap {
   runtimeEvents: InMemoryRuntimeEventBus;

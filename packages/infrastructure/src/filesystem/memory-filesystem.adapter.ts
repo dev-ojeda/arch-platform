@@ -1,224 +1,114 @@
 // packages\infrastructure\src\filesystem\memory-filesystem.adapter.ts
-import * as path
-from 'node:path'
+import * as path from 'node:path';
 
-import type {
-    DirectoryEntry,
-    FileSystemPort,
-    WriteFileOptions
-}
-from '@arch/contracts'
+import type { DirectoryEntry, FileSystemPort, WriteFileOptions } from '@arch/contracts';
 
-export class MemoryFileSystemAdapter
-implements FileSystemPort {
+export class MemoryFileSystemAdapter implements FileSystemPort {
+  private readonly files = new Map<string, string>();
 
-    private readonly files =
-        new Map<string, string>()
+  private readonly directories = new Set<string>();
 
-    private readonly directories =
-        new Set<string>()
+  private normalizePath(targetPath: string): string {
+    return path.normalize(targetPath).replaceAll('\\', '/');
+  }
 
-    private normalizePath(
-        targetPath: string
-    ): string {
+  async read(targetPath: string): Promise<string> {
+    const normalized = this.normalizePath(targetPath);
 
-        return path
-            .normalize(targetPath)
-            .replaceAll('\\', '/')
+    const file = this.files.get(normalized);
+
+    if (file === undefined) {
+      throw new Error(`File not found: ${normalized}`);
     }
 
-    async read(
-        targetPath: string
-    ): Promise<string> {
+    return file;
+  }
 
-        const normalized =
-            this.normalizePath(
-                targetPath
-            )
+  async write(
+    targetPath: string,
 
-        const file =
-            this.files.get(
-                normalized
-            )
+    content: string,
 
-        if (file === undefined) {
+    options?: WriteFileOptions,
+  ): Promise<void> {
+    const normalized = this.normalizePath(targetPath);
 
-            throw new Error(
-                `File not found: ${normalized}`
-            )
-        }
+    const exists = this.files.has(normalized);
 
-        return file
+    const overwrite = options?.overwrite ?? 'overwrite';
+
+    if (exists) {
+      switch (overwrite) {
+        case 'skip':
+          return;
+
+        case 'error':
+          throw new Error(`File already exists: ${normalized}`);
+
+        case 'overwrite':
+        default:
+          break;
+      }
     }
 
-    async write(
-        targetPath: string,
+    this.files.set(normalized, content);
 
-        content: string,
+    this.directories.add(path.dirname(normalized));
+  }
 
-        options?: WriteFileOptions
-    ): Promise<void> {
+  async copy(source: string, destination: string): Promise<void> {
+    const content = await this.read(source);
 
-        const normalized =
-            this.normalizePath(
-                targetPath
-            )
+    await this.write(destination, content);
+  }
 
-        const exists =
-            this.files.has(
-                normalized
-            )
+  async createDirectory(targetPath: string): Promise<void> {
+    this.directories.add(this.normalizePath(targetPath));
+  }
 
-        const overwrite =
-            options?.overwrite
-            ?? 'overwrite'
+  async exists(targetPath: string): Promise<boolean> {
+    const normalized = this.normalizePath(targetPath);
 
-        if (exists) {
+    return this.files.has(normalized) || this.directories.has(normalized);
+  }
 
-            switch (overwrite) {
+  async remove(targetPath: string): Promise<void> {
+    const normalized = this.normalizePath(targetPath);
 
-                case 'skip':
-                    return
+    this.files.delete(normalized);
 
-                case 'error':
-                    throw new Error(
-                        `File already exists: ${normalized}`
-                    )
+    this.directories.delete(normalized);
+  }
 
-                case 'overwrite':
-                default:
-                    break
-            }
-        }
+  async readDirectory(directoryPath: string): Promise<DirectoryEntry[]> {
+    const normalized = this.normalizePath(directoryPath);
 
-        this.files.set(
-            normalized,
-            content
-        )
+    const entries: DirectoryEntry[] = [];
 
-        this.directories.add(
-            path.dirname(
-                normalized
-            )
-        )
+    for (const filePath of this.files.keys()) {
+      if (!filePath.startsWith(normalized)) {
+        continue;
+      }
+
+      entries.push({
+        name: filePath.split('/').pop() ?? '',
+
+        path: filePath,
+
+        isDirectory: false,
+      });
     }
 
-    async copy(
-        source: string,
-        destination: string
-    ): Promise<void> {
+    return entries;
+  }
 
-        const content =
-            await this.read(
-                source
-            )
+  getFiles(): Record<string, string> {
+    return Object.fromEntries(this.files.entries());
+  }
 
-        await this.write(
-            destination,
-            content
-        )
-    }
+  clear(): void {
+    this.files.clear();
 
-    async createDirectory(
-        targetPath: string
-    ): Promise<void> {
-
-        this.directories.add(
-            this.normalizePath(
-                targetPath
-            )
-        )
-    }
-
-    async exists(
-        targetPath: string
-    ): Promise<boolean> {
-
-        const normalized =
-            this.normalizePath(
-                targetPath
-            )
-
-        return (
-            this.files.has(normalized)
-            ||
-            this.directories.has(normalized)
-        )
-    }
-
-    async remove(
-        targetPath: string
-    ): Promise<void> {
-
-        const normalized =
-            this.normalizePath(
-                targetPath
-            )
-
-        this.files.delete(
-            normalized
-        )
-
-        this.directories.delete(
-            normalized
-        )
-    }
-
-    async readDirectory(
-        directoryPath: string
-    ): Promise<DirectoryEntry[]> {
-
-        const normalized =
-            this.normalizePath(
-                directoryPath
-            )
-
-        const entries:
-            DirectoryEntry[] = []
-
-        for (
-            const filePath
-            of this.files.keys()
-        ) {
-
-            if (
-                !filePath.startsWith(
-                    normalized
-                )
-            ) {
-                continue
-            }
-
-            entries.push({
-
-                name:
-                    filePath
-                        .split('/')
-                        .pop()
-                    ?? '',
-
-                path:
-                    filePath,
-
-                isDirectory:
-                    false
-            })
-        }
-
-        return entries
-    }
-
-    getFiles(): Record<string, string> {
-
-        return Object.fromEntries(
-            this.files.entries()
-        )
-    }
-
-    clear(): void {
-
-        this.files.clear()
-
-        this.directories.clear()
-    }
+    this.directories.clear();
+  }
 }

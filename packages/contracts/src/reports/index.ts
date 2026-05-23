@@ -1,2 +1,2 @@
 // packages/contracts/src/reports/index.ts
-export * from "./generation-report.js";
+export * from './generation-report.js';

@@ -1,17 +1,15 @@
 // packages\contracts\src\templates\template-definition.ts
 
-import type { PromptValues } from '../prompts/prompt-values.js'
+import type { PromptValues } from '../prompts/prompt-values.js';
 
 export interface TemplateDefinition {
-    templatePath: string
+  templatePath: string;
 
-    outputPath: string
+  outputPath: string;
 
-    overwrite?: boolean
+  overwrite?: boolean;
 
-    skipIfExists?: boolean
+  skipIfExists?: boolean;
 
-    condition?: (
-        values: PromptValues
-    ) => boolean | Promise<boolean>
+  condition?: (values: PromptValues) => boolean | Promise<boolean>;
 }

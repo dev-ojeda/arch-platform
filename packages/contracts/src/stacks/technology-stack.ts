@@ -1,12 +1,12 @@
 // packages\contracts\src\stacks\technology-stack.ts
 export interface TechnologyStack {
-  id?: string
+  id?: string;
 
-  languageId: string
+  languageId: string;
 
-  frameworkId?: string
+  frameworkId?: string;
 
-  runtimeId?: string
+  runtimeId?: string;
 
-  tags?: readonly string[]
+  tags?: readonly string[];
 }

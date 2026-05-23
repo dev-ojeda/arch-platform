@@ -1,64 +1,37 @@
 // packages/application/src/generation/variables/derive-template-variables.ts
 
-import type {
-  NamedVariables,
-  ResolvedTemplateVariables
-}
-from '@arch/contracts'
+import type { NamedVariables, ResolvedTemplateVariables } from '@arch/contracts';
 
-export function
-deriveTemplateVariables(
-
-  variables:
-  NamedVariables
-
+export function deriveTemplateVariables(
+  variables: NamedVariables,
 ): ResolvedTemplateVariables<NamedVariables> {
+  const name = String(variables.name ?? '');
 
-  const name =
-    String(
-      variables.name ?? ''
-    )
-
-  const pascal =
-    name.charAt(0)
-      .toUpperCase()
-    + name.slice(1)
+  const pascal = name.charAt(0).toUpperCase() + name.slice(1);
 
   return {
-
     ...variables,
 
-    className:
-      pascal,
+    className: pascal,
 
-    controllerName:
-      `${pascal}Controller`,
+    controllerName: `${pascal}Controller`,
 
-    serviceName:
-      `${pascal}Service`,
+    serviceName: `${pascal}Service`,
 
-    repositoryName:
-      `${pascal}Repository`,
+    repositoryName: `${pascal}Repository`,
 
-    modelName:
-      pascal,
+    modelName: pascal,
 
-    fileExtension:
-      '.ts',
+    fileExtension: '.ts',
 
     folderLayout: {
+      controller: 'controllers',
 
-      controller:
-        'controllers',
+      service: 'services',
 
-      service:
-        'services',
+      repository: 'repositories',
 
-      repository:
-        'repositories',
-
-      model:
-        'models'
-    }
-  }
+      model: 'models',
+    },
+  };
 }

@@ -1,8 +1,8 @@
 // packages/application/src/generation/reports/create-generation-report.ts
 
-import type { GenerationContext, GenerationReport } from "@arch/contracts";
+import type { GenerationContext, GenerationReport } from '@arch/contracts';
+import { RecordingGenerationEventBus } from '@arch/core';
 
-import { RecordingGenerationEventBus } from "@arch/core";
 
 export interface CreateGenerationReportOptions {
   success: boolean;
@@ -13,7 +13,7 @@ export interface CreateGenerationReportOptions {
 export function createGenerationReport(
   context: GenerationContext,
 
-  options: CreateGenerationReportOptions
+  options: CreateGenerationReportOptions,
 ): GenerationReport {
   const eventBus = context.eventBus;
 
@@ -28,7 +28,6 @@ export function createGenerationReport(
 
     metrics: context.metrics,
 
-    events:
-      eventBus instanceof RecordingGenerationEventBus ? eventBus.events : [],
+    events: eventBus instanceof RecordingGenerationEventBus ? eventBus.events : [],
   };
 }

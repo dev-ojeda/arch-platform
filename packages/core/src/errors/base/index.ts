@@ -1,4 +1,3 @@
 // Auto-generated index
 
-export * from './base-error.js'
-
+export * from './base-error.js';

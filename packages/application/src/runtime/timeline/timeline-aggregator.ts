@@ -1,13 +1,12 @@
 // packages/application/src/runtime/timeline/timeline-aggregator.ts
-import type { RuntimeEvent } from "../events/runtime-event.js";
 
-import type { RuntimeEventListener } from "../events/runtime-event-listener.js";
+import type { RuntimeEventListener } from '../events/runtime-event-listener.js';
+import { RuntimeEventTypes } from '../events/runtime-event-types.js';
+import type { RuntimeEvent } from '../events/runtime-event.js';
 
-import { RuntimeEventTypes } from "../events/runtime-event-types.js";
+import type { ExecutionTimeline } from './execution-timeline.js';
+import { TimelineStatuses } from './timeline-status.js';
 
-import type { ExecutionTimeline } from "./execution-timeline.js";
-
-import { TimelineStatuses } from "./timeline-status.js";
 
 export class TimelineAggregator implements RuntimeEventListener {
   private readonly timelines = new Map<string, ExecutionTimeline>();
@@ -46,9 +45,9 @@ export class TimelineAggregator implements RuntimeEventListener {
 
       case RuntimeEventTypes.StepStarted: {
         timeline.steps.push({
-          stepId: event.stepId ?? "unknown",
+          stepId: event.stepId ?? 'unknown',
 
-          stepName: event.stepName ?? "unknown",
+          stepName: event.stepName ?? 'unknown',
 
           status: TimelineStatuses.Running,
 
@@ -59,9 +58,7 @@ export class TimelineAggregator implements RuntimeEventListener {
       }
 
       case RuntimeEventTypes.StepCompleted: {
-        const step = timeline.steps.find(
-          (candidate) => candidate.stepId === event.stepId
-        );
+        const step = timeline.steps.find((candidate) => candidate.stepId === event.stepId);
 
         if (!step) return;
 
@@ -75,9 +72,7 @@ export class TimelineAggregator implements RuntimeEventListener {
       }
 
       case RuntimeEventTypes.StepFailed: {
-        const step = timeline.steps.find(
-          (candidate) => candidate.stepId === event.stepId
-        );
+        const step = timeline.steps.find((candidate) => candidate.stepId === event.stepId);
 
         if (!step) return;
 

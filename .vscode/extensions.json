@@ -11,7 +11,5 @@
     "redhat.vscode-yaml"
   ],
 
-  "unwantedRecommendations": [
-    "hookyqr.beautify"
-  ]
+  "unwantedRecommendations": ["hookyqr.beautify"]
 }

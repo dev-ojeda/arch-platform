@@ -1,24 +1,20 @@
 // packages\contracts\src\generators\generator-descriptor.ts
 export interface GeneratorDescriptor {
+  id: string;
 
-  id: string
+  displayName: string;
 
-  displayName: string
+  description?: string;
 
-  description?: string
+  version: string;
 
-  version: string
+  languages: readonly string[];
 
-  languages:
-  readonly string[]
+  frameworks: readonly string[];
 
-  frameworks:
-  readonly string[]
+  tags?: readonly string[];
 
-  tags?:
-  readonly string[]
+  category?: string;
 
-  category?: string
-
-  icon?: string
+  icon?: string;
 }

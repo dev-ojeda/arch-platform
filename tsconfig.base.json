@@ -1,36 +1,22 @@
 {
+  // tsconfig.base.json (root)
   "compilerOptions": {
     "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "lib": [
+      "ES2022"
+    ],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "baseUrl": ".",
     "strict": true,
     "skipLibCheck": true,
     "verbatimModuleSyntax": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "types": [
       "node"
-    ],
-    "paths": {
-      "@arch/contracts": [
-        "./packages/contracts/src/index.ts"
-      ],
-      "@arch/core": [
-        "./packages/core/src/index.ts"
-      ],
-      "@arch/platform-model": [
-        "./packages/platform-model/src/index.ts"
-      ],
-      "@arch/generator-mvc": [
-        "./packages/generator/mvc/src/index.ts"
-      ],
-      "@arch/infrastructure": [
-        "./packages/infrastructure/src/index.ts"
-      ],
-      "@arch/application": [
-        "./packages/application/src/index.ts"
-      ],
-    }
+    ]
   }
 }

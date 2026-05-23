@@ -1,12 +1,7 @@
 // packages/testing/src/filesystem/create-mock-filesystem.ts
 
-import { vi } from "vitest";
-
-import type {
-  DirectoryEntry,
-  FileSystemPort,
-  WriteFileOptions,
-} from "@arch/contracts";
+import type { DirectoryEntry, FileSystemPort, WriteFileOptions } from '@arch/contracts';
+import { vi } from 'vitest';
 
 export interface MockFilesystemState {
   files: Map<string, string>;
@@ -44,17 +39,17 @@ export function createMockFilesystem(): MockFilesystem {
 
         content: string,
 
-        _options?: WriteFileOptions
+        _options?: WriteFileOptions,
       ): Promise<void> => {
         state.files.set(targetPath, content);
-      }
+      },
     ),
 
     copy: vi.fn(
       async (
         source: string,
 
-        destination: string
+        destination: string,
       ): Promise<void> => {
         const content = state.files.get(source);
 
@@ -63,7 +58,7 @@ export function createMockFilesystem(): MockFilesystem {
         }
 
         state.files.set(destination, content);
-      }
+      },
     ),
 
     createDirectory: vi.fn(async (targetPath: string): Promise<void> => {
@@ -80,20 +75,18 @@ export function createMockFilesystem(): MockFilesystem {
       state.directories.delete(targetPath);
     }),
 
-    readDirectory: vi.fn(
-      async (directoryPath: string): Promise<DirectoryEntry[]> => {
-        return Array.from(state.files.keys())
+    readDirectory: vi.fn(async (directoryPath: string): Promise<DirectoryEntry[]> => {
+      return Array.from(state.files.keys())
 
-          .filter((path) => path.startsWith(directoryPath))
+        .filter((path) => path.startsWith(directoryPath))
 
-          .map((path) => ({
-            name: path.split("/").pop() ?? "",
+        .map((path) => ({
+          name: path.split('/').pop() ?? '',
 
-            path,
+          path,
 
-            isDirectory: false,
-          }));
-      }
-    ),
+          isDirectory: false,
+        }));
+    }),
   };
 }

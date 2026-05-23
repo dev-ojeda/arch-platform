@@ -1,2 +1,2 @@
 // packages/platform-model/src/compatibility/index.ts
-export * from "./compatibility-rule.js";
+export * from './compatibility-rule.js';

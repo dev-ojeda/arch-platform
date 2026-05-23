@@ -1,19 +1,20 @@
 // packages\core\src\logging\console-logger.ts
-import type { LoggerPort } from "@arch/contracts";
+import type { LoggerPort } from '@arch/contracts';
 
-export const consoleLogger: LoggerPort = {
-  info(message) {
+export class ConsoleLogger implements LoggerPort {
+  info(message: string): void {
     console.log(message);
-  },
+  }
 
-  warn(message) {
+  warn(message: string): void {
     console.warn(message);
-  },
+  }
 
-  error(message) {
+  error(message: string): void {
     console.error(message);
-  },
-  debug: function (message: string, meta?: Record<string, unknown>): void {
-    throw new Error("Function not implemented.");
-  },
-};
+  }
+
+  debug(_message: string, _meta?: unknown): void {
+    // TODO: implement structured debug logging
+  }
+}

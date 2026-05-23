@@ -1,21 +1,20 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from 'vitest';
 
-import { TimelineAggregator } from "../timeline-aggregator.js";
+import { RuntimeEventTypes } from '../../events/runtime-event-types.js';
+import { TimelineAggregator } from '../timeline-aggregator.js';
 
-import { RuntimeEventTypes } from "../../events/runtime-event-types.js";
-
-describe("TimelineAggregator Edge Cases", () => {
-  it("ignores completed events for unknown steps", async () => {
+describe('TimelineAggregator Edge Cases', () => {
+  it('ignores completed events for unknown steps', async () => {
     const aggregator = new TimelineAggregator();
 
     await aggregator.onEvent({
-      executionId: "exec-1",
+      executionId: 'exec-1',
 
-      pipelineId: "pipeline-1",
+      pipelineId: 'pipeline-1',
 
-      stepId: "unknown-step",
+      stepId: 'unknown-step',
 
-      stepName: "unknown-step",
+      stepName: 'unknown-step',
 
       type: RuntimeEventTypes.StepCompleted,
 

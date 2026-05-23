@@ -1,30 +1,28 @@
 // packages\contracts\src\generator-schema.ts
 export type GeneratorField =
+  | {
+      type: 'string';
 
-    | {
-        type: 'string'
+      name: string;
 
-        name: string
+      label: string;
 
-        label: string
+      required?: boolean;
 
-        required?: boolean
+      defaultValue?: string;
 
-        defaultValue?: string
-
-        validate?: RegExp
+      validate?: RegExp;
     }
+  | {
+      type: 'select';
 
-    | {
-        type: 'select'
+      name: string;
 
-        name: string
+      label: string;
 
-        label: string
+      options: readonly string[];
 
-        options: readonly string[]
+      required?: boolean;
 
-        required?: boolean
-
-        defaultValue?: string
-    }
+      defaultValue?: string;
+    };

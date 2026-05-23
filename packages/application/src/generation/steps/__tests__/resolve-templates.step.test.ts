@@ -1,49 +1,46 @@
 // packages/application/src/generation/steps/__tests__/resolve-templates.step.test.ts
 
-import { describe, expect, it } from "vitest";
+import type { GenerationContext } from '@arch/contracts';
+import { testGenerator, createTestPipelineContext } from '@arch/testing';
+import { describe, expect, it } from 'vitest';
 
-import type { GenerationContext } from "@arch/contracts";
+import { ResolveTemplatesStep } from '../resolve-templates.step.js';
 
-import { ResolveTemplatesStep } from "../resolve-templates.step.js";
 
-import { testGenerator } from "@arch/testing";
-
-import { createTestPipelineContext } from "@arch/testing";
-
-describe("ResolveTemplatesStep", () => {
-  it("resolves generator templates", async () => {
+describe('ResolveTemplatesStep', () => {
+  it('resolves generator templates', async () => {
     const context: GenerationContext = {
       ...createTestPipelineContext({
         variables: {
-          name: "user",
+          name: 'user',
         },
       }),
 
       generator: testGenerator,
 
       resolvedVariables: {
-        name: "user",
+        name: 'user',
 
-        className: "User",
+        className: 'User',
 
-        controllerName: "UserController",
+        controllerName: 'UserController',
 
-        serviceName: "UserService",
+        serviceName: 'UserService',
 
-        repositoryName: "UserRepository",
+        repositoryName: 'UserRepository',
 
-        modelName: "User",
+        modelName: 'User',
 
-        fileExtension: ".ts",
+        fileExtension: '.ts',
 
         folderLayout: {
-          controller: "controllers",
+          controller: 'controllers',
 
-          service: "services",
+          service: 'services',
 
-          repository: "repositories",
+          repository: 'repositories',
 
-          model: "models",
+          model: 'models',
         },
       },
     };
@@ -54,9 +51,7 @@ describe("ResolveTemplatesStep", () => {
 
     expect(context.resolvedTemplates).toBeDefined();
 
-    expect(context.resolvedTemplates).toHaveLength(
-      testGenerator.templates.length
-    );
+    expect(context.resolvedTemplates).toHaveLength(testGenerator.templates.length);
 
     expect(context.resolvedTemplates).toEqual(
       expect.arrayContaining([
@@ -65,7 +60,7 @@ describe("ResolveTemplatesStep", () => {
 
           template: expect.any(Object),
         }),
-      ])
+      ]),
     );
   });
 });

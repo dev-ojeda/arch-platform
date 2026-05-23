@@ -1,24 +1,18 @@
-import { FILESYSTEM_ERROR_CODES } from './filesystem-error-codes.js'
-import { FileSystemnError } from './filesystem-error.js'
+import { FILESYSTEM_ERROR_CODES } from './filesystem-error-codes.js';
+import { FileSystemnError } from './filesystem-error.js';
 
-export class FileSystemGeneratorDefinitionError
-    extends FileSystemnError {
+export class FileSystemGeneratorDefinitionError extends FileSystemnError {
+  constructor(generatorId: string) {
+    super(
+      `Invalid generator definition: ${generatorId}`,
 
-    constructor(
-        generatorId: string
-    ) {
+      FILESYSTEM_ERROR_CODES.INVALID_PATH,
 
-        super(
-            `Invalid generator definition: ${generatorId}`,
-
-            FILESYSTEM_ERROR_CODES
-                .INVALID_PATH,
-
-            {
-                metadata: {
-                    generatorId
-                }
-            }
-        )
-    }
+      {
+        metadata: {
+          generatorId,
+        },
+      },
+    );
+  }
 }

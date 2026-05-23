@@ -1,15 +1,14 @@
 // packages/application/tsup.config.ts
 
-import { defineConfig } from "tsup";
+import { defineConfig } from 'tsup';
 
-import { baseConfig } from "../../tsup.base.js";
+import { baseConfig } from '../../tsup.base.ts';
 
 export default defineConfig({
   ...baseConfig,
 
-  clean: true,
-
   metafile: true,
-
-  entry: ["src/index.ts"],
+  tsconfig: './tsconfig.build.json',
+  entry: ['src/index.ts'],
+  dts: false,
 });

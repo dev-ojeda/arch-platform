@@ -1,8 +1,7 @@
 export interface GeneratorCapabilities {
+  languages?: string[];
 
-    languages?: string[]
+  frameworks?: string[];
 
-    frameworks?: string[]
-
-    tags?: string[]
+  tags?: string[];
 }

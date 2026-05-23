@@ -4,17 +4,14 @@ import type {
   GenerationReportExporter,
   GenerationRequest,
   GenerationResult,
-} from "@arch/contracts";
+} from '@arch/contracts';
 
-import type { GenerationEngine } from "./generation-engine.js";
+import { runGenerationReportExporters } from '../../generation/exporters/run-generation-report-exporters.js';
+import type { GenerationPipeline } from '../pipeline/generation-pipeline.js';
+import { createGenerationReport } from '../reports/create-generation-report.js';
+import type { GenerationContextFactory } from '../runtime/generation-context-factory.js';
 
-import type { GenerationPipeline } from "../pipeline/generation-pipeline.js";
-
-import type { GenerationContextFactory } from "../runtime/generation-context-factory.js";
-
-import { createGenerationReport } from "../reports/create-generation-report.js";
-
-import { runGenerationReportExporters } from "../../generation/exporters/run-generation-report-exporters.js";
+import type { GenerationEngine } from './generation-engine.js';
 
 export class DefaultGenerationEngine implements GenerationEngine {
   constructor(
@@ -22,7 +19,7 @@ export class DefaultGenerationEngine implements GenerationEngine {
 
     private readonly contextFactory: GenerationContextFactory,
 
-    private readonly exporters: readonly GenerationReportExporter[] = []
+    private readonly exporters: readonly GenerationReportExporter[] = [],
   ) {}
 
   async generate(request: GenerationRequest): Promise<GenerationResult> {
@@ -38,11 +35,11 @@ export class DefaultGenerationEngine implements GenerationEngine {
 
         true,
 
-        startedAt
+        startedAt,
       );
     } catch (error) {
-      context.logger.error("Generation failed", {
-        name: error instanceof Error ? error.name : "UnknownError",
+      context.logger.error('Generation failed', {
+        name: error instanceof Error ? error.name : 'UnknownError',
 
         message: error instanceof Error ? error.message : String(error),
       });
@@ -52,17 +49,17 @@ export class DefaultGenerationEngine implements GenerationEngine {
 
         false,
 
-        startedAt
+        startedAt,
       );
     }
   }
 
   private async createResult(
-    context: ReturnType<GenerationContextFactory["create"]>,
+    context: ReturnType<GenerationContextFactory['create']>,
 
     success: boolean,
 
-    startedAt: number
+    startedAt: number,
   ): Promise<GenerationResult> {
     const duration = Date.now() - startedAt;
 
@@ -73,13 +70,13 @@ export class DefaultGenerationEngine implements GenerationEngine {
         success,
 
         duration,
-      }
+      },
     );
 
     await runGenerationReportExporters(
       this.exporters,
 
-      report
+      report,
     );
 
     return {
@@ -91,7 +88,7 @@ export class DefaultGenerationEngine implements GenerationEngine {
 
       warnings: report.diagnostics
 
-        .filter((diagnostic) => diagnostic.level === "warning")
+        .filter((diagnostic) => diagnostic.level === 'warning')
 
         .map((diagnostic) => diagnostic.message),
 

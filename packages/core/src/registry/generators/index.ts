@@ -1,4 +1,3 @@
 // Auto-generated index
 
-export * from './generator-registry.js'
-
+export * from './generator-registry.js';

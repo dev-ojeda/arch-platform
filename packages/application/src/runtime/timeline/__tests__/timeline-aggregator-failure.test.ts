@@ -1,33 +1,31 @@
 // packages/application/src/runtime/timeline/__tests__/timeline-aggregator-failure.test.ts
 
-import { describe, expect, it } from "vitest";
+import type { GenerationPipelineStep } from '@arch/contracts';
+import { createTestContext } from '@arch/testing';
+import { describe, expect, it } from 'vitest';
 
-import type { GenerationPipelineStep } from "@arch/contracts";
+import { GenerationPipeline } from '../../../generation/pipeline/generation-pipeline.js';
+import { createRuntime } from '../../runtime-bootstrap.js';
 
-import { createTestContext } from "@arch/testing";
 
-import { GenerationPipeline } from "../../../generation/pipeline/generation-pipeline.js";
-
-import { createRuntime } from "../../runtime-bootstrap.js";
-
-describe("TimelineAggregator Failure", () => {
-  it("marks failed steps in execution timeline", async () => {
+describe('TimelineAggregator Failure', () => {
+  it('marks failed steps in execution timeline', async () => {
     const context = createTestContext();
 
     const runtime = createRuntime();
 
     const steps: GenerationPipelineStep[] = [
       {
-        name: "successful-step",
+        name: 'successful-step',
 
         async execute() {},
       },
 
       {
-        name: "failing-step",
+        name: 'failing-step',
 
         async execute() {
-          throw new Error("step failure");
+          throw new Error('step failure');
         },
       },
     ];
@@ -37,10 +35,10 @@ describe("TimelineAggregator Failure", () => {
 
       undefined,
 
-      runtime.runtimeEvents
+      runtime.runtimeEvents,
     );
 
-    await expect(pipeline.execute(context)).rejects.toThrow("step failure");
+    await expect(pipeline.execute(context)).rejects.toThrow('step failure');
 
     const timelines = runtime.timelineAggregator.getAllTimelines();
 
@@ -51,17 +49,17 @@ describe("TimelineAggregator Failure", () => {
     expect(timeline.steps).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          stepName: "successful-step",
+          stepName: 'successful-step',
 
-          status: "success",
+          status: 'success',
         }),
 
         expect.objectContaining({
-          stepName: "failing-step",
+          stepName: 'failing-step',
 
-          status: "failed",
+          status: 'failed',
         }),
-      ])
+      ]),
     );
 
     expect(timeline.finishedAt).toBeUndefined();
