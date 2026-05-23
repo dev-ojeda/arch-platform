@@ -1,2 +1,2 @@
 // packages/platform-model/src/compatibility/compatibility-rule.ts
-export {}
+export {};
