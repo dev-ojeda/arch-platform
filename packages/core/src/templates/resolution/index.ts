@@ -1,4 +1,3 @@
 // Auto-generated index
 
-export * from './template-resolver.js'
-
+export * from './template-resolver.js';

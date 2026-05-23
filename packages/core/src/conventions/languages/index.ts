@@ -1,4 +1,3 @@
 // Auto-generated index
 
-export * from './typescript/index.js'
-
+export * from './typescript/index.js';

@@ -1,1 +1,1 @@
-export class PromptCancelledError{}
+export class PromptCancelledError {}

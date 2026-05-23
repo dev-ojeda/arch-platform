@@ -1,4 +1,3 @@
 // Auto-generated index
 
-export * from './validate-template-variables.js'
-
+export * from './validate-template-variables.js';

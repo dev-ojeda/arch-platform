@@ -1,4 +1,3 @@
 // Auto-generated index
 
-export * from './assert-not-cancelled.js'
-
+export * from './assert-not-cancelled.js';

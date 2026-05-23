@@ -1,4 +1,3 @@
 // Auto-generated index
 
-export * from './languages/index.js'
-
+export * from './languages/index.js';

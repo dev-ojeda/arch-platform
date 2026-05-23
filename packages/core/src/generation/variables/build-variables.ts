@@ -1,57 +1,33 @@
 // packages/core/variables/build-variables.ts
 import type {
-    GenerationContext,
-    LanguageConvention,
-    NamedVariables,
-    ResolvedTemplateVariables
-} from '@arch/contracts'
+  GenerationContext,
+  LanguageConvention,
+  NamedVariables,
+  ResolvedTemplateVariables,
+} from '@arch/contracts';
 
-export function buildVariables<
-    TVariables extends NamedVariables
->(
-    ctx: GenerationContext<TVariables>,
+export function buildVariables<TVariables extends NamedVariables>(
+  ctx: GenerationContext<TVariables>,
 
-    language: LanguageConvention
+  language: LanguageConvention,
 ): ResolvedTemplateVariables<TVariables> {
+  const resourceName = String(ctx.variables.name);
 
-    const resourceName =
-        String(
-            ctx.variables.name
-        )
+  return {
+    ...ctx.variables,
 
-    return {
+    className: language.formatName(resourceName),
 
-        ...ctx.variables,
+    controllerName: language.controllerName(resourceName),
 
-        className:
-            language.formatName(
-                resourceName
-            ),
+    serviceName: language.serviceName(resourceName),
 
-        controllerName:
-            language.controllerName(
-                resourceName
-            ),
+    repositoryName: language.repositoryName(resourceName),
 
-        serviceName:
-            language.serviceName(
-                resourceName
-            ),
+    modelName: language.modelName(resourceName),
 
-        repositoryName:
-            language.repositoryName(
-                resourceName
-            ),
+    fileExtension: language.fileExtension,
 
-        modelName:
-            language.modelName(
-                resourceName
-            ),
-
-        fileExtension:
-            language.fileExtension,
-
-        folderLayout:
-            language.folderLayout
-    }
+    folderLayout: language.folderLayout,
+  };
 }

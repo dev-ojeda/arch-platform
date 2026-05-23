@@ -1,31 +1,18 @@
-import {
-  VALIDATION_ERROR_CODES
-}
-from './validation-error-codes.js'
+import { VALIDATION_ERROR_CODES } from './validation-error-codes.js';
+import { ValidationError } from './validation-errors.js';
 
-import {
-  ValidationError
-}
-from './validation-errors.js'
+export class InvalidGeneratorDefinitionError extends ValidationError {
+  constructor(generatorId: string) {
+    super(
+      `Invalid generator definition: ${generatorId}`,
 
-export class InvalidGeneratorDefinitionError
-extends ValidationError {
+      VALIDATION_ERROR_CODES.INVALID_GENERATOR_DEFINITION,
 
-  constructor(
-      generatorId: string
-  ) {
-
-      super(
-          `Invalid generator definition: ${generatorId}`,
-
-          VALIDATION_ERROR_CODES
-              .INVALID_GENERATOR_DEFINITION,
-
-          {
-              metadata: {
-                  generatorId
-              }
-          }
-      )
+      {
+        metadata: {
+          generatorId,
+        },
+      },
+    );
   }
 }

@@ -1,4 +1,3 @@
 // Auto-generated index
 
-export * from './output-path.js'
-
+export * from './output-path.js';

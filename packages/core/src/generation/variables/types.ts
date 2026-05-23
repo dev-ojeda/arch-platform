@@ -1,28 +1,21 @@
 // packages\core\src\variables\types.ts
 
-import type {
-    FolderLayout
-} from '@arch/contracts'
+import type { FolderLayout } from '@arch/contracts';
 
 export interface DerivedTemplateVariables {
+  className: string;
 
-    className: string
+  controllerName: string;
 
-    controllerName: string
+  serviceName: string;
 
-    serviceName: string
+  repositoryName: string;
 
-    repositoryName: string
+  modelName: string;
 
-    modelName: string
+  fileExtension: string;
 
-    fileExtension: string
-
-    folderLayout: FolderLayout
+  folderLayout: FolderLayout;
 }
 
-export type ResolvedTemplateVariables<
-    TVariables
-> =
-    TVariables &
-    DerivedTemplateVariables
+export type ResolvedTemplateVariables<TVariables> = TVariables & DerivedTemplateVariables;

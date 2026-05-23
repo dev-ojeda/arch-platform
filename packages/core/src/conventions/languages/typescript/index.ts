@@ -1,4 +1,3 @@
 // Auto-generated index
 
-export * from './typescript.convention.js'
-
+export * from './typescript.convention.js';

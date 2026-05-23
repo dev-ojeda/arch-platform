@@ -1,59 +1,32 @@
 // packages\core\src\languages\language-convention-registry.ts
-import type {
-    LanguageConvention
-} from '@arch/contracts'
+import type { LanguageConvention } from '@arch/contracts';
 
 export class LanguageConventionRegistry {
+  readonly #registry = new Map<string, LanguageConvention>();
 
-    readonly #registry =
-        new Map<
-            string,
-            LanguageConvention
-        >()
+  register(convention: LanguageConvention): void {
+    this.#registry.set(convention.id, convention);
+  }
 
-    register(
-        convention: LanguageConvention
-    ): void {
+  get(id: string): LanguageConvention {
+    const convention = this.#registry.get(id);
 
-        this.#registry.set(
-            convention.id,
-            convention
-        )
+    if (convention) {
+      return convention;
     }
 
-    get(
-        id: string
-    ): LanguageConvention {
+    throw new Error(`Language '${id}' not supported`);
+  }
 
-        const convention =
-            this.#registry.get(id)
+  list(): LanguageConvention[] {
+    return [...this.#registry.values()];
+  }
 
-        if (convention) {
-            return convention
-        }
+  has(id: string): boolean {
+    return this.#registry.has(id);
+  }
 
-        throw new Error(
-            `Language '${id}' not supported`
-        )
-    }
-
-    list():
-        LanguageConvention[] {
-
-        return [
-            ...this.#registry.values()
-        ]
-    }
-
-    has(
-        id: string
-    ): boolean {
-
-        return this.#registry.has(id)
-    }
-
-    clear(): void {
-
-        this.#registry.clear()
-    }
+  clear(): void {
+    this.#registry.clear();
+  }
 }

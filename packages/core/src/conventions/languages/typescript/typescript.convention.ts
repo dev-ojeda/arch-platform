@@ -1,79 +1,45 @@
 // packages\core\src\languages\conventions\typescript.convention.ts
-import type {
-    FolderLayout,
-    LanguageConvention
-} from '@arch/contracts'
+import type { FolderLayout, LanguageConvention } from '@arch/contracts';
 
-function pascalCase(
-    value: string
-): string {
-
-    return value
-        .split(/[-_ ]+/)
-        .map(v =>
-            v.charAt(0).toUpperCase() +
-            v.slice(1).toLowerCase()
-        )
-        .join('')
+function pascalCase(value: string): string {
+  return value
+    .split(/[-_ ]+/)
+    .map((v) => v.charAt(0).toUpperCase() + v.slice(1).toLowerCase())
+    .join('');
 }
 
-export class TypeScriptConvention
-implements LanguageConvention {
+export class TypeScriptConvention implements LanguageConvention {
+  readonly id = 'typescript';
 
-    readonly id =
-        'typescript'
+  readonly fileExtension = '.ts';
 
-    readonly fileExtension =
-        '.ts'
+  readonly folderLayout: FolderLayout = {
+    controller: 'controllers',
 
-    readonly folderLayout:
-        FolderLayout = {
+    service: 'services',
 
-        controller:
-            'controllers',
+    repository: 'repositories',
 
-        service:
-            'services',
+    model: 'models',
+  };
 
-        repository:
-            'repositories',
+  formatName(name: string): string {
+    return pascalCase(name);
+  }
 
-        model:
-            'models'
-    }
+  controllerName(name: string): string {
+    return `${this.formatName(name)}Controller`;
+  }
 
-    formatName(
-        name: string
-    ): string {
+  serviceName(name: string): string {
+    return `${this.formatName(name)}Service`;
+  }
 
-        return pascalCase(name)
-    }
+  repositoryName(name: string): string {
+    return `${this.formatName(name)}Repository`;
+  }
 
-    controllerName(
-        name: string
-    ): string {
-
-        return `${this.formatName(name)}Controller`
-    }
-
-    serviceName(
-        name: string
-    ): string {
-
-        return `${this.formatName(name)}Service`
-    }
-
-    repositoryName(
-        name: string
-    ): string {
-
-        return `${this.formatName(name)}Repository`
-    }
-
-    modelName(
-        name: string
-    ): string {
-
-        return this.formatName(name)
-    }
+  modelName(name: string): string {
+    return this.formatName(name);
+  }
 }
