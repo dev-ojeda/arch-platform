@@ -1,0 +1,13 @@
+{
+  "name": "@arch/cli",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "arch": "./dist/index.js"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "dev": "tsx src/index.ts"
+  }
+}
