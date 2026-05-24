@@ -6,12 +6,14 @@
     "@commitlint/cli": "catalog:",
     "@commitlint/config-conventional": "catalog:",
     "@types/node": "catalog:",
+    "@typescript-eslint/parser": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "@vscode/test-electron": "catalog:",
     "dependency-cruiser": "catalog:",
     "esbuild-visualizer": "catalog:",
     "eslint": "catalog:",
     "eslint-import-resolver-node": "catalog:",
+    "eslint-import-resolver-typescript": "catalog:",
     "eslint-plugin-import": "catalog:",
     "execa": "catalog:",
     "husky": "catalog:",
@@ -22,6 +24,7 @@
     "tsx": "catalog:",
     "turbo": "catalog:",
     "typescript": "catalog:",
+    "typescript-eslint": "catalog:",
     "vitest": "catalog:",
     "zod": "catalog:"
   },
@@ -36,12 +39,16 @@
     "clean:artifacts": "rimraf packages/**/dist apps/**/dist",
     "clean:deep": "powershell -ExecutionPolicy Bypass -File scripts/clean-deep.ps1",
     "cruiser": "depcruise . --config .dependency-cruiser.cjs",
+    "cruiser:strict": "depcruise . --config .dependency-cruiser.cjs --fail-on-severity warn",
     "cruiser:arch": "depcruise . --config .dependency-cruiser.cjs --output-type archi",
     "cruiser:err": "depcruise . --config .dependency-cruiser.cjs --output-type err",
     "cruiser:graph": "depcruise . --config .dependency-cruiser.cjs --output-type dot | dot -T svg > dependency-graph.svg",
     "cruiser:html": "depcruise . --config .dependency-cruiser.cjs --output-type html > dependency-report.html",
     "dev": "turbo run dev --parallel",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "lint": "turbo run lint",
+    "lint:fix": "eslint packages apps --fix",
     "prepare": "husky || true",
     "reset": "pwsh -File ./scripts/reset/reset-workspace.ps1",
     "syncpack:fix": "syncpack fix",
@@ -52,6 +59,7 @@
     "test:coverage:core": "vitest run --project core --coverage",
     "test:coverage:runtime": "vitest run --project application --coverage",
     "test:watch": "vitest",
-    "typecheck": "turbo run typecheck"
+    "typecheck": "turbo run typecheck",
+    "validate": "turbo run validate"
   }
 }
