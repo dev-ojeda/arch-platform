@@ -1,14 +1,14 @@
 // tsup.base.ts
-import type { Options } from "tsup";
+import type { Options } from 'tsup';
 
 export const baseConfig: Options = {
-  entry: ["src/index.ts"],
+  entry: ['src/index.ts'],
 
-  format: ["esm"],
+  format: ['esm'],
 
-  target: "node20",
+  target: 'node20',
 
-  platform: "node",
+  platform: 'node',
 
   clean: true,
 
@@ -27,5 +27,4 @@ export const baseConfig: Options = {
   dts: true,
 
   shims: false,
-
 };

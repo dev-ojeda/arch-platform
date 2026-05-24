@@ -1,6 +1,8 @@
-// eslint.config.js
+// eslint.config.mjs
 
 import tseslint from 'typescript-eslint';
+
+import tsParser from '@typescript-eslint/parser';
 
 import importPlugin from 'eslint-plugin-import';
 
@@ -13,10 +15,18 @@ export default [
     files: ['**/*.ts', '**/*.tsx'],
 
     languageOptions: {
-      parser: tseslint.parser,
+      parser: tsParser,
 
       parserOptions: {
-        project: './tsconfig.eslint.json',
+        project: [
+          './tsconfig.eslint.json',
+
+          './packages/*/tsconfig.json',
+
+          './packages/generators/*/tsconfig.json',
+
+          './apps/*/tsconfig.json',
+        ],
 
         tsconfigRootDir: import.meta.dirname,
 
@@ -31,12 +41,28 @@ export default [
     },
 
     settings: {
+      'import/parsers': {
+        '@typescript-eslint/parser': ['.ts', '.tsx'],
+      },
+
       'import/resolver': {
         typescript: {
-          project: './tsconfig.eslint.json',
+          alwaysTryTypes: true,
+
+          project: [
+            './tsconfig.eslint.json',
+
+            './packages/*/tsconfig.json',
+
+            './packages/generators/*/tsconfig.json',
+
+            './apps/*/tsconfig.json',
+          ],
         },
 
-        node: true,
+        node: {
+          extensions: ['.js', '.mjs', '.cjs', '.ts', '.tsx'],
+        },
       },
     },
 
