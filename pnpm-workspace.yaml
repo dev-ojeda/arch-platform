@@ -13,11 +13,11 @@
 # WORKSPACE PACKAGES
 # -----------------------------------------------------------------------------
 packages:
-  # Core platform packages
-  - 'packages/*'
+# Core platform packages
+- 'packages/*'
 
-  # Generators / scaffolding
-  - 'packages/generators/*'
+# Generators / scaffolding
+- 'packages/generators/*'
 # Future applications
 # - "apps/*"
 
@@ -131,7 +131,7 @@ catalog:
   execa: 9.6.1
 
   zod: 4.4.3
-
+  cac: 6.7.14
   # ===========================================================================
   # UTILITIES
   # ===========================================================================
@@ -149,31 +149,31 @@ catalog:
 # - supply-chain attacks
 # -----------------------------------------------------------------------------
 onlyBuiltDependencies:
-  # Native bundler runtime
-  - esbuild
+# Native bundler runtime
+- esbuild
 
-  # Secure OS credential access
-  - keytar
+# Secure OS credential access
+- keytar
 
-  # Fast Rust-based module resolver
-  - unrs-resolver
+# Fast Rust-based module resolver
+- unrs-resolver
 
-  # VSCode extension signing
-  - '@vscode/vsce-sign'
+# VSCode extension signing
+- '@vscode/vsce-sign'
 
-  # Native SWC compiler
-  - '@swc/core'
+# Native SWC compiler
+- '@swc/core'
 
 # -----------------------------------------------------------------------------
 # SUPPORTED RUNTIME ARCHITECTURES
 # -----------------------------------------------------------------------------
 supportedArchitectures:
   os:
-    - win32
-    - linux
+  - win32
+  - linux
 
   cpu:
-    - x64
+  - x64
 
 # -----------------------------------------------------------------------------
 # HOISTING STRATEGY
@@ -181,9 +181,9 @@ supportedArchitectures:
 # Improve compatibility for tooling ecosystems that expect hoisted deps.
 # -----------------------------------------------------------------------------
 publicHoistPattern:
-  - '*eslint*'
+- '*eslint*'
 
-  - '*typescript*'
+- '*typescript*'
 
 # -----------------------------------------------------------------------------
 # PEER DEPENDENCY RULES
@@ -191,9 +191,9 @@ publicHoistPattern:
 peerDependencyRules:
   # Ignore peer dependency warnings intentionally managed at root.
   ignoreMissing:
-    - eslint
+  - eslint
 
-    - typescript
+  - typescript
 
 # -----------------------------------------------------------------------------
 # GLOBAL VERSION OVERRIDES

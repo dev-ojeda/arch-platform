@@ -22,6 +22,7 @@ module.exports = {
         'application',
         'contracts',
         'core',
+        'cli',
         'generators',
         'infrastructure',
         'platform-model',

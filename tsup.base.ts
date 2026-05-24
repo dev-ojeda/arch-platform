@@ -2,10 +2,6 @@
 import type { Options } from 'tsup';
 
 export const baseConfig: Options = {
-  entry: ['src/index.ts'],
-
-  format: ['esm'],
-
   target: 'node20',
 
   platform: 'node',
@@ -23,8 +19,6 @@ export const baseConfig: Options = {
   metafile: false,
 
   bundle: false,
-
-  dts: true,
 
   shims: false,
 };

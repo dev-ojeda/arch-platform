@@ -1,0 +1,21 @@
+{
+  "name": "@arch/cli",
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "tsup": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:"
+  },
+  "bin": {
+    "arch": "./dist/index.js"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "dev": "tsx src/index.ts"
+  }
+}

@@ -1,22 +1,7 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "dist",
-    "composite": true,
-    "incremental": true,
     "declaration": true,
-    "declarationMap": true,
-    "tsBuildInfoFile": "./dist/.tsbuildinfo"
-  },
-  "references": [
-    {
-      "path": "../contracts"
-    },
-    {
-      "path": "../core"
-    }
-  ],
-  "include": ["src/**/*.ts"],
-  "exclude": ["dist", "node_modules", "**/*.test.ts", "**/*.spec.ts"]
+    "declarationMap": true
+  }
 }
