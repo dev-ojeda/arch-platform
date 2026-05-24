@@ -1,41 +1,25 @@
+#!/usr/bin/env node
 // packages/cli/src/index.ts
 
+import { cac } from 'cac';
 
-import { cac } from "cac";
-import { execa } from "execa";
+import { registerBuildCommand } from './commands/build.command.js';
+import { registerCleanCommand } from './commands/clean.command.js';
+import { registerDoctorCommand } from './commands/doctor.command.js';
+import { registerLintCommand } from './commands/lint.command.js';
+import { registerResetCommand } from './commands/reset.command.js';
+import { registerTestCommand } from './commands/test.command.js';
+import { registerValidateCommand } from './commands/validate.command.js';
 
-const cli = cac("arch");
+const cli = cac('arch');
 
-async function runScript(script: string) {
-  await execa("pnpm", [script], {
-    stdio: "inherit",
-    shell: true,
-  });
-}
-
-cli.command("build", "Build workspace").action(async () => {
-  await runScript("build");
-});
-
-cli.command("lint", "Lint workspace").action(async () => {
-  await runScript("lint");
-});
-
-cli.command("test", "Run tests").action(async () => {
-  await runScript("test");
-});
-
-cli.command("validate", "Validate architecture").action(async () => {
-  await runScript("validate");
-});
-
-cli.command("clean", "Clean workspace").action(async () => {
-  await runScript("clean");
-});
-
-cli.command("reset", "Reset workspace").action(async () => {
-  await runScript("reset");
-});
+registerBuildCommand(cli);
+registerCleanCommand(cli);
+registerDoctorCommand(cli);
+registerLintCommand(cli);
+registerResetCommand(cli);
+registerTestCommand(cli);
+registerValidateCommand(cli);
 
 cli.help();
 

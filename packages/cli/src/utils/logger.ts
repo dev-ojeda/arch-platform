@@ -3,13 +3,13 @@
 import { logger } from '../ui/logger.js';
 
 export function info(message: string) {
-  logger.info(`[INFO] ${message}`);
+  logger.info(`${message}`);
 }
 
 export function success(message: string) {
-  logger.success(`[SUCCESS] ${message}`);
+  logger.success(`${message}`);
 }
 
 export function error(message: string) {
-  logger.error(`[ERROR] ${message}`);
+  logger.error(`${message}`);
 }

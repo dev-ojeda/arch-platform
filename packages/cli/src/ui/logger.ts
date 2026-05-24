@@ -6,10 +6,10 @@ export const logger = {
   },
 
   success(message: string) {
-    console.log(`[arch:success] ${message}`);
+    console.log(`✔ ${message}`);
   },
 
   error(message: string) {
-    console.error(`[arch:error] ${message}`);
+    console.error(`✖ ${message}`);
   },
 };

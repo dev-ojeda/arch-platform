@@ -2,14 +2,10 @@
 
 import type { CAC } from 'cac';
 
-import { info, success } from '../utils/logger.js';
+import { runDoctor } from '../services/doctor/doctor-runner.js';
 
-export function registerDoctorCommand(cli: CAC) {
-  cli.command('doctor', 'Check environment').action(async () => {
-    info('Checking environment...');
-
-    success('Node.js detected');
-    success('pnpm detected');
-    success('Workspace detected');
+export function registerDoctorCommand(cli: CAC): void {
+  cli.command('doctor', 'Validate workspace health').action(async () => {
+    await runDoctor();
   });
 }
