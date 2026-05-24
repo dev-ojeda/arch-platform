@@ -13,5 +13,6 @@ export async function checkNode(): Promise<DoctorCheckResult> {
     name: 'node',
     success: supported,
     message: supported ? `Node version OK (${version})` : `Unsupported Node version (${version})`,
+    details: [],
   };
 }

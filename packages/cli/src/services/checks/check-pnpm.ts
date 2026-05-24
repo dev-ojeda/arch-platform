@@ -1,6 +1,5 @@
 // packages/cli/src/services/checks/check-pnpm.ts
 import { execSync } from 'node:child_process';
-import { version } from 'node:os';
 
 import type { DoctorCheckResult } from '../models/doctor-check-result.js';
 
@@ -9,16 +8,16 @@ export async function checkPnpm(): Promise<DoctorCheckResult> {
     const version = execSync('pnpm --version').toString().trim();
 
     return {
-      name: 'node',
+      name: 'pnpm',
       success: true,
-      message: `Node version OK (${version})`,
+      message: `pnpm version OK (${version})`,
       details: [],
     };
   } catch {
     return {
-      name: 'node',
-      success: true,
-      message: `Node version OK (${version})`,
+      name: 'pnpm',
+      success: false,
+      message: 'pnpm is not installed',
       details: [],
     };
   }

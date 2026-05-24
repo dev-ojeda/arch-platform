@@ -1,10 +1,10 @@
 // packages/cli/src/services/checks/check-paths.ts
 import fs from 'node:fs';
 
-const requiredPaths = ['packages/*', 'configs/*', 'docs'];
+const requiredDirectories = ['packages', 'docs'];
 
 export async function checkPaths() {
-  const missing = requiredPaths.filter((path) => !fs.existsSync(path));
+  const missing = requiredDirectories.filter((directory) => !fs.existsSync(directory));
 
   return {
     name: 'paths',

@@ -1,4 +1,5 @@
 // packages/cli/src/services/doctor/doctor-runner.ts
+import { error, info, success } from '../../utils/logger.js';
 import { checkNode } from '../checks/check-node.js';
 import { checkPackageConsistency } from '../checks/check-package-consistency.js';
 import { checkPaths } from '../checks/check-paths.js';
@@ -23,13 +24,13 @@ export async function runDoctor(): Promise<void> {
     const result = await check();
 
     if (result.success) {
-      console.log(`✔ ${result.message}`);
+      success(`${result.message}`);
     } else {
       hasErrors = true;
-      console.error(`✖ ${result.message}`);
+      error(`${result.message}`);
 
       result.details?.forEach((detail) => {
-        console.error(`  - ${detail}`);
+        error(` - ${detail}`);
       });
     }
   }
@@ -39,5 +40,5 @@ export async function runDoctor(): Promise<void> {
     return;
   }
 
-  console.log('\nDoctor completed successfully');
+  info('\nDoctor completed successfully');
 }

@@ -1,35 +1,45 @@
-// packages/cli/src/services/checks/check-tsconfig.ts
 import fs from 'node:fs';
 
-export async function checkTsConfig() {
-  const exists = fs.existsSync('tsconfig.base.json');
+import ts from 'typescript';
 
-  if (!exists) {
+export async function checkTsConfig() {
+  const path = 'tsconfig.json';
+
+  if (!fs.existsSync(path)) {
     return {
       name: 'tsconfig',
       success: false,
-      message: 'tsconfig.base.json missing',
+      message: 'tsconfig.json missing',
       details: [],
     };
   }
 
   try {
-    const content = JSON.parse(fs.readFileSync('tsconfig.base.json', 'utf8'));
+    const raw = fs.readFileSync(path, 'utf8');
 
-    const hasCompilerOptions = !!content.compilerOptions;
+    const parsed = ts.parseConfigFileTextToJson(path, raw);
+
+    if (parsed.error) {
+      return {
+        name: 'tsconfig',
+        success: false,
+        message: 'Invalid tsconfig',
+        details: [ts.flattenDiagnosticMessageText(parsed.error.messageText, '\n')],
+      };
+    }
 
     return {
       name: 'tsconfig',
-      success: hasCompilerOptions,
-      message: hasCompilerOptions ? 'tsconfig validated' : 'compilerOptions missing',
+      success: true,
+      message: 'tsconfig validated',
       details: [],
     };
-  } catch {
+  } catch (error) {
     return {
       name: 'tsconfig',
       success: false,
-      message: 'Invalid tsconfig JSON',
-      details: [],
+      message: 'Failed to parse tsconfig',
+      details: [error instanceof Error ? error.message : 'Unknown error'],
     };
   }
 }
