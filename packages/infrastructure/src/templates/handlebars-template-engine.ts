@@ -1,4 +1,5 @@
-// packages\core\templates\template-engine.ts
+// packages/infrastructure/src/templates/handlebars-template-engine.ts
+
 import Handlebars from 'handlebars';
 
 export function renderTemplate<TVariables extends object>(

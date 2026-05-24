@@ -1,9 +1,16 @@
-// packages\core\src\templates\template-resolver.ts
+// packages/core/src/templates/template-resolver.ts
 
-import * as path from 'path';
+import type { PathService, TechnologyStack } from '@arch/contracts';
 
-import type { TechnologyStack } from '@arch/contracts';
-
-export function resolveTemplateDir(generatorRoot: string, stack: TechnologyStack) {
-  return path.join(generatorRoot, 'templates', stack.languageId, stack.frameworkId ?? 'default');
+export function resolveTemplateDir(
+  pathService: PathService,
+  generatorRoot: string,
+  stack: TechnologyStack,
+) {
+  return pathService.join(
+    generatorRoot,
+    'templates',
+    stack.languageId,
+    stack.frameworkId ?? 'default',
+  );
 }

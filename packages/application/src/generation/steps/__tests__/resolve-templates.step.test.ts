@@ -6,7 +6,6 @@ import { describe, expect, it } from 'vitest';
 
 import { ResolveTemplatesStep } from '../resolve-templates.step.js';
 
-
 describe('ResolveTemplatesStep', () => {
   it('resolves generator templates', async () => {
     const context: GenerationContext = {

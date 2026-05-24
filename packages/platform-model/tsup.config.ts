@@ -1,6 +1,7 @@
 // packages\platform-model\tsup.config.ts
 
 import { defineConfig } from 'tsup';
+
 import { baseConfig } from '../../tsup.base.ts';
 
 export default defineConfig({

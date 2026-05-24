@@ -1,15 +1,11 @@
-import type {
-  NamedVariables
-} from '@arch/contracts'
+import type { NamedVariables } from '@arch/contracts';
 
-export interface MvcVariables
-extends NamedVariables {
+export interface MvcVariables extends NamedVariables {
+  name: string;
 
-  name: string
+  framework: string;
 
-  framework: string
+  language: string;
 
-  language: string
-
-  useDocker?: boolean
+  useDocker?: boolean;
 }

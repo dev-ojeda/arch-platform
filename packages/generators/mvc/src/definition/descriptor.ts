@@ -1,35 +1,19 @@
-import type {
-    GeneratorDescriptor
-} from '@arch/contracts'
+import type { GeneratorDescriptor } from '@arch/contracts';
 
-export const mvcDescriptor:
-    GeneratorDescriptor = {
+export const mvcDescriptor: GeneratorDescriptor = {
+  id: 'mvc',
 
-    id: 'mvc',
+  displayName: 'MVC Generator',
 
-    displayName:
-        'MVC Generator',
+  description: 'Generates MVC applications',
 
-    description:
-        'Generates MVC applications',
+  version: '1.0.0',
 
-    version:
-        '1.0.0',
+  languages: ['typescript'],
 
-    languages: [
-        'typescript'
-    ],
+  frameworks: ['express'],
 
-    frameworks: [
-        'express'
-    ],
+  category: 'backend',
 
-    category:
-        'backend',
-
-    tags: [
-        'mvc',
-        'express',
-        'typescript'
-    ]
-}
+  tags: ['mvc', 'express', 'typescript'],
+};

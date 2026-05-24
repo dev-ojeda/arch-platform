@@ -1,127 +1,89 @@
 // apps/vscode-extension/esbuild.cjs
 
-const esbuild = require('esbuild')
+const esbuild = require('esbuild');
 
-const fs = require('node:fs/promises')
+const fs = require('node:fs/promises');
 
-const path = require('node:path')
+const path = require('node:path');
 
-const watch =
-    process.argv.includes('--watch')
+const watch = process.argv.includes('--watch');
 
-const appDir =
-    __dirname
+const appDir = __dirname;
 
-const repoRoot =
-    path.resolve(
-        appDir,
-        '../..'
-    )
+const repoRoot = path.resolve(appDir, '../..');
 
-const templatesSource =
-    path.resolve(
-        repoRoot,
-        'templates'
-    )
+const templatesSource = path.resolve(repoRoot, 'templates');
 
-const templatesDestination =
-    path.resolve(
-        appDir,
-        'dist/templates'
-    )
+const templatesDestination = path.resolve(appDir, 'dist/templates');
 
 async function copyTemplates() {
+  await fs.rm(templatesDestination, {
+    recursive: true,
+    force: true,
+  });
 
-    await fs.rm(
-        templatesDestination,
-        {
-            recursive: true,
-            force: true
-        }
-    )
-
-    await fs.cp(
-        templatesSource,
-        templatesDestination,
-        {
-            recursive: true
-        }
-    )
+  await fs.cp(templatesSource, templatesDestination, {
+    recursive: true,
+  });
 }
 
 async function build() {
+  const ctx = await esbuild.context({
+    entryPoints: ['src/extension.ts'],
 
-    const ctx =
-        await esbuild.context({
+    outfile: 'dist/extension.js',
 
-            entryPoints: [
-                'src/extension.ts'
-            ],
+    bundle: true,
 
-            outfile:
-                'dist/extension.js',
+    treeShaking: true,
 
-            bundle: true,
+    minify: false,
 
-            treeShaking: true,
+    sourcemap: true,
 
-            minify: false,
+    legalComments: 'none',
 
-            sourcemap: true,
+    platform: 'node',
 
-            legalComments:
-                'none',
+    target: 'node20',
 
-            platform: 'node',
+    format: 'cjs',
 
-            target: 'node20',
+    external: [
+      'vscode',
+      '@arch/contracts',
+      '@arch/core',
+      '@arch/application',
+      '@arch/infrastructure',
+      '@arch/generator-mvc',
+    ],
 
-            format: 'cjs',
+    mainFields: ['module', 'main'],
 
-            external: [
-                'vscode',
-                '@arch/contracts',
-                '@arch/core',
-                '@arch/application',
-                '@arch/infrastructure',
-                '@arch/generator-mvc'
-            ],
+    tsconfig: '../../tsconfig.base.json',
 
-            mainFields: [
-                'module',
-                'main'
-            ],
+    logLevel: 'info',
+  });
 
-            tsconfig:
-                '../../tsconfig.base.json',
+  if (watch) {
+    await copyTemplates();
 
-            logLevel:
-                'info'
-        })
+    await ctx.watch();
 
-    if (watch) {
+    console.log('[arch] watching...');
 
-        await copyTemplates()
+    return;
+  }
 
-        await ctx.watch()
+  await copyTemplates();
 
-        console.log(
-            '[arch] watching...'
-        )
+  await ctx.rebuild();
 
-        return
-    }
-
-    await copyTemplates()
-
-    await ctx.rebuild()
-
-    await ctx.dispose()
+  await ctx.dispose();
 }
 
-build().catch(err => {
+build().catch((err) => {
+  console.error(err);
 
-    console.error(err)
-
-    process.exit(1)
-})
+  process.exit(1);
+});

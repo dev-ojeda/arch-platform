@@ -1,16 +1,21 @@
 <#
 .SYNOPSIS
-    Advanced cleanup utility for pnpm/turbo monorepos.
+    Advanced workspace cleanup utility for pnpm/turbo monorepos.
 
 .DESCRIPTION
-    Safely stops Node.js-related processes and removes
-    monorepo cache/build artifacts.
+    Safely stops development processes and removes:
+    - node_modules
+    - turbo caches
+    - build artifacts
+    - coverage
+    - tsbuildinfo
+    - pnpm cache artifacts
 
 .PARAMETER DryRun
-    Simulates execution without making changes.
+    Simulates cleanup operations without deleting files.
 
 .PARAMETER SkipPnpmStore
-    Skips pnpm store cleanup.
+    Skips pnpm store pruning.
 
 .PARAMETER VerboseOutput
     Enables verbose logging.
@@ -27,9 +32,11 @@
 
 [CmdletBinding(SupportsShouldProcess = $true)]
 param(
-    [switch]$DryRun,
-    [switch]$SkipPnpmStore,
-    [switch]$VerboseOutput
+  [switch]$DryRun,
+
+  [switch]$SkipPnpmStore,
+
+  [switch]$VerboseOutput
 )
 
 # =========================================================
@@ -38,32 +45,41 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-$script:WorkspaceRoot = Resolve-Path '.'
+$script:WorkspaceRoot = Resolve-Path (
+  Join-Path $PSScriptRoot '..'
+)
 
 $script:ProcessesToStop = @(
-    'node',
-    'pnpm',
-    'turbo',
-    'tsx',
-    'vite',
-    'jest',
-    'vitest'
+  'node',
+  'pnpm',
+  'turbo',
+  'tsx',
+  'vite',
+  'jest',
+  'vitest',
+
+  'eslint_d',
+  'tsserver',
+
+  'Code',
+  'Code - Insiders'
 )
 
 $script:DirectoriesToRemove = @(
-    '.turbo',
-    'dist',
-    'build',
-    '.next',
-    '.cache',
-    'coverage'
+  '.turbo',
+  '.cache',
+  '.vite',
+
+  'dist',
+  'build',
+  'coverage',
+  '.next'
 )
 
 $script:ExcludedPaths = @(
-    '.git',
-    '.vscode',
-    '.idea',
-    '.pnpm-store'
+  '.git',
+  '.vscode',
+  '.idea'
 )
 
 # =========================================================
@@ -72,55 +88,91 @@ $script:ExcludedPaths = @(
 
 function Write-Section {
 
-    param(
-        [Parameter(Mandatory)]
-        [string]$Message
-    )
+  param(
+    [Parameter(Mandatory)]
+    [string]$Message
+  )
 
-    Write-Host ''
-    Write-Host '=================================================' -ForegroundColor Cyan
-    Write-Host " $Message" -ForegroundColor Cyan
-    Write-Host '=================================================' -ForegroundColor Cyan
+  Write-Host ''
+
+  Write-Host `
+    '=================================================' `
+    -ForegroundColor Cyan
+
+  Write-Host `
+    " $Message" `
+    -ForegroundColor Cyan
+
+  Write-Host `
+    '=================================================' `
+    -ForegroundColor Cyan
 }
 
 function Write-Info {
 
-    param(
-        [Parameter(Mandatory)]
-        [string]$Message
-    )
+  param(
+    [Parameter(Mandatory)]
+    [string]$Message
+  )
 
-    Write-Host "[INFO] $Message" -ForegroundColor Gray
+  Write-Host `
+    "[INFO] $Message" `
+    -ForegroundColor Gray
 }
 
 function Write-Success {
 
-    param(
-        [Parameter(Mandatory)]
-        [string]$Message
-    )
+  param(
+    [Parameter(Mandatory)]
+    [string]$Message
+  )
 
-    Write-Host "[ OK ] $Message" -ForegroundColor Green
+  Write-Host `
+    "[ OK ] $Message" `
+    -ForegroundColor Green
 }
 
 function Write-WarningMessage {
 
-    param(
-        [Parameter(Mandatory)]
-        [string]$Message
-    )
+  param(
+    [Parameter(Mandatory)]
+    [string]$Message
+  )
 
-    Write-Host "[WARN] $Message" -ForegroundColor Yellow
+  Write-Host `
+    "[WARN] $Message" `
+    -ForegroundColor Yellow
 }
 
 function Write-ErrorMessage {
 
-    param(
-        [Parameter(Mandatory)]
-        [string]$Message
-    )
+  param(
+    [Parameter(Mandatory)]
+    [string]$Message
+  )
 
-    Write-Host "[FAIL] $Message" -ForegroundColor Red
+  Write-Host `
+    "[FAIL] $Message" `
+    -ForegroundColor Red
+}
+
+# =========================================================
+# VALIDATION
+# =========================================================
+
+function Assert-WorkspaceRoot {
+
+  $workspaceFile = Join-Path `
+    $script:WorkspaceRoot `
+    'pnpm-workspace.yaml'
+
+  if (-not (Test-Path $workspaceFile)) {
+
+    throw (
+      'Workspace validation failed. ' +
+      'pnpm-workspace.yaml not found.'
+    )
+  }
 }
 
 # =========================================================
@@ -129,52 +181,191 @@ function Write-ErrorMessage {
 
 function Test-ExcludedPath {
 
-    param(
-        [Parameter(Mandatory)]
-        [string]$Path
-    )
+  param(
+    [Parameter(Mandatory)]
+    [string]$Path
+  )
 
-    foreach ($excludedPath in $script:ExcludedPaths) {
+  $pathSegments = $Path.Split(
+    [IO.Path]::DirectorySeparatorChar
+  )
 
-        if ($Path -like "*$excludedPath*") {
-            return $true
-        }
+  foreach ($excludedPath in $script:ExcludedPaths) {
+
+    if ($pathSegments -contains $excludedPath) {
+
+      return $true
     }
+  }
 
-    return $false
+  return $false
 }
 
 function Invoke-WithRetry {
 
-    param(
-        [Parameter(Mandatory)]
-        [scriptblock]$ScriptBlock,
+  param(
+    [Parameter(Mandatory)]
+    [scriptblock]$ScriptBlock,
 
-        [int]$MaxRetries = 3,
+    [int]$MaxRetries = 3,
 
-        [int]$DelaySeconds = 2
-    )
+    [int]$DelaySeconds = 2
+  )
 
-    for ($attempt = 1; $attempt -le $MaxRetries; $attempt++) {
+  for (
+    $attempt = 1;
+    $attempt -le $MaxRetries;
+    $attempt++
+  ) {
 
-        try {
+    try {
 
-            & $ScriptBlock
-            return $true
-        }
-        catch {
+      & $ScriptBlock
 
-            Write-WarningMessage (
-                "Attempt $attempt/$MaxRetries failed: $($_.Exception.Message)"
-            )
-
-            if ($attempt -lt $MaxRetries) {
-                Start-Sleep -Seconds $DelaySeconds
-            }
-        }
+      return $true
     }
+    catch {
+
+      Write-WarningMessage (
+        "Attempt $attempt/$MaxRetries failed: " +
+        "$($_.Exception.Message)"
+      )
+
+      if ($attempt -lt $MaxRetries) {
+
+        Start-Sleep `
+          -Seconds $DelaySeconds
+      }
+    }
+  }
+
+  return $false
+}
+
+function Remove-WithCmdFallback {
+
+  param(
+    [Parameter(Mandatory)]
+    [string]$Path
+  )
+
+  try {
+
+    cmd /c rd /s /q "$Path"
+
+    return $true
+  }
+  catch {
 
     return $false
+  }
+}
+
+function Clear-ReadOnlyAttributes {
+
+  param(
+    [Parameter(Mandatory)]
+    [string]$Path
+  )
+
+  try {
+
+    Get-ChildItem `
+      -LiteralPath $Path `
+      -Recurse `
+      -Force `
+      -ErrorAction SilentlyContinue |
+    ForEach-Object {
+
+      try {
+
+        $_.Attributes = 'Normal'
+      }
+      catch {
+      }
+    }
+
+    attrib `
+      -R `
+      "$Path\*" `
+      /S `
+      /D `
+      2>$null
+  }
+  catch {
+
+    Write-Verbose (
+      "Unable to clear attributes: $Path"
+    )
+  }
+}
+
+function Remove-WorkspaceItem {
+
+  [CmdletBinding(SupportsShouldProcess = $true)]
+  param(
+    [Parameter(Mandatory)]
+    [string]$Path,
+
+    [Parameter(Mandatory)]
+    [ValidateSet('File', 'Directory')]
+    [string]$ItemType
+  )
+
+  if (-not (Test-Path $Path)) {
+
+    Write-Info "Path not found: $Path"
+
+    return
+  }
+
+  if ($DryRun) {
+
+    Write-Host `
+      "[DRYRUN] Remove $ItemType : $Path" `
+      -ForegroundColor Magenta
+
+    return
+  }
+
+  if ($PSCmdlet.ShouldProcess(
+      $Path,
+      "Remove $ItemType"
+    )) {
+
+    Clear-ReadOnlyAttributes `
+      -Path $Path
+
+    $removed = Invoke-WithRetry -ScriptBlock {
+
+      Remove-Item `
+        -LiteralPath $Path `
+        -Recurse `
+        -Force `
+        -ErrorAction Stop
+    }
+
+    if (-not $removed) {
+
+      Write-WarningMessage (
+        'Trying cmd fallback removal'
+      )
+
+      $removed = Remove-WithCmdFallback `
+        -Path $Path
+    }
+
+    if ($removed) {
+
+      Write-Success "Removed: $Path"
+    }
+    else {
+
+      Write-ErrorMessage (
+        "Failed removing: $Path"
+      )
+    }
+  }
 }
 
 # =========================================================
@@ -183,117 +374,121 @@ function Invoke-WithRetry {
 
 function Stop-WorkspaceProcesses {
 
-    [CmdletBinding(SupportsShouldProcess = $true)]
-    param(
-        [Parameter(Mandatory)]
-        [string[]]$ProcessNames
-    )
+  [CmdletBinding(SupportsShouldProcess = $true)]
+  param(
+    [Parameter(Mandatory)]
+    [string[]]$ProcessNames
+  )
 
-    Write-Section 'Stopping development processes'
+  Write-Section `
+    'Stopping development processes'
 
-    foreach ($processName in $ProcessNames) {
+  foreach ($processName in $ProcessNames) {
 
-        try {
+    try {
 
-            $processes = Get-Process `
-                -Name $processName `
-                -ErrorAction SilentlyContinue
+      $processes = Get-Process `
+        -Name $processName `
+        -ErrorAction SilentlyContinue
 
-            if (-not $processes) {
+      if (-not $processes) {
 
-                Write-Info "No running process found: $processName"
-                continue
-            }
+        Write-Info (
+          "No running process found: $processName"
+        )
 
-            foreach ($process in $processes) {
+        continue
+      }
 
-                $target = (
-                    "$($process.ProcessName) " +
-                    "(PID: $($process.Id))"
-                )
+      foreach ($process in $processes) {
 
-                if ($DryRun) {
+        $target = (
+          "$($process.ProcessName) " +
+          "(PID: $($process.Id))"
+        )
 
-                    Write-Host "[DRYRUN] Stop process: $target" `
-                        -ForegroundColor Magenta
+        if ($DryRun) {
 
-                    continue
-                }
+          Write-Host `
+            "[DRYRUN] Stop process: $target" `
+            -ForegroundColor Magenta
 
-                if ($PSCmdlet.ShouldProcess($target, 'Stop process')) {
-
-                    Stop-Process `
-                        -Id $process.Id `
-                        -Force `
-                        -ErrorAction Stop
-
-                    Write-Success "Stopped process: $target"
-                }
-            }
+          continue
         }
-        catch {
 
-            Write-WarningMessage (
-                "Unable to stop process '$processName': $($_.Exception.Message)"
-            )
+        if ($PSCmdlet.ShouldProcess(
+            $target,
+            'Stop process'
+          )) {
+
+          Stop-Process `
+            -Id $process.Id `
+            -Force `
+            -ErrorAction Stop
+
+          Write-Success (
+            "Stopped process: $target"
+          )
         }
+      }
     }
+    catch {
 
-    # Helps avoid EPERM issues on Windows
-    Start-Sleep -Seconds 2
+      Write-WarningMessage (
+        "Unable to stop process '$processName': " +
+        "$($_.Exception.Message)"
+      )
+    }
+  }
+
+  Start-Sleep -Seconds 2
 }
 
 # =========================================================
 # NODE_MODULES CLEANUP
 # =========================================================
 
-function Remove-RootNodeModules {
+function Get-WorkspaceNodeModules {
 
-    [CmdletBinding(SupportsShouldProcess = $true)]
-    param()
+  Get-ChildItem `
+    -Path $script:WorkspaceRoot `
+    -Directory `
+    -Recurse `
+    -Force `
+    -ErrorAction SilentlyContinue |
+  Where-Object {
 
-    Write-Section 'Removing root node_modules'
+    $_.Name -eq 'node_modules' -and
+    -not (Test-ExcludedPath $_.FullName)
+  }
+}
 
-    $nodeModulesPath = Join-Path `
-        $script:WorkspaceRoot `
-        'node_modules'
+function Remove-WorkspaceNodeModules {
 
-    if (-not (Test-Path $nodeModulesPath)) {
+  [CmdletBinding(SupportsShouldProcess = $true)]
+  param()
 
-        Write-Info 'Root node_modules not found'
-        return
-    }
+  Write-Section `
+    'Removing node_modules directories'
 
-    if ($DryRun) {
+  $directories =
+  Get-WorkspaceNodeModules
 
-        Write-Host "[DRYRUN] Remove directory: $nodeModulesPath" `
-            -ForegroundColor Magenta
+  if (-not $directories) {
 
-        return
-    }
+    Write-Info (
+      'No node_modules directories found'
+    )
 
-    if ($PSCmdlet.ShouldProcess($nodeModulesPath, 'Remove directory')) {
+    return
+  }
 
-        $removed = Invoke-WithRetry -ScriptBlock {
+  foreach ($directory in $directories) {
 
-            Remove-Item `
-                -LiteralPath $nodeModulesPath `
-                -Recurse `
-                -Force `
-                -ErrorAction Stop
-        }
-
-        if ($removed) {
-
-            Write-Success "Removed: $nodeModulesPath"
-        }
-        else {
-
-            Write-ErrorMessage (
-                "Failed removing: $nodeModulesPath"
-            )
-        }
-    }
+    Remove-WorkspaceItem `
+      -Path $directory.FullName `
+      -ItemType Directory
+  }
 }
 
 # =========================================================
@@ -302,84 +497,97 @@ function Remove-RootNodeModules {
 
 function Get-WorkspaceDirectories {
 
-    param(
-        [Parameter(Mandatory)]
-        [string]$DirectoryName
-    )
+  param(
+    [Parameter(Mandatory)]
+    [string]$DirectoryName
+  )
 
-    Get-ChildItem `
-        -Path $script:WorkspaceRoot `
-        -Directory `
-        -Recurse `
-        -Force `
-        -ErrorAction SilentlyContinue |
-    Where-Object {
+  Get-ChildItem `
+    -Path $script:WorkspaceRoot `
+    -Directory `
+    -Recurse `
+    -Force `
+    -ErrorAction SilentlyContinue |
+  Where-Object {
 
-        $_.Name -eq $DirectoryName -and
-        -not (Test-ExcludedPath $_.FullName) -and
-        $_.FullName -notlike '*node_modules*'
-    }
+    $_.Name -eq $DirectoryName -and
+    -not (Test-ExcludedPath $_.FullName) -and
+    $_.FullName -notlike '*node_modules*'
+  }
 }
 
 function Remove-WorkspaceDirectories {
 
-    [CmdletBinding(SupportsShouldProcess = $true)]
-    param(
-        [Parameter(Mandatory)]
-        [string[]]$DirectoryNames
+  [CmdletBinding(SupportsShouldProcess = $true)]
+  param(
+    [Parameter(Mandatory)]
+    [string[]]$DirectoryNames
+  )
+
+  Write-Section `
+    'Removing workspace directories'
+
+  foreach ($directoryName in $DirectoryNames) {
+
+    Write-Info `
+      "Searching: $directoryName"
+
+    $directories =
+    Get-WorkspaceDirectories `
+      -DirectoryName $directoryName
+
+    if (-not $directories) {
+
+      Write-Info (
+        "No directories found: $directoryName"
+      )
+
+      continue
+    }
+
+    foreach ($directory in $directories) {
+
+      Remove-WorkspaceItem `
+        -Path $directory.FullName `
+        -ItemType Directory
+    }
+  }
+}
+
+# =========================================================
+# TYPESCRIPT CLEANUP
+# =========================================================
+
+function Remove-TypeScriptBuildInfo {
+
+  [CmdletBinding(SupportsShouldProcess = $true)]
+  param()
+
+  Write-Section `
+    'Removing TypeScript build info'
+
+  $files = Get-ChildItem `
+    -Path $script:WorkspaceRoot `
+    -Filter '*.tsbuildinfo' `
+    -Recurse `
+    -Force `
+    -ErrorAction SilentlyContinue
+
+  if (-not $files) {
+
+    Write-Info (
+      'No TypeScript build info files found'
     )
 
-    Write-Section 'Removing workspace directories'
+    return
+  }
 
-    foreach ($directoryName in $DirectoryNames) {
+  foreach ($file in $files) {
 
-        Write-Info "Searching: $directoryName"
-
-        $directories = Get-WorkspaceDirectories `
-            -DirectoryName $directoryName
-
-        if (-not $directories) {
-
-            Write-Info "No directories found: $directoryName"
-            continue
-        }
-
-        foreach ($directory in $directories) {
-
-            $targetPath = $directory.FullName
-
-            if ($DryRun) {
-
-                Write-Host "[DRYRUN] Remove directory: $targetPath" `
-                    -ForegroundColor Magenta
-
-                continue
-            }
-
-            if ($PSCmdlet.ShouldProcess($targetPath, 'Remove directory')) {
-
-                $removed = Invoke-WithRetry -ScriptBlock {
-
-                    Remove-Item `
-                        -LiteralPath $targetPath `
-                        -Recurse `
-                        -Force `
-                        -ErrorAction Stop
-                }
-
-                if ($removed) {
-
-                    Write-Success "Removed: $targetPath"
-                }
-                else {
-
-                    Write-ErrorMessage (
-                        "Failed removing: $targetPath"
-                    )
-                }
-            }
-        }
-    }
+    Remove-WorkspaceItem `
+      -Path $file.FullName `
+      -ItemType File
+  }
 }
 
 # =========================================================
@@ -388,79 +596,110 @@ function Remove-WorkspaceDirectories {
 
 function Clear-PnpmStore {
 
-    [CmdletBinding()]
-    param()
+  [CmdletBinding()]
+  param()
 
-    if ($SkipPnpmStore) {
+  if ($SkipPnpmStore) {
 
-        Write-WarningMessage 'Skipping pnpm store cleanup'
-        return
+    Write-WarningMessage (
+      'Skipping pnpm store cleanup'
+    )
+
+    return
+  }
+
+  Write-Section `
+    'Cleaning pnpm store'
+
+  if (-not (
+      Get-Command `
+        pnpm `
+        -ErrorAction SilentlyContinue
+    )) {
+
+    Write-WarningMessage (
+      'pnpm command not found'
+    )
+
+    return
+  }
+
+  if ($DryRun) {
+
+    Write-Host `
+      '[DRYRUN] pnpm store prune' `
+      -ForegroundColor Magenta
+
+    return
+  }
+
+  try {
+
+    pnpm store prune
+
+    if ($LASTEXITCODE -eq 0) {
+
+      Write-Success (
+        'pnpm store cleaned successfully'
+      )
     }
+    else {
 
-    Write-Section 'Cleaning pnpm store'
-
-    if (-not (Get-Command pnpm -ErrorAction SilentlyContinue)) {
-
-        Write-WarningMessage 'pnpm command not found'
-        return
+      Write-WarningMessage (
+        "pnpm store prune exited with code: " +
+        "$LASTEXITCODE"
+      )
     }
+  }
+  catch {
 
-    if ($DryRun) {
-
-        Write-Host '[DRYRUN] pnpm store prune' `
-            -ForegroundColor Magenta
-
-        return
-    }
-
-    try {
-
-        pnpm store prune
-
-        if ($LASTEXITCODE -eq 0) {
-
-            Write-Success 'pnpm store cleaned successfully'
-        }
-        else {
-
-            Write-WarningMessage (
-                "pnpm store prune exited with code: $LASTEXITCODE"
-            )
-        }
-    }
-    catch {
-
-        Write-WarningMessage (
-            "Failed to clean pnpm store: $($_.Exception.Message)"
-        )
-    }
+    Write-WarningMessage (
+      "Failed to clean pnpm store: " +
+      "$($_.Exception.Message)"
+    )
+  }
 }
 
 # =========================================================
 # MAIN
 # =========================================================
 
-Write-Section 'Starting workspace cleanup'
+Write-Section `
+  'Starting workspace cleanup'
+
+Assert-WorkspaceRoot
 
 if ($VerboseOutput) {
 
-    $VerbosePreference = 'Continue'
+  $VerbosePreference = 'Continue'
 
-    Write-Verbose "WorkspaceRoot : $script:WorkspaceRoot"
-    Write-Verbose "DryRun        : $DryRun"
-    Write-Verbose "SkipPnpmStore : $SkipPnpmStore"
+  Write-Verbose (
+    "WorkspaceRoot : $script:WorkspaceRoot"
+  )
+
+  Write-Verbose (
+    "DryRun        : $DryRun"
+  )
+
+  Write-Verbose (
+    "SkipPnpmStore : $SkipPnpmStore"
+  )
 }
 
 Stop-WorkspaceProcesses `
-    -ProcessNames $script:ProcessesToStop
+  -ProcessNames $script:ProcessesToStop
 
-Remove-RootNodeModules
+Remove-WorkspaceNodeModules
 
 Remove-WorkspaceDirectories `
-    -DirectoryNames $script:DirectoriesToRemove
+  -DirectoryNames $script:DirectoriesToRemove
+
+Remove-TypeScriptBuildInfo
 
 Clear-PnpmStore
 
-Write-Section 'Cleanup completed'
+Write-Section `
+  'Cleanup completed'
 
-Write-Success 'Workspace cleaned successfully'
+Write-Success `
+  'Workspace cleaned successfully'

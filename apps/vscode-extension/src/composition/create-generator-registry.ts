@@ -1,21 +1,11 @@
 // apps\vscode-extension\src\composition\create-generator-registry.ts
-import {
-  GeneratorRegistry
-} from '@arch/core'
+import { GeneratorRegistry } from '@arch/core';
+import { registerMvcGenerator } from '@arch/generator-mvc';
 
-import {
-  registerMvcGenerator
-} from '@arch/generator-mvc'
+export function createGeneratorRegistry(): GeneratorRegistry {
+  const registry = new GeneratorRegistry();
 
-export function createGeneratorRegistry():
-  GeneratorRegistry {
+  registerMvcGenerator(registry);
 
-  const registry =
-      new GeneratorRegistry()
-
-  registerMvcGenerator(
-      registry
-  )
-
-  return registry
+  return registry;
 }

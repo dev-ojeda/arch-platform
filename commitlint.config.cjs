@@ -31,6 +31,7 @@ module.exports = {
         'workspace',
         'monorepo',
         'tooling',
+        'docs',
 
         'application/engine',
         'application/runtime',

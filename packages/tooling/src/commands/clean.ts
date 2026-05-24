@@ -1,18 +1,18 @@
 // packages/tooling/src/commands/clean.ts
 
-import fs from 'node:fs';
+import { readdir } from 'node:fs/promises';
 import path from 'node:path';
 
-import { executeCommand } from '../runtime/execute-command.js';
-
-await executeCommand('rimraf', ['dist', 'coverage']);
+import { removePath } from '../runtime/remove-path.js';
 
 const cwd = process.cwd();
 
-const entries = fs.readdirSync(cwd);
+await Promise.all([removePath(path.join(cwd, 'dist')), removePath(path.join(cwd, 'coverage'))]);
 
-for (const entry of entries) {
-  if (entry.endsWith('.tsbuildinfo')) {
-    await executeCommand('rimraf', [path.join(cwd, entry)]);
-  }
-}
+const entries = await readdir(cwd);
+
+await Promise.all(
+  entries
+    .filter((entry) => entry.endsWith('.tsbuildinfo'))
+    .map((entry) => removePath(path.join(cwd, entry))),
+);

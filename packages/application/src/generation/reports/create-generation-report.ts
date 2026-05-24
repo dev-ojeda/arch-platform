@@ -3,7 +3,6 @@
 import type { GenerationContext, GenerationReport } from '@arch/contracts';
 import { RecordingGenerationEventBus } from '@arch/core';
 
-
 export interface CreateGenerationReportOptions {
   success: boolean;
 

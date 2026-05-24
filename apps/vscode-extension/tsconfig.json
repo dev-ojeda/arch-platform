@@ -1,16 +1,11 @@
 {
-    "extends": "../../config/tsconfig/vscode.json",
-    "compilerOptions": {
-        "rootDir": "./src",
-        "outDir": "./dist",
-        "types": [
-            "node",
-            "vscode"
-        ],
-        "noEmit": true,
-        "verbatimModuleSyntax": false
-    },
-    "include": [
-        "src/**/*.ts"
-    ]
+  "extends": "../../config/tsconfig/vscode.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "types": ["node", "vscode"],
+    "noEmit": true,
+    "verbatimModuleSyntax": false
+  },
+  "include": ["src/**/*.ts"]
 }

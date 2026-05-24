@@ -1,97 +1,56 @@
 // apps\vscode-extension\src\composition\container.ts
-import * as path from 'node:path'
+import * as path from 'node:path';
 
-import type {
-    ExtensionContext
-} from 'vscode'
+import { GeneratorRuntime, GenerateProjectUseCase } from '@arch/application';
+import { GeneratorRegistry, LanguageConventionRegistry, TypeScriptConvention } from '@arch/core';
+import { registerMvcGenerator } from '@arch/generator-mvc';
+import { NodeFileSystemAdapter } from '@arch/infrastructure';
+import type { ExtensionContext } from 'vscode';
 
-import {
-    GeneratorRegistry,
-    LanguageConventionRegistry,
-    TypeScriptConvention
-} from '@arch/core'
-
-import {
-    GeneratorRuntime,
-    GenerateProjectUseCase
-} from '@arch/application'
-
-import {
-    NodeFileSystemAdapter
-} from '@arch/infrastructure'
-
-import {
-    registerMvcGenerator
-} from '@arch/generator-mvc'
-
-import {
-    VSCodePromptAdapter
-} from '../adapters/vscode-prompt-adapter.js'
+import { VSCodePromptAdapter } from '../adapters/vscode-prompt-adapter.js';
 
 export interface Container {
-
-    generateProjectUseCase:
-        GenerateProjectUseCase
+  generateProjectUseCase: GenerateProjectUseCase;
 }
 
-export function createContainer(
-    context: ExtensionContext
-): Container {
+export function createContainer(context: ExtensionContext): Container {
+  /*
+   * Language registry
+   */
+  const languageRegistry = new LanguageConventionRegistry();
 
-    /*
-     * Language registry
-     */
-    const languageRegistry =
-        new LanguageConventionRegistry()
+  languageRegistry.register(new TypeScriptConvention());
 
-    languageRegistry.register(
-        new TypeScriptConvention()
-    )
+  /*
+   * Generator registry
+   */
+  const generatorRegistry = new GeneratorRegistry();
 
-    /*
-     * Generator registry
-     */
-    const generatorRegistry =
-        new GeneratorRegistry()
+  registerMvcGenerator(generatorRegistry);
 
-    registerMvcGenerator(
-        generatorRegistry
-    )
+  /*
+   * Runtime
+   */
+  const runtime = new GeneratorRuntime({
+    promptAdapter: new VSCodePromptAdapter(),
 
-    /*
-     * Runtime
-     */
-    const runtime =
-        new GeneratorRuntime({
+    templateRoot: path.resolve(context.extensionPath, 'dist/templates'),
 
-            promptAdapter:
-                new VSCodePromptAdapter(),
+    languageRegistry,
 
-            templateRoot:
-                path.resolve(
-                    context.extensionPath,
-                    'dist/templates'
-                ),
+    defaultFs: new NodeFileSystemAdapter(),
+  });
 
-            languageRegistry,
+  /*
+   * Use cases
+   */
+  const generateProjectUseCase = new GenerateProjectUseCase(
+    generatorRegistry,
 
-            defaultFs:
-                new NodeFileSystemAdapter()
-        })
+    runtime,
+  );
 
-    /*
-     * Use cases
-     */
-    const generateProjectUseCase =
-        new GenerateProjectUseCase(
-
-            generatorRegistry,
-
-            runtime
-        )
-
-    return {
-
-        generateProjectUseCase
-    }
+  return {
+    generateProjectUseCase,
+  };
 }

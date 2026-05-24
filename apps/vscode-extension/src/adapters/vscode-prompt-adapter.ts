@@ -1,119 +1,72 @@
 // apps/vscode-extension/src/adapters/vscode-prompt-adapter.ts
 
-import * as vscode from 'vscode'
+import type { PromptAdapter } from '@arch/application';
+import type { BooleanField, SelectField, SelectOption, StringField } from '@arch/contracts';
+import * as vscode from 'vscode';
 
-import type {
-    BooleanField,
-    SelectField,
-    SelectOption,
-    StringField
-} from '@arch/contracts'
+export class VSCodePromptAdapter implements PromptAdapter {
+  async input(field: StringField): Promise<string | undefined> {
+    console.log('[arch] prompt input:', field.name);
 
-import type {
-    PromptAdapter
-} from '@arch/application'
+    return await vscode.window.showInputBox({
+      prompt: field.message,
 
-export class VSCodePromptAdapter
-implements PromptAdapter {
+      placeHolder: field.description,
 
-    async input(
-        field: StringField
-    ): Promise<string | undefined> {
+      value: field.defaultValue?.toString(),
 
-        console.log(
-            '[arch] prompt input:',
-            field.name
-        )
+      ignoreFocusOut: true,
+    });
+  }
 
-        return await vscode.window.showInputBox({
+  async select(
+    field: SelectField,
 
-            prompt:
-                field.message,
+    options: SelectOption[],
+  ): Promise<string | undefined> {
+    console.log('[arch] prompt select:', field.name);
 
-            placeHolder:
-                field.description,
+    const selected = await vscode.window.showQuickPick(
+      options.map((option) => ({
+        label: option.label,
 
-            value:
-                field.defaultValue
-                    ?.toString(),
+        description: option.value,
 
-            ignoreFocusOut:
-                true
-        })
-    }
+        value: option.value,
+      })),
 
-    async select(
-        field: SelectField,
+      {
+        title: field.message,
 
-        options: SelectOption[]
-    ): Promise<string | undefined> {
+        ignoreFocusOut: true,
+      },
+    );
 
-        console.log(
-            '[arch] prompt select:',
-            field.name
-        )
+    return selected?.value;
+  }
 
-        const selected =
-            await vscode.window.showQuickPick(
+  async boolean(field: BooleanField): Promise<boolean | undefined> {
+    console.log('[arch] prompt boolean:', field.name);
 
-                options.map(option => ({
+    const selected = await vscode.window.showQuickPick(
+      [
+        {
+          label: 'Yes',
+          value: true,
+        },
+        {
+          label: 'No',
+          value: false,
+        },
+      ],
 
-                    label:
-                        option.label,
+      {
+        title: field.message,
 
-                    description:
-                        option.value,
+        ignoreFocusOut: true,
+      },
+    );
 
-                    value:
-                        option.value
-                })),
-
-                {
-
-                    title:
-                        field.message,
-
-                    ignoreFocusOut:
-                        true
-                }
-            )
-
-        return selected?.value
-    }
-
-    async boolean(
-        field: BooleanField
-    ): Promise<boolean | undefined> {
-
-        console.log(
-            '[arch] prompt boolean:',
-            field.name
-        )
-
-        const selected =
-            await vscode.window.showQuickPick(
-
-                [
-                    {
-                        label: 'Yes',
-                        value: true
-                    },
-                    {
-                        label: 'No',
-                        value: false
-                    }
-                ],
-
-                {
-
-                    title:
-                        field.message,
-
-                    ignoreFocusOut:
-                        true
-                }
-            )
-
-        return selected?.value
-    }
+    return selected?.value;
+  }
 }

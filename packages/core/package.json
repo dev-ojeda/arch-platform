@@ -31,7 +31,8 @@
     "clean": "tsx ../tooling/src/commands/clean.js",
     "dev": "tsx ../tooling/src/commands/dev.js",
     "lint": "tsx ../tooling/src/commands/lint.ts",
-    "typecheck": "tsx ../tooling/src/commands/typecheck.js"
+    "typecheck": "tsx ../tooling/src/commands/typecheck.js",
+    "validate": "pnpm lint && pnpm typecheck"
   },
   "sideEffects": false,
   "type": "module",

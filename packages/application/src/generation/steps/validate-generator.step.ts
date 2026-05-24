@@ -2,7 +2,6 @@ import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts'
 
 import { GeneratorValidationError } from '../errors/generator-validation-error.js';
 
-
 export class ValidateGeneratorStep implements GenerationPipelineStep {
   readonly name = 'validate-generator';
 

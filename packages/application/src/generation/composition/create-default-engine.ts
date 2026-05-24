@@ -1,6 +1,6 @@
 // packages/application/src/generation/composition/create-default-engine.ts
 
-import type { FileSystemPort, LoggerPort, PromptAdapter } from '@arch/contracts';
+import type { FileSystemPort, IdGenerator, LoggerPort, PromptAdapter } from '@arch/contracts';
 import { PromptEngine } from '@arch/contracts';
 import { ConsoleLogger } from '@arch/core';
 
@@ -14,6 +14,8 @@ export interface GenerationEngineFactoryOptions {
 
   filesystem: FileSystemPort;
 
+  idGenerator: IdGenerator;
+
   logger?: LoggerPort;
 }
 
@@ -22,6 +24,8 @@ export function createGenerationEngine(options: GenerationEngineFactoryOptions) 
 
   const pipeline = createDefaultPipeline({
     promptResolver: promptEngine,
+
+    idGenerator: options.idGenerator,
   });
 
   const contextFactory = new GenerationContextFactory(

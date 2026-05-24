@@ -4,7 +4,6 @@ import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts'
 
 import { recordStepMetric } from './record-step-metric.js';
 
-
 export async function measureStepExecution(
   context: GenerationContext,
 

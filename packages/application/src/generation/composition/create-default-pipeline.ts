@@ -1,6 +1,6 @@
 // packages/application/src/generation/composition/create-default-pipeline.ts
 
-import type { PromptResolver } from '@arch/contracts';
+import type { IdGenerator, PromptResolver } from '@arch/contracts';
 
 import { CompositeGenerationHooks } from '../hooks/composite-generation-hooks.js';
 import { EventGenerationHooks } from '../hooks/event-generation-hooks.js';
@@ -14,35 +14,44 @@ import { ResolveVariablesStep } from '../steps/resolve-variables.step.js';
 import { ValidateGeneratorStep } from '../steps/validate-generator.step.js';
 import { WriteFilesStep } from '../steps/write-files.step.js';
 
-
 export interface PipelineDependencies {
   promptResolver: PromptResolver;
+
+  idGenerator: IdGenerator;
 }
 
 export function createDefaultPipeline(dependencies: PipelineDependencies): GenerationPipeline {
-  const hooks = new CompositeGenerationHooks([
+  const { promptResolver, idGenerator } = dependencies;
+
+  const hooks = createPipelineHooks();
+
+  const steps = createPipelineSteps(promptResolver);
+
+  return new GenerationPipeline(steps, idGenerator, hooks);
+}
+
+function createPipelineHooks() {
+  return new CompositeGenerationHooks([
     new LoggingGenerationHooks(),
 
     new TelemetryGenerationHooks(),
 
     new EventGenerationHooks(),
   ]);
+}
 
-  return new GenerationPipeline(
-    [
-      new ValidateGeneratorStep(),
+function createPipelineSteps(promptResolver: PromptResolver) {
+  return [
+    new ValidateGeneratorStep(),
 
-      new ResolvePromptsStep(dependencies.promptResolver),
+    new ResolvePromptsStep(promptResolver),
 
-      new ResolveVariablesStep(),
+    new ResolveVariablesStep(),
 
-      new ResolveTemplatesStep(),
+    new ResolveTemplatesStep(),
 
-      new RenderFilesStep(),
+    new RenderFilesStep(),
 
-      new WriteFilesStep(),
-    ],
-
-    hooks,
-  );
+    new WriteFilesStep(),
+  ];
 }

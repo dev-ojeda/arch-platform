@@ -1,14 +1,14 @@
 // vitest.shared.ts
 
-import { defineConfig } from "vitest/config";
+import { defineConfig } from 'vitest/config';
 
 export const sharedVitestConfig = defineConfig({
   test: {
-    environment: "node",
+    environment: 'node',
 
     globals: true,
 
-    pool: "forks",
+    pool: 'forks',
 
     testTimeout: 10_000,
 
@@ -19,24 +19,24 @@ export const sharedVitestConfig = defineConfig({
     },
 
     coverage: {
-      provider: "v8",
+      provider: 'v8',
 
-      reporter: ["text", "html", "json-summary"],
+      reporter: ['text', 'html', 'json-summary'],
 
       exclude: [
-        "**/*.test.ts",
+        '**/*.test.ts',
 
-        "**/*.spec.ts",
+        '**/*.spec.ts',
 
-        "**/__tests__/**",
+        '**/__tests__/**',
 
-        "**/*.d.ts",
+        '**/*.d.ts',
 
-        "**/dist/**",
+        '**/dist/**',
 
-        "**/coverage/**",
+        '**/coverage/**',
 
-        "**/node_modules/**",
+        '**/node_modules/**',
       ],
     },
   },
