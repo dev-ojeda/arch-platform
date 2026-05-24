@@ -5,8 +5,15 @@ import { baseConfig } from '../../tsup.base.ts';
 export default defineConfig({
   ...baseConfig,
 
+  entry: ['src/index.ts'],
+
+  format: ['esm', 'cjs'],
+
+  dts: true,
+
   tsconfig: './tsconfig.build.json',
 
-  entry: ['src/index.ts'],
-  dts: false,
+  banner: {
+    js: '#!/usr/bin/env node',
+  },
 });

@@ -1,4 +1,5 @@
 {
+  // tsconfig.eslint.json
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "noEmit": true
@@ -11,5 +12,9 @@
     "*.ts",
     "*.js"
   ],
-  "exclude": ["**/dist/**", "**/node_modules/**", "**/.turbo/**"]
+  "exclude": [
+    "**/dist/**",
+    "**/node_modules/**",
+    "**/.turbo/**"
+  ]
 }

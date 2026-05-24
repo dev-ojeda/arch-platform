@@ -10,5 +10,8 @@ export default defineConfig({
   tsconfig: './tsconfig.build.json',
 
   entry: ['src/index.ts'],
-  dts: false,
+
+  format: ['esm'],
+
+  dts: true,
 });

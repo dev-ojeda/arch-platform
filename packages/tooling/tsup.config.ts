@@ -5,7 +5,11 @@ import { baseConfig } from '../../tsup.base.ts';
 
 export default defineConfig({
   ...baseConfig,
+
   tsconfig: './tsconfig.build.json',
+
+  format: ['esm'],
+
   entry: {
     'commands/build': 'src/commands/build.ts',
     'commands/clean': 'src/commands/clean.ts',
@@ -14,5 +18,6 @@ export default defineConfig({
     'commands/lint': 'src/commands/lint.ts',
     'runtime/execute-command': 'src/runtime/execute-command.ts',
   },
+
   dts: false,
 });
