@@ -5,7 +5,6 @@ import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts'
 import { GeneratorValidationError } from '../errors/generator-validation-error.js';
 import { resolveTemplateDefinition } from '../templates/resolve-template-definition.js';
 
-
 export class ResolveTemplatesStep implements GenerationPipelineStep {
   readonly name = 'resolve-template';
 

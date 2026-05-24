@@ -5,7 +5,6 @@ import { describe, expect, it } from 'vitest';
 import { GeneratorValidationError } from '../../errors/generator-validation-error.js';
 import { ValidateGeneratorStep } from '../validate-generator.step.js';
 
-
 describe('ValidateGeneratorStep', () => {
   it('throws when generator is missing', async () => {
     const step = new ValidateGeneratorStep();

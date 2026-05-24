@@ -9,7 +9,6 @@ import type {
 } from '@arch/contracts';
 import { InMemoryGenerationEventBus } from '@arch/core';
 
-
 export class GenerationContextFactory {
   constructor(
     private readonly fs: FileSystemPort,

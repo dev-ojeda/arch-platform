@@ -4,7 +4,6 @@ import type { GenerationContext, GenerationHooks, GenerationPipelineStep } from 
 
 import { publishGenerationEvent } from '../events/publish-generation-event.js';
 
-
 export class EventGenerationHooks implements GenerationHooks {
   async beforePipeline(context: GenerationContext): Promise<void> {
     await publishGenerationEvent(

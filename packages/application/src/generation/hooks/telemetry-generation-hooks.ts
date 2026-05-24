@@ -4,7 +4,6 @@ import type { GenerationContext, GenerationHooks, GenerationPipelineStep } from 
 
 import { recordStepMetric } from '../telemetry/record-step-metric.js';
 
-
 export class TelemetryGenerationHooks implements GenerationHooks {
   private readonly startedAt = new Map<string, number>();
 
