@@ -8,7 +8,6 @@ import type {
 
 import { resolveTemplateOutputPath } from './resolve-template-output-path.js';
 
-
 export function resolveTemplateDefinition<TVariables extends NamedVariables>(
   template: FileDefinition<TVariables>,
 

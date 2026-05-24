@@ -3,7 +3,6 @@
 import type { NamedVariables } from '@arch/contracts';
 import Handlebars from 'handlebars';
 
-
 export function resolveTemplateOutputPath(
   output: string,
 

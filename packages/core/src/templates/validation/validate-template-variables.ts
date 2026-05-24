@@ -4,7 +4,6 @@ import type { NamedVariables } from '@arch/contracts';
 
 import { isReservedTemplateVariable } from '../reserved/is-reserved-template-variable.js';
 
-
 export function validateTemplateVariables(variables: NamedVariables): void {
   for (const key of Object.keys(variables)) {
     if (isReservedTemplateVariable(key)) {
