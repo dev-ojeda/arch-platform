@@ -13,6 +13,7 @@
     "eslint": "catalog:",
     "eslint-import-resolver-node": "catalog:",
     "eslint-plugin-import": "catalog:",
+    "execa": "catalog:",
     "husky": "catalog:",
     "prettier": "catalog:",
     "rimraf": "catalog:",
@@ -21,7 +22,8 @@
     "tsx": "catalog:",
     "turbo": "catalog:",
     "typescript": "catalog:",
-    "vitest": "catalog:"
+    "vitest": "catalog:",
+    "zod": "catalog:"
   },
   "engines": {
     "node": ">=20"
@@ -41,6 +43,7 @@
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "prepare": "husky || true",
+    "reset": "pwsh -File ./scripts/reset/reset-workspace.ps1",
     "syncpack:fix": "syncpack fix",
     "syncpack:format": "syncpack format",
     "syncpack:lint": "syncpack lint",

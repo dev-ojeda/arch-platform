@@ -1,5 +1,9 @@
 /** @type {import("dependency-cruiser").IConfiguration} */
 
+const PACKAGE_SCOPE = '^packages';
+const PACKAGE_SRC = '^packages/.+/src';
+const INTERNAL_PATH = 'src/internal';
+
 module.exports = {
   forbidden: [
     /**
@@ -9,12 +13,11 @@ module.exports = {
      */
 
     {
-      name: "no-circular",
+      name: 'no-circular',
 
-      comment:
-        "Circular dependencies increase coupling and break architectural boundaries.",
+      comment: 'Circular dependencies increase coupling and break architectural boundaries.',
 
-      severity: "error",
+      severity: 'error',
 
       from: {},
 
@@ -22,32 +25,39 @@ module.exports = {
         circular: true,
       },
     },
-    {
-      name: "packages-no-apps",
 
-      severity: "error",
+    {
+      name: 'packages-no-apps',
+
+      comment: 'Packages must not depend directly on application shells.',
+
+      severity: 'error',
 
       from: {
-        path: "^packages",
+        path: '^packages',
       },
 
       to: {
-        path: "^apps",
+        path: '^apps',
       },
     },
-    {
-      name: "core-isolation",
 
-      severity: "error",
+    {
+      name: 'core-isolation',
+
+      comment: 'Core layer must remain isolated from infrastructure and application concerns.',
+
+      severity: 'error',
 
       from: {
-        path: "^packages/core/src",
+        path: '^packages/core/src',
       },
 
       to: {
-        path: "^packages/(application|infrastructure|generators)",
+        path: '^packages/(application|infrastructure|generators)',
       },
     },
+
     /**
      * ============================================================
      * LAYERING RULES
@@ -55,66 +65,66 @@ module.exports = {
      */
 
     {
-      name: "contracts-independent",
+      name: 'contracts-independent',
 
-      comment: "Contracts must remain completely isolated from other layers.",
+      comment: 'Contracts must remain completely isolated from implementation layers.',
 
-      severity: "error",
+      severity: 'error',
 
       from: {
-        path: "^packages/contracts/src",
+        path: '^packages/contracts/src',
       },
 
       to: {
-        pathNot: "^packages/contracts/src",
+        pathNot: '^packages/contracts/src',
       },
     },
 
     {
-      name: "core-no-application",
+      name: 'core-no-application',
 
-      comment: "Core layer must not depend on application layer.",
+      comment: 'Core layer must not depend on application layer.',
 
-      severity: "error",
+      severity: 'error',
 
       from: {
-        path: "^packages/core/src",
+        path: '^packages/core/src',
       },
 
       to: {
-        path: "^packages/application/src",
+        path: '^packages/application/src',
       },
     },
 
     {
-      name: "application-no-infrastructure",
+      name: 'application-no-infrastructure',
 
-      comment: "Application layer must not depend directly on infrastructure.",
+      comment: 'Application layer must depend on abstractions instead of infrastructure.',
 
-      severity: "error",
+      severity: 'error',
 
       from: {
-        path: "^packages/application/src",
+        path: '^packages/application/src',
       },
 
       to: {
-        path: "^packages/infrastructure/src",
+        path: '^packages/infrastructure/src',
       },
     },
 
     {
-      name: "application-no-vscode",
+      name: 'application-no-vscode',
 
-      comment: "Application layer must remain editor agnostic.",
+      comment: 'Application layer must remain editor agnostic.',
 
-      severity: "error",
+      severity: 'error',
 
       from: {
-        path: "^packages/application/src",
+        path: '^packages/application/src',
       },
 
       to: {
-        path: "vscode",
+        path: 'vscode',
       },
     },
 
@@ -125,19 +135,18 @@ module.exports = {
      */
 
     {
-      name: "domain-no-node-builtins",
+      name: 'domain-no-node-builtins',
 
-      comment:
-        "Domain layers must not depend on Node.js runtime infrastructure.",
+      comment: 'Domain layers must not depend directly on Node.js runtime infrastructure.',
 
-      severity: "error",
+      severity: 'error',
 
       from: {
-        path: "^packages/(core|contracts|application)/src",
+        path: '^packages/(core|contracts|application)/src',
       },
 
       to: {
-        path: "^(fs|fs/promises|child_process|cluster|dgram|net|tls)$",
+        path: '^(fs|fs/promises|child_process|cluster|dgram|net|tls)$',
       },
     },
 
@@ -148,47 +157,48 @@ module.exports = {
      */
 
     {
-      name: "no-internal-imports",
+      name: 'no-internal-imports',
 
-      comment: "Internal modules must not be imported outside their package.",
+      comment: 'Internal modules must not be imported outside their owning package.',
 
-      severity: "error",
+      severity: 'error',
+
+      from: {},
 
       to: {
-        path: "src/internal",
+        path: INTERNAL_PATH,
       },
     },
 
     {
-      name: "no-deep-package-imports",
+      name: 'no-deep-package-imports',
 
-      comment: "Consumers must import from public package entrypoints only.",
+      comment: 'Consumers must import from public package entrypoints only.',
 
-      severity: "error",
+      severity: 'error',
 
       from: {
-        path: "^packages",
+        path: PACKAGE_SCOPE,
       },
 
       to: {
-        path: "^@arch/.+/src/",
+        path: '^@arch/.+/src/',
       },
     },
 
     {
-      name: "no-cross-package-relative-imports",
+      name: 'no-cross-package-relative-imports',
 
-      comment:
-        "Cross-package imports must use workspace aliases instead of relative paths.",
+      comment: 'Cross-package imports must use workspace aliases instead of relative paths.',
 
-      severity: "error",
+      severity: 'error',
 
       from: {
-        path: "^packages",
+        path: PACKAGE_SCOPE,
       },
 
       to: {
-        path: "^\\.\\./",
+        path: '^\\.\\./',
       },
     },
 
@@ -199,35 +209,35 @@ module.exports = {
      */
 
     {
-      name: "generators-no-filesystem",
+      name: 'generators-no-filesystem',
 
-      comment: "Generators should not directly manipulate filesystem",
+      comment: 'Generators should not manipulate the filesystem directly.',
 
-      severity: "warn",
+      severity: 'warn',
 
       from: {
-        path: "^packages/generators/.+/src",
+        path: '^packages/generators/.+/src',
       },
 
       to: {
-        path: "^(fs|path)$",
+        path: '^(fs|path)$',
       },
     },
 
     {
-      name: "generators-no-infrastructure",
+      name: 'generators-no-infrastructure',
 
       comment:
-        "Generators should depend on ports/contracts instead of infrastructure.",
+        'Generators should depend on ports/contracts instead of infrastructure implementations.',
 
-      severity: "warn",
+      severity: 'warn',
 
       from: {
-        path: "^packages/generators/src",
+        path: '^packages/generators/.+/src',
       },
 
       to: {
-        path: "^packages/infrastructure/src",
+        path: '^packages/infrastructure/src',
       },
     },
 
@@ -238,19 +248,18 @@ module.exports = {
      */
 
     {
-      name: "tests-no-internal-access",
+      name: 'tests-no-internal-access',
 
-      comment:
-        "Tests should avoid coupling to internal implementation details.",
+      comment: 'Tests should avoid coupling to internal implementation details.',
 
-      severity: "warn",
+      severity: 'warn',
 
       from: {
-        path: "(__tests__|\\.test\\.ts$|\\.spec\\.ts$)",
+        path: '(__tests__|\\.test\\.ts$|\\.spec\\.ts$)',
       },
 
       to: {
-        path: "src/internal",
+        path: INTERNAL_PATH,
       },
     },
 
@@ -259,21 +268,48 @@ module.exports = {
      * ARCHITECTURE SMELLS
      * ============================================================
      */
-
     {
-      name: "shared-package-warning",
+      name: 'no-orphans',
 
-      comment:
-        "Shared/common/utils packages tend to become architectural dumping grounds.",
+      comment: 'Detect orphan modules that are not referenced anywhere in the workspace.',
 
-      severity: "info",
+      severity: 'warn',
 
       from: {
-        path: "^packages",
+        orphan: true,
+
+        pathNot: [
+          '\\.d\\.ts$',
+          '\\.test\\.ts$',
+          '\\.spec\\.ts$',
+
+          '^vitest',
+          '^commitlint',
+          '^syncpack',
+          '^tsup',
+          '^\\.dependency-cruiser',
+
+          '^config/',
+          '^scripts/',
+          '^docs/',
+        ].join('|'),
+      },
+
+      to: {},
+    },
+    {
+      name: 'shared-package-warning',
+
+      comment: 'Shared/common/utils packages tend to become architectural dumping grounds.',
+
+      severity: 'info',
+
+      from: {
+        path: PACKAGE_SCOPE,
       },
 
       to: {
-        path: "^packages/(shared|common|utils|helpers)",
+        path: '^packages/(shared|common|utils|helpers)',
       },
     },
   ],
@@ -298,11 +334,11 @@ module.exports = {
      */
 
     enhancedResolveOptions: {
-      exportsFields: ["exports"],
+      exportsFields: ['exports'],
 
-      conditionNames: ["import", "require", "node", "default"],
+      conditionNames: ['import', 'require', 'node', 'default'],
 
-      extensions: [".ts", ".tsx", ".js", ".mjs", ".cjs"],
+      extensions: ['.ts', '.tsx', '.js', '.mjs', '.cjs'],
     },
 
     /**
@@ -312,25 +348,25 @@ module.exports = {
      */
 
     doNotFollow: {
-      path: ["node_modules"],
+      path: ['node_modules'],
     },
 
     exclude: {
       path: [
-        "node_modules",
-        "dist",
-        "build",
-        "coverage",
+        'node_modules',
+        'dist',
+        'build',
+        'coverage',
 
-        "\\.test\\.ts$",
-        "\\.spec\\.ts$",
+        '\\.test\\.ts$',
+        '\\.spec\\.ts$',
 
-        "vitest\\.config",
-        "tsup\\.config",
-        "eslint\\.config",
+        'vitest\\.config',
+        'tsup\\.config',
+        'eslint\\.config',
 
-        "scripts",
-        "docs",
+        'scripts',
+        'docs',
       ],
     },
 
@@ -342,7 +378,7 @@ module.exports = {
 
     reporterOptions: {
       dot: {
-        collapsePattern: "node_modules/[^/]+",
+        collapsePattern: 'node_modules/[^/]+',
       },
     },
   },
