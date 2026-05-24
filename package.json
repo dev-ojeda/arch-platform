@@ -36,6 +36,7 @@
   "private": true,
   "scripts": {
     "arch": "tsx packages/cli/src/index.ts",
+    "arch:doctor": "tsx packages/cli/src/index.ts doctor",
     "build": "turbo run build",
     "clean": "powershell -ExecutionPolicy Bypass -File scripts/clean.ps1",
     "clean:artifacts": "rimraf packages/**/dist apps/**/dist",
@@ -52,6 +53,7 @@
     "lint": "turbo run lint",
     "lint:fix": "eslint packages apps --fix",
     "prepare": "husky || true",
+    "prebuild": "pnpm arch doctor",
     "reset": "pwsh -File ./scripts/reset/reset-workspace.ps1",
     "syncpack:fix": "syncpack fix",
     "syncpack:format": "syncpack format",
