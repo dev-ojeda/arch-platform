@@ -1,99 +1,50 @@
 // apps\vscode-extension\src\adapters\vscode\commands\generate-project.command.ts
-import * as vscode from 'vscode'
+import { GenerateProjectUseCase } from '@arch/application';
+import * as vscode from 'vscode';
 
-import {
-    GenerateProjectUseCase
-} from '@arch/application'
+import { createGeneratorRegistry } from '../../../composition/create-generator-registry.js';
+import { createGeneratorRuntime } from '../../../composition/create-generator-runtime.js';
 
-import {
-    createGeneratorRegistry
-} from '../../../composition/create-generator-registry.js'
+export async function generateProjectCommand(): Promise<void> {
+  console.log('[arch] generate project command started');
 
-import {
-    createGeneratorRuntime
-} from '../../../composition/create-generator-runtime.js'
+  const workspace = vscode.workspace.workspaceFolders?.[0];
 
-export async function generateProjectCommand():
-Promise<void> {
+  if (!workspace) {
+    vscode.window.showErrorMessage('No workspace opened');
 
-    console.log(
-        '[arch] generate project command started'
-    )
+    return;
+  }
 
-    const workspace =
-        vscode.workspace.workspaceFolders?.[0]
+  console.log('[arch] workspace:', workspace.uri.fsPath);
 
-    if (!workspace) {
+  try {
+    const runtime = createGeneratorRuntime();
 
-        vscode.window.showErrorMessage(
-            'No workspace opened'
-        )
+    console.log('[arch] runtime created');
 
-        return
-    }
+    const registry = createGeneratorRegistry();
 
-    console.log(
-        '[arch] workspace:',
-        workspace.uri.fsPath
-    )
+    console.log('[arch] generator registry created');
 
-    try {
+    const useCase = new GenerateProjectUseCase(registry, runtime);
 
-        const runtime =
-            createGeneratorRuntime()
+    console.log('[arch] use case created');
 
-        console.log(
-            '[arch] runtime created'
-        )
+    await useCase.execute({
+      generatorId: 'mvc',
 
-        const registry =
-            createGeneratorRegistry()
+      targetDir: workspace.uri.fsPath,
+    });
 
-        console.log(
-            '[arch] generator registry created'
-        )
+    console.log('[arch] generation completed');
 
-        const useCase =
-            new GenerateProjectUseCase(
-                registry,
-                runtime
-            )
+    vscode.window.showInformationMessage('Project generated successfully');
+  } catch (error) {
+    console.error('[arch] generation failed', error);
 
-        console.log(
-            '[arch] use case created'
-        )
+    const message = error instanceof Error ? error.message : 'Unknown error';
 
-        await useCase.execute({
-
-            generatorId:
-                'mvc',
-
-            targetDir:
-                workspace.uri.fsPath
-        })
-
-        console.log(
-            '[arch] generation completed'
-        )
-
-        vscode.window.showInformationMessage(
-            'Project generated successfully'
-        )
-
-    } catch (error) {
-
-        console.error(
-            '[arch] generation failed',
-            error
-        )
-
-        const message =
-            error instanceof Error
-                ? error.message
-                : 'Unknown error'
-
-        vscode.window.showErrorMessage(
-            `Generation failed: ${message}`
-        )
-    }
+    vscode.window.showErrorMessage(`Generation failed: ${message}`);
+  }
 }

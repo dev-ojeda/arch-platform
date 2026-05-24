@@ -1,12 +1,11 @@
 // packages/application/src/runtime/timeline/__tests__/timeline-aggregator-failure.test.ts
 
-import type { GenerationPipelineStep } from '@arch/contracts';
+import type { GenerationPipelineStep, IdGenerator } from '@arch/contracts';
 import { createTestContext } from '@arch/testing';
 import { describe, expect, it } from 'vitest';
 
 import { GenerationPipeline } from '../../../generation/pipeline/generation-pipeline.js';
 import { createRuntime } from '../../runtime-bootstrap.js';
-
 
 describe('TimelineAggregator Failure', () => {
   it('marks failed steps in execution timeline', async () => {
@@ -30,8 +29,14 @@ describe('TimelineAggregator Failure', () => {
       },
     ];
 
+    const idGenerator: IdGenerator = {
+      generate: () => 'test-execution-id',
+    };
+
     const pipeline = new GenerationPipeline(
       steps,
+
+      idGenerator,
 
       undefined,
 

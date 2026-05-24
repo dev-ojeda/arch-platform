@@ -7,7 +7,6 @@ import type { RuntimeEvent } from '../events/runtime-event.js';
 import type { ExecutionTimeline } from './execution-timeline.js';
 import { TimelineStatuses } from './timeline-status.js';
 
-
 export class TimelineAggregator implements RuntimeEventListener {
   private readonly timelines = new Map<string, ExecutionTimeline>();
 
