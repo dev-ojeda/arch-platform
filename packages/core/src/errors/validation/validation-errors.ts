@@ -1,17 +1,14 @@
-import { BaseError } from '../base/base-error.js';
+// packages\core\src\errors\validation\validation-errors.ts
+import { BaseError, type ErrorOptions } from '../base/base-error.js';
+import type { ValidationErrorCode } from '../codes/validation.codes.js';
 
-import type { ValidationErrorCode } from './validation-error-codes.js';
-
-export abstract class ValidationError extends BaseError {
+export abstract class ValidationError<TMetadata = unknown> extends BaseError<TMetadata> {
   readonly code: ValidationErrorCode;
 
-  constructor(
+  protected constructor(
     message: string,
     code: ValidationErrorCode,
-    options?: {
-      cause?: unknown;
-      metadata?: unknown;
-    },
+    options?: ErrorOptions<TMetadata>,
   ) {
     super(message, options);
 

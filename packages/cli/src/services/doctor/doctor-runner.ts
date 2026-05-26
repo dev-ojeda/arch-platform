@@ -1,14 +1,15 @@
 // packages/cli/src/services/doctor/doctor-runner.ts
-import { error, info, success } from '../../utils/logger.js';
+
+import { logger } from '../../ui/logger.js';
 import { checkNode } from '../checks/check-node.js';
 import { checkPackageConsistency } from '../checks/check-package-consistency.js';
 import { checkPaths } from '../checks/check-paths.js';
 import { checkPnpm } from '../checks/check-pnpm.js';
 import { checkTsConfig } from '../checks/check-tsconfig.js';
 import { checkWorkspace } from '../checks/check-workspace.js';
-import type { DoctorCheckResult } from '../models/doctor-check-result.js';
+import type { DoctorCheck } from '../checks/doctor-check.js';
 
-const checks: Array<() => Promise<DoctorCheckResult>> = [
+const checks: DoctorCheck[] = [
   checkNode,
   checkPnpm,
   checkWorkspace,
@@ -17,28 +18,58 @@ const checks: Array<() => Promise<DoctorCheckResult>> = [
   checkPackageConsistency,
 ];
 
-export async function runDoctor(): Promise<void> {
+export interface DoctorRunResult {
+  success: boolean;
+}
+
+export async function runDoctor(): Promise<DoctorRunResult> {
   let hasErrors = false;
 
   for (const check of checks) {
-    const result = await check();
+    const result = await check.run();
 
-    if (result.success) {
-      success(`${result.message}`);
-    } else {
-      hasErrors = true;
-      error(`${result.message}`);
+    switch (result.severity) {
+      case 'info': {
+        logger.success(`${check.name} - ${result.message}`);
+        break;
+      }
 
-      result.details?.forEach((detail) => {
-        error(` - ${detail}`);
-      });
+      case 'warning': {
+        logger.info(`${check.name} - ${result.message}`);
+
+        result.details?.forEach((detail) => {
+          logger.info(`  - ${detail}`);
+        });
+
+        break;
+      }
+
+      case 'error': {
+        hasErrors = true;
+
+        logger.error(`${check.name} - ${result.message}`);
+
+        result.details?.forEach((detail) => {
+          logger.error(`  - ${detail}`);
+        });
+
+        break;
+      }
     }
   }
 
   if (hasErrors) {
     process.exitCode = 1;
-    return;
-  }
 
-  info('\nDoctor completed successfully');
+    return {
+      success: false,
+    };
+  }
+  logger.newline();
+
+  logger.success('Doctor completed successfully');
+
+  return {
+    success: true,
+  };
 }
