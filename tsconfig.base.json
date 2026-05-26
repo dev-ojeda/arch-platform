@@ -1,4 +1,5 @@
 {
+  // tsconfig.base.json
   "compilerOptions": {
     "target": "ES2022",
     "lib": [
@@ -20,31 +21,6 @@
     "types": [
       "node"
     ],
-    "paths": {
-      "@arch/*": [
-        "packages/*/src"
-      ],
-      "@arch/application": [
-        "packages/application/src/index.ts"
-      ],
-      "@arch/contracts": [
-        "packages/contracts/src/index.ts"
-      ],
-      "@arch/core": [
-        "packages/core/src/index.ts"
-      ],
-      "@arch/infrastructure": [
-        "packages/infrastructure/src/index.ts"
-      ],
-      "@arch/platform-model": [
-        "packages/platform-model/src/index.ts"
-      ],
-      "@arch/testing": [
-        "packages/testing/src/index.ts"
-      ],
-      "@arch/tooling": [
-        "packages/tooling/src/index.ts"
-      ]
-    }
+    "ignoreDeprecations": "5.0"
   }
 }

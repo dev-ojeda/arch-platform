@@ -1,13 +1,11 @@
 {
-  "name": "@arch/testing",
+  "name": "@arch/governance",
   "version": "0.1.0",
-  "dependencies": {
-    "@arch/contracts": "workspace:*",
-    "@arch/core": "workspace:*",
-    "@arch/infrastructure": "workspace:*"
-  },
   "devDependencies": {
     "@arch/tooling": "workspace:*"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "exports": {
     ".": {
@@ -24,12 +22,13 @@
     "access": "public"
   },
   "scripts": {
-    "build:": "tsx ../tooling/src/commands/build.ts",
+    "build": "tsx ../tooling/src/commands/build.ts",
     "clean": "tsx ../tooling/src/commands/clean.js",
     "dev": "tsx ../tooling/src/commands/dev.js",
     "lint": "tsx ../tooling/src/commands/lint.ts",
     "typecheck": "tsx ../tooling/src/commands/typecheck.js"
   },
+  "sideEffects": false,
   "type": "module",
   "types": "./dist/index.d.ts"
 }

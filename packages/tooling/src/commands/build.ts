@@ -4,16 +4,18 @@ import fs from 'node:fs';
 
 import { executeCommand } from '../runtime/execute-command.js';
 
-await executeCommand('pnpm', ['run', 'clean']);
+const args = process.argv.slice(2);
 
-const hasTsup = fs.existsSync('tsup.config.ts');
+const TSUP_CONFIG_PATH = 'tsup.config.ts';
 
-const hasTsconfigBuild = fs.existsSync('tsconfig.build.json');
+if (!fs.existsSync(TSUP_CONFIG_PATH)) {
+  console.warn(`[tooling:build] Missing ${TSUP_CONFIG_PATH}. Skipping build.`);
 
-if (hasTsup) {
-  await executeCommand('tsup');
+  process.exit(0);
 }
 
-if (hasTsconfigBuild) {
-  await executeCommand('tsc', ['--build', 'tsconfig.build.json']);
+const result = await executeCommand('tsup', [...args]);
+
+if (result.exitCode !== 0) {
+  process.exit(result.exitCode);
 }

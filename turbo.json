@@ -4,75 +4,84 @@
   "globalDependencies": [
     "package.json",
     "pnpm-lock.yaml",
-    "config/tsconfig/base.json",
+    "pnpm-workspace.yaml",
     "tsconfig.base.json",
+    "tsup.base.ts",
     "vitest.shared.ts",
-    "vitest.setup.ts",
-    "tsup.base.ts"
+    "vitest.setup.ts"
   ],
 
-  "globalEnv": ["NODE_ENV", "CI"],
+  "globalEnv": ["NODE_ENV", "CI", "GITHUB_ACTIONS"],
 
   "tasks": {
+    "doctor": {
+      "cache": false,
+      "outputs": []
+    },
+
     "build": {
       "dependsOn": ["^build"],
 
-      "inputs": ["$TURBO_DEFAULT$", "src/**", "testing/**", "tsup.config.*"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "src/**/*.ts",
+        "testing/**/*.ts",
+        "tsup.config.*",
+        "tsconfig*.json"
+      ],
 
-      "outputs": ["dist/**", "!dist/**/*.tsbuildinfo"]
+      "outputs": ["dist/**"]
     },
 
     "typecheck": {
-      "dependsOn": ["^typecheck", "@arch/tooling#build"],
+      "dependsOn": ["^build", "^typecheck"],
 
-      "inputs": ["$TURBO_DEFAULT$", "src/**", "testing/**"],
+      "inputs": ["$TURBO_DEFAULT$", "src/**/*.ts", "testing/**/*.ts", "tsconfig*.json"],
 
       "outputs": []
     },
 
     "lint": {
-      "dependsOn": ["@arch/tooling#build"],
+      "dependsOn": ["^lint"],
 
-      "inputs": ["$TURBO_DEFAULT$", "src/**", "testing/**"],
+      "inputs": ["$TURBO_DEFAULT$", "src/**/*.ts", "testing/**/*.ts", "eslint.config.*"],
 
       "outputs": []
     },
 
     "test": {
-      "dependsOn": ["^build", "build", "@arch/tooling#build"],
+      "dependsOn": ["^build", "build"],
 
-      "inputs": ["$TURBO_DEFAULT$", "src/**", "testing/**", "**/*.test.ts", "**/*.snap"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "src/**/*.ts",
+        "testing/**/*.ts",
+        "**/*.test.ts",
+        "**/*.spec.ts",
+        "**/*.snap"
+      ],
 
-      "outputs": []
+      "outputs": ["coverage/**"]
     },
 
     "coverage": {
-      "dependsOn": ["test"],
+      "dependsOn": ["^build", "test"],
 
-      "outputs": ["coverage/**", ".coverage/**"]
+      "outputs": ["coverage/**"]
     },
 
     "dev": {
       "cache": false,
-
       "persistent": true
-    },
-
-    "cruiser": {
-      "dependsOn": ["^build"],
-
-      "inputs": ["$TURBO_DEFAULT$", "src/**", "testing/**", ".dependency-cruiser.*"],
-
-      "outputs": []
     },
 
     "clean": {
       "cache": false,
-
       "outputs": []
     },
+
     "validate": {
-      "dependsOn": ["^validate", "lint", "typecheck", "test"],
+      "dependsOn": ["lint", "typecheck", "test"],
 
       "outputs": []
     }

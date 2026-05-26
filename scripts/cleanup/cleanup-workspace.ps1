@@ -1,50 +1,48 @@
-# scripts/reset/reset-workspace.ps1
+# scripts/cleanup/cleanup-workspace.ps1
 
 <#
 .SYNOPSIS
-    Performs a destructive workspace reset.
+    Cleans generated workspace artifacts.
 
 .DESCRIPTION
-    Stops active Node.js processes and removes generated artifacts.
+    Removes generated directories and files commonly produced by:
+    - TypeScript
+    - Turbo
+    - Next.js
+    - Vitest
+    - TSUP
 
-    Optionally removes:
-    - root node_modules
+    This script intentionally DOES NOT:
+    - remove node_modules
+    - stop running processes
+    - modify lockfiles
 
-    Intended for:
-    - corrupted installs
-    - dependency graph resets
-    - broken symlinks
-    - clean CI reproduction
-    - full workspace rebuilds
-
-    This script is intentionally destructive.
+    For destructive operations use:
+    scripts/reset/reset-workspace.ps1
 
 .FEATURES
-    - Safe removal
+    - Safe cleanup
     - DryRun support
     - Verbose logging
     - ShouldProcess support
-    - Process termination
     - Monorepo-aware traversal
-    - Protected directory exclusions
+    - Excluded directory protection
 
 .EXAMPLE
-    ./reset-workspace.ps1
+    ./cleanup-workspace.ps1
 
 .EXAMPLE
-    ./reset-workspace.ps1 -IncludeRootNodeModules
+    ./cleanup-workspace.ps1 -DryRun
 
 .EXAMPLE
-    ./reset-workspace.ps1 -DryRun
+    ./cleanup-workspace.ps1 -VerboseOutput
 
 .EXAMPLE
-    ./reset-workspace.ps1 -WhatIf
+    ./cleanup-workspace.ps1 -WhatIf
 #>
 
 [CmdletBinding(SupportsShouldProcess)]
 param(
-  [switch]$IncludeRootNodeModules,
-
   [switch]$DryRun,
 
   [switch]$VerboseOutput,
@@ -63,22 +61,21 @@ $ErrorActionPreference = 'Stop'
 $ExcludedDirectories = @(
   '.git',
   '.idea',
-  '.vscode'
+  '.vscode',
+  'node_modules'
 )
 
 $CleanupDirectories = @(
   'dist',
   '.turbo',
   'coverage',
-  '.next',
-  'node_modules'
+  '.next'
 )
 
-$cleanupFiles = @(
+$CleanupFiles = @(
   '*.tsbuildinfo',
-  '*.d.ts',
-  '*.d.ts.map',
-  '*.js.map'
+  '*.tmp',
+  '*.cache'
 )
 
 # =========================================================
@@ -166,7 +163,7 @@ function Remove-WorkspacePath {
   if (
     $PSCmdlet.ShouldProcess(
       $Path,
-      'Remove workspace artifact'
+      'Remove generated artifact'
     )
   ) {
     Remove-Item `
@@ -201,9 +198,6 @@ catch {
   exit 1
 }
 
-$RootNodeModules =
-Join-Path $WorkspaceRoot 'node_modules'
-
 # =========================================================
 # START
 # =========================================================
@@ -215,7 +209,7 @@ Write-Host `
   -ForegroundColor Cyan
 
 Write-Host `
-  ' WORKSPACE RESET' `
+  ' WORKSPACE CLEANUP' `
   -ForegroundColor Cyan
 
 Write-Host `
@@ -227,47 +221,6 @@ Write-Host ''
 Write-Log `
   -Level INFO `
   -Message "Workspace root: $WorkspaceRoot"
-
-# =========================================================
-# STOP NODE PROCESSES
-# =========================================================
-
-Write-Log `
-  -Level INFO `
-  -Message 'Stopping Node.js processes'
-
-Get-Process node -ErrorAction SilentlyContinue |
-ForEach-Object {
-  try {
-    if ($DryRun) {
-      Write-Host `
-        "[DRYRUN] Stop process: $($_.Id)" `
-        -ForegroundColor Magenta
-
-      return
-    }
-
-    Stop-Process `
-      -Id $_.Id `
-      -Force `
-      -ErrorAction Stop
-
-    Write-Log `
-      -Level SUCCESS `
-      -Message "Stopped process: $($_.Id)"
-  }
-  catch {
-    Write-Log `
-      -Level WARN `
-      -Message "Failed to stop process: $($_.Id)"
-
-    if ($VerboseOutput) {
-      Write-Host `
-        $_.Exception.Message `
-        -ForegroundColor DarkRed
-    }
-  }
-}
 
 # =========================================================
 # DISCOVERY
@@ -296,23 +249,7 @@ foreach ($Target in $CleanupDirectories) {
     )
   }
 
-  foreach ($Directory in $Directories) {
-
-    $DirectoryPath = $Directory.FullName
-
-    if (
-      $DirectoryPath -eq $RootNodeModules -and
-      -not $IncludeRootNodeModules
-    ) {
-      Write-Log `
-        -Level DEBUG `
-        -Message 'Skipping root node_modules'
-
-      continue
-    }
-
-    $DirectoriesToRemove += $Directory
-  }
+  $DirectoriesToRemove += $Directories
 }
 
 $FilesToRemove = @()
@@ -363,10 +300,7 @@ foreach ($Directory in $DirectoriesToRemove) {
   catch {
     Write-Log `
       -Level ERROR `
-      -Message (
-      "Failed to remove directory: " +
-      $Directory.FullName
-    )
+      -Message "Failed to remove directory: $($Directory.FullName)"
 
     Write-Log `
       -Level ERROR `
@@ -390,10 +324,7 @@ foreach ($File in $FilesToRemove) {
   catch {
     Write-Log `
       -Level ERROR `
-      -Message (
-      "Failed to remove file: " +
-      $File.FullName
-    )
+      -Message "Failed to remove file: $($File.FullName)"
 
     Write-Log `
       -Level ERROR `
@@ -414,7 +345,7 @@ Write-Host `
   -ForegroundColor DarkGray
 
 Write-Host `
-  ' RESET SUMMARY' `
+  ' CLEANUP SUMMARY' `
   -ForegroundColor Cyan
 
 Write-Host `
@@ -435,22 +366,16 @@ if ($DryRun) {
 
 Write-Host ''
 
-if ($IncludeRootNodeModules) {
-  Write-Log `
-    -Level WARN `
-    -Message 'Root node_modules removal enabled'
-}
-
 if ($FailedItems -gt 0) {
   Write-Log `
     -Level WARN `
-    -Message 'Workspace reset completed with warnings'
+    -Message 'Cleanup completed with warnings'
 
   exit 1
 }
 
 Write-Log `
   -Level SUCCESS `
-  -Message 'Workspace reset completed successfully'
+  -Message 'Workspace cleanup completed successfully'
 
 Write-Host ''
