@@ -24,6 +24,7 @@ module.exports = {
         'core',
         'cli',
         'generators',
+        'governance',
         'infrastructure',
         'platform-model',
         'scripts',
