@@ -12,7 +12,19 @@ module.exports = {
     'type-enum': [
       2,
       'always',
-      ['feat', 'fix', 'refactor', 'perf', 'test', 'docs', 'build', 'ci', 'chore', 'revert'],
+      [
+        'feat',
+        'fix',
+        'refactor',
+        'perf',
+        'test',
+        'docs',
+        'build',
+        'ci',
+        'chore',
+        'style',
+        'revert',
+      ],
     ],
 
     'scope-enum': [
