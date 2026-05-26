@@ -1,17 +1,14 @@
-import { BaseError } from '../base/base-error.js';
+// packages\core\src\errors\filesystem\filesystem-error.ts
+import { BaseError, type ErrorOptions } from '../base/base-error.js';
+import type { FilesystemErrorCode } from '../codes/filesystem.codes.js';
 
-import type { FileSystemErrorCode } from './filesystem-error-codes.js';
+export abstract class FilesystemError<TMetadata = unknown> extends BaseError<TMetadata> {
+  readonly code: FilesystemErrorCode;
 
-export abstract class FileSystemnError extends BaseError {
-  readonly code: FileSystemErrorCode;
-
-  constructor(
+  protected constructor(
     message: string,
-    code: FileSystemErrorCode,
-    options?: {
-      cause?: unknown;
-      metadata?: unknown;
-    },
+    code: FilesystemErrorCode,
+    options?: ErrorOptions<TMetadata>,
   ) {
     super(message, options);
 

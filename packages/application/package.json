@@ -28,8 +28,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "pnpm build:js",
-    "build:js": "tsx ../tooling/src/commands/build.ts",
+    "build": "tsx ../tooling/src/commands/build.ts",
     "clean": "tsx ../tooling/src/commands/clean.js",
     "dev": "tsx ../tooling/src/commands/dev.js",
     "lint": "tsx ../tooling/src/commands/lint.ts",

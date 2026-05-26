@@ -6,6 +6,10 @@ import { runDoctor } from '../services/doctor/doctor-runner.js';
 
 export function registerDoctorCommand(cli: CAC): void {
   cli.command('doctor', 'Validate workspace health').action(async () => {
-    await runDoctor();
+    const result = await runDoctor();
+
+    if (!result.success) {
+      process.exitCode = 1;
+    }
   });
 }

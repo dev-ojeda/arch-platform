@@ -1,7 +1,10 @@
 // packages/cli/src/services/models/doctor-check-result.ts
+export type DoctorCheckSeverity = 'error' | 'warning' | 'info';
+
 export interface DoctorCheckResult {
-  name: string;
-  success: boolean;
+  severity: DoctorCheckSeverity;
+
   message: string;
-  details: string[];
+
+  details?: string[];
 }

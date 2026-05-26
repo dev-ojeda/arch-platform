@@ -1,18 +1,15 @@
 // packages/core/src/errors/generation/generation-errors.ts
 
-import { BaseError } from '../base/base-error.js';
+import { BaseError, type ErrorOptions } from '../base/base-error.js';
+import type { GenerationErrorCode } from '../codes/generation.codes.js';
 
-import type { GenerationErrorCode } from './generation-error-codes.js';
-
-export abstract class GenerationError extends BaseError<GenerationErrorCode> {
+export abstract class GenerationError<TMetadata = unknown> extends BaseError<TMetadata> {
   readonly code: GenerationErrorCode;
 
-  constructor(
+  protected constructor(
     message: string,
     code: GenerationErrorCode,
-    options?: {
-      cause?: unknown;
-    },
+    options?: ErrorOptions<TMetadata>,
   ) {
     super(message, options);
 

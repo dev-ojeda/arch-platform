@@ -1,12 +1,12 @@
 // packages/cli/src/commands/reset.command.ts
+import { executeCommand } from '@arch/tooling';
 import type { CAC } from 'cac';
 
-import { runCommand } from '../utils/command-runner.js';
-import { info } from '../utils/logger.js';
+import { logger } from '../ui/logger.js';
 
 export function registerResetCommand(cli: CAC): void {
   cli.command('reset', 'Reset workspace').action(async () => {
-    info('Reseting workspace...');
-    await runCommand('pnpm', ['reset']);
+    logger.info('Reseting workspace...');
+    await executeCommand('pnpm', ['reset']);
   });
 }

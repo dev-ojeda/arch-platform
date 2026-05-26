@@ -1,15 +1,31 @@
 // packages/cli/src/services/checks/check-paths.ts
+
 import fs from 'node:fs';
+
+import type { DoctorCheck } from './doctor-check.js';
 
 const requiredDirectories = ['packages', 'docs'];
 
-export async function checkPaths() {
-  const missing = requiredDirectories.filter((directory) => !fs.existsSync(directory));
+export const checkPaths: DoctorCheck = {
+  name: 'paths',
 
-  return {
-    name: 'paths',
-    success: missing.length === 0,
-    message: missing.length === 0 ? 'Required paths validated' : 'Missing required paths',
-    details: missing,
-  };
-}
+  async run() {
+    const missingDirectories = requiredDirectories.filter((directory) => !fs.existsSync(directory));
+
+    if (missingDirectories.length > 0) {
+      return {
+        severity: 'error',
+
+        message: 'Missing required paths',
+
+        details: missingDirectories,
+      };
+    }
+
+    return {
+      severity: 'info',
+
+      message: 'Required paths validated',
+    };
+  },
+};

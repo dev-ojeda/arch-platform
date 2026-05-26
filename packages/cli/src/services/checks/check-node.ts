@@ -1,18 +1,31 @@
 // packages/cli/src/services/checks/check-node.ts
 
-import type { DoctorCheckResult } from '../models/doctor-check-result.js';
+import type { DoctorCheck } from './doctor-check.js';
 
-export async function checkNode(): Promise<DoctorCheckResult> {
-  const version = process.version;
+export const checkNode: DoctorCheck = {
+  name: 'node',
 
-  const major = Number(version.replace('v', '').split('.')[0]);
+  async run() {
+    const version = process.version;
 
-  const supported = major >= 20;
+    const major = Number(version.replace('v', '').split('.')[0]);
 
-  return {
-    name: 'node',
-    success: supported,
-    message: supported ? `Node version OK (${version})` : `Unsupported Node version (${version})`,
-    details: [],
-  };
-}
+    const supported = major >= 20;
+
+    if (supported) {
+      return {
+        severity: 'info',
+
+        message: `Node version OK (${version})`,
+      };
+    }
+
+    return {
+      severity: 'error',
+
+      message: `Unsupported Node version (${version})`,
+
+      details: ['Node.js 20 or newer is required.'],
+    };
+  },
+};

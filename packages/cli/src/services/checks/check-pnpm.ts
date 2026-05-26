@@ -1,24 +1,36 @@
 // packages/cli/src/services/checks/check-pnpm.ts
+
 import { execSync } from 'node:child_process';
 
-import type { DoctorCheckResult } from '../models/doctor-check-result.js';
+import type { DoctorCheck } from './doctor-check.js';
 
-export async function checkPnpm(): Promise<DoctorCheckResult> {
-  try {
-    const version = execSync('pnpm --version').toString().trim();
+export const checkPnpm: DoctorCheck = {
+  name: 'pnpm',
 
-    return {
-      name: 'pnpm',
-      success: true,
-      message: `pnpm version OK (${version})`,
-      details: [],
-    };
-  } catch {
-    return {
-      name: 'pnpm',
-      success: false,
-      message: 'pnpm is not installed',
-      details: [],
-    };
-  }
-}
+  async run() {
+    try {
+      const version = execSync('pnpm --version', {
+        stdio: ['ignore', 'pipe', 'ignore'],
+      })
+        .toString()
+        .trim();
+
+      return {
+        severity: 'info',
+
+        message: `pnpm version OK (${version})`,
+      };
+    } catch {
+      return {
+        severity: 'error',
+
+        message: 'pnpm is not installed',
+
+        details: [
+          'Install pnpm globally before using arch-platform.',
+          'Required version: pnpm >= 10.',
+        ],
+      };
+    }
+  },
+};

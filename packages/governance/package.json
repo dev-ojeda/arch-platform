@@ -1,0 +1,34 @@
+{
+  "name": "@arch/governance",
+  "version": "0.1.0",
+  "devDependencies": {
+    "@arch/tooling": "workspace:*"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "private": true,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsx ../tooling/src/commands/build.ts",
+    "clean": "tsx ../tooling/src/commands/clean.js",
+    "dev": "tsx ../tooling/src/commands/dev.js",
+    "lint": "tsx ../tooling/src/commands/lint.ts",
+    "typecheck": "tsx ../tooling/src/commands/typecheck.js"
+  },
+  "sideEffects": false,
+  "type": "module",
+  "types": "./dist/index.d.ts"
+}

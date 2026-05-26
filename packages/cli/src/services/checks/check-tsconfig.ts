@@ -1,45 +1,43 @@
+// packages/cli/src/services/checks/check-tsconfig.ts
+
 import fs from 'node:fs';
 
-import ts from 'typescript';
+import type { DoctorCheck } from './doctor-check.js';
 
-export async function checkTsConfig() {
-  const path = 'tsconfig.json';
+export const checkTsConfig: DoctorCheck = {
+  name: 'tsconfig',
 
-  if (!fs.existsSync(path)) {
-    return {
-      name: 'tsconfig',
-      success: false,
-      message: 'tsconfig.json missing',
-      details: [],
-    };
-  }
+  async run() {
+    const tsconfigPath = 'tsconfig.json';
 
-  try {
-    const raw = fs.readFileSync(path, 'utf8');
-
-    const parsed = ts.parseConfigFileTextToJson(path, raw);
-
-    if (parsed.error) {
+    if (!fs.existsSync(tsconfigPath)) {
       return {
-        name: 'tsconfig',
-        success: false,
-        message: 'Invalid tsconfig',
-        details: [ts.flattenDiagnosticMessageText(parsed.error.messageText, '\n')],
+        severity: 'error',
+
+        message: 'tsconfig.json missing',
+
+        details: ['Expected file: ./tsconfig.json'],
       };
     }
 
-    return {
-      name: 'tsconfig',
-      success: true,
-      message: 'tsconfig validated',
-      details: [],
-    };
-  } catch (error) {
-    return {
-      name: 'tsconfig',
-      success: false,
-      message: 'Failed to parse tsconfig',
-      details: [error instanceof Error ? error.message : 'Unknown error'],
-    };
-  }
-}
+    try {
+      const rawConfig = fs.readFileSync(tsconfigPath, 'utf8');
+
+      JSON.parse(rawConfig);
+
+      return {
+        severity: 'info',
+
+        message: 'tsconfig validated',
+      };
+    } catch (error) {
+      return {
+        severity: 'error',
+
+        message: 'Invalid tsconfig',
+
+        details: [error instanceof Error ? error.message : 'Unknown error'],
+      };
+    }
+  },
+};

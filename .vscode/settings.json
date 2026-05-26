@@ -87,7 +87,8 @@
   "typescript.disableAutomaticTypeAcquisition": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.tsserver.maxTsServerMemory": 4096,
-  "typescript.tsserver.experimental.enableProjectDiagnostics": false,
+  "typescript.tsserver.experimental.enableProjectDiagnostics": true,
+  "typescript.preferences.includePackageJsonAutoImports": "off",
   "typescript.tsserver.log": "off",
   "typescript.tsserver.watchOptions": {
     "watchFile": "dynamicPriorityPolling",
@@ -108,7 +109,10 @@
       "icon": "terminal-powershell"
     },
     "Command Prompt": {
-      "path": ["${env:windir}\\Sysnative\\cmd.exe", "${env:windir}\\System32\\cmd.exe"],
+      "path": [
+        "${env:windir}\\Sysnative\\cmd.exe",
+        "${env:windir}\\System32\\cmd.exe"
+      ],
       "args": [],
       "icon": "terminal-cmd",
       "overrideName": true
@@ -178,12 +182,26 @@
   // -----------------------------------------------------------------------------
   // TODO TREE
   // -----------------------------------------------------------------------------
-  "todo-tree.general.tags": ["todo", "fix", "hack", "perf", "deprecated"],
+  "todo-tree.general.tags": [
+    "todo",
+    "fix",
+    "hack",
+    "perf",
+    "deprecated"
+  ],
   // -----------------------------------------------------------------------------
   // AUTO PATH HEADER
   // -----------------------------------------------------------------------------
-  "autoPathHeader.ignoredDirectories": ["temp", "**/node_modules", "dist/*"],
-  "autoPathHeader.allowedOnlyDirectories": ["src", "**/utils", "src/**/*.ts"],
+  "autoPathHeader.ignoredDirectories": [
+    "temp",
+    "**/node_modules",
+    "dist/*"
+  ],
+  "autoPathHeader.allowedOnlyDirectories": [
+    "src",
+    "**/utils",
+    "src/**/*.ts"
+  ],
   // -----------------------------------------------------------------------------
   // FOLDER TEMPLATES
   // -----------------------------------------------------------------------------

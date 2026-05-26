@@ -9,47 +9,38 @@
   "inputs": [
     {
       "id": "cleanupDryRun",
-
       "type": "pickString",
-
       "description": "Enable DryRun mode?",
-
-      "options": ["", "-DryRun"],
-
+      "options": [
+        "",
+        "-DryRun"
+      ],
       "default": ""
     },
-
     {
       "id": "cleanupSkipStore",
-
       "type": "pickString",
-
       "description": "Skip PNPM store cleanup?",
-
-      "options": ["", "-SkipPnpmStore"],
-
+      "options": [
+        "",
+        "-SkipPnpmStore"
+      ],
       "default": ""
     },
-
     {
       "id": "cleanupVerbose",
-
       "type": "pickString",
-
       "description": "Enable verbose output?",
-
-      "options": ["", "-VerboseOutput"],
-
+      "options": [
+        "",
+        "-VerboseOutput"
+      ],
       "default": ""
     },
-
     {
       "id": "turboFilter",
-
       "type": "promptString",
-
       "description": "Turbo filter (optional)",
-
       "default": ""
     },
     {
@@ -61,32 +52,24 @@
   "tasks": [
     {
       "label": "cleanup:full",
-
       "detail": "Perform full workspace cleanup",
-
       "icon": {
         "id": "trash",
         "color": "terminal.ansiRed"
       },
-
       "type": "shell",
-
       "command": "pwsh",
-
       "args": [
         "-NoProfile",
         "-ExecutionPolicy",
         "Bypass",
         "-File",
         "${workspaceFolder}/scripts/cleanup-full.ps1",
-
         "${input:cleanupDryRun}",
         "${input:cleanupSkipStore}",
         "${input:cleanupVerbose}"
       ],
-
       "problemMatcher": [],
-
       "presentation": {
         "reveal": "always",
         "panel": "dedicated",
@@ -108,60 +91,73 @@
       "problemMatcher": []
     },
     {
-      "label": "cleanup:dist",
+      "label": "workspace:cleanup:dist",
       "type": "shell",
       "command": "pwsh",
       "args": [
+        "-NoLogo",
         "-NoProfile",
+        "-NonInteractive",
         "-ExecutionPolicy",
         "Bypass",
         "-File",
         "./scripts/cleanup/cleanup-dist.ps1"
       ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      },
       "problemMatcher": []
     },
     {
       "label": "validate:lint",
       "type": "shell",
       "command": "pnpm",
-      "args": ["lint"],
+      "args": [
+        "lint"
+      ],
       "group": "test",
-      "problemMatcher": ["$eslint-stylish"]
+      "problemMatcher": [
+        "$eslint-stylish"
+      ]
     },
     {
       "label": "validate:typecheck",
       "type": "shell",
       "command": "pnpm",
-      "args": ["typecheck"],
+      "args": [
+        "typecheck"
+      ],
       "group": "test",
-      "problemMatcher": ["$tsc"]
+      "problemMatcher": [
+        "$tsc"
+      ]
     },
     {
       "label": "validate:test",
       "type": "shell",
       "command": "pnpm",
-      "args": ["test"],
+      "args": [
+        "test"
+      ],
       "group": "test",
       "problemMatcher": []
     },
     {
       "label": "workspace:install",
-
       "detail": "Install workspace dependencies",
-
       "icon": {
         "id": "package",
         "color": "terminal.ansiGreen"
       },
-
       "type": "shell",
-
       "command": "pnpm",
-
-      "args": ["install", "--prefer-offline"],
-
+      "args": [
+        "install",
+        "--prefer-offline"
+      ],
       "problemMatcher": [],
-
       "presentation": {
         "reveal": "always",
         "panel": "dedicated",
@@ -173,25 +169,34 @@
       "label": "workspace:update",
       "type": "shell",
       "command": "pnpm",
-      "args": ["update", "-r"],
+      "args": [
+        "update",
+        "-r"
+      ],
       "problemMatcher": []
     },
     {
       "label": "platform:build",
       "type": "shell",
       "command": "pnpm",
-      "args": ["build"],
+      "args": [
+        "build"
+      ],
       "group": {
         "kind": "build",
         "isDefault": true
       },
-      "problemMatcher": ["$tsc"]
+      "problemMatcher": [
+        "$tsc"
+      ]
     },
     {
       "label": "platform:dev",
       "type": "shell",
       "command": "pnpm",
-      "args": ["dev"],
+      "args": [
+        "dev"
+      ],
       "isBackground": true,
       "problemMatcher": []
     },
@@ -199,14 +204,24 @@
       "label": "package:build",
       "type": "shell",
       "command": "pnpm",
-      "args": ["--filter", "${input:package}", "build"]
+      "args": [
+        "--filter",
+        "${input:package}",
+        "build"
+      ]
     },
     {
       "label": "package:model:build",
       "type": "shell",
       "command": "pnpm",
-      "args": ["--filter", "@arch/platform-model", "build"],
-      "problemMatcher": ["$tsc"]
+      "args": [
+        "--filter",
+        "@arch/platform-model",
+        "build"
+      ],
+      "problemMatcher": [
+        "$tsc"
+      ]
     }
   ]
 }

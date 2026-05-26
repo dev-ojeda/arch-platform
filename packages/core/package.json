@@ -25,14 +25,11 @@
     "access": "public"
   },
   "scripts": {
-    "build": "pnpm build:js && pnpm build:types",
-    "build:js": "tsx ../tooling/src/commands/build.ts",
-    "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly",
+    "build": "tsx ../tooling/src/commands/build.ts",
     "clean": "tsx ../tooling/src/commands/clean.js",
     "dev": "tsx ../tooling/src/commands/dev.js",
     "lint": "tsx ../tooling/src/commands/lint.ts",
-    "typecheck": "tsx ../tooling/src/commands/typecheck.js",
-    "validate": "pnpm lint && pnpm typecheck"
+    "typecheck": "tsx ../tooling/src/commands/typecheck.js"
   },
   "sideEffects": false,
   "type": "module",

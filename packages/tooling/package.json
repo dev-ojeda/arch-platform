@@ -5,21 +5,27 @@
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "devDependencies": {
-    "execa": "catalog:",
-    "typescript": "catalog:"
-  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     }
   },
-  "sideEffects": false,
+  "dependencies": {
+    "execa": "catalog:"
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  },
   "scripts": {
     "build": "tsup",
     "clean": "rimraf dist",
     "dev": "tsup --watch",
+    "lint": "eslint src",
     "typecheck": "tsc -p tsconfig.build.json --noEmit"
   }
 }

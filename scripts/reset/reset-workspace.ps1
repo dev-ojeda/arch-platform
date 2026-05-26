@@ -1,154 +1,456 @@
-# scripts/reset-workspace.ps1
+# scripts/reset/reset-workspace.ps1
 
-[CmdletBinding()]
+<#
+.SYNOPSIS
+    Performs a destructive workspace reset.
+
+.DESCRIPTION
+    Stops active Node.js processes and removes generated artifacts.
+
+    Optionally removes:
+    - root node_modules
+
+    Intended for:
+    - corrupted installs
+    - dependency graph resets
+    - broken symlinks
+    - clean CI reproduction
+    - full workspace rebuilds
+
+    This script is intentionally destructive.
+
+.FEATURES
+    - Safe removal
+    - DryRun support
+    - Verbose logging
+    - ShouldProcess support
+    - Process termination
+    - Monorepo-aware traversal
+    - Protected directory exclusions
+
+.EXAMPLE
+    ./reset-workspace.ps1
+
+.EXAMPLE
+    ./reset-workspace.ps1 -IncludeRootNodeModules
+
+.EXAMPLE
+    ./reset-workspace.ps1 -DryRun
+
+.EXAMPLE
+    ./reset-workspace.ps1 -WhatIf
+#>
+
+[CmdletBinding(SupportsShouldProcess)]
 param(
+  [switch]$IncludeRootNodeModules,
+
   [switch]$DryRun,
-  [switch]$VerboseOutput
+
+  [switch]$VerboseOutput,
+
+  [string]$RootPath = '.'
 )
 
-$ErrorActionPreference = "Stop"
+Set-StrictMode -Version Latest
 
-# ========================================
+$ErrorActionPreference = 'Stop'
+
+# =========================================================
+# CONSTANTS
+# =========================================================
+
+$ExcludedDirectories = @(
+  '.git',
+  '.idea',
+  '.vscode'
+)
+
+$CleanupDirectories = @(
+  'dist',
+  '.turbo',
+  'coverage',
+  '.next',
+  'node_modules'
+)
+
+$cleanupFiles = @(
+  '*.tsbuildinfo',
+  '*.d.ts',
+  '*.d.ts.map',
+  '*.js.map'
+)
+
+# =========================================================
+# LOGGER
+# =========================================================
+
+function Write-Log {
+  param(
+    [ValidateSet(
+      'INFO',
+      'WARN',
+      'ERROR',
+      'SUCCESS',
+      'DEBUG'
+    )]
+    [string]$Level,
+
+    [Parameter(Mandatory)]
+    [string]$Message
+  )
+
+  if (
+    $Level -eq 'DEBUG' -and
+    -not $VerboseOutput
+  ) {
+    return
+  }
+
+  $Color = switch ($Level) {
+    'INFO' { 'Cyan' }
+    'WARN' { 'Yellow' }
+    'ERROR' { 'Red' }
+    'SUCCESS' { 'Green' }
+    'DEBUG' { 'DarkGray' }
+  }
+
+  Write-Host "[$Level] $Message" `
+    -ForegroundColor $Color
+}
+
+# =========================================================
 # HELPERS
-# ========================================
+# =========================================================
 
-function Write-Info {
-  param([string]$Message)
-
-  Write-Host "[INFO] $Message" -ForegroundColor Cyan
-}
-
-function Write-Success {
-  param([string]$Message)
-
-  Write-Host "[OK]   $Message" -ForegroundColor Green
-}
-
-function Write-WarningMessage {
-  param([string]$Message)
-
-  Write-Host "[WARN] $Message" -ForegroundColor Yellow
-}
-
-function Write-ErrorMessage {
-  param([string]$Message)
-
-  Write-Host "[ERR]  $Message" -ForegroundColor Red
-}
-
-function Remove-WorkspaceItem {
+function Test-ExcludedPath {
   param(
     [Parameter(Mandatory)]
     [string]$Path
   )
 
-  if (-not (Test-Path $Path)) {
-
-    if ($VerboseOutput) {
-      Write-WarningMessage "Path not found: $Path"
+  foreach ($ExcludedDirectory in $ExcludedDirectories) {
+    if (
+      $Path -match
+      [regex]::Escape($ExcludedDirectory)
+    ) {
+      return $true
     }
-
-    return
   }
 
-  try {
+  return $false
+}
 
-    if ($DryRun) {
-      Write-Host "[DRYRUN] Remove: $Path" -ForegroundColor Magenta
-      return
-    }
+function Remove-WorkspacePath {
+  [CmdletBinding(SupportsShouldProcess)]
+  param(
+    [Parameter(Mandatory)]
+    [string]$Path
+  )
 
+  if (-not (Test-Path -LiteralPath $Path)) {
+    Write-Log `
+      -Level DEBUG `
+      -Message "Path not found: $Path"
+
+    return $false
+  }
+
+  if ($DryRun) {
+    Write-Host "[DRYRUN] Remove: $Path" `
+      -ForegroundColor Magenta
+
+    return $true
+  }
+
+  if (
+    $PSCmdlet.ShouldProcess(
+      $Path,
+      'Remove workspace artifact'
+    )
+  ) {
     Remove-Item `
       -LiteralPath $Path `
       -Recurse `
-      -Force
+      -Force `
+      -ErrorAction Stop
 
-    Write-Success "Removed: $Path"
-  }
-  catch {
-    Write-ErrorMessage "Failed to remove: $Path"
+    Write-Log `
+      -Level SUCCESS `
+      -Message "Removed: $Path"
 
-    if ($VerboseOutput) {
-      Write-Host $_.Exception.Message -ForegroundColor DarkRed
-    }
+    return $true
   }
+
+  return $false
 }
 
-# ========================================
-# STOP NODE PROCESSES
-# ========================================
-
-Write-Host ""
-Write-Host "========================================" -ForegroundColor Cyan
-Write-Host " STOPPING NODE PROCESSES" -ForegroundColor Cyan
-Write-Host "========================================" -ForegroundColor Cyan
-Write-Host ""
+# =========================================================
+# VALIDATION
+# =========================================================
 
 try {
+  $WorkspaceRoot =
+  (Resolve-Path -Path $RootPath).Path
+}
+catch {
+  Write-Log `
+    -Level ERROR `
+    -Message "Root path not found: $RootPath"
 
-  $NodeProcesses = Get-Process node -ErrorAction SilentlyContinue
+  exit 1
+}
 
-  if ($null -eq $NodeProcesses) {
-    Write-WarningMessage "No node processes found"
+$RootNodeModules =
+Join-Path $WorkspaceRoot 'node_modules'
+
+# =========================================================
+# START
+# =========================================================
+
+Write-Host ''
+
+Write-Host `
+  '========================================' `
+  -ForegroundColor Cyan
+
+Write-Host `
+  ' WORKSPACE RESET' `
+  -ForegroundColor Cyan
+
+Write-Host `
+  '========================================' `
+  -ForegroundColor Cyan
+
+Write-Host ''
+
+Write-Log `
+  -Level INFO `
+  -Message "Workspace root: $WorkspaceRoot"
+
+# =========================================================
+# STOP NODE PROCESSES
+# =========================================================
+
+Write-Log `
+  -Level INFO `
+  -Message 'Stopping Node.js processes'
+
+Get-Process node -ErrorAction SilentlyContinue |
+ForEach-Object {
+  try {
+    if ($DryRun) {
+      Write-Host `
+        "[DRYRUN] Stop process: $($_.Id)" `
+        -ForegroundColor Magenta
+
+      return
+    }
+
+    Stop-Process `
+      -Id $_.Id `
+      -Force `
+      -ErrorAction Stop
+
+    Write-Log `
+      -Level SUCCESS `
+      -Message "Stopped process: $($_.Id)"
   }
-  else {
+  catch {
+    Write-Log `
+      -Level WARN `
+      -Message "Failed to stop process: $($_.Id)"
 
-    foreach ($Process in $NodeProcesses) {
-
-      if ($DryRun) {
-        Write-Host "[DRYRUN] Stop process: $($Process.Id)" -ForegroundColor Magenta
-        continue
-      }
-
-      Stop-Process `
-        -Id $Process.Id `
-        -Force
-
-      Write-Success "Stopped node process: $($Process.Id)"
+    if ($VerboseOutput) {
+      Write-Host `
+        $_.Exception.Message `
+        -ForegroundColor DarkRed
     }
   }
 }
-catch {
-  Write-ErrorMessage "Failed to stop node processes"
 
-  if ($VerboseOutput) {
-    Write-Host $_.Exception.Message -ForegroundColor DarkRed
+# =========================================================
+# DISCOVERY
+# =========================================================
+
+$DirectoriesToRemove = @()
+
+foreach ($Target in $CleanupDirectories) {
+
+  Write-Log `
+    -Level DEBUG `
+    -Message "Scanning directories: $Target"
+
+  $Directories =
+  Get-ChildItem `
+    -Path $WorkspaceRoot `
+    -Directory `
+    -Recurse `
+    -Force `
+    -Filter $Target `
+    -ErrorAction SilentlyContinue |
+  Where-Object {
+    -not (
+      Test-ExcludedPath `
+        -Path $_.FullName
+    )
+  }
+
+  foreach ($Directory in $Directories) {
+
+    $DirectoryPath = $Directory.FullName
+
+    if (
+      $DirectoryPath -eq $RootNodeModules -and
+      -not $IncludeRootNodeModules
+    ) {
+      Write-Log `
+        -Level DEBUG `
+        -Message 'Skipping root node_modules'
+
+      continue
+    }
+
+    $DirectoriesToRemove += $Directory
   }
 }
 
-# ========================================
-# CLEAN WORKSPACE
-# ========================================
+$FilesToRemove = @()
 
-Write-Host ""
-Write-Host "========================================" -ForegroundColor Cyan
-Write-Host " CLEANING WORKSPACE" -ForegroundColor Cyan
-Write-Host "========================================" -ForegroundColor Cyan
-Write-Host ""
+foreach ($Pattern in $CleanupFiles) {
 
-$PathsToRemove = @(
-  "node_modules",
-  ".turbo",
-  "dist",
-  "coverage",
-  ".next"
-)
+  Write-Log `
+    -Level DEBUG `
+    -Message "Scanning files: $Pattern"
 
-foreach ($Path in $PathsToRemove) {
+  $Files =
+  Get-ChildItem `
+    -Path $WorkspaceRoot `
+    -File `
+    -Recurse `
+    -Force `
+    -Filter $Pattern `
+    -ErrorAction SilentlyContinue |
+  Where-Object {
+    -not (
+      Test-ExcludedPath `
+        -Path $_.FullName
+    )
+  }
 
-  Write-Info "Processing: $Path"
-
-  Remove-WorkspaceItem -Path $Path
+  $FilesToRemove += $Files
 }
 
-# ========================================
-# FINISHED
-# ========================================
+# =========================================================
+# CLEANUP
+# =========================================================
 
-Write-Host ""
-Write-Host "========================================" -ForegroundColor Cyan
-Write-Host " RESET COMPLETED" -ForegroundColor Cyan
-Write-Host "========================================" -ForegroundColor Cyan
-Write-Host ""
+$RemovedDirectories = 0
+$RemovedFiles = 0
+$FailedItems = 0
 
-Write-Success "Workspace reset finished"
+foreach ($Directory in $DirectoriesToRemove) {
+
+  try {
+    $Removed =
+    Remove-WorkspacePath `
+      -Path $Directory.FullName
+
+    if ($Removed) {
+      $RemovedDirectories++
+    }
+  }
+  catch {
+    Write-Log `
+      -Level ERROR `
+      -Message (
+      "Failed to remove directory: " +
+      $Directory.FullName
+    )
+
+    Write-Log `
+      -Level ERROR `
+      -Message $_.Exception.Message
+
+    $FailedItems++
+  }
+}
+
+foreach ($File in $FilesToRemove) {
+
+  try {
+    $Removed =
+    Remove-WorkspacePath `
+      -Path $File.FullName
+
+    if ($Removed) {
+      $RemovedFiles++
+    }
+  }
+  catch {
+    Write-Log `
+      -Level ERROR `
+      -Message (
+      "Failed to remove file: " +
+      $File.FullName
+    )
+
+    Write-Log `
+      -Level ERROR `
+      -Message $_.Exception.Message
+
+    $FailedItems++
+  }
+}
+
+# =========================================================
+# SUMMARY
+# =========================================================
+
+Write-Host ''
+
+Write-Host `
+  '----------------------------------------' `
+  -ForegroundColor DarkGray
+
+Write-Host `
+  ' RESET SUMMARY' `
+  -ForegroundColor Cyan
+
+Write-Host `
+  '----------------------------------------' `
+  -ForegroundColor DarkGray
+
+Write-Host ''
+
+Write-Host "Directories removed : $RemovedDirectories"
+Write-Host "Files removed       : $RemovedFiles"
+Write-Host "Failures            : $FailedItems"
+
+if ($DryRun) {
+  Write-Host ''
+  Write-Host 'Mode : DRY RUN' `
+    -ForegroundColor Magenta
+}
+
+Write-Host ''
+
+if ($IncludeRootNodeModules) {
+  Write-Log `
+    -Level WARN `
+    -Message 'Root node_modules removal enabled'
+}
+
+if ($FailedItems -gt 0) {
+  Write-Log `
+    -Level WARN `
+    -Message 'Workspace reset completed with warnings'
+
+  exit 1
+}
+
+Write-Log `
+  -Level SUCCESS `
+  -Message 'Workspace reset completed successfully'
+
+Write-Host ''
