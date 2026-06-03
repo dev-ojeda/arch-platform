@@ -1,17 +1,12 @@
 import { defineConfig } from 'tsup';
 
-import { baseConfig } from '../../tsup.base.ts';
+import { baseConfig } from '../../tsup.base.js';
 
 export default defineConfig({
   ...baseConfig,
-
   entry: ['src/index.ts'],
-
-  format: ['esm'],
-
-  dts: {
-    resolve: true,
-  },
+  bundle: false,
+  dts: false,
 
   banner: {
     js: '#!/usr/bin/env node',

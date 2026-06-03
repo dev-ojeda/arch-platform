@@ -1,40 +1,52 @@
 {
   "name": "@arch/application",
   "version": "0.1.0",
-  "dependencies": {
-    "@arch/contracts": "workspace:*",
-    "@arch/core": "workspace:*",
-    "handlebars": "^4.7.9"
-  },
-  "devDependencies": {
-    "@arch/tooling": "workspace:*",
-    "@arch/testing": "workspace:*"
-  },
-  "engines": {
-    "node": ">=20"
-  },
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./generation": {
+      "types": "./dist/generation/index.d.ts",
+      "import": "./dist/generation.js"
+    },
+    "./runtime": {
+      "types": "./dist/runtime/index.d.ts",
+      "import": "./dist/runtime.js"
+    },
+    "./use-cases/generate-project": {
+      "types": "./dist/use-cases/generate-project/index.d.ts",
+      "import": "./dist/use-cases.js"
+    },
+    "./testing": {
+      "types": "./dist/testing/index.d.ts",
+      "import": "./dist/testing/index.js"
     }
   },
   "files": [
     "dist"
   ],
-  "main": "./dist/index.js",
-  "private": true,
-  "publishConfig": {
-    "access": "public"
-  },
-  "scripts": {
-    "build": "tsx ../tooling/src/commands/build.ts",
-    "clean": "tsx ../tooling/src/commands/clean.js",
-    "dev": "tsx ../tooling/src/commands/dev.js",
-    "lint": "tsx ../tooling/src/commands/lint.ts",
-    "typecheck": "tsx ../tooling/src/commands/typecheck.js"
-  },
   "sideEffects": false,
-  "type": "module",
-  "types": "./dist/index.d.ts"
+  "scripts": {
+    "build": "tsx ../tooling/src/bin/build.ts",
+    "clean": "tsx ../tooling/src/bin/clean.ts",
+    "lint": "tsx ../tooling/src/bin/lint.ts",
+    "typecheck": "tsx ../tooling/src/bin/typecheck.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@arch/contracts": "workspace:*",
+    "@arch/core": "workspace:*",
+    "@arch/testing": "workspace:*",
+    "handlebars": "^4.7.9"
+  },
+  "devDependencies": {
+    "@arch/tooling": "workspace:*"
+  }
 }

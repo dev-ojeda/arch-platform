@@ -1,29 +1,20 @@
 // packages/application/src/generation/telemetry/record-step-metric.ts
 
-import type { GenerationContext, StepExecutionMetric } from '@arch/contracts';
+import type { GenerationContext } from '@arch/contracts/generation';
+import type { StepExecutionMetric } from '@arch/contracts/telemetry';
+import type { TemplateVariables } from '@arch/contracts/variables';
 
-import { publishGenerationEvent } from '../events/publish-generation-event.js';
+import { publishGenerationEvent } from '../../runtime/execution/events/publish-generation-event.js';
 
-export async function recordStepMetric(
-  context: GenerationContext,
-
+export async function recordStepMetric<TVariables extends TemplateVariables = TemplateVariables>(
+  context: GenerationContext<TVariables>,
   metric: StepExecutionMetric,
 ): Promise<void> {
   context.metrics.push(metric);
 
-  await publishGenerationEvent(
-    context,
-
-    'STEP_METRIC_RECORDED',
-
-    {
-      step: metric.step,
-
-      duration: metric.duration,
-
-      startedAt: metric.startedAt,
-
-      completedAt: metric.finishedAt,
-    },
-  );
+  await publishGenerationEvent(context, 'STEP_METRIC_RECORDED', {
+    duration: metric.duration,
+    startedAt: metric.startedAt,
+    completedAt: metric.finishedAt,
+  });
 }

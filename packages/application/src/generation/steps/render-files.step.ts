@@ -1,11 +1,18 @@
 // packages/application/src/generation/steps/render-files.step.ts
 
-import type { GeneratedFile, GenerationContext, GenerationPipelineStep } from '@arch/contracts';
+import type {
+  GeneratedFile,
+  GenerationContext,
+  GenerationPipelineStep,
+} from '@arch/contracts/generation';
+import type { TemplateVariables } from '@arch/contracts/variables';
 
-export class RenderFilesStep implements GenerationPipelineStep {
+export class RenderFilesStep<
+  TVariables extends TemplateVariables = TemplateVariables,
+> implements GenerationPipelineStep<TVariables> {
   readonly name = 'render-files';
 
-  async execute(context: GenerationContext): Promise<void> {
+  execute(context: GenerationContext<TVariables>): Promise<void> {
     const generator = context.generator;
 
     if (!generator) {
@@ -15,12 +22,6 @@ export class RenderFilesStep implements GenerationPipelineStep {
     const generatedFiles: GeneratedFile[] = [];
 
     for (const _template of generator.templates) {
-      /*
-       * render template
-       * resolve output path
-       * create GeneratedFile
-       */
-
       generatedFiles.push({
         path: 'example.ts',
 
@@ -29,5 +30,7 @@ export class RenderFilesStep implements GenerationPipelineStep {
     }
 
     context.files.push(...generatedFiles);
+
+    return Promise.resolve();
   }
 }

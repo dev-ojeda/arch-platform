@@ -1,5 +1,5 @@
 // packages/cli/src/commands/test.command.ts
-import { executeCommand } from '@arch/tooling';
+import { executeCommand } from '@arch/tooling/runtime/execute-command';
 import type { CAC } from 'cac';
 
 import { logger } from '../ui/logger.js';

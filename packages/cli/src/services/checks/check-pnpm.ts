@@ -14,14 +14,13 @@ export const checkPnpm: DoctorCheck = {
       })
         .toString()
         .trim();
-
-      return {
+      return Promise.resolve({
         severity: 'info',
 
         message: `pnpm version OK (${version})`,
-      };
+      });
     } catch {
-      return {
+      return Promise.resolve({
         severity: 'error',
 
         message: 'pnpm is not installed',
@@ -30,7 +29,7 @@ export const checkPnpm: DoctorCheck = {
           'Install pnpm globally before using arch-platform.',
           'Required version: pnpm >= 10.',
         ],
-      };
+      });
     }
   },
 };

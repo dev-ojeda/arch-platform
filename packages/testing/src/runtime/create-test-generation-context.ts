@@ -1,71 +1,39 @@
-// packages/testing/src/runtime/create-test-generation-context.ts
+import type { GenerationContext } from '@arch/contracts/generation';
+import type { TemplateVariables } from '@arch/contracts/variables';
 
-import type { GenerationContext, NamedVariables } from '@arch/contracts';
+import { createTestEventBus } from '../events/create-test-event-bus.js';
+import { createMemoryFilesystem } from '../filesystem/create-memory-filesystem.js';
+import { createTestLogger } from '../logging/create-test-logger.js';
 
-const defaultGenerationContext: GenerationContext = {
-  /*
-   * Request
-   */
-
-  targetDir: '/tmp',
-
-  /*
-   * Runtime Services
-   */
-
-  logger: {
-    info: () => {},
-    warn: () => {},
-    error: () => {},
-    debug: () => {},
-  } as never,
-
-  eventBus: {
-    publish: async () => {},
-  } as never,
-
-  /*
-   * Infrastructure
-   */
-
-  fs: {} as never,
-
-  /*
-   * Variables
-   */
-
-  variables: {} satisfies NamedVariables,
-
-  /*
-   * Runtime Artifacts
-   */
-
-  files: [],
-
-  /*
-   * Runtime Metadata
-   */
-
-  metadata: new Map(),
-
-  /*
-   * Runtime Diagnostics
-   */
-
-  diagnostics: [],
-
-  /*
-   * Runtime Metrics
-   */
-
-  metrics: [],
-};
-
-export function createTestGenerationContext(
-  overrides: Partial<GenerationContext> = {},
-): GenerationContext {
+function createDefaultGenerationContext<
+  TVariables extends TemplateVariables,
+>(): GenerationContext<TVariables> {
   return {
-    ...defaultGenerationContext,
+    targetDir: '/tmp',
+
+    logger: createTestLogger(),
+
+    eventBus: createTestEventBus(),
+
+    fs: createMemoryFilesystem(),
+
+    variables: {} as TVariables,
+
+    files: [],
+
+    metadata: new Map(),
+
+    diagnostics: [],
+
+    metrics: [],
+  };
+}
+
+export function createTestGenerationContext<
+  TVariables extends TemplateVariables = TemplateVariables,
+>(overrides: Partial<GenerationContext<TVariables>> = {}): GenerationContext<TVariables> {
+  return {
+    ...createDefaultGenerationContext<TVariables>(),
 
     ...overrides,
   };

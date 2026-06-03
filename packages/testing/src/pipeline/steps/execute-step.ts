@@ -1,5 +1,5 @@
 // packages\testing\src\pipeline\steps\execute-step.ts
-import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts';
+import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts/generation';
 
 export async function executeStep(
   step: GenerationPipelineStep,

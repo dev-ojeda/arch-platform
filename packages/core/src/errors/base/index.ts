@@ -1,3 +1,3 @@
 // Auto-generated index
 
-export * from './base-error.js';
+export { BaseError, type ErrorOptions } from './base-error.js';

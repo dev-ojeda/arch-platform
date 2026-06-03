@@ -1,7 +1,7 @@
-// packages/tooling/src/commands/index.ts
+// packages\tooling\src\commands\index.ts
 
-export * from './build.js';
-export * from './clean.js';
-export * from './dev.js';
-export * from './lint.js';
-export * from './typecheck.js';
+export { buildCommand } from './build.js';
+export { cleanCommand } from './clean.js';
+export { devCommand } from './dev.js';
+export { lintCommand } from './lint.js';
+export { typecheckCommand } from './typecheck.js';

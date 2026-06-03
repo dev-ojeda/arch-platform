@@ -1,18 +1,15 @@
 // packages/core/variables/build-variables.ts
-import type {
-  GenerationContext,
-  LanguageConvention,
-  NamedVariables,
-  ResolvedTemplateVariables,
-} from '@arch/contracts';
+import type { GenerationContext } from '@arch/contracts/generation';
+import type { LanguageConvention } from '@arch/contracts/languages';
+import type { ResolvedTemplateVariables } from '@arch/contracts/templates';
+import { getStringVariable, type TemplateVariables } from '@arch/contracts/variables';
 
-export function buildVariables<TVariables extends NamedVariables>(
+export function buildVariables<TVariables extends TemplateVariables>(
   ctx: GenerationContext<TVariables>,
 
   language: LanguageConvention,
 ): ResolvedTemplateVariables<TVariables> {
-  const resourceName = String(ctx.variables.name);
-
+  const resourceName = getStringVariable(ctx.variables.name, 'name');
   return {
     ...ctx.variables,
 

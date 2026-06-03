@@ -24,20 +24,19 @@ export const checkTsConfig: DoctorCheck = {
       const rawConfig = fs.readFileSync(tsconfigPath, 'utf8');
 
       JSON.parse(rawConfig);
-
-      return {
+      return Promise.resolve({
         severity: 'info',
 
         message: 'tsconfig validated',
-      };
+      });
     } catch (error) {
-      return {
+      return Promise.resolve({
         severity: 'error',
 
         message: 'Invalid tsconfig',
 
         details: [error instanceof Error ? error.message : 'Unknown error'],
-      };
+      });
     }
   },
 };

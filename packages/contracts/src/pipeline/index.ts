@@ -1,3 +1,2 @@
-export * from '../generation/generation-pipeline-step.js';
-export * from './resolved-file-definition.js';
-export * from './resolved-template.js';
+export type { ResolvedFileDefinition } from './resolved-file-definition.js';
+export type { ResolvedTemplate } from './resolved-template.js';

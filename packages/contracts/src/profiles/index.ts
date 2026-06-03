@@ -1,3 +1,3 @@
 // packages/contracts/src/profiles/index.ts
 
-export * from './generation-profile.js';
+export type { GenerationProfile } from './generation-profile.js';

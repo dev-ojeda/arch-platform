@@ -1,1 +1,4 @@
-pnpm turbo build
+# .husky/pre-push
+pnpm validate
+pnpm cruiser
+pnpm syncpack:lint

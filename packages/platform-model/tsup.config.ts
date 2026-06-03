@@ -2,7 +2,7 @@
 
 import { defineConfig } from 'tsup';
 
-import { baseConfig } from '../../tsup.base.ts';
+import { baseConfig } from '../../tsup.base.js';
 
 export default defineConfig({
   ...baseConfig,
@@ -13,5 +13,5 @@ export default defineConfig({
 
   format: ['esm'],
 
-  dts: true,
+  dts: false,
 });

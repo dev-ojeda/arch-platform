@@ -1,1 +1,1 @@
-export * from './configuration.port.js';
+export type { ConfigurationPort } from './configuration.port.js';

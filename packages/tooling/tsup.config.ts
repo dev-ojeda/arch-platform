@@ -2,34 +2,33 @@
 
 import { defineConfig } from 'tsup';
 
-import { baseConfig } from '../../tsup.base.ts';
+import { baseConfig } from '../../tsup.base.js';
+
+const COMMAND_ENTRIES = {
+  // public command API
+  'commands/build': 'src/commands/build.ts',
+  'commands/clean': 'src/commands/clean.ts',
+  'commands/dev': 'src/commands/dev.ts',
+  'commands/lint': 'src/commands/lint.ts',
+  'commands/typecheck': 'src/commands/typecheck.ts',
+} as const;
+const RUNTIME_ENTRIES = {
+  'runtime/execute-command': 'src/runtime/execute-command.ts',
+};
+const ENTRYPOINTS = {
+  index: 'src/index.ts',
+  ...COMMAND_ENTRIES,
+  ...RUNTIME_ENTRIES,
+} as const;
 
 export default defineConfig({
   ...baseConfig,
 
-  clean: true,
+  entry: ENTRYPOINTS,
 
+  bundle: true,
+  dts: false,
+  sourcemap: false,
   splitting: false,
-
-  tsconfig: './tsconfig.build.json',
-
-  format: ['esm'],
-
-  entry: {
-    index: 'src/index.ts',
-
-    'commands/build': 'src/commands/build.ts',
-    'commands/clean': 'src/commands/clean.ts',
-    'commands/dev': 'src/commands/dev.ts',
-    'commands/typecheck': 'src/commands/typecheck.ts',
-    'commands/lint': 'src/commands/lint.ts',
-
-    'runtime/execute-command': 'src/runtime/execute-command.ts',
-
-    'runtime/remove-path': 'src/runtime/remove-path.ts',
-  },
-
-  dts: {
-    resolve: true,
-  },
+  treeshake: false,
 });

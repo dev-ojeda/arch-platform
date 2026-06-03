@@ -5,10 +5,16 @@
     "package.json",
     "pnpm-lock.yaml",
     "pnpm-workspace.yaml",
+
     "tsconfig.base.json",
+
     "tsup.base.ts",
+
     "vitest.shared.ts",
-    "vitest.setup.ts"
+    "vitest.workspace.ts",
+    "vitest.setup.ts",
+
+    "eslint.config.mjs"
   ],
 
   "globalEnv": ["NODE_ENV", "CI", "GITHUB_ACTIONS"],
@@ -19,24 +25,49 @@
       "outputs": []
     },
 
+    "clean": {
+      "cache": false,
+      "outputs": []
+    },
+
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+
     "build": {
       "dependsOn": ["^build"],
 
       "inputs": [
         "$TURBO_DEFAULT$",
+
         "src/**/*.ts",
-        "testing/**/*.ts",
+
+        "tsconfig*.json",
         "tsup.config.*",
-        "tsconfig*.json"
+
+        "!dist/**",
+        "!coverage/**",
+        "!node_modules/**"
       ],
 
       "outputs": ["dist/**"]
     },
 
     "typecheck": {
-      "dependsOn": ["^build", "^typecheck"],
+      "dependsOn": ["^build"],
 
-      "inputs": ["$TURBO_DEFAULT$", "src/**/*.ts", "testing/**/*.ts", "tsconfig*.json"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+
+        "src/**/*.ts",
+
+        "tsconfig*.json",
+
+        "!dist/**",
+        "!coverage/**",
+        "!node_modules/**"
+      ],
 
       "outputs": []
     },
@@ -44,7 +75,17 @@
     "lint": {
       "dependsOn": ["^lint"],
 
-      "inputs": ["$TURBO_DEFAULT$", "src/**/*.ts", "testing/**/*.ts", "eslint.config.*"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+
+        "src/**/*.ts",
+
+        "eslint.config.*",
+
+        "!dist/**",
+        "!coverage/**",
+        "!node_modules/**"
+      ],
 
       "outputs": []
     },
@@ -54,11 +95,18 @@
 
       "inputs": [
         "$TURBO_DEFAULT$",
+
         "src/**/*.ts",
-        "testing/**/*.ts",
+
         "**/*.test.ts",
         "**/*.spec.ts",
-        "**/*.snap"
+        "**/*.snap",
+
+        "vitest.config.*",
+
+        "!dist/**",
+        "!coverage/**",
+        "!node_modules/**"
       ],
 
       "outputs": ["coverage/**"]
@@ -67,21 +115,26 @@
     "coverage": {
       "dependsOn": ["^build", "test"],
 
+      "inputs": [
+        "$TURBO_DEFAULT$",
+
+        "src/**/*.ts",
+
+        "**/*.test.ts",
+        "**/*.spec.ts",
+
+        "vitest.config.*",
+
+        "!dist/**",
+        "!coverage/**",
+        "!node_modules/**"
+      ],
+
       "outputs": ["coverage/**"]
     },
 
-    "dev": {
-      "cache": false,
-      "persistent": true
-    },
-
-    "clean": {
-      "cache": false,
-      "outputs": []
-    },
-
     "validate": {
-      "dependsOn": ["lint", "typecheck", "test"],
+      "dependsOn": ["^validate", "lint", "typecheck", "test"],
 
       "outputs": []
     }

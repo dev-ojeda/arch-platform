@@ -1,6 +1,7 @@
 // packages/application/src/generation/exporters/composite-generation-report-exporter.ts
 
-import type { GenerationReport, GenerationReportExporter } from '@arch/contracts';
+import type { GenerationReportExporter } from '@arch/contracts/exporters';
+import type { GenerationReport } from '@arch/contracts/reports';
 
 export class CompositeGenerationReportExporter implements GenerationReportExporter {
   constructor(private readonly exporters: readonly GenerationReportExporter[]) {}

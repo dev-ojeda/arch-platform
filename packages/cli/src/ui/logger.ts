@@ -1,35 +1,36 @@
 // packages/cli/src/ui/logger.ts
 
-type LogLevel = 'info' | 'success' | 'error' | 'warn';
+import { safeStringify } from './safe-stringify.js';
+import { sanitizeMetadata } from './sanitize-metadata.js';
+import type { LogLevel } from './type-variable.js';
+import { LOG_LEVELS } from './type-variable.js';
 
+interface LogMetadata {
+  readonly [key: string]: unknown;
+}
 interface LogOptions {
   prefix?: boolean;
-}
 
+  metadata?: LogMetadata;
+}
 const ARCH_PREFIX = '[arch]';
 
 function write(level: LogLevel, message: string, options: LogOptions = {}): void {
-  const { prefix = true } = options;
+  const { prefix = true, metadata } = options;
+
+  const timestamp = new Date().toISOString();
+
+  const sanitizedMetadata = sanitizeMetadata(metadata);
 
   const formattedMessage = prefix ? `${ARCH_PREFIX} ${message}` : message;
 
-  switch (level) {
-    case 'info':
-      console.log(formattedMessage);
-      break;
+  const payload = sanitizedMetadata
+    ? `[${timestamp}] ${formattedMessage}\n${safeStringify(sanitizedMetadata, 2)}`
+    : `[${timestamp}] ${formattedMessage}`;
 
-    case 'success':
-      console.log(`✔ ${formattedMessage}`);
-      break;
+  const { write: writer, symbol } = LOG_LEVELS[level];
 
-    case 'warn':
-      console.warn(`▲ ${formattedMessage}`);
-      break;
-
-    case 'error':
-      console.error(`✖ ${formattedMessage}`);
-      break;
-  }
+  writer(`${symbol}${payload}`);
 }
 
 export const logger = {

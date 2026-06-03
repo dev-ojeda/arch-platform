@@ -1,1 +1,1 @@
-export * from './logger.port.js';
+export type { LoggerPort } from './logger.port.js';

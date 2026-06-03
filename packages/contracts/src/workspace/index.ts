@@ -1,1 +1,1 @@
-export * from './workspace.port.js';
+export type { WorkspacePort } from './workspace.port.js';

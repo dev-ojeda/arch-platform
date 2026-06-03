@@ -14,19 +14,18 @@ export const checkWorkspace: DoctorCheck = {
     const exists = fs.existsSync(workspacePath);
 
     if (exists) {
-      return {
+      return Promise.resolve({
         severity: 'info',
 
         message: 'pnpm-workspace.yaml found',
-      };
+      });
     }
-
-    return {
+    return Promise.resolve({
       severity: 'error',
 
       message: 'pnpm-workspace.yaml missing',
 
       details: ['Run this command from the workspace root.'],
-    };
+    });
   },
 };

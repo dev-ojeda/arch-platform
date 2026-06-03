@@ -10,7 +10,7 @@ export abstract class BaseError<TMetadata = unknown> extends Error {
 
   readonly metadata?: TMetadata;
 
-  readonly cause?: unknown;
+  override readonly cause?: unknown;
 
   protected constructor(message: string, options?: ErrorOptions<TMetadata>) {
     super(message);

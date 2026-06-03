@@ -1,33 +1,33 @@
-import type { GeneratorDefinition, GeneratorRegistry } from '@arch/contracts';
+import type { GeneratorDefinition, GeneratorRegistry } from '@arch/contracts/generators';
 
 export class InMemoryGeneratorRegistry implements GeneratorRegistry {
-  private readonly generators = new Map<string, GeneratorDefinition>();
+  readonly #generators = new Map<string, GeneratorDefinition>();
 
-  async has(id: string): Promise<boolean> {
-    return this.generators.has(id);
+  has(id: string): Promise<boolean> {
+    return Promise.resolve(this.#generators.has(id));
   }
 
   register(generator: GeneratorDefinition): void {
     const id = generator.descriptor.id;
 
-    if (this.generators.has(id)) {
+    if (this.#generators.has(id)) {
       throw new Error(`Generator "${id}" already registered`);
     }
 
-    this.generators.set(id, generator);
+    this.#generators.set(id, generator);
   }
 
-  async get(id: string): Promise<GeneratorDefinition> {
-    const generator = this.generators.get(id);
+  get(id: string): Promise<GeneratorDefinition> {
+    const generator = this.#generators.get(id);
 
-    if (!generator) {
+    if (generator === undefined) {
       throw new Error(`Generator "${id}" not found`);
     }
 
-    return generator;
+    return Promise.resolve(generator);
   }
 
-  async list(): Promise<readonly GeneratorDefinition[]> {
-    return [...this.generators.values()];
+  list(): Promise<readonly GeneratorDefinition[]> {
+    return Promise.resolve([...this.#generators.values()]);
   }
 }

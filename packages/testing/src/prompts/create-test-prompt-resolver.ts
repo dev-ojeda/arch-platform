@@ -1,13 +1,20 @@
 // packages/testing/src/prompts/create-test-prompt-resolver.ts
 
-import type { NamedVariables, PromptResolver, PromptSchema } from '@arch/contracts';
+import type { PromptResolver, PromptSchema } from '@arch/contracts/prompts';
+import type { NamedVariables } from '@arch/contracts/variables';
+
+function restoreVariables<TVariables extends NamedVariables>(
+  variables: NamedVariables,
+): TVariables {
+  return variables as TVariables;
+}
 
 export function createTestPromptResolver(variables: NamedVariables = {}): PromptResolver {
   return {
-    async collect<TVariables extends NamedVariables>(
+    collect<TVariables extends NamedVariables>(
       _schema: PromptSchema<TVariables>,
     ): Promise<TVariables> {
-      return variables as TVariables;
+      return Promise.resolve(restoreVariables<TVariables>(variables));
     },
   };
 }

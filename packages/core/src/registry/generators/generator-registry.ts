@@ -1,11 +1,15 @@
 // packages/core/src/registry/generator-registry.ts
 
-import type { GeneratorDefinition, NamedVariables } from '@arch/contracts';
-
-export type AnyGeneratorDefinition = GeneratorDefinition<any>;
+import {
+  eraseGeneratorType,
+  restoreGeneratorType,
+  type GeneratorDefinition,
+  type RegisteredGeneratorDefinition,
+} from '@arch/contracts/generators';
+import type { NamedVariables } from '@arch/contracts/variables';
 
 export class GeneratorRegistry {
-  readonly #registry = new Map<string, AnyGeneratorDefinition>();
+  readonly #registry = new Map<string, RegisteredGeneratorDefinition>();
 
   register<TVariables extends NamedVariables>(generator: GeneratorDefinition<TVariables>): void {
     const id = generator.descriptor.id;
@@ -14,28 +18,18 @@ export class GeneratorRegistry {
       throw new Error(`Generator already registered: ${id}`);
     }
 
-    this.#registry.set(id, generator);
+    this.#registry.set(id, eraseGeneratorType(generator));
   }
 
   has(id: string): boolean {
     return this.#registry.has(id);
   }
 
-  /**
-   * Retrieves a generator definition.
-   *
-   * The caller is responsible for providing
-   * the correct variable type.
-   *
-   * Internally the registry stores heterogeneous
-   * generator definitions using type erasure.
-   */
   get<TVariables extends NamedVariables>(id: string): GeneratorDefinition<TVariables> | undefined {
-    const generator = this.#registry.get(id);
-
-    return generator as GeneratorDefinition<TVariables> | undefined;
+    return restoreGeneratorType<TVariables>(this.#registry.get(id));
   }
-  list(): AnyGeneratorDefinition[] {
+
+  list(): RegisteredGeneratorDefinition[] {
     return [...this.#registry.values()];
   }
 }

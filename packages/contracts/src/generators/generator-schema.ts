@@ -1,4 +1,4 @@
-// packages\contracts\src\generator-schema.ts
+// packages/contracts/src/generators/generator-schema.ts
 export type GeneratorField =
   | {
       type: 'string';

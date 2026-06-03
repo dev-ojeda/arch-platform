@@ -1,0 +1,7 @@
+{
+  "layer": "domain",
+  "boundedContext": "orders",
+  "owners": ["platform-team"],
+  "tags": ["domain", "core-business"],
+  "visibility": "internal"
+}

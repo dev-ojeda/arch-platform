@@ -1,11 +1,15 @@
 // packages/application/src/generation/hooks/event-generation-hooks.ts
 
-import type { GenerationContext, GenerationHooks, GenerationPipelineStep } from '@arch/contracts';
+import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts/generation';
+import type { GenerationHooks } from '@arch/contracts/hooks';
+import type { TemplateVariables } from '@arch/contracts/variables';
 
-import { publishGenerationEvent } from '../events/publish-generation-event.js';
+import { publishGenerationEvent } from '../../runtime/execution/events/publish-generation-event.js';
 
-export class EventGenerationHooks implements GenerationHooks {
-  async beforePipeline(context: GenerationContext): Promise<void> {
+export class EventGenerationHooks<
+  TVariables extends TemplateVariables = TemplateVariables,
+> implements GenerationHooks<TVariables> {
+  async beforePipeline(context: GenerationContext<TVariables>): Promise<void> {
     await publishGenerationEvent(
       context,
 
@@ -13,7 +17,7 @@ export class EventGenerationHooks implements GenerationHooks {
     );
   }
 
-  async afterPipeline(context: GenerationContext): Promise<void> {
+  async afterPipeline(context: GenerationContext<TVariables>): Promise<void> {
     await publishGenerationEvent(
       context,
 
@@ -22,9 +26,9 @@ export class EventGenerationHooks implements GenerationHooks {
   }
 
   async beforeStep(
-    step: GenerationPipelineStep,
+    step: GenerationPipelineStep<TVariables>,
 
-    context: GenerationContext,
+    context: GenerationContext<TVariables>,
   ): Promise<void> {
     await publishGenerationEvent(
       context,
@@ -38,9 +42,9 @@ export class EventGenerationHooks implements GenerationHooks {
   }
 
   async afterStep(
-    step: GenerationPipelineStep,
+    step: GenerationPipelineStep<TVariables>,
 
-    context: GenerationContext,
+    context: GenerationContext<TVariables>,
   ): Promise<void> {
     await publishGenerationEvent(
       context,
@@ -56,7 +60,7 @@ export class EventGenerationHooks implements GenerationHooks {
   async onError(
     error: unknown,
 
-    context: GenerationContext,
+    context: GenerationContext<TVariables>,
   ): Promise<void> {
     await publishGenerationEvent(
       context,

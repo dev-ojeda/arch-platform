@@ -1,10 +1,7 @@
 // packages/application/src/generation/templates/resolve-template-definition.ts
-import type {
-  FileDefinition,
-  NamedVariables,
-  ResolvedFileDefinition,
-  ResolvedTemplate,
-} from '@arch/contracts';
+import type { ResolvedFileDefinition, ResolvedTemplate } from '@arch/contracts/pipeline';
+import type { FileDefinition } from '@arch/contracts/templates';
+import type { NamedVariables } from '@arch/contracts/variables';
 
 import { resolveTemplateOutputPath } from './resolve-template-output-path.js';
 

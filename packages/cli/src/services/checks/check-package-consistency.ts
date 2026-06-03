@@ -64,10 +64,9 @@ export const checkPackageConsistency: DoctorCheck = {
       };
     }
 
-    return {
+    return Promise.resolve({
       severity: 'info',
-
       message: 'Package consistency validated',
-    };
+    });
   },
 };

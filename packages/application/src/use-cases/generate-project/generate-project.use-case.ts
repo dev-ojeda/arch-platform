@@ -1,7 +1,9 @@
 // packages/application/src/application/use-cases/generate-project/generate-project.use-case.ts
 
-import type { GenerationResult, LoggerPort } from '@arch/contracts';
-import { GeneratorNotFoundError, type GeneratorRegistry } from '@arch/core';
+import type { GenerationResult } from '@arch/contracts/generation';
+import type { LoggerPort } from '@arch/contracts/logging';
+import { GeneratorNotFoundError } from '@arch/core/errors';
+import type { GeneratorRegistry } from '@arch/core/registry';
 
 import type { GenerationEngine } from '../../generation/engine/generation-engine.js';
 
@@ -23,7 +25,7 @@ export class GenerateProjectUseCase {
   ) {}
 
   async execute(request: GenerateProjectRequest): Promise<GenerationResult> {
-    const generator = await this.registry.get(request.generatorId);
+    const generator = this.registry.get(request.generatorId);
 
     if (!generator) {
       throw new GeneratorNotFoundError(request.generatorId);

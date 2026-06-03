@@ -10,6 +10,7 @@
     "@vitest/coverage-v8": "catalog:",
     "@vscode/test-electron": "catalog:",
     "cac": "catalog:",
+    "depcheck": "catalog:",
     "dependency-cruiser": "catalog:",
     "esbuild-visualizer": "catalog:",
     "eslint": "catalog:",
@@ -33,7 +34,7 @@
     "apps/*"
   ],
   "engines": {
-    "node": ">=20"
+    "node": ">=22 <23"
   },
   "packageManager": "pnpm@10.33.3",
   "private": true,
@@ -41,15 +42,15 @@
     "doctor": "pnpm arch:doctor",
     "arch": "tsx packages/cli/src/index.ts",
     "arch:doctor": "tsx packages/cli/src/index.ts doctor",
-    "bootstrap": "pnpm install && pnpm doctor && pnpm build",
+    "bootstrap": "pnpm install && turbo run build",
     "reinstall": "pnpm clean:all && pnpm install",
     "build": "turbo run build",
     "rebuild": "pnpm clean && pnpm build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
-    "test": "turbo run test",
-    "coverage": "turbo run coverage",
+    "test": "vitest run",
+    "coverage": "vitest run --coverage",
     "validate": "turbo run validate",
     "validate:strict": "pnpm doctor && pnpm validate && pnpm cruiser",
     "check": "pnpm doctor && pnpm lint && pnpm typecheck && pnpm test",
@@ -59,11 +60,21 @@
     "format:check": "prettier --check .",
     "syncpack:lint": "syncpack lint",
     "syncpack:fix": "syncpack fix",
-    "clean": "pwsh -File ./scripts/cleanup/cleanup-workspace.ps1",
+    "clean": "turbo run clean",
+    "clean:modules": "pwsh -File ./scripts/cleanup/cleanup-node-modules.ps1",
     "clean:dist": "pwsh -File ./scripts/cleanup/cleanup-dist.ps1",
+    "clean:packages": "pwsh -File ./scripts/clean-packages.ps1",
     "clean:all": "pnpm reset -IncludeRootNodeModules",
     "reset": "pwsh -File ./scripts/reset/reset-workspace.ps1",
     "cruiser": "depcruise . --config .dependency-cruiser.cjs",
     "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,mjs,cjs}": [
+      "eslint --fix --cache"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
   }
 }

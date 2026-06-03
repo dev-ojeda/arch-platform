@@ -1,23 +1,23 @@
 // packages/testing/src/runtime/create-test-context.ts
 
-import type {
-  FileSystemPort,
-  GenerationContext,
-  GenerationDiagnostic,
-  GenerationEventBus,
-  LoggerPort,
-  NamedVariables,
-  StepExecutionMetric,
-  TechnologyStack,
-} from '@arch/contracts';
-import { InMemoryGenerationEventBus } from '@arch/core';
+import type { GenerationDiagnostic } from '@arch/contracts/diagnostics';
+import type { GenerationEventBus } from '@arch/contracts/events';
+import type { FileSystemPort } from '@arch/contracts/filesystem';
+import type { GenerationContext } from '@arch/contracts/generation';
+import type { LoggerPort } from '@arch/contracts/logging';
+import type { TechnologyStack } from '@arch/contracts/stacks';
+import type { StepExecutionMetric } from '@arch/contracts/telemetry';
+import type { TemplateVariables } from '@arch/contracts/variables';
+import { InMemoryGenerationEventBus } from '@arch/core/events';
 
 import { createMemoryFilesystem } from '../filesystem/create-memory-filesystem.js';
 import { TestLogger } from '../logging/test-logger.js';
 
 import { createTestTechnologyStack } from './create-test-technology-stack.js';
 
-export interface CreateTestContextOptions<TVariables extends NamedVariables = NamedVariables> {
+export interface CreateTestContextOptions<
+  TVariables extends TemplateVariables = TemplateVariables,
+> {
   variables?: TVariables;
 
   targetDir?: string;
@@ -37,7 +37,7 @@ export interface CreateTestContextOptions<TVariables extends NamedVariables = Na
   eventBus?: GenerationEventBus;
 }
 
-export function createTestContext<TVariables extends NamedVariables>(
+export function createTestContext<TVariables extends TemplateVariables>(
   options: CreateTestContextOptions<TVariables> = {},
 ): GenerationContext<TVariables> {
   return {

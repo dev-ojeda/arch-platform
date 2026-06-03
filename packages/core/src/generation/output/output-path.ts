@@ -1,6 +1,6 @@
-// packages\core\src\output\output-path.ts
+// packages\core\src\generation\output\output-path.ts
 
-import type { PathService } from '@arch/contracts';
+import type { PathService } from '@arch/contracts/runtime';
 
 import { InvalidGeneratorDefinitionError } from '../../errors/validation/invalid-generator-definition.error.js';
 

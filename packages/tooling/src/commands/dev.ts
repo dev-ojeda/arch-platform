@@ -1,11 +1,13 @@
 // packages/tooling/src/commands/dev.ts
 
-import fs from 'node:fs';
+import { ToolingEvents } from '../runtime/events/tooling-event.js';
+import { runCommand } from '../runtime/run-command.js';
 
-import { executeCommand } from '../runtime/execute-command.js';
+import { devWorkspace } from './dev/dev-workspace.js';
 
-const hasTsup = fs.existsSync('tsup.config.ts');
-
-if (hasTsup) {
-  await executeCommand('tsup', ['--watch']);
+export async function devCommand(): Promise<void> {
+  process.exitCode = await runCommand({
+    events: ToolingEvents.dev,
+    action: devWorkspace,
+  });
 }

@@ -1,46 +1,54 @@
 // packages/application/src/generation/pipeline/generation-pipeline.ts
 
-import type {
-  GenerationContext,
-  GenerationHooks,
-  GenerationPipelineStep,
-  IdGenerator,
-} from '@arch/contracts';
+import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts/generation';
+import type { TemplateVariables } from '@arch/contracts/variables';
 
-import type { RuntimeEventBus } from '../../runtime/events/runtime-event-bus.js';
-import { RuntimeEventTypes } from '../../runtime/events/runtime-event-types.js';
+import type {
+  PipelineCompletedEvent,
+  PipelineFailedEvent,
+  PipelineStartedEvent,
+} from '../../runtime/execution/events/pipeline-events.js';
+import { RuntimeEventTypes } from '../../runtime/execution/events/runtime-event-types.js';
+import type { RuntimeEvent } from '../../runtime/execution/events/runtime-event.js';
+import type {
+  StepCompletedEvent,
+  StepFailedEvent,
+  StepStartedEvent,
+} from '../../runtime/execution/events/step-events.js';
 import { measureStepExecution } from '../telemetry/measure-step-execution.js';
 
-export class GenerationPipeline {
-  constructor(
-    private readonly steps: readonly GenerationPipelineStep[],
+import type { GenerationPipelineOptions } from './generation-pipeline-options.js';
 
-    private readonly idGenerator: IdGenerator,
+export class GenerationPipeline<TVariables extends TemplateVariables = TemplateVariables> {
+  constructor(private readonly options: GenerationPipelineOptions<TVariables>) {}
 
-    private readonly hooks?: GenerationHooks,
+  private get hooks() {
+    return this.options.hooks;
+  }
 
-    private readonly runtimeEvents?: RuntimeEventBus,
-  ) {}
+  private get runtimeEvents() {
+    return this.options.runtimeEvents;
+  }
 
-  async execute(context: GenerationContext): Promise<void> {
-    const executionId = this.idGenerator.generate();
+  async execute(context: GenerationContext<TVariables>): Promise<void> {
+    const { idGenerator, steps, pipelineId = 'generation-pipeline' } = this.options;
 
-    const pipelineId = 'generation-pipeline';
+    const executionId = idGenerator.generate();
 
     try {
-      await this.emitPipelineStarted(executionId, pipelineId);
+      await this.emitEvent(this.createPipelineStartedEvent(executionId, pipelineId));
 
       await this.hooks?.beforePipeline?.(context);
 
-      for (const step of this.steps) {
+      for (const step of steps) {
         await this.executeStep(executionId, pipelineId, step, context);
       }
 
-      await this.emitPipelineCompleted(executionId, pipelineId);
+      await this.emitEvent(this.createPipelineCompletedEvent(executionId, pipelineId));
 
       await this.hooks?.onSuccess?.(context);
     } catch (error) {
-      await this.emitPipelineFailed(executionId, pipelineId, error);
+      await this.emitEvent(this.createPipelineFailedEvent(executionId, pipelineId, error));
 
       await this.hooks?.onError?.(error, context);
 
@@ -53,12 +61,12 @@ export class GenerationPipeline {
   private async executeStep(
     executionId: string,
     pipelineId: string,
-    step: GenerationPipelineStep,
-    context: GenerationContext,
+    step: GenerationPipelineStep<TVariables>,
+    context: GenerationContext<TVariables>,
   ): Promise<void> {
     const startedAt = Date.now();
 
-    await this.emitStepStarted(executionId, pipelineId, step, startedAt);
+    await this.emitEvent(this.createStepStartedEvent(executionId, pipelineId, step, startedAt));
 
     try {
       await measureStepExecution(context, step, async () => {
@@ -69,123 +77,111 @@ export class GenerationPipeline {
         await this.hooks?.afterStep?.(step, context);
       });
 
-      await this.emitStepCompleted(executionId, pipelineId, step, startedAt);
+      await this.emitEvent(
+        this.createStepCompletedEvent(executionId, pipelineId, step, startedAt, Date.now()),
+      );
     } catch (error) {
-      await this.emitStepFailed(executionId, pipelineId, step, startedAt, error);
+      await this.emitEvent(
+        this.createStepFailedEvent(executionId, pipelineId, step, startedAt, Date.now(), error),
+      );
 
       throw error;
     }
   }
 
-  private async emitPipelineStarted(executionId: string, pipelineId: string): Promise<void> {
-    await this.runtimeEvents?.emit({
+  private emitEvent(event: RuntimeEvent): Promise<void> {
+    return this.runtimeEvents?.emit(event) ?? Promise.resolve();
+  }
+
+  private createPipelineStartedEvent(
+    executionId: string,
+    pipelineId: string,
+  ): PipelineStartedEvent {
+    return {
       executionId,
-
       pipelineId,
-
       type: RuntimeEventTypes.PipelineStarted,
-
       timestamp: Date.now(),
-    });
+    };
   }
 
-  private async emitPipelineCompleted(executionId: string, pipelineId: string): Promise<void> {
-    await this.runtimeEvents?.emit({
+  private createPipelineCompletedEvent(
+    executionId: string,
+    pipelineId: string,
+  ): PipelineCompletedEvent {
+    return {
       executionId,
-
       pipelineId,
-
       type: RuntimeEventTypes.PipelineCompleted,
-
       timestamp: Date.now(),
-    });
+    };
   }
 
-  private async emitPipelineFailed(
+  private createPipelineFailedEvent(
     executionId: string,
     pipelineId: string,
     error: unknown,
-  ): Promise<void> {
-    await this.runtimeEvents?.emit({
+  ): PipelineFailedEvent {
+    return {
       executionId,
-
       pipelineId,
-
       type: RuntimeEventTypes.PipelineFailed,
-
       timestamp: Date.now(),
-
       error,
-    });
+    };
   }
 
-  private async emitStepStarted(
+  private createStepStartedEvent(
     executionId: string,
     pipelineId: string,
-    step: GenerationPipelineStep,
+    step: GenerationPipelineStep<TVariables>,
     startedAt: number,
-  ): Promise<void> {
-    await this.runtimeEvents?.emit({
+  ): StepStartedEvent {
+    return {
       executionId,
-
       pipelineId,
-
       stepId: step.name,
-
       stepName: step.name,
-
       type: RuntimeEventTypes.StepStarted,
-
       timestamp: startedAt,
-    });
+    };
   }
 
-  private async emitStepCompleted(
+  private createStepCompletedEvent(
     executionId: string,
     pipelineId: string,
-    step: GenerationPipelineStep,
+    step: GenerationPipelineStep<TVariables>,
     startedAt: number,
-  ): Promise<void> {
-    await this.runtimeEvents?.emit({
+    finishedAt: number,
+  ): StepCompletedEvent {
+    return {
       executionId,
-
       pipelineId,
-
       stepId: step.name,
-
       stepName: step.name,
-
       type: RuntimeEventTypes.StepCompleted,
-
-      timestamp: Date.now(),
-
-      durationMs: Date.now() - startedAt,
-    });
+      timestamp: finishedAt,
+      durationMs: finishedAt - startedAt,
+    };
   }
 
-  private async emitStepFailed(
+  private createStepFailedEvent(
     executionId: string,
     pipelineId: string,
-    step: GenerationPipelineStep,
+    step: GenerationPipelineStep<TVariables>,
     startedAt: number,
+    finishedAt: number,
     error: unknown,
-  ): Promise<void> {
-    await this.runtimeEvents?.emit({
+  ): StepFailedEvent {
+    return {
       executionId,
-
       pipelineId,
-
       stepId: step.name,
-
       stepName: step.name,
-
       type: RuntimeEventTypes.StepFailed,
-
-      timestamp: Date.now(),
-
-      durationMs: Date.now() - startedAt,
-
+      timestamp: finishedAt,
+      durationMs: finishedAt - startedAt,
       error,
-    });
+    };
   }
 }

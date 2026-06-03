@@ -1,7 +1,7 @@
 // packages\infrastructure\tsup.config.ts
 import { defineConfig } from 'tsup';
 
-import { baseConfig } from '../../tsup.base.ts';
+import { baseConfig } from '../../tsup.base.js';
 
 export default defineConfig({
   ...baseConfig,
@@ -11,6 +11,4 @@ export default defineConfig({
   entry: ['src/index.ts'],
 
   format: ['esm'],
-
-  dts: true,
 });

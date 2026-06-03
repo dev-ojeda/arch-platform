@@ -1,12 +1,15 @@
 {
+  // packages\application\tsconfig.json
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "rootDir": "src",
     "outDir": "dist",
-    "noEmit": true
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "test/**/*.ts"
   ],
   "exclude": [
     "dist",
@@ -14,5 +17,16 @@
     "**/*.js",
     "**/*.d.ts",
     "**/*.d.ts.map"
+  ],
+  "references": [
+    {
+      "path": "../contracts"
+    },
+    {
+      "path": "../core"
+    },
+    {
+      "path": "../testing"
+    }
   ]
 }

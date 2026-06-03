@@ -1,4 +1,5 @@
-export * from './create-test-pipeline-context.js';
-export * from './create-test-pipeline.js';
-export * from './execute-test-pipeline.js';
-export * from './steps/execute-step.js';
+// packages/testing/src/pipeline/index.ts
+
+export { createTestPipelineContext } from './create-test-pipeline-context.js';
+export type { CreateTestPipelineContextOptions } from './create-test-pipeline-context.js';
+export { executeStep } from './steps/execute-step.js';

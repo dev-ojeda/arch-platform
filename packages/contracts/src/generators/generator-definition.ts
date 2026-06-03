@@ -7,6 +7,7 @@ import type { NamedVariables } from '../variables/named-variables.js';
 
 import type { GeneratorCapabilities } from './generator-capabilities.js';
 import type { GeneratorDescriptor } from './generator-descriptor.js';
+import type { GeneratorMetadata } from './generator.metadata.js';
 
 export interface GeneratorDefinition<TValues extends NamedVariables = NamedVariables> {
   readonly descriptor: GeneratorDescriptor;
@@ -17,5 +18,5 @@ export interface GeneratorDefinition<TValues extends NamedVariables = NamedVaria
 
   readonly capabilities?: GeneratorCapabilities;
 
-  readonly metadata?: Readonly<Record<string, unknown>>;
+  readonly metadata?: GeneratorMetadata;
 }

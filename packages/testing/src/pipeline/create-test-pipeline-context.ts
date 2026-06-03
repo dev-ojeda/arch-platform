@@ -1,38 +1,31 @@
 // packages/testing/src/pipeline/create-test-pipeline-context.ts
 
-import type { GenerationContext, NamedVariables } from '@arch/contracts';
+import type { GenerationContext } from '@arch/contracts/generation';
+import type { GeneratorDefinition } from '@arch/contracts/generators';
+import type { ResolvedTemplateVariables } from '@arch/contracts/templates';
+import type { TemplateVariables } from '@arch/contracts/variables';
 
+import { testGenerator } from '../fixtures/generators/test-generator.js';
 import { createTestContext } from '../runtime/create-test-context.js';
 
-export interface CreateTestPipelineContextOptions {
-  variables?: NamedVariables;
+export interface CreateTestPipelineContextOptions<TVariables extends TemplateVariables> {
+  generator?: GeneratorDefinition;
+
+  variables?: TVariables;
+
+  resolvedVariables?: ResolvedTemplateVariables<TVariables>;
 }
 
-export function createTestPipelineContext(
-  options: CreateTestPipelineContextOptions = {},
-): GenerationContext {
-  return {
-    ...createTestContext({
-      variables: options.variables,
-    }),
+export function createTestPipelineContext<TVariables extends TemplateVariables>(
+  options: CreateTestPipelineContextOptions<TVariables> = {},
+): GenerationContext<TVariables> {
+  const context = createTestContext({
+    variables: options.variables,
+  });
 
-    generator: {
-      descriptor: {
-        id: 'test-generator',
+  context.generator = options.generator ?? testGenerator;
 
-        displayName: 'Test Generator',
-        version: '',
-        languages: [],
-        frameworks: [],
-      },
+  context.resolvedVariables = options.resolvedVariables;
 
-      templates: [],
-
-      schema: {
-        id: '',
-        title: '',
-        fields: [],
-      },
-    },
-  };
+  return context;
 }

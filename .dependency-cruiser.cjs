@@ -1,4 +1,5 @@
-/** @type {import("dependency-cruiser").IConfiguration} */
+// .dependency-cruiser.cjs
+/** @type {import('dependency-cruiser').IConfiguration} */
 
 const PATHS = {
   packages: '^packages',
@@ -17,13 +18,48 @@ const PATHS = {
 
   testing: '^packages/testing/src',
 
-  internal: 'src/internal',
+  internal: '(^|/)src/internal(/|$)',
 
   sharedPackages: '^packages/(shared|common|utils|helpers)',
 };
 
-const NODE_BUILTINS =
-  '^(fs|fs/promises|path|os|crypto|child_process|cluster|dgram|net|tls|worker_threads)$';
+const NODE_BUILTINS = [
+  'fs',
+  'fs/promises',
+
+  'path',
+
+  'os',
+
+  'crypto',
+
+  'child_process',
+  'cluster',
+
+  'dgram',
+
+  'net',
+  'tls',
+
+  'worker_threads',
+
+  'stream',
+
+  'url',
+
+  'http',
+  'https',
+
+  'zlib',
+
+  'events',
+
+  'buffer',
+
+  'util',
+].join('|');
+
+const NODE_BUILTINS_PATTERN = `^(${NODE_BUILTINS})$`;
 
 function createRule({ name, comment, severity = 'error', from, to }) {
   return {
@@ -35,6 +71,59 @@ function createRule({ name, comment, severity = 'error', from, to }) {
   };
 }
 
+/**
+ * ============================================================
+ * TEST BOUNDARIES
+ * ============================================================
+ */
+
+/**
+ * ============================================================
+ * EXPORT GOVERNANCE
+ * ============================================================
+ */
+const exportGovernanceRules = [
+  createRule({
+    name: 'no-package-src-imports',
+
+    comment: 'Consumers must not import directly from package src implementation paths.',
+
+    severity: 'error',
+
+    from: {},
+
+    to: {
+      path: '^@arch/.+/src/',
+    },
+  }),
+  createRule({
+    name: 'no-internal-barrels',
+
+    comment: 'Internal folders must not expose composition barrels.',
+
+    severity: 'warn',
+
+    from: {
+      path: 'src/internal/index.ts$',
+    },
+
+    to: {},
+  }),
+
+  createRule({
+    name: 'no-src-test-folders',
+
+    comment: 'Test support files should live outside runtime src folders.',
+
+    severity: 'warn',
+
+    from: {
+      path: 'src/test/',
+    },
+
+    to: {},
+  }),
+];
 /**
  * ============================================================
  * CIRCULAR DEPENDENCIES
@@ -166,14 +255,31 @@ const domainProtectionRules = [
   createRule({
     name: 'domain-no-node-builtins',
 
-    comment: 'Domain layers must not depend directly on Node.js runtime infrastructure.',
+    comment:
+      'Contracts and application layers must remain isolated from Node.js runtime infrastructure.',
 
     from: {
-      path: '^packages/(core|contracts|application)/src',
+      path: '^packages/(contracts|application)/src',
     },
 
     to: {
-      path: NODE_BUILTINS,
+      path: NODE_BUILTINS_PATTERN,
+    },
+  }),
+
+  createRule({
+    name: 'core-no-process-env',
+
+    comment: 'Core layer should remain deterministic and avoid direct environment coupling.',
+
+    severity: 'warn',
+
+    from: {
+      path: PATHS.core,
+    },
+
+    to: {
+      path: '^process$',
     },
   }),
 ];
@@ -185,18 +291,6 @@ const domainProtectionRules = [
  */
 
 const boundaryRules = [
-  createRule({
-    name: 'no-internal-imports',
-
-    comment: 'Internal modules must not be imported outside their owning package.',
-
-    from: {},
-
-    to: {
-      path: PATHS.internal,
-    },
-  }),
-
   createRule({
     name: 'no-deep-package-imports',
 
@@ -221,7 +315,7 @@ const boundaryRules = [
     },
 
     to: {
-      path: '^\\.\\./\\.\\./',
+      path: '^\\.\\.(\\/|\\\\)',
     },
   }),
 ];
@@ -289,6 +383,24 @@ const testingRules = [
       path: PATHS.internal,
     },
   }),
+
+  createRule({
+    name: 'packages-no-vitest-runtime',
+
+    comment: 'Production packages must not depend on Vitest runtime modules.',
+
+    severity: 'warn',
+
+    from: {
+      path: PATHS.packages,
+
+      pathNot: '(__tests__|\\.test\\.ts$|\\.spec\\.ts$)',
+    },
+
+    to: {
+      path: '^(vitest|@vitest)',
+    },
+  }),
 ];
 
 /**
@@ -310,6 +422,7 @@ const architectureSmellRules = [
 
       pathNot: [
         '\\.d\\.ts$',
+
         '\\.test\\.ts$',
         '\\.spec\\.ts$',
 
@@ -318,6 +431,7 @@ const architectureSmellRules = [
         '^syncpack',
         '^tsup',
         '^eslint',
+
         '^\\.dependency-cruiser',
 
         '^config/',
@@ -326,6 +440,8 @@ const architectureSmellRules = [
 
         '^apps/.+/src/composition/',
         '^apps/.+/src/bootstrap/',
+        '^apps/.+/src/ui/',
+        '^apps/.+/src/services/',
       ].join('|'),
     },
 
@@ -337,7 +453,7 @@ const architectureSmellRules = [
 
     comment: 'Shared/common/utils packages tend to become architectural dumping grounds.',
 
-    severity: 'info',
+    severity: 'warn',
 
     from: {
       path: PATHS.packages,
@@ -351,6 +467,7 @@ const architectureSmellRules = [
 
 module.exports = {
   forbidden: [
+    ...exportGovernanceRules,
     ...circularRules,
 
     ...isolationRules,

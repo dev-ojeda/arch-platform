@@ -1,7 +1,7 @@
 // packages\generators\mvc\tsup.config.tsi
 import { defineConfig } from 'tsup';
 
-import { baseConfig } from '../../../tsup.base.ts';
+import { baseConfig } from '../../../tsup.base.js';
 
 export default defineConfig({
   ...baseConfig,

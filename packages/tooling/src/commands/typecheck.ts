@@ -1,21 +1,13 @@
 // packages/tooling/src/commands/typecheck.ts
 
-import fs from 'node:fs';
+import { ToolingEvents } from '../runtime/events/tooling-event.js';
+import { runCommand } from '../runtime/run-command.js';
 
-import { executeCommand } from '../runtime/execute-command.js';
+import { typecheckWorkspace } from './typecheck/typecheck-workspace.js';
 
-const args = process.argv.slice(2);
-
-const TSCONFIG_BUILD_PATH = 'tsconfig.build.json';
-
-if (!fs.existsSync(TSCONFIG_BUILD_PATH)) {
-  console.warn(`[tooling:typecheck] Missing ${TSCONFIG_BUILD_PATH}. Skipping typecheck.`);
-
-  process.exit(0);
-}
-
-const result = await executeCommand('tsc', ['-p', TSCONFIG_BUILD_PATH, '--noEmit', ...args]);
-
-if (result.exitCode !== 0) {
-  process.exit(result.exitCode);
+export async function typecheckCommand(): Promise<void> {
+  process.exitCode = await runCommand({
+    events: ToolingEvents.typecheck,
+    action: typecheckWorkspace,
+  });
 }

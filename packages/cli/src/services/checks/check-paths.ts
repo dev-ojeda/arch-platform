@@ -21,11 +21,10 @@ export const checkPaths: DoctorCheck = {
         details: missingDirectories,
       };
     }
-
-    return {
+    return Promise.resolve({
       severity: 'info',
 
       message: 'Required paths validated',
-    };
+    });
   },
 };

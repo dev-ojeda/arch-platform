@@ -1,11 +1,20 @@
 // packages/application/src/generation/variables/derive-template-variables.ts
 
-import type { NamedVariables, ResolvedTemplateVariables } from '@arch/contracts';
+import type { ResolvedTemplateVariables } from '@arch/contracts/templates';
+import { getStringVariable, type NamedVariables } from '@arch/contracts/variables';
 
-export function deriveTemplateVariables(
-  variables: NamedVariables,
-): ResolvedTemplateVariables<NamedVariables> {
-  const name = String(variables.name ?? '');
+export interface TemplateVariables extends NamedVariables {
+  readonly name: string;
+}
+
+export interface TemplateVariables extends NamedVariables {
+  readonly name: string;
+}
+
+export function deriveTemplateVariables<TVariables extends TemplateVariables>(
+  variables: TVariables,
+): ResolvedTemplateVariables<TVariables> {
+  const name = getStringVariable(variables.name, 'name');
 
   const pascal = name.charAt(0).toUpperCase() + name.slice(1);
 
@@ -26,11 +35,8 @@ export function deriveTemplateVariables(
 
     folderLayout: {
       controller: 'controllers',
-
       service: 'services',
-
       repository: 'repositories',
-
       model: 'models',
     },
   };

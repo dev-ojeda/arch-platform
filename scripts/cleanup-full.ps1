@@ -69,9 +69,7 @@ $script:DirectoriesToRemove = @(
   '.turbo',
   '.cache',
   '.vite',
-
   'dist',
-  'build',
   'coverage',
   '.next'
 )

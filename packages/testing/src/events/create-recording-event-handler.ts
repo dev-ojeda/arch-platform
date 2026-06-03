@@ -1,12 +1,13 @@
 // packages/testing/src/events/recording-generation-event-handler.ts
 
-import type { GenerationEvent, GenerationEventHandler } from '@arch/contracts';
+import type { GenerationEvent, GenerationEventHandler } from '@arch/contracts/events';
 
 export class RecordingGenerationEventHandler implements GenerationEventHandler {
   readonly events: GenerationEvent[] = [];
 
-  async handle(event: GenerationEvent): Promise<void> {
+  handle(event: GenerationEvent): Promise<void> {
     this.events.push(event);
+    return Promise.resolve();
   }
 
   clear(): void {
