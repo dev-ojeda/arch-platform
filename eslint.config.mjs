@@ -4,7 +4,14 @@ import importPlugin from 'eslint-plugin-import';
 import tseslint from 'typescript-eslint';
 
 const IGNORE_PATTERNS = ['**/dist/**', '**/coverage/**', '**/.turbo/**', '**/node_modules/**'];
-
+const TOOLING_FILES = [
+  '**/vitest.config.ts',
+  '**/tsup.config.ts',
+  'vitest.shared.ts',
+  'vitest.workspace.ts',
+  'tsup.base.ts',
+  'eslint.config.mjs',
+];
 export default tseslint.config(
   {
     ignores: IGNORE_PATTERNS,
@@ -119,7 +126,24 @@ export default tseslint.config(
     },
   },
   {
-    files: ['packages/**/test/**/*.ts'],
+    files: ['**/test/**/*.ts', '**/__tests__/**/*.ts', '**/*.test.ts', '**/*.spec.ts'],
+
+    rules: {
+      'no-restricted-imports': 'off',
+    },
+  },
+  {
+    files: TOOLING_FILES,
+
+    extends: [tseslint.configs.disableTypeChecked],
+
+    languageOptions: {
+      parser: tseslint.parser,
+
+      parserOptions: {
+        projectService: false,
+      },
+    },
 
     rules: {
       'no-restricted-imports': 'off',

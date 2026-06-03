@@ -16,7 +16,7 @@ export const sharedVitestConfig = defineConfig({
 
     passWithNoTests: true,
 
-    include: ['src/**/*.{test,spec}.ts'],
+    include: ['src/**/*.{test,spec}.ts', 'test/**/*.{test,spec}.ts'],
 
     sequence: {
       concurrent: false,

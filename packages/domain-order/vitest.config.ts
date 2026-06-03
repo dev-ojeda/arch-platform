@@ -11,18 +11,20 @@ export default mergeConfig(
 
       setupFiles: ['../../vitest.setup.ts'],
 
-      include: [
-        'src/**/*.test.ts',
-
-        'src/**/*.spec.ts',
-
-        'testing/**/*.test.ts',
-
-        'testing/**/*.spec.ts',
-      ],
+      include: ['test/**/*.test.ts', 'test/**/*.spec.ts'],
 
       coverage: {
-        include: ['src/**/*.ts'],
+        include: [
+          'src/**/*.ts',
+          'src/**/*.test.ts',
+          'src/**/*.spec.ts',
+
+          'test/**/*.test.ts',
+          'test/**/*.spec.ts',
+
+          'testing/**/*.test.ts',
+          'testing/**/*.spec.ts',
+        ],
 
         thresholds: {
           lines: 40,
