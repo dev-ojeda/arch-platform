@@ -18,6 +18,7 @@
     "eslint-import-resolver-typescript": "catalog:",
     "eslint-plugin-import": "catalog:",
     "husky": "catalog:",
+    "lint-staged": "catalog:",
     "prettier": "catalog:",
     "rimraf": "catalog:",
     "syncpack": "catalog:",
