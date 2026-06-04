@@ -1,5 +1,5 @@
 // packages\generators\mvc\src\definition\index.ts
-export * from './descriptor.js';
-export * from './files.js';
-export * from './generate-mvc.js';
-export * from './schema.js';
+export { mvcDescriptor } from './descriptor.js';
+export { mvcFiles } from './files.js';
+export { mvcGenerator } from './generate-mvc.js';
+export { mvcSchema } from './schema.js';

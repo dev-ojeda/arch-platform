@@ -1,6 +1,6 @@
-import type { NamedVariables } from '@arch/contracts/variables';
+import type { TemplateVariables } from '@arch/contracts/variables';
 
-export interface MvcVariables extends NamedVariables {
+export interface MvcVariables extends TemplateVariables {
   name: string;
 
   framework: string;

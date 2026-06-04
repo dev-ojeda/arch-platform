@@ -1,3 +1,3 @@
 // packages/generators/mvc/src/variables/index.ts
 
-export * from './mvc.variables.js';
+export type { MvcVariables } from './mvc.variables.js';

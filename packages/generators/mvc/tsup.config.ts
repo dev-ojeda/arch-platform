@@ -6,15 +6,15 @@ import { baseConfig } from '../../../tsup.base.js';
 export default defineConfig({
   ...baseConfig,
 
-  tsconfig: './tsconfig.build.json',
+  entry: {
+    index: 'src/index.ts',
+    definition: 'src/definition/index.ts',
+    variables: 'src/variables/index.ts',
+  },
 
-  entry: ['src/index.ts'],
-
-  format: ['esm'],
-
-  bundle: true,
-
+  sourcemap: false,
   splitting: false,
-
+  treeshake: false,
+  bundle: true,
   dts: false,
 });
