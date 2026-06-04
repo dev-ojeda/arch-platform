@@ -1,7 +1,10 @@
-import type { GeneratorRegistry } from '@arch/core';
+// packages\generators\mvc\src\registration\register.ts
+import type { GeneratorModule } from '@arch/contracts/generators';
 
-import { mvcGenerator } from '../definition/index.js';
+import { mvcGenerator } from '../definition/generate-mvc.js';
 
-export function registerMvcGenerator(registry: GeneratorRegistry): void {
-  registry.register(mvcGenerator);
-}
+export const mvcModule: GeneratorModule = {
+  register(registry) {
+    registry.register(mvcGenerator);
+  },
+};

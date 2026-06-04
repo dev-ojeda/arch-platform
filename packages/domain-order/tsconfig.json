@@ -1,0 +1,24 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "dist",
+    "noEmit": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "**/*.js",
+    "**/*.d.ts",
+    "**/*.d.ts.map"
+  ],
+  "references": [
+    {
+      "path": "../tooling"
+    }
+  ]
+}

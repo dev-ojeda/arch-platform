@@ -1,49 +1,69 @@
-// packages\infrastructure\src\filesystem\memory-filesystem.adapter.ts
-import * as path from 'node:path';
+// packages/infrastructure/src/filesystem/memory-filesystem.adapter.ts
 
-import type { DirectoryEntry, FileSystemPort, WriteFileOptions } from '@arch/contracts';
+import path from 'node:path';
+
+import type { DirectoryEntry, FileSystemPort, WriteFileOptions } from '@arch/contracts/filesystem';
 
 export class MemoryFileSystemAdapter implements FileSystemPort {
-  private readonly files = new Map<string, string>();
+  readonly #files = new Map<string, string>();
 
-  private readonly directories = new Set<string>();
+  readonly #directories = new Set<string>();
+
+  constructor() {
+    this.#directories.add('/');
+  }
 
   private normalizePath(targetPath: string): string {
-    return path.normalize(targetPath).replaceAll('\\', '/');
+    const normalized = path.normalize(targetPath).replaceAll('\\', '/');
+
+    return normalized.startsWith('/') ? normalized : `/${normalized}`;
   }
 
-  async read(targetPath: string): Promise<string> {
-    const normalized = this.normalizePath(targetPath);
+  private ensureParentDirectories(filePath: string): void {
+    let current = this.normalizePath(path.dirname(filePath));
 
-    const file = this.files.get(normalized);
+    while (current !== '/' && current !== '.') {
+      this.#directories.add(current);
 
-    if (file === undefined) {
-      throw new Error(`File not found: ${normalized}`);
+      const parent = this.normalizePath(path.dirname(current));
+
+      if (parent === current) {
+        break;
+      }
+
+      current = parent;
     }
 
-    return file;
+    this.#directories.add('/');
   }
 
-  async write(
-    targetPath: string,
-
-    content: string,
-
-    options?: WriteFileOptions,
-  ): Promise<void> {
+  read(targetPath: string): Promise<string> {
     const normalized = this.normalizePath(targetPath);
 
-    const exists = this.files.has(normalized);
+    const content = this.#files.get(normalized);
 
+    if (content === undefined) {
+      return Promise.reject(new Error(`File not found: ${normalized}`));
+    }
+
+    return Promise.resolve(content);
+  }
+
+  write(targetPath: string, content: string, options?: WriteFileOptions): Promise<void> {
+    const normalized = this.normalizePath(targetPath);
+
+    if (this.#directories.has(normalized)) {
+      return Promise.reject(new Error(`Cannot write file over directory: ${normalized}`));
+    }
     const overwrite = options?.overwrite ?? 'overwrite';
 
-    if (exists) {
+    if (this.#files.has(normalized)) {
       switch (overwrite) {
         case 'skip':
-          return;
+          return Promise.resolve();
 
         case 'error':
-          throw new Error(`File already exists: ${normalized}`);
+          return Promise.reject(new Error(`File already exists: ${normalized}`));
 
         case 'overwrite':
         default:
@@ -51,64 +71,98 @@ export class MemoryFileSystemAdapter implements FileSystemPort {
       }
     }
 
-    this.files.set(normalized, content);
+    this.ensureParentDirectories(normalized);
 
-    this.directories.add(path.dirname(normalized));
+    this.#files.set(normalized, content);
+
+    return Promise.resolve();
   }
 
-  async copy(source: string, destination: string): Promise<void> {
-    const content = await this.read(source);
-
-    await this.write(destination, content);
+  async copy(sourcePath: string, destinationPath: string): Promise<void> {
+    const content = await this.read(sourcePath);
+    return await this.write(destinationPath, content);
   }
 
-  async createDirectory(targetPath: string): Promise<void> {
-    this.directories.add(this.normalizePath(targetPath));
+  createDirectory(directoryPath: string): Promise<void> {
+    const normalized = this.normalizePath(directoryPath);
+
+    if (this.#files.has(normalized)) {
+      return Promise.reject(new Error(`Cannot create directory over file: ${normalized}`));
+    }
+
+    this.ensureParentDirectories(`${normalized}/placeholder`);
+
+    this.#directories.add(normalized);
+
+    return Promise.resolve();
   }
 
-  async exists(targetPath: string): Promise<boolean> {
+  exists(targetPath: string): Promise<boolean> {
+    const normalized = this.normalizePath(targetPath);
+    return Promise.resolve(this.#files.has(normalized) || this.#directories.has(normalized));
+  }
+
+  remove(targetPath: string): Promise<void> {
     const normalized = this.normalizePath(targetPath);
 
-    return this.files.has(normalized) || this.directories.has(normalized);
+    const prefix = `${normalized}/`;
+
+    this.#files.delete(normalized);
+    this.#directories.delete(normalized);
+
+    for (const filePath of [...this.#files.keys()]) {
+      if (filePath.startsWith(prefix)) {
+        this.#files.delete(filePath);
+      }
+    }
+
+    for (const directoryPath of [...this.#directories]) {
+      if (directoryPath.startsWith(prefix)) {
+        this.#directories.delete(directoryPath);
+      }
+    }
+
+    return Promise.resolve();
   }
 
-  async remove(targetPath: string): Promise<void> {
-    const normalized = this.normalizePath(targetPath);
-
-    this.files.delete(normalized);
-
-    this.directories.delete(normalized);
-  }
-
-  async readDirectory(directoryPath: string): Promise<DirectoryEntry[]> {
+  readDirectory(directoryPath: string): Promise<DirectoryEntry[]> {
     const normalized = this.normalizePath(directoryPath);
 
     const entries: DirectoryEntry[] = [];
 
-    for (const filePath of this.files.keys()) {
-      if (!filePath.startsWith(normalized)) {
+    for (const directory of this.#directories) {
+      if (directory !== normalized && path.dirname(directory) === normalized) {
+        entries.push({
+          name: path.basename(directory),
+          path: directory,
+          isDirectory: true,
+        });
+      }
+    }
+
+    for (const filePath of this.#files.keys()) {
+      if (path.dirname(filePath) !== normalized) {
         continue;
       }
 
       entries.push({
-        name: filePath.split('/').pop() ?? '',
-
+        name: path.basename(filePath),
         path: filePath,
-
         isDirectory: false,
       });
     }
-
-    return entries;
+    return Promise.resolve(entries.sort((a, b) => a.path.localeCompare(b.path)));
   }
 
   getFiles(): Record<string, string> {
-    return Object.fromEntries(this.files.entries());
+    return Object.fromEntries(this.#files);
   }
 
   clear(): void {
-    this.files.clear();
+    this.#files.clear();
 
-    this.directories.clear();
+    this.#directories.clear();
+
+    this.#directories.add('/');
   }
 }

@@ -1,2 +1,2 @@
 // packages/contracts/src/hooks/index.ts
-export * from './generation-hooks.js';
+export type { GenerationHooks } from './generation-hooks.js';

@@ -1,14 +1,17 @@
 // packages/application/src/generation/steps/resolve-templates.step.ts
 
-import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts';
+import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts/generation';
+import type { TemplateVariables } from '@arch/contracts/variables';
 
 import { GeneratorValidationError } from '../errors/generator-validation-error.js';
 import { resolveTemplateDefinition } from '../templates/resolve-template-definition.js';
 
-export class ResolveTemplatesStep implements GenerationPipelineStep {
+export class ResolveTemplatesStep<
+  TVariables extends TemplateVariables = TemplateVariables,
+> implements GenerationPipelineStep<TVariables> {
   readonly name = 'resolve-template';
 
-  async execute(context: GenerationContext): Promise<void> {
+  execute(context: GenerationContext<TVariables>): Promise<void> {
     const generator = context.generator;
 
     if (!generator) {
@@ -21,14 +24,10 @@ export class ResolveTemplatesStep implements GenerationPipelineStep {
       throw new GeneratorValidationError('Resolved variables not available');
     }
 
-    const resolved = generator.templates.map((template) =>
-      resolveTemplateDefinition(
-        template,
-
-        variables,
-      ),
+    context.resolvedTemplates = generator.templates.map((template) =>
+      resolveTemplateDefinition(template, variables),
     );
 
-    context.resolvedTemplates = resolved;
+    return Promise.resolve();
   }
 }

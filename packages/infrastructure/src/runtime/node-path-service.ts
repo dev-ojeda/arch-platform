@@ -2,7 +2,7 @@
 
 import path from 'node:path';
 
-import type { PathService } from '@arch/contracts';
+import type { PathService } from '@arch/contracts/runtime';
 
 export class NodePathService implements PathService {
   join(...segments: string[]): string {

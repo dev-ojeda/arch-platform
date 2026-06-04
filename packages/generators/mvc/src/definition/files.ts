@@ -1,5 +1,5 @@
 // packages\generators\mvc\src\definition\files.ts
-import type { FileDefinition, ResolvedTemplateVariables } from '@arch/contracts';
+import type { FileDefinition, ResolvedTemplateVariables } from '@arch/contracts/templates';
 
 import type { MvcVariables } from '../variables/mvc.variables.js';
 

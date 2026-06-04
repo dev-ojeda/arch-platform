@@ -1,10 +1,14 @@
 // packages/application/src/runtime/runtime-bootstrap.ts
 
-import { InMemoryRuntimeEventBus } from './events/in-memory-runtime-event-bus.js';
-import { TimelineAggregator } from './timeline/timeline-aggregator.js';
-import { TimelineConsoleRenderer } from './timeline/timeline-console-renderer.js';
+import type { IdGenerator } from '@arch/contracts/runtime';
+
+import { InMemoryRuntimeEventBus } from './execution/events/in-memory-runtime-event-bus.js';
+import { TimelineAggregator } from './execution/timeline/timeline-aggregator.js';
+import { TimelineConsoleRenderer } from './execution/timeline/timeline-console-renderer.js';
 
 export interface RuntimeBootstrap {
+  idGenerator: IdGenerator;
+
   runtimeEvents: InMemoryRuntimeEventBus;
 
   timelineAggregator: TimelineAggregator;
@@ -12,7 +16,11 @@ export interface RuntimeBootstrap {
   timelineRenderer: TimelineConsoleRenderer;
 }
 
-export function createRuntime(): RuntimeBootstrap {
+export interface RuntimeBootstrapOptions {
+  idGenerator: IdGenerator;
+}
+
+export function createRuntime(options: RuntimeBootstrapOptions): RuntimeBootstrap {
   const runtimeEvents = new InMemoryRuntimeEventBus();
 
   const timelineAggregator = new TimelineAggregator();
@@ -22,6 +30,8 @@ export function createRuntime(): RuntimeBootstrap {
   runtimeEvents.subscribe(timelineAggregator);
 
   return {
+    idGenerator: options.idGenerator,
+
     runtimeEvents,
 
     timelineAggregator,

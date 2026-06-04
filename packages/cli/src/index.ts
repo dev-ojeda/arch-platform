@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 // packages/cli/src/index.ts
 
 import { cac } from 'cac';

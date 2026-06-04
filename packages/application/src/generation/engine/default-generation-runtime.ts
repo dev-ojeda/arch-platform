@@ -1,6 +1,6 @@
 // packages/application/src/generation/engine/default-generation-runtime.ts
 
-import type { GenerationRequest } from '@arch/contracts';
+import type { GenerationRequest } from '@arch/contracts/generation';
 
 import type { GenerationEngine } from './generation-engine.js';
 

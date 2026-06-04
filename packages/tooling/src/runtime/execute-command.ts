@@ -1,43 +1,49 @@
 // packages/tooling/src/runtime/execute-command.ts
 
-import { execa, type Options as ExecaOptions } from 'execa';
+import { execa, ExecaError } from 'execa';
 
-export interface ExecuteCommandOptions {
-  cwd?: string;
+import { formatCommand } from '../utils/format-command.js';
+import { logger } from '../utils/logger.js';
 
-  env?: NodeJS.ProcessEnv;
+import { RuntimeEvents } from './events/runtime-event.js';
+import type { ExecuteCommandOptions } from './execution/execute-command-option.js';
+import type { ExecuteCommandResult } from './execution/execute-command-result.js';
+import type { ExecutionMetadata } from './execution/execution-metadata.js';
+import { createCommandResult } from './helpers/create-command-result.js';
+import { createExecaOptions } from './helpers/create-execa-options.js';
+import { createExecutionMetadata } from './helpers/create-execution-metadata.js';
+import { createStopwatch } from './helpers/create-stopwatch.js';
+import { normalizeOutput } from './helpers/normalize-output.js';
 
-  shell?: boolean;
-
-  stdin?: 'inherit' | 'pipe';
-
-  stdout?: 'inherit' | 'pipe';
-
-  stderr?: 'inherit' | 'pipe';
+function logCommandStarted(
+  commandContext: {
+    readonly command: string;
+    readonly args: readonly string[];
+    readonly commandLine: string;
+    readonly cwd?: string;
+  },
+  options: ExecuteCommandOptions,
+): void {
+  logger.info(RuntimeEvents.command.started, {
+    metadata: {
+      ...commandContext,
+      shell: options.shell,
+    },
+  });
 }
 
-export interface ExecuteCommandResult {
-  exitCode: number;
+function logCommandFinished(metadata: ExecutionMetadata): void {
+  if (metadata.exitCode === 0) {
+    logger.success(RuntimeEvents.command.completed, {
+      metadata,
+    });
 
-  stdout: string;
-
-  stderr: string;
-}
-
-function normalizeOutput(value: string | Uint8Array | unknown[] | undefined): string {
-  if (typeof value === 'string') {
-    return value;
+    return;
   }
 
-  if (value instanceof Uint8Array) {
-    return Buffer.from(value).toString('utf8');
-  }
-
-  if (Array.isArray(value)) {
-    return value.join('\n');
-  }
-
-  return '';
+  logger.error(RuntimeEvents.command.failed, {
+    metadata,
+  });
 }
 
 export async function executeCommand(
@@ -45,31 +51,66 @@ export async function executeCommand(
   args: string[] = [],
   options: ExecuteCommandOptions = {},
 ): Promise<ExecuteCommandResult> {
-  const execaOptions: ExecaOptions = {
+  const commandContext = {
+    command,
+    args,
+    commandLine: formatCommand(command, args),
     cwd: options.cwd,
+  } as const;
+  const stopwatch = createStopwatch();
 
-    env: options.env,
+  logCommandStarted(commandContext, options);
 
-    shell: options.shell ?? false,
+  try {
+    const result = await execa(command, args, createExecaOptions(options));
 
-    stdin: options.stdin ?? 'inherit',
+    const durationMs = stopwatch.elapsed();
 
-    stdout: options.stdout ?? 'inherit',
+    const stdout = normalizeOutput(result.stdout);
 
-    stderr: options.stderr ?? 'inherit',
+    const stderr = normalizeOutput(result.stderr);
 
-    preferLocal: true,
+    const metadata = createExecutionMetadata({
+      ...commandContext,
+      exitCode: result.exitCode ?? 0,
+      durationMs,
+      signal: result.signal,
+      stdout,
+      stderr,
+    });
 
-    reject: false,
-  };
+    logCommandFinished(metadata);
 
-  const result = await execa(command, args, execaOptions);
+    return createCommandResult({
+      ...commandContext,
+      exitCode: metadata.exitCode,
+      stdout,
+      stderr,
+      durationMs,
+      signal: result.signal,
+    });
+  } catch (error) {
+    if (error instanceof ExecaError) {
+      logger.error(RuntimeEvents.command.crashed, {
+        metadata: {
+          ...commandContext,
+          exitCode: error.exitCode,
+          signal: error.signal,
+          stdout: error.stdout,
+          stderr: error.stderr,
+        },
+      });
 
-  return {
-    exitCode: result.exitCode ?? 0,
+      throw error;
+    }
 
-    stdout: normalizeOutput(result.stdout),
+    logger.error(RuntimeEvents.command.crashed, {
+      metadata: {
+        ...commandContext,
+        error: String(error),
+      },
+    });
 
-    stderr: normalizeOutput(result.stderr),
-  };
+    throw error;
+  }
 }

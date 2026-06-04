@@ -1,3 +1,3 @@
 // Auto-generated index
 
-export * from './generator-registry.js';
+export { GeneratorRegistry } from './generator-registry.js';

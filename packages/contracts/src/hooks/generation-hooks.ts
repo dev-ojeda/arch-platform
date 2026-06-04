@@ -2,17 +2,24 @@
 
 import type { GenerationContext } from '../generation/generation-context.js';
 import type { GenerationPipelineStep } from '../generation/generation-pipeline-step.js';
+import type { TemplateVariables } from '../variables/template-variables.js';
 
-export interface GenerationHooks {
-  beforePipeline?(context: GenerationContext): Promise<void>;
+export interface GenerationHooks<TVariables extends TemplateVariables = TemplateVariables> {
+  beforePipeline?(context: GenerationContext<TVariables>): Promise<void>;
 
-  onSuccess?(context: GenerationContext): Promise<void>;
+  onSuccess?(context: GenerationContext<TVariables>): Promise<void>;
 
-  onError?(error: unknown, context: GenerationContext): Promise<void>;
+  onError?(error: unknown, context: GenerationContext<TVariables>): Promise<void>;
 
-  afterPipeline?(context: GenerationContext): Promise<void>;
+  afterPipeline?(context: GenerationContext<TVariables>): Promise<void>;
 
-  beforeStep?(step: GenerationPipelineStep, context: GenerationContext): Promise<void>;
+  beforeStep?(
+    step: GenerationPipelineStep<TVariables>,
+    context: GenerationContext<TVariables>,
+  ): Promise<void>;
 
-  afterStep?(step: GenerationPipelineStep, context: GenerationContext): Promise<void>;
+  afterStep?(
+    step: GenerationPipelineStep<TVariables>,
+    context: GenerationContext<TVariables>,
+  ): Promise<void>;
 }

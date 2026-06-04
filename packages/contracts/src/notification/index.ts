@@ -1,3 +1,3 @@
 // packages/contracts/src/notification/index.ts
 
-export * from './notification.port.js';
+export type { NotificationPort } from './notification.port.js';

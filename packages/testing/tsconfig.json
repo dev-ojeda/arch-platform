@@ -1,9 +1,11 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "dist",
-    "noEmit": true
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "composite": true,
+    "declaration": true,
+    "declarationMap": false
   },
   "include": [
     "src/**/*.ts"
@@ -14,5 +16,13 @@
     "**/*.js",
     "**/*.d.ts",
     "**/*.d.ts.map"
+  ],
+  "references": [
+    {
+      "path": "../contracts"
+    },
+    {
+      "path": "../core"
+    }
   ]
 }

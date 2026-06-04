@@ -1,4 +1,4 @@
 // Auto-generated index
 
-export * from './filesystem-error.js';
-export * from './filesystem-invalid-path.error.js';
+export { FilesystemError } from './filesystem-error.js';
+export { InvalidPathError, type InvalidPathMetadata } from './filesystem-invalid-path.error.js';

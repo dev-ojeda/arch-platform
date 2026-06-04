@@ -1,92 +1,26 @@
 // packages/testing/src/filesystem/create-mock-filesystem.ts
 
-import type { DirectoryEntry, FileSystemPort, WriteFileOptions } from '@arch/contracts';
+import type { WriteFileOptions } from '@arch/contracts/filesystem';
 import { vi } from 'vitest';
 
-export interface MockFilesystemState {
-  files: Map<string, string>;
+import { createMemoryFilesystem } from './create-memory-filesystem.js';
 
-  directories: Set<string>;
-}
-
-export interface MockFilesystem extends FileSystemPort {
-  state: MockFilesystemState;
-}
-
-export function createMockFilesystem(): MockFilesystem {
-  const state: MockFilesystemState = {
-    files: new Map<string, string>(),
-
-    directories: new Set<string>(),
-  };
+export function createMockFilesystem() {
+  const filesystem = createMemoryFilesystem();
 
   return {
-    state,
+    ...filesystem,
 
-    read: vi.fn(async (targetPath: string): Promise<string> => {
-      const file = state.files.get(targetPath);
+    read: vi.fn((targetPath: string) => filesystem.read(targetPath)),
 
-      if (file === undefined) {
-        throw new Error(`File not found: ${targetPath}`);
-      }
+    exists: vi.fn((targetPath: string) => filesystem.exists(targetPath)),
 
-      return file;
-    }),
+    remove: vi.fn((targetPath: string) => filesystem.remove(targetPath)),
 
-    write: vi.fn(
-      async (
-        targetPath: string,
+    copy: vi.fn((source: string, destination: string) => filesystem.copy(source, destination)),
 
-        content: string,
-
-        _options?: WriteFileOptions,
-      ): Promise<void> => {
-        state.files.set(targetPath, content);
-      },
+    write: vi.fn((targetPath: string, content: string, options?: WriteFileOptions) =>
+      filesystem.write(targetPath, content, options),
     ),
-
-    copy: vi.fn(
-      async (
-        source: string,
-
-        destination: string,
-      ): Promise<void> => {
-        const content = state.files.get(source);
-
-        if (content === undefined) {
-          throw new Error(`File not found: ${source}`);
-        }
-
-        state.files.set(destination, content);
-      },
-    ),
-
-    createDirectory: vi.fn(async (targetPath: string): Promise<void> => {
-      state.directories.add(targetPath);
-    }),
-
-    exists: vi.fn(async (targetPath: string): Promise<boolean> => {
-      return state.files.has(targetPath) || state.directories.has(targetPath);
-    }),
-
-    remove: vi.fn(async (targetPath: string): Promise<void> => {
-      state.files.delete(targetPath);
-
-      state.directories.delete(targetPath);
-    }),
-
-    readDirectory: vi.fn(async (directoryPath: string): Promise<DirectoryEntry[]> => {
-      return Array.from(state.files.keys())
-
-        .filter((path) => path.startsWith(directoryPath))
-
-        .map((path) => ({
-          name: path.split('/').pop() ?? '',
-
-          path,
-
-          isDirectory: false,
-        }));
-    }),
   };
 }

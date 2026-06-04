@@ -1,3 +1,3 @@
 // Auto-generated index
 
-export * from './generation-hooks.js';
+export { runAfterWriteHook, runBeforeWriteHook } from './generation-hooks.js';

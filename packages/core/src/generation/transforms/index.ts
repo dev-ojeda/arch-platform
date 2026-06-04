@@ -1,3 +1,3 @@
 // Auto-generated index
 
-export * from './content-transformer.js';
+export { transformContent } from './content-transformer.js';

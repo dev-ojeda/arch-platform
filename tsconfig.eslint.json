@@ -10,11 +10,19 @@
     "apps/**/*.ts",
     "apps/**/*.tsx",
     "*.ts",
-    "*.js"
+    "*.mts",
+    "*.cts",
+    "*.js",
+    "*.mjs",
+    "*.cjs"
   ],
   "exclude": [
     "**/dist/**",
+    "**/coverage/**",
     "**/node_modules/**",
-    "**/.turbo/**"
+    "**/.turbo/**",
+    "**/.changeset/**",
+    "**/.cache/**",
+    "**/generated/**"
   ]
 }

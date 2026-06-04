@@ -12,4 +12,4 @@ export interface VariableObject {
   readonly [key: string]: VariableValue;
 }
 
-export type VariableArray = readonly VariableValue[];
+type VariableArray = readonly VariableValue[];

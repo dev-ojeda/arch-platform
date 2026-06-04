@@ -1,6 +1,7 @@
 // packages/application/src/generation/exporters/run-generation-report-exporters.ts
 
-import type { GenerationReport, GenerationReportExporter } from '@arch/contracts';
+import type { GenerationReportExporter } from '@arch/contracts/exporters';
+import type { GenerationReport } from '@arch/contracts/reports';
 
 export async function runGenerationReportExporters(
   exporters: readonly GenerationReportExporter[],

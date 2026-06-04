@@ -1,30 +1,39 @@
 // packages/testing/src/prompts/create-test-prompt-adapter.ts
+
 import type {
   BooleanField,
-  NamedVariables,
   PromptAdapter,
   SelectField,
   StringField,
-} from '@arch/contracts';
+} from '@arch/contracts/prompts';
+import type { NamedVariables, VariableValue } from '@arch/contracts/variables';
+
+function getStringValue(value: VariableValue): string | undefined {
+  return typeof value === 'string' ? value : undefined;
+}
+
+function getBooleanValue(value: VariableValue): boolean | undefined {
+  return typeof value === 'boolean' ? value : undefined;
+}
 
 export function createTestPromptAdapter(variables: NamedVariables = {}): PromptAdapter {
   return {
-    async input<TValues extends NamedVariables>(
+    input<TValues extends NamedVariables>(
       field: StringField<TValues>,
     ): Promise<string | undefined> {
-      return variables[field.name] as string | undefined;
+      return Promise.resolve(getStringValue(variables[field.name]));
     },
 
-    async select<TValues extends NamedVariables>(
+    select<TValues extends NamedVariables>(
       field: SelectField<TValues>,
     ): Promise<string | undefined> {
-      return variables[field.name] as string | undefined;
+      return Promise.resolve(getStringValue(variables[field.name]));
     },
 
-    async boolean<TValues extends NamedVariables>(
+    boolean<TValues extends NamedVariables>(
       field: BooleanField<TValues>,
     ): Promise<boolean | undefined> {
-      return variables[field.name] as boolean | undefined;
+      return Promise.resolve(getBooleanValue(variables[field.name]));
     },
   };
 }

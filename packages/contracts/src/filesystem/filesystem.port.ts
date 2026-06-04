@@ -15,27 +15,17 @@ export interface DirectoryEntry {
 }
 
 export interface FileSystemPort {
-  read(strPath: string): Promise<string>;
+  read(filePath: string): Promise<string>;
 
-  write(
-    strPath: string,
+  write(filePath: string, content: string, options?: WriteFileOptions): Promise<void>;
 
-    content: string,
+  copy(sourcePath: string, destinationPath: string): Promise<void>;
 
-    options?: WriteFileOptions,
-  ): Promise<void>;
+  createDirectory(directoryPath: string): Promise<void>;
 
-  copy(
-    source: string,
+  exists(targetPath: string): Promise<boolean>;
 
-    destination: string,
-  ): Promise<void>;
+  remove(targetPath: string): Promise<void>;
 
-  createDirectory(strPath: string): Promise<void>;
-
-  exists(strPath: string): Promise<boolean>;
-
-  remove(strPath: string): Promise<void>;
-
-  readDirectory(strPath: string): Promise<DirectoryEntry[]>;
+  readDirectory(directoryPath: string): Promise<DirectoryEntry[]>;
 }

@@ -1,6 +1,6 @@
 // packages/testing/src/runtime/create-test-language-convention.ts
 
-import type { LanguageConvention } from '@arch/contracts';
+import type { LanguageConvention } from '@arch/contracts/languages';
 
 export const testLanguageConvention: LanguageConvention = {
   id: 'typescript',
@@ -9,21 +9,18 @@ export const testLanguageConvention: LanguageConvention = {
 
   folderLayout: {
     controller: 'controllers',
-
     service: 'services',
-
     repository: 'repositories',
-
     model: 'models',
   },
 
-  formatName: (name: any) => name,
+  formatName: (name: string): string => name,
 
-  controllerName: (name: any) => `${name}Controller`,
+  controllerName: (name: string): string => `${name}Controller`,
 
-  serviceName: (name: any) => `${name}Service`,
+  serviceName: (name: string): string => `${name}Service`,
 
-  repositoryName: (name: any) => `${name}Repository`,
+  repositoryName: (name: string): string => `${name}Repository`,
 
-  modelName: (name: any) => `${name}Model`,
+  modelName: (name: string): string => `${name}Model`,
 };

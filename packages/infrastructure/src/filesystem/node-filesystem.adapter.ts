@@ -2,7 +2,7 @@
 import { promises as fs } from 'node:fs';
 import * as path from 'node:path';
 
-import type { DirectoryEntry, FileSystemPort, WriteFileOptions } from '@arch/contracts';
+import type { DirectoryEntry, FileSystemPort, WriteFileOptions } from '@arch/contracts/filesystem';
 
 export class NodeFileSystemAdapter implements FileSystemPort {
   async read(filePath: string): Promise<string> {

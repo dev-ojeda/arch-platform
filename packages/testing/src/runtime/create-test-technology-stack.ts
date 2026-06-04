@@ -1,6 +1,6 @@
 // packages/testing/src/runtime/create-test-technology-stack.ts
 
-import type { TechnologyStack } from '@arch/contracts';
+import type { TechnologyStack } from '@arch/contracts/stacks';
 
 export function createTestTechnologyStack(): TechnologyStack {
   return {

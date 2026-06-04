@@ -1,4 +1,4 @@
 // Auto-generated index
 
-export * from './build-variables.js';
-export * from './types.js';
+export { buildVariables } from './build-variables.js';
+export { type DerivedTemplateVariables, type ResolvedTemplateVariables } from './types.js';

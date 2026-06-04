@@ -1,5 +1,5 @@
 // packages\core\src\templates\language-registry.ts
-import type { LanguageConvention } from '@arch/contracts';
+import type { LanguageConvention } from '@arch/contracts/languages';
 
 const registry = new Map<string, LanguageConvention>();
 

@@ -1,72 +1,57 @@
 // eslint.config.mjs
 
+import importPlugin from 'eslint-plugin-import';
 import tseslint from 'typescript-eslint';
 
-import tsParser from '@typescript-eslint/parser';
-
-import importPlugin from 'eslint-plugin-import';
-
-export default [
+const IGNORE_PATTERNS = ['**/dist/**', '**/coverage/**', '**/.turbo/**', '**/node_modules/**'];
+const TOOLING_FILES = [
+  '**/vitest.config.ts',
+  '**/tsup.config.ts',
+  'vitest.shared.ts',
+  'vitest.workspace.ts',
+  'tsup.base.ts',
+  'eslint.config.mjs',
+];
+export default tseslint.config(
   {
-    ignores: ['**/dist/**', '**/coverage/**', '**/.turbo/**', '**/node_modules/**'],
+    ignores: IGNORE_PATTERNS,
   },
 
+  ...tseslint.configs.recommendedTypeChecked,
+
   {
-    files: ['**/*.ts', '**/*.tsx'],
+    files: ['**/*.ts'],
 
     languageOptions: {
-      parser: tsParser,
+      parser: tseslint.parser,
 
       parserOptions: {
-        project: [
-          './tsconfig.eslint.json',
-
-          './packages/*/tsconfig.json',
-
-          './packages/generators/*/tsconfig.json',
-
-          './apps/*/tsconfig.json',
-        ],
-
+        projectService: true,
         tsconfigRootDir: import.meta.dirname,
-
-        sourceType: 'module',
       },
     },
 
     plugins: {
-      '@typescript-eslint': tseslint.plugin,
-
       import: importPlugin,
     },
 
     settings: {
       'import/parsers': {
-        '@typescript-eslint/parser': ['.ts', '.tsx'],
+        '@typescript-eslint/parser': ['.ts'],
       },
 
       'import/resolver': {
         typescript: {
           alwaysTryTypes: true,
-
-          project: [
-            './tsconfig.eslint.json',
-
-            './packages/*/tsconfig.json',
-
-            './packages/generators/*/tsconfig.json',
-
-            './apps/*/tsconfig.json',
-          ],
-        },
-
-        node: {
-          extensions: ['.js', '.mjs', '.cjs', '.ts', '.tsx'],
         },
       },
     },
 
     rules: {
+      // ----------------------------------------------------
+      // TypeScript
+      // ----------------------------------------------------
+
       '@typescript-eslint/consistent-type-imports': [
         'error',
         {
@@ -82,19 +67,19 @@ export default [
         },
       ],
 
+      // ----------------------------------------------------
+      // Imports
+      // ----------------------------------------------------
+
       'import/extensions': [
         'error',
         'ignorePackages',
         {
           js: 'always',
           mjs: 'always',
-
           ts: 'never',
-          tsx: 'never',
         },
       ],
-
-      'import/no-cycle': 'error',
 
       'import/no-self-import': 'error',
 
@@ -102,10 +87,22 @@ export default [
 
       'import/no-unresolved': 'off',
 
+      'import/first': 'error',
+
+      'import/newline-after-import': 'error',
+
       'import/order': [
         'error',
         {
           groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+
+          pathGroups: [
+            {
+              pattern: '@arch/**',
+              group: 'internal',
+              position: 'before',
+            },
+          ],
 
           alphabetize: {
             order: 'asc',
@@ -116,9 +113,9 @@ export default [
         },
       ],
 
-      'import/first': 'error',
-
-      'import/newline-after-import': 'error',
+      // ----------------------------------------------------
+      // Architecture
+      // ----------------------------------------------------
 
       'no-restricted-imports': [
         'error',
@@ -128,4 +125,28 @@ export default [
       ],
     },
   },
-];
+  {
+    files: ['**/test/**/*.ts', '**/__tests__/**/*.ts', '**/*.test.ts', '**/*.spec.ts'],
+
+    rules: {
+      'no-restricted-imports': 'off',
+    },
+  },
+  {
+    files: TOOLING_FILES,
+
+    extends: [tseslint.configs.disableTypeChecked],
+
+    languageOptions: {
+      parser: tseslint.parser,
+
+      parserOptions: {
+        projectService: false,
+      },
+    },
+
+    rules: {
+      'no-restricted-imports': 'off',
+    },
+  },
+);

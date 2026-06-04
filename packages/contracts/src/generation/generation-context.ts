@@ -11,9 +11,9 @@ import type { GenerationTimeoutPolicy } from '../runtime/generation-timeout-poli
 import type { TechnologyStack } from '../stacks/technology-stack.js';
 import type { StepExecutionMetric } from '../telemetry/step-execution-metric.js';
 import type { ResolvedTemplateVariables } from '../templates/resolved-template-variables.js';
-import type { NamedVariables } from '../variables/named-variables.js';
+import type { TemplateVariables } from '../variables/template-variables.js';
 
-export interface GenerationContext<TVariables extends NamedVariables = NamedVariables> {
+export interface GenerationContext<TVariables extends TemplateVariables = TemplateVariables> {
   /*
    * Request
    */

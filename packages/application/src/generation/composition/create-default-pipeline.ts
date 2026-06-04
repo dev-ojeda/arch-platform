@@ -1,6 +1,10 @@
 // packages/application/src/generation/composition/create-default-pipeline.ts
 
-import type { IdGenerator, PromptResolver } from '@arch/contracts';
+import type { GenerationPipelineStep } from '@arch/contracts/generation';
+import type { GenerationHooks } from '@arch/contracts/hooks';
+import type { PromptResolver } from '@arch/contracts/prompts';
+import type { IdGenerator } from '@arch/contracts/runtime';
+import type { TemplateVariables } from '@arch/contracts/variables';
 
 import { CompositeGenerationHooks } from '../hooks/composite-generation-hooks.js';
 import { EventGenerationHooks } from '../hooks/event-generation-hooks.js';
@@ -20,38 +24,38 @@ export interface PipelineDependencies {
   idGenerator: IdGenerator;
 }
 
-export function createDefaultPipeline(dependencies: PipelineDependencies): GenerationPipeline {
+export function createDefaultPipeline<TVariables extends TemplateVariables>(
+  dependencies: PipelineDependencies,
+): GenerationPipeline<TVariables> {
   const { promptResolver, idGenerator } = dependencies;
 
-  const hooks = createPipelineHooks();
+  const hooks = createPipelineHooks<TVariables>();
 
-  const steps = createPipelineSteps(promptResolver);
+  const steps = createPipelineSteps<TVariables>(promptResolver);
 
-  return new GenerationPipeline(steps, idGenerator, hooks);
+  return new GenerationPipeline<TVariables>({
+    steps,
+    idGenerator,
+    hooks,
+  });
 }
 
-function createPipelineHooks() {
-  return new CompositeGenerationHooks([
-    new LoggingGenerationHooks(),
-
-    new TelemetryGenerationHooks(),
-
-    new EventGenerationHooks(),
+function createPipelineHooks<TVariables extends TemplateVariables>(): GenerationHooks<TVariables> {
+  return new CompositeGenerationHooks<TVariables>([
+    new LoggingGenerationHooks<TVariables>(),
+    new TelemetryGenerationHooks<TVariables>(),
+    new EventGenerationHooks<TVariables>(),
   ]);
 }
-
-function createPipelineSteps(promptResolver: PromptResolver) {
+function createPipelineSteps<TVariables extends TemplateVariables>(
+  promptResolver: PromptResolver,
+): readonly GenerationPipelineStep<TVariables>[] {
   return [
-    new ValidateGeneratorStep(),
-
-    new ResolvePromptsStep(promptResolver),
-
-    new ResolveVariablesStep(),
-
-    new ResolveTemplatesStep(),
-
-    new RenderFilesStep(),
-
-    new WriteFilesStep(),
+    new ValidateGeneratorStep<TVariables>(),
+    new ResolvePromptsStep<TVariables>(promptResolver),
+    new ResolveVariablesStep<TVariables>(),
+    new ResolveTemplatesStep<TVariables>(),
+    new RenderFilesStep<TVariables>(),
+    new WriteFilesStep<TVariables>(),
   ];
 }

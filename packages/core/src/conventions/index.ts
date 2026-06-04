@@ -1,3 +1,3 @@
 // Auto-generated index
 
-export * from './languages/index.js';
+export { TypeScriptConvention } from './languages/typescript/typescript.convention.js';

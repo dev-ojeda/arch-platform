@@ -1,26 +1,21 @@
 {
-  // tsconfig.base.json
   "compilerOptions": {
-    "target": "ES2022",
-    "lib": [
-      "ES2022"
-    ],
+    "target": "ES2023",
+    "lib": ["ES2023", "ESNext.Disposable"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "moduleDetection": "force",
-    "baseUrl": ".",
     "strict": true,
-    "skipLibCheck": true,
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "useDefineForClassFields": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "types": [
-      "node"
-    ],
-    "ignoreDeprecations": "5.0"
+    "sourceMap": true,
+    "types": ["node"]
   }
 }

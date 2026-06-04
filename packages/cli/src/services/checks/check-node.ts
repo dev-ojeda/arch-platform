@@ -5,27 +5,27 @@ import type { DoctorCheck } from './doctor-check.js';
 export const checkNode: DoctorCheck = {
   name: 'node',
 
-  async run() {
+  run() {
     const version = process.version;
 
     const major = Number(version.replace('v', '').split('.')[0]);
 
     const supported = major >= 20;
 
-    if (supported) {
-      return {
-        severity: 'info',
+    return Promise.resolve(
+      supported
+        ? {
+            severity: 'info' as const,
 
-        message: `Node version OK (${version})`,
-      };
-    }
+            message: `Node version OK (${version})`,
+          }
+        : {
+            severity: 'error' as const,
 
-    return {
-      severity: 'error',
+            message: `Unsupported Node version (${version})`,
 
-      message: `Unsupported Node version (${version})`,
-
-      details: ['Node.js 20 or newer is required.'],
-    };
+            details: ['Node.js 20 or newer is required.'],
+          },
+    );
   },
 };

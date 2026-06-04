@@ -1,8 +1,9 @@
-// packages/application/src/generation/diagnostics/report-diagnostic.ts
+// packages\contracts\src\diagnostics\report-diagnostic.ts
 
 import type { GenerationContext } from '../generation/generation-context.js';
 
 import type { GenerationDiagnosticLevel } from './generation-diagnostic-level.js';
+import type { GenerationDiagnostic } from './generation-diagnostic.js';
 
 export interface ReportDiagnosticOptions {
   level: GenerationDiagnosticLevel;
@@ -15,19 +16,8 @@ export interface ReportDiagnosticOptions {
 }
 
 export function reportDiagnostic(
-  context: GenerationContext,
-
-  options: ReportDiagnosticOptions,
+  context: Pick<GenerationContext, 'diagnostics'>,
+  diagnostic: GenerationDiagnostic,
 ): void {
-  context.diagnostics.push({
-    level: options.level,
-
-    message: options.message,
-
-    step: options.step,
-
-    metadata: options.metadata,
-
-    timestamp: Date.now(),
-  });
+  context.diagnostics.push(diagnostic);
 }

@@ -1,4 +1,6 @@
-[CmdletBinding(SupportsShouldProcess)]
+# scripts/cleanup/cleanup-dist.ps1
+
+[CmdletBinding(SupportsShouldProcess = $true)]
 param(
   [switch]$DryRun,
 
@@ -11,11 +13,11 @@ Set-StrictMode -Version Latest
 
 $ErrorActionPreference = 'Stop'
 
-# ---------------------------------------------------------------------
-# CONSTANTS
-# ---------------------------------------------------------------------
+# =========================================================
+# CONFIGURATION
+# =========================================================
 
-$ExcludedDirectories = @(
+$script:ExcludedDirectories = @(
   '.git',
   '.turbo',
   '.pnpm-store',
@@ -24,12 +26,15 @@ $ExcludedDirectories = @(
   'node_modules'
 )
 
-# ---------------------------------------------------------------------
+# =========================================================
 # LOGGER
-# ---------------------------------------------------------------------
+# =========================================================
 
 function Write-Log {
+
+  [CmdletBinding()]
   param(
+    [Parameter(Mandatory)]
     [ValidateSet(
       'INFO',
       'WARN',
@@ -39,6 +44,7 @@ function Write-Log {
     )]
     [string]$Level,
 
+    [Parameter(Mandatory)]
     [string]$Message
   )
 
@@ -50,31 +56,54 @@ function Write-Log {
   }
 
   $Color = switch ($Level) {
-    'INFO' { 'Cyan' }
-    'WARN' { 'Yellow' }
-    'ERROR' { 'Red' }
+    'INFO'    { 'Cyan' }
+    'WARN'    { 'Yellow' }
+    'ERROR'   { 'Red' }
     'SUCCESS' { 'Green' }
-    'DEBUG' { 'DarkGray' }
+    'DEBUG'   { 'DarkGray' }
   }
 
   Write-Host "[$Level] $Message" `
     -ForegroundColor $Color
 }
 
-# ---------------------------------------------------------------------
+# =========================================================
 # HELPERS
-# ---------------------------------------------------------------------
+# =========================================================
 
-function Test-ExcludedPath {
+function Resolve-WorkspaceRoot {
+
+  [CmdletBinding()]
   param(
+    [Parameter(Mandatory)]
     [string]$Path
   )
 
-  foreach ($ExcludedDirectory in $ExcludedDirectories) {
-    if (
-      $Path -match
-      [regex]::Escape($ExcludedDirectory)
-    ) {
+  try {
+
+    return (
+      Resolve-Path `
+        -Path $Path `
+        -ErrorAction Stop
+    ).Path
+  }
+  catch {
+
+    throw "Root path not found: $Path"
+  }
+}
+
+function Test-ExcludedPath {
+
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)]
+    [string]$Path
+  )
+
+  foreach ($ExcludedDirectory in $script:ExcludedDirectories) {
+
+    if ($Path -like "*$ExcludedDirectory*") {
       return $true
     }
   }
@@ -82,14 +111,51 @@ function Test-ExcludedPath {
   return $false
 }
 
+function Get-DistDirectories {
+
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)]
+    [string]$RootDirectory
+  )
+
+  return @(
+    Get-ChildItem `
+      -Path $RootDirectory `
+      -Directory `
+      -Recurse `
+      -Force `
+      -ErrorAction SilentlyContinue |
+    Where-Object {
+
+      $_.Name -eq 'dist' -and
+      -not (
+        Test-ExcludedPath `
+          -Path $_.FullName
+      )
+    }
+  )
+}
+
 function Remove-DistDirectory {
-  [CmdletBinding(SupportsShouldProcess)]
+
+  [CmdletBinding(SupportsShouldProcess = $true)]
   param(
     [Parameter(Mandatory)]
     [string]$Path
   )
 
+  if (-not (Test-Path $Path)) {
+
+    Write-Log `
+      -Level WARN `
+      -Message "Directory not found: $Path"
+
+    return
+  }
+
   if ($DryRun) {
+
     Write-Host "[DRYRUN] Remove: $Path" `
       -ForegroundColor Magenta
 
@@ -97,6 +163,7 @@ function Remove-DistDirectory {
   }
 
   if ($PSCmdlet.ShouldProcess($Path, 'Remove dist directory')) {
+
     Remove-Item `
       -LiteralPath $Path `
       -Recurse `
@@ -109,20 +176,22 @@ function Remove-DistDirectory {
   }
 }
 
-# ---------------------------------------------------------------------
-# VALIDATION
-# ---------------------------------------------------------------------
+# =========================================================
+# INITIALIZATION
+# =========================================================
 
 try {
-  $ResolvedRoot =
-  (Resolve-Path -Path $RootPath).Path
+
+  $ResolvedRoot = Resolve-WorkspaceRoot `
+    -Path $RootPath
 }
 catch {
+
   Write-Log `
     -Level ERROR `
-    -Message "Root path not found: $RootPath"
+    -Message $_.Exception.Message
 
-  return
+  exit 1
 }
 
 Write-Log `
@@ -131,50 +200,42 @@ Write-Log `
 
 Write-Log `
   -Level DEBUG `
-  -Message "Resolved root: $ResolvedRoot"
+  -Message "Workspace root: $ResolvedRoot"
 
-# ---------------------------------------------------------------------
+# =========================================================
 # DISCOVERY
-# ---------------------------------------------------------------------
+# =========================================================
 
-$DistDirectories =
-Get-ChildItem `
-  -Path $ResolvedRoot `
-  -Directory `
-  -Recurse `
-  -Force `
-  -Filter 'dist' `
-  -ErrorAction SilentlyContinue |
-Where-Object {
-  -not (
-    Test-ExcludedPath `
-      -Path $_.FullName
-  )
-}
+$DistDirectories = @(
+  Get-DistDirectories `
+    -RootDirectory $ResolvedRoot
+)
 
-if (-not $DistDirectories) {
+$DistDirectoryCount = $DistDirectories.Length
+
+if ($DistDirectoryCount -eq 0) {
+
   Write-Log `
     -Level WARN `
     -Message 'No dist directories found'
 
-  return
+  exit 0
 }
 
 Write-Log `
   -Level INFO `
   -Message (
-  "Found $($DistDirectories.Count) " +
-  "dist directories"
-)
-
-# ---------------------------------------------------------------------
+    "Found $DistDirectoryCount dist directories"
+  )
+# =========================================================
 # CLEANUP
-# ---------------------------------------------------------------------
+# =========================================================
 
 $RemovedCount = 0
 $FailedCount = 0
 
 foreach ($Directory in $DistDirectories) {
+
   $TargetPath = $Directory.FullName
 
   Write-Log `
@@ -182,15 +243,17 @@ foreach ($Directory in $DistDirectories) {
     -Message "Processing: $TargetPath"
 
   try {
+
     Remove-DistDirectory `
       -Path $TargetPath
 
     $RemovedCount++
   }
   catch {
+
     Write-Log `
       -Level ERROR `
-      -Message "Failed: $TargetPath"
+      -Message "Failed removing: $TargetPath"
 
     Write-Log `
       -Level ERROR `
@@ -200,9 +263,9 @@ foreach ($Directory in $DistDirectories) {
   }
 }
 
-# ---------------------------------------------------------------------
+# =========================================================
 # SUMMARY
-# ---------------------------------------------------------------------
+# =========================================================
 
 Write-Host ''
 
@@ -222,6 +285,7 @@ Write-Host "Removed : $RemovedCount"
 Write-Host "Failed  : $FailedCount"
 
 if ($DryRun) {
+
   Write-Host `
     'Mode    : DRY RUN' `
     -ForegroundColor Magenta
@@ -230,6 +294,7 @@ if ($DryRun) {
 Write-Host ''
 
 if ($FailedCount -gt 0) {
+
   throw 'Dist cleanup completed with errors'
 }
 

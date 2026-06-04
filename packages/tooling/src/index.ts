@@ -1,3 +1,11 @@
-// packages/tooling/src/index.ts
+// packages\tooling\src\index.ts
 
-export * from './runtime/execute-command.js';
+export {
+  buildCommand,
+  cleanCommand,
+  devCommand,
+  lintCommand,
+  typecheckCommand,
+} from './commands/index.js';
+
+export { executeCommand } from './runtime/index.js';

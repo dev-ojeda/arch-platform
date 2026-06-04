@@ -1,8 +1,10 @@
 // packages/application/src/generation/composition/create-default-engine.ts
 
-import type { FileSystemPort, IdGenerator, LoggerPort, PromptAdapter } from '@arch/contracts';
-import { PromptEngine } from '@arch/contracts';
-import { ConsoleLogger } from '@arch/core';
+import type { FileSystemPort } from '@arch/contracts/filesystem';
+import type { LoggerPort } from '@arch/contracts/logging';
+import type { PromptAdapter } from '@arch/contracts/prompts';
+import { PromptEngine } from '@arch/contracts/prompts';
+import type { IdGenerator } from '@arch/contracts/runtime';
 
 import { DefaultGenerationEngine } from '../engine/default-generation-engine.js';
 import { GenerationContextFactory } from '../runtime/generation-context-factory.js';
@@ -16,7 +18,7 @@ export interface GenerationEngineFactoryOptions {
 
   idGenerator: IdGenerator;
 
-  logger?: LoggerPort;
+  logger: LoggerPort;
 }
 
 export function createGenerationEngine(options: GenerationEngineFactoryOptions) {
@@ -31,7 +33,7 @@ export function createGenerationEngine(options: GenerationEngineFactoryOptions) 
   const contextFactory = new GenerationContextFactory(
     options.filesystem,
 
-    options.logger ?? new ConsoleLogger(),
+    options.logger,
   );
 
   return new DefaultGenerationEngine(

@@ -1,21 +1,13 @@
-// packages/tooling/src/commands/build.ts
+// packages\tooling\src\commands\build.ts
 
-import fs from 'node:fs';
+import { ToolingEvents } from '../runtime/events/tooling-event.js';
+import { runCommand } from '../runtime/run-command.js';
 
-import { executeCommand } from '../runtime/execute-command.js';
+import { buildWorkspace } from './build/build-workspace.js';
 
-const args = process.argv.slice(2);
-
-const TSUP_CONFIG_PATH = 'tsup.config.ts';
-
-if (!fs.existsSync(TSUP_CONFIG_PATH)) {
-  console.warn(`[tooling:build] Missing ${TSUP_CONFIG_PATH}. Skipping build.`);
-
-  process.exit(0);
-}
-
-const result = await executeCommand('tsup', [...args]);
-
-if (result.exitCode !== 0) {
-  process.exit(result.exitCode);
+export async function buildCommand(): Promise<void> {
+  process.exitCode = await runCommand({
+    events: ToolingEvents.build,
+    action: buildWorkspace,
+  });
 }

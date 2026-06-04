@@ -58,7 +58,9 @@
   // SEARCH
   // -----------------------------------------------------------------------------
   "search.followSymlinks": false,
+  "search.sortOrder": "type",
   "search.exclude": {
+    "**/node_modules": true,
     "**/.pnpm-store": true,
     "**/.turbo": true,
     "**/.cache": true,

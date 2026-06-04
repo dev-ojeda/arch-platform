@@ -1,8 +1,8 @@
 // packages/contracts/src/generation/index.ts
-export * from './generated-file.js';
-export * from './generation-context.js';
-export * from './generation-engine.js';
-export * from './generation-file-hook-context.js';
-export * from './generation-pipeline-step.js';
-export * from './generation-request.js';
-export * from './generation-result.js';
+export type { GeneratedFile } from './generated-file.js';
+export type { GenerationContext } from './generation-context.js';
+export type { GenerationEngine } from './generation-engine.js';
+export type { FileHookContext } from './generation-file-hook-context.js';
+export type { GenerationPipelineStep } from './generation-pipeline-step.js';
+export type { GenerationRequest } from './generation-request.js';
+export type { GenerationResult } from './generation-result.js';

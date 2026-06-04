@@ -1,3 +1,3 @@
 // packages/contracts/src/telemetry/index.ts
 
-export * from './step-execution-metric.js';
+export type { StepExecutionMetric } from './step-execution-metric.js';

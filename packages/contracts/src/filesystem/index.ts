@@ -1,2 +1,2 @@
-export * from './filesystem.port.js';
-export * from './overwrite-policy.js';
+export type { DirectoryEntry, FileSystemPort, WriteFileOptions } from './filesystem.port.js';
+export type { OverwritePolicy } from './overwrite-policy.js';

@@ -1,0 +1,15 @@
+import { defineConfig } from 'tsup';
+
+import { baseConfig } from '../../tsup.base.js';
+
+export default defineConfig({
+  ...baseConfig,
+
+  entry: ['src/index.ts'],
+
+  format: ['esm'],
+
+  dts: false,
+
+  tsconfig: './tsconfig.build.json',
+});

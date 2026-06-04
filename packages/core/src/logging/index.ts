@@ -1,3 +1,3 @@
-// Auto-generated index
+// packages/core/src/logging/index.ts
 
-export * from './console-logger.js';
+export { ConsoleLogger } from './console-logger.js';

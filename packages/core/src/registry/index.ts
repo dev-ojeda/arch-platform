@@ -1,4 +1,4 @@
-// Auto-generated index
+// packages/core/src/logging/index.ts
 
-export * from './generators/index.js';
-export * from './languages/index.js';
+export { GeneratorRegistry } from './generators/generator-registry.js';
+export { LanguageConventionRegistry } from './languages/language-convention-registry.js';

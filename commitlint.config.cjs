@@ -46,6 +46,7 @@ module.exports = {
         'monorepo',
         'tooling',
         'docs',
+        'domain-order',
 
         'application/engine',
         'application/runtime',

@@ -1,18 +1,24 @@
 // packages/application/tsup.config.ts
+
 import { defineConfig } from 'tsup';
 
-import { baseConfig } from '../../tsup.base.ts';
+import { baseConfig } from '../../tsup.base.js';
 
 export default defineConfig({
   ...baseConfig,
+  external: [/^@arch\//],
 
-  entry: ['src/index.ts'],
+  entry: {
+    index: 'src/index.ts',
 
-  format: ['esm'],
+    generation: 'src/generation/index.ts',
 
-  dts: true,
+    runtime: 'src/runtime/index.ts',
 
-  metafile: true,
+    useCases: 'src/use-cases/generate-project/index.ts',
+    testing: 'src/testing/index.ts',
+  },
 
-  tsconfig: './tsconfig.build.json',
+  bundle: false,
+  dts: false,
 });

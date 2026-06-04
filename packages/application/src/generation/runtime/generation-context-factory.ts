@@ -1,79 +1,36 @@
 // packages/application/src/generation/runtime/generation-context-factory.ts
 
-import type {
-  FileSystemPort,
-  GenerationContext,
-  GenerationRequest,
-  LoggerPort,
-  NamedVariables,
-} from '@arch/contracts';
-import { InMemoryGenerationEventBus } from '@arch/core';
+import type { FileSystemPort } from '@arch/contracts/filesystem';
+import type { GenerationContext, GenerationRequest } from '@arch/contracts/generation';
+import type { LoggerPort } from '@arch/contracts/logging';
+import type { TemplateVariables } from '@arch/contracts/variables';
+import { InMemoryGenerationEventBus } from '@arch/core/events';
 
 export class GenerationContextFactory {
   constructor(
     private readonly fs: FileSystemPort,
-
     private readonly logger: LoggerPort,
   ) {}
 
-  create(request: GenerationRequest): GenerationContext {
+  create<TVariables extends TemplateVariables>(
+    request: GenerationRequest<TVariables>,
+  ): GenerationContext<TVariables> {
     return {
-      /*
-       * Request
-       */
-
       targetDir: request.targetDir,
-
       signal: request.signal,
 
-      /*
-       * Runtime Services
-       */
-
       logger: request.logger ?? this.logger,
-
       eventBus: new InMemoryGenerationEventBus(),
-
-      /*
-       * Infrastructure
-       */
 
       fs: this.fs,
 
-      /*
-       * Generator
-       */
-
       generator: request.generator,
 
-      /*
-       * Variables
-       */
-
-      variables: (request.variables ?? {}) as NamedVariables,
-
-      /*
-       * Runtime Artifacts
-       */
+      variables: (request.variables ?? {}) as TVariables,
 
       files: [],
-
-      /*
-       * Runtime Metadata
-       */
-
       metadata: new Map(),
-
-      /*
-       * Runtime Diagnostics
-       */
-
       diagnostics: [],
-
-      /*
-       * Runtime Metrics
-       */
-
       metrics: [],
     };
   }

@@ -1,3 +1,3 @@
 // Auto-generated index
 
-export * from './output-path.js';
+export { ensureSafeOutputPath, resolveOutputPath, sanitizeRelativePath } from './output-path.js';

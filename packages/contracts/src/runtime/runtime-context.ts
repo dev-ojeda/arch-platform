@@ -2,16 +2,19 @@
 
 import type { NamedVariables } from '../variables/named-variables.js';
 
-import type { RuntimeDiagnosticLevel } from './runtime-diagnostic-level.js';
+import type { RuntimeDiagnostic } from './runtime-diagnostic.js';
+import type { RuntimeMetadata } from './runtime-metadata.js';
 
 export interface RuntimeContext<TValues extends NamedVariables = NamedVariables> {
-  readonly generator: string;
+  readonly generatorId: string;
 
   readonly workingDirectory: string;
 
   readonly variables: TValues;
 
-  readonly diagnostics: readonly RuntimeDiagnosticLevel[];
+  readonly diagnostics: readonly RuntimeDiagnostic[];
+
+  readonly metadata?: RuntimeMetadata;
 
   readonly signal?: AbortSignal;
 }

@@ -3,15 +3,33 @@
 export interface GovernanceArchMetadata {
   layer?: string;
 
-  type?: string;
+  kind?: 'domain' | 'infra' | 'app' | 'sdk' | 'tooling';
 
   runtime?: 'node' | 'browser' | 'universal';
+
+  tags?: string[];
+}
+
+export interface GovernanceBoundaries {
+  public?: string[];
+
+  private?: string[];
+
+  forbiddenDependencies?: string[];
 }
 
 export interface GovernancePackageManifest {
+  name?: string;
+
   version?: string;
 
   private?: boolean;
+
+  type?: string;
+
+  sideEffects?: boolean;
+
+  exports?: Record<string, unknown>;
 
   dependencies?: Record<string, string>;
 
@@ -29,7 +47,11 @@ export interface GovernancePackage {
 
   manifestPath: string;
 
-  manifest: GovernancePackageManifest;
+  packageJson: GovernancePackageManifest;
+
+  boundaries?: GovernanceBoundaries;
+
+  internalDependencies?: string[];
 }
 
 export interface GovernanceContext {

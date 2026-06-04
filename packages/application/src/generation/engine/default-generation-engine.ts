@@ -1,10 +1,12 @@
 // packages/application/src/application/engine/default-generation-engine.ts
 
+import type { GenerationReportExporter } from '@arch/contracts/exporters';
 import type {
-  GenerationReportExporter,
+  GenerationContext,
   GenerationRequest,
   GenerationResult,
-} from '@arch/contracts';
+} from '@arch/contracts/generation';
+import type { TemplateVariables } from '@arch/contracts/variables';
 
 import { runGenerationReportExporters } from '../../generation/exporters/run-generation-report-exporters.js';
 import type { GenerationPipeline } from '../pipeline/generation-pipeline.js';
@@ -13,16 +15,16 @@ import type { GenerationContextFactory } from '../runtime/generation-context-fac
 
 import type { GenerationEngine } from './generation-engine.js';
 
-export class DefaultGenerationEngine implements GenerationEngine {
+export class DefaultGenerationEngine<
+  TVariables extends TemplateVariables = TemplateVariables,
+> implements GenerationEngine<TVariables> {
   constructor(
-    private readonly pipeline: GenerationPipeline,
-
+    private readonly pipeline: GenerationPipeline<TVariables>,
     private readonly contextFactory: GenerationContextFactory,
-
     private readonly exporters: readonly GenerationReportExporter[] = [],
   ) {}
 
-  async generate(request: GenerationRequest): Promise<GenerationResult> {
+  async generate(request: GenerationRequest<TVariables>): Promise<GenerationResult> {
     const context = this.contextFactory.create(request);
 
     const startedAt = Date.now();
@@ -55,7 +57,7 @@ export class DefaultGenerationEngine implements GenerationEngine {
   }
 
   private async createResult(
-    context: ReturnType<GenerationContextFactory['create']>,
+    context: GenerationContext<TVariables>,
 
     success: boolean,
 

@@ -1,8 +1,14 @@
-// Auto-generated index
+// packages\core\src\generation\index.ts
 
-export * from './engine/index.js';
-export * from './output/index.js';
-export * from './security/index.js';
-export * from './transforms/index.js';
-export * from './variables/index.js';
-
+export { runAfterWriteHook, runBeforeWriteHook } from './engine/generation-hooks.js';
+export {
+  ensureSafeOutputPath,
+  resolveOutputPath,
+  sanitizeRelativePath,
+} from './output/output-path.js';
+export { transformContent } from './transforms/content-transformer.js';
+export { buildVariables } from './variables/build-variables.js';
+export {
+  type DerivedTemplateVariables,
+  type ResolvedTemplateVariables,
+} from './variables/types.js';

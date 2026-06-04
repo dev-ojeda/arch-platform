@@ -1,4 +1,3 @@
-// tsup.base.ts
 import type { Options } from 'tsup';
 
 export const baseConfig: Options = {
@@ -6,19 +5,21 @@ export const baseConfig: Options = {
 
   platform: 'node',
 
+  format: ['esm'],
+
   clean: true,
 
   sourcemap: true,
 
-  treeshake: false,
+  treeshake: true,
 
-  splitting: false,
+  splitting: true,
 
   minify: false,
 
   metafile: false,
 
-  bundle: false,
+  bundle: true,
 
   shims: false,
 };
