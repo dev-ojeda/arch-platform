@@ -2,7 +2,7 @@
 
 import { logger } from '../utils/logger.js';
 
-import type { ToolingTaskEvents } from './events/tooling-event.js';
+import type { ToolingTaskEvents } from './events/tooling-task-events.js';
 
 export interface RunCommandOptions {
   readonly events: ToolingTaskEvents;

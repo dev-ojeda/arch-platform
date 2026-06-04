@@ -1,6 +1,6 @@
 // runtime/events/create-task-events.ts
 
-import type { ToolingTaskEvents } from './tooling-event.js';
+import type { ToolingTaskEvents } from './tooling-task-events.js';
 
 export function createTaskEvents(task: string): ToolingTaskEvents {
   return {

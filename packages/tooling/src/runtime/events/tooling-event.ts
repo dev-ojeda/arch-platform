@@ -1,13 +1,7 @@
 // packages/tooling/src/runtime/events/tooling-event.ts
 
 import { createTaskEvents } from './create-task-events.js';
-
-export interface ToolingTaskEvents {
-  readonly started: string;
-  readonly completed: string;
-  readonly failed: string;
-  readonly skipped: string;
-}
+import type { ToolingTaskEvents } from './tooling-task-events.js';
 
 export const ToolingEvents = {
   build: createTaskEvents('tooling.build'),
