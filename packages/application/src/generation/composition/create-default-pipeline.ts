@@ -3,6 +3,7 @@
 import type { GenerationPipelineStep } from '@arch/contracts/generation';
 import type { GenerationHooks } from '@arch/contracts/hooks';
 import type { PromptResolver } from '@arch/contracts/prompts';
+import type { TemplateRendererPort } from '@arch/contracts/renderer';
 import type { IdGenerator } from '@arch/contracts/runtime';
 import type { TemplateVariables } from '@arch/contracts/variables';
 
@@ -22,16 +23,18 @@ export interface PipelineDependencies {
   promptResolver: PromptResolver;
 
   idGenerator: IdGenerator;
+
+  templateRenderer: TemplateRendererPort;
 }
 
 export function createDefaultPipeline<TVariables extends TemplateVariables>(
   dependencies: PipelineDependencies,
 ): GenerationPipeline<TVariables> {
-  const { promptResolver, idGenerator } = dependencies;
+  const { promptResolver, idGenerator, templateRenderer } = dependencies;
 
   const hooks = createPipelineHooks<TVariables>();
 
-  const steps = createPipelineSteps<TVariables>(promptResolver);
+  const steps = createPipelineSteps<TVariables>(promptResolver, templateRenderer);
 
   return new GenerationPipeline<TVariables>({
     steps,
@@ -49,13 +52,14 @@ function createPipelineHooks<TVariables extends TemplateVariables>(): Generation
 }
 function createPipelineSteps<TVariables extends TemplateVariables>(
   promptResolver: PromptResolver,
+  templateRenderer: TemplateRendererPort,
 ): readonly GenerationPipelineStep<TVariables>[] {
   return [
     new ValidateGeneratorStep<TVariables>(),
     new ResolvePromptsStep<TVariables>(promptResolver),
     new ResolveVariablesStep<TVariables>(),
     new ResolveTemplatesStep<TVariables>(),
-    new RenderFilesStep<TVariables>(),
+    new RenderFilesStep<TVariables>(templateRenderer),
     new WriteFilesStep<TVariables>(),
   ];
 }

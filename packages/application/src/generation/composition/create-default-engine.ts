@@ -4,6 +4,7 @@ import type { FileSystemPort } from '@arch/contracts/filesystem';
 import type { LoggerPort } from '@arch/contracts/logging';
 import type { PromptAdapter } from '@arch/contracts/prompts';
 import { PromptEngine } from '@arch/contracts/prompts';
+import type { TemplateRendererPort } from '@arch/contracts/renderer';
 import type { IdGenerator } from '@arch/contracts/runtime';
 
 import { DefaultGenerationEngine } from '../engine/default-generation-engine.js';
@@ -19,6 +20,8 @@ export interface GenerationEngineFactoryOptions {
   idGenerator: IdGenerator;
 
   logger: LoggerPort;
+
+  templateRenderer: TemplateRendererPort;
 }
 
 export function createGenerationEngine(options: GenerationEngineFactoryOptions) {
@@ -28,6 +31,8 @@ export function createGenerationEngine(options: GenerationEngineFactoryOptions) 
     promptResolver: promptEngine,
 
     idGenerator: options.idGenerator,
+
+    templateRenderer: options.templateRenderer,
   });
 
   const contextFactory = new GenerationContextFactory(
