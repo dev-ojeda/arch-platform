@@ -1,4 +1,4 @@
 // packages/infrastructure/src/templates/index.ts
 
-export * from './handlebars-template-engine.js';
-export * from './template-registry.js';
+export { renderTemplate } from './handlebars-template-engine.js';
+export { TemplateRegistry } from './template-registry.js';

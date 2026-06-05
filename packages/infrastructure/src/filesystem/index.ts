@@ -1,2 +1,2 @@
-export * from './memory-filesystem.adapter.js';
-export * from './node-filesystem.adapter.js';
+export { MemoryFileSystemAdapter } from './memory-filesystem.adapter.js';
+export { NodeFileSystemAdapter } from './node-filesystem.adapter.js';
