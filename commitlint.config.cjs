@@ -47,6 +47,9 @@ module.exports = {
         'tooling',
         'docs',
         'domain-order',
+        'rendering',
+        'mvc',
+        'exports',
 
         'application/engine',
         'application/runtime',
