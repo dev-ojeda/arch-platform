@@ -1,5 +1,5 @@
 // packages/domain-order/src/value-objects/customer-id.ts
-import { InvalidOrderError } from '../errors/index.js';
+import { InvalidOrderError } from '../errors/invalid-order.error.js';
 
 export class CustomerId {
   readonly value: string;
