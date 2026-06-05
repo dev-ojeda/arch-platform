@@ -1,4 +1,4 @@
 // packages/testing/src/fixtures/index.ts
 
-export * from './create-test-generator.js';
-export * from './test-generator.js';
+export { createTestGenerator } from './create-test-generator.js';
+export { testGenerator } from './test-generator.js';

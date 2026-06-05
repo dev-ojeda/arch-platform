@@ -1,6 +1,10 @@
 {{!-- templates\frameworks\express\controller.hbs --}}
-export class {{name}}Controller {
-  async execute(): Promise<void> {
-    console.log('{{name}} controller')
+export class {{controllerName}} {
+constructor(
+private readonly service: {{serviceName}},
+) {}
+
+async getAll(): Promise<void> {
+  await this.service.getAll();
   }
-}
+  }

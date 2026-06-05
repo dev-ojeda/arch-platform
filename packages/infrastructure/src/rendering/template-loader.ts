@@ -1,4 +1,4 @@
-// packages\core\src\generation\template-loader.ts
+// packages\infrastructure\src\rendering\template-loader.ts
 import * as path from 'node:path';
 
 import type { FileSystemPort } from '@arch/contracts/filesystem';

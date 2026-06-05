@@ -53,8 +53,5 @@
   },
   "dependencies": {
     "@arch/contracts": "workspace:*"
-  },
-  "devDependencies": {
-    "@arch/tooling": "workspace:*"
   }
 }

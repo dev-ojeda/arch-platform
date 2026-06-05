@@ -65,9 +65,5 @@
   "dependencies": {
     "@arch/contracts": "workspace:*",
     "@arch/core": "workspace:*"
-  },
-  "devDependencies": {
-    "@arch/tooling": "workspace:*",
-    "vitest": "catalog:"
   }
 }

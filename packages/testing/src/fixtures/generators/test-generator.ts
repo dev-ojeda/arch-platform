@@ -1,7 +1,8 @@
 // packages\testing\src\fixtures\generators\test-generator.ts
 import type { GeneratorDefinition } from '@arch/contracts/generators';
+import type { TemplateVariables } from '@arch/contracts/variables';
 
-export const testGenerator: GeneratorDefinition = {
+export const testGenerator: GeneratorDefinition<TemplateVariables> = {
   descriptor: {
     id: 'test-generator',
 
@@ -24,9 +25,20 @@ export const testGenerator: GeneratorDefinition = {
 
   templates: [
     {
-      template: 'service.hbs',
-
+      template: 'frameworks/express/controller.hbs',
+      output: '{{folderLayout.controller}}/{{controllerName}}{{fileExtension}}',
+    },
+    {
+      template: 'frameworks/express/service.hbs',
       output: '{{folderLayout.service}}/{{serviceName}}{{fileExtension}}',
+    },
+    {
+      template: 'frameworks/express/repository.hbs',
+      output: '{{folderLayout.repository}}/{{repositoryName}}{{fileExtension}}',
+    },
+    {
+      template: 'frameworks/express/model.hbs',
+      output: '{{folderLayout.model}}/{{modelName}}{{fileExtension}}',
     },
   ],
 };

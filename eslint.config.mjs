@@ -7,10 +7,17 @@ const IGNORE_PATTERNS = ['**/dist/**', '**/coverage/**', '**/.turbo/**', '**/nod
 const TOOLING_FILES = [
   '**/vitest.config.ts',
   '**/tsup.config.ts',
+
+  'eslint.config.mjs',
+  'commitlint.config.cjs',
+
   'vitest.shared.ts',
   'vitest.workspace.ts',
   'tsup.base.ts',
-  'eslint.config.mjs',
+
+  '*.config.js',
+  '*.config.cjs',
+  '*.config.mjs',
 ];
 export default tseslint.config(
   {

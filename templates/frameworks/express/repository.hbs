@@ -1,6 +1,6 @@
 {{!-- templates\frameworks\express\repository.hbs --}}
-export class {{name}}Repository {
-  async execute(): Promise<void> {
-    console.log('{{name}} repository')
+export class {{repositoryName}} {
+async findAll(): Promise<void> {
+  console.log('Loading {{modelName}} records');
   }
-}
+  }

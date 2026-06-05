@@ -8,7 +8,7 @@ import { createMemoryFilesystem } from '@arch/testing/filesystem';
 import { createTestGenerator } from '@arch/testing/fixtures';
 import { createTestGenerationContext, createTestIdGenerator } from '@arch/testing/runtime';
 
-import { GenerationPipeline } from '../../../src/testing/index.js';
+import { GenerationPipeline } from '../../../src/generation/pipeline/generation-pipeline.js';
 
 export interface TestRuntime<TVariables extends TemplateVariables = TemplateVariables> {
   readonly filesystem: ReturnType<typeof createMemoryFilesystem>;

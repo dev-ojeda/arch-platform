@@ -23,6 +23,7 @@ export default defineConfig({
     templates: 'src/templates/index.ts',
     languages: 'src/languages/index.ts',
     prompts: 'src/prompts/index.ts',
+    renderer: 'src/renderer/index.ts',
     telemetry: 'src/telemetry/index.ts',
     exporters: 'src/exporters/index.ts',
     reports: 'src/reports/index.ts',

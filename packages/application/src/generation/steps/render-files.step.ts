@@ -5,6 +5,7 @@ import type {
   GenerationContext,
   GenerationPipelineStep,
 } from '@arch/contracts/generation';
+import type { TemplateRendererPort } from '@arch/contracts/renderer';
 import type { TemplateVariables } from '@arch/contracts/variables';
 
 export class RenderFilesStep<
@@ -12,25 +13,38 @@ export class RenderFilesStep<
 > implements GenerationPipelineStep<TVariables> {
   readonly name = 'render-files';
 
-  execute(context: GenerationContext<TVariables>): Promise<void> {
-    const generator = context.generator;
+  constructor(private readonly renderer: TemplateRendererPort) {}
 
-    if (!generator) {
-      throw new Error('Generator not available');
+  async execute(context: GenerationContext<TVariables>): Promise<void> {
+    const variables = context.resolvedVariables;
+
+    if (!variables) {
+      throw new Error('Resolved variables not available');
     }
+
+    const templates = context.resolvedTemplates;
+
+    if (!templates) {
+      throw new Error('Resolved templates not available');
+    }
+
+    const renderedFiles = await this.renderer.render(
+      templates.map((resolvedTemplate) => ({
+        template: resolvedTemplate.template.template,
+        path: resolvedTemplate.outputPath,
+        variables,
+      })),
+    );
 
     const generatedFiles: GeneratedFile[] = [];
 
-    for (const _template of generator.templates) {
+    for (const [index, resolvedTemplate] of templates.entries()) {
       generatedFiles.push({
-        path: 'example.ts',
-
-        content: 'rendered content',
+        path: resolvedTemplate.outputPath,
+        content: renderedFiles[index]?.content ?? '',
       });
     }
 
     context.files.push(...generatedFiles);
-
-    return Promise.resolve();
   }
 }

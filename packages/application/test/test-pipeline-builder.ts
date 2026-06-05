@@ -1,5 +1,6 @@
 // packages/application/test/test-pipeline-builder.ts
 
+import type { TemplateRendererPort } from '@arch/contracts/renderer';
 import type { TemplateVariables } from '@arch/contracts/variables';
 import { BaseTestGenerationRuntime, type TestGenerationExecution } from '@arch/testing/generation';
 import { createTestPromptResolver } from '@arch/testing/prompts';
@@ -21,13 +22,24 @@ export class TestPipelineBuilder extends BaseTestGenerationRuntime<TemplateVaria
     idGenerator: createTestIdGenerator(),
   });
 
+  readonly #renderer: TemplateRendererPort = {
+    async render(files) {
+      return Promise.resolve(
+        files.map((file) => ({
+          path: file.path,
+          content: 'rendered',
+        })),
+      );
+    },
+  };
+
   createDefaultSteps() {
     return [
       new ValidateGeneratorStep(),
       new ResolvePromptsStep(this.#promptResolver),
       new ResolveVariablesStep(),
       new ResolveTemplatesStep(),
-      new RenderFilesStep(),
+      new RenderFilesStep(this.#renderer),
       new WriteFilesStep(),
     ];
   }

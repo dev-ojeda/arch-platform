@@ -1,9 +1,6 @@
 {
   "name": "@arch/platform-model",
   "version": "0.1.0",
-  "devDependencies": {
-    "@arch/tooling": "workspace:*"
-  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

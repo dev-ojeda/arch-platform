@@ -1,11 +1,12 @@
 // packages\domain-order\src\test\domain-order.spec.test.ts
+
 import { describe, expect, it } from 'vitest';
 
-import { InvalidOrderError } from '../src/errors/invalid-order.error.js';
-import { OrderNotFoundError } from '../src/errors/order-not-found.error.js';
-import { InMemoryEventPublisher } from '../src/internal/in-memory-event.publisher.js';
-import { InMemoryOrderRepository } from '../src/internal/in-memory-order.repository.js';
-import { OrderService } from '../src/services/order.service.js';
+import { InvalidOrderError } from '../../src/errors/invalid-order.error.js';
+import { OrderNotFoundError } from '../../src/errors/order-not-found.error.js';
+import { InMemoryEventPublisher } from '../../src/internal/in-memory-event.publisher.js';
+import { InMemoryOrderRepository } from '../../src/internal/in-memory-order.repository.js';
+import { OrderService } from '../../src/services/order.service.js';
 
 describe('OrderService', () => {
   it('should create an order', async () => {

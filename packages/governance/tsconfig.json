@@ -7,19 +7,6 @@
     "declaration": true,
     "declarationMap": true
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "dist",
-    "node_modules",
-    "**/*.js",
-    "**/*.d.ts",
-    "**/*.d.ts.map"
-  ],
-  "references": [
-    {
-      "path": "../tooling"
-    }
-  ]
+  "include": ["src/**/*.ts"],
+  "exclude": ["dist", "node_modules", "**/*.js", "**/*.d.ts", "**/*.d.ts.map"]
 }

@@ -9,7 +9,7 @@ import { testGenerator } from '../fixtures/generators/test-generator.js';
 import { createTestContext } from '../runtime/create-test-context.js';
 
 export interface CreateTestPipelineContextOptions<TVariables extends TemplateVariables> {
-  generator?: GeneratorDefinition;
+  generator?: GeneratorDefinition<TVariables>;
 
   variables?: TVariables;
 

@@ -2,7 +2,7 @@
 
 import type { GeneratorDefinition } from '@arch/contracts/generators';
 
-import { type MvcVariables } from '../variables/mvc.variables.js';
+import type { MvcVariables } from '../variables/mvc.variables.js';
 
 import { mvcDescriptor } from './descriptor.js';
 import { mvcFiles } from './files.js';

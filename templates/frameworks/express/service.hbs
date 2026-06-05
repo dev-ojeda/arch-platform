@@ -1,6 +1,10 @@
 {{!-- templates\frameworks\express\service.hbs --}}
-export class {{name}}Service {
-  async execute(): Promise<void> {
-    console.log('{{name}} service')
+export class {{serviceName}} {
+constructor(
+private readonly repository: {{repositoryName}},
+) {}
+
+async getAll(): Promise<void> {
+  await this.repository.findAll();
   }
-}
+  }

@@ -7,6 +7,13 @@ export * from './pipeline/index.js';
 export * from './registry/index.js';
 export * from './reports/index.js';
 export * from './runtime/index.js';
-export * from './steps/index.js';
+export {
+  RenderFilesStep,
+  ResolvePromptsStep,
+  ResolveTemplatesStep,
+  ResolveVariablesStep,
+  ValidateGeneratorStep,
+  WriteFilesStep,
+} from './steps/index.js';
 export * from './telemetry/index.js';
 export * from './templates/index.js';
