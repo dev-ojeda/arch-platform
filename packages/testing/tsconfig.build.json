@@ -1,17 +1,13 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "composite": true,
+    "declaration": true,
     "emitDeclarationOnly": true,
-    "outDir": "dist",
+    "declarationMap": true,
     "rootDir": "src",
-    "tsBuildInfoFile": "./dist/.tsbuildinfo"
+    "tsBuildInfoFile": "./.turbo/.tsbuildinfo"
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "**/*.test.ts",
-    "**/*.spec.ts",
-    "**/__tests__/**"
-  ]
+  "include": ["src/**/*.ts"],
+  "exclude": ["**/*.test.ts", "**/*.spec.ts", "**/__tests__/**"]
 }

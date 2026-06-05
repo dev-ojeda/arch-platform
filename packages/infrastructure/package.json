@@ -11,9 +11,6 @@
     "@arch/testing": "workspace:*",
     "handlebars": "^4.7.9"
   },
-  "devDependencies": {
-    "@arch/tooling": "workspace:*"
-  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

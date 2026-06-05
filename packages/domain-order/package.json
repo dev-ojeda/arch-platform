@@ -28,8 +28,5 @@
     "typecheck": "tsx ../tooling/src/bin/typecheck.ts",
     "test": "vitest run",
     "test:watch": "vitest"
-  },
-  "devDependencies": {
-    "@arch/tooling": "workspace:*"
   }
 }

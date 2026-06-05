@@ -17,7 +17,9 @@ export default defineConfig({
     validate: 'src/validate/index.ts',
     workspace: 'src/workspace/index.ts',
   },
-
-  bundle: false,
+  sourcemap: false,
+  splitting: false,
+  treeshake: false,
+  bundle: true,
   dts: false,
 });

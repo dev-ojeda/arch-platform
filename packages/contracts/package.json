@@ -67,6 +67,10 @@
       "types": "./dist/prompts/index.d.ts",
       "import": "./dist/prompts.js"
     },
+    "./renderer": {
+      "types": "./dist/renderer/index.d.ts",
+      "import": "./dist/renderer.js"
+    },
     "./telemetry": {
       "types": "./dist/telemetry/index.d.ts",
       "import": "./dist/telemetry.js"
@@ -83,10 +87,6 @@
       "types": "./dist/pipeline/index.d.ts",
       "import": "./dist/pipeline.js"
     }
-  },
-  "devDependencies": {
-    "@arch/tooling": "workspace:*",
-    "typescript": "catalog:"
   },
   "scripts": {
     "build": "tsx ../tooling/src/bin/build.ts",
