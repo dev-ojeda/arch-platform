@@ -1,6 +1,15 @@
-export function createResolvedTemplateVariables(overrides = {}) {
+// packages\application\test\createResolvedTemplateVariables.ts
+
+import type { ResolvedTemplateVariables } from '@arch/contracts/templates';
+
+import type { TemplateVariables } from '../src/generation/variables/derive-template-variables.js';
+
+export function createResolvedTemplateVariables(
+  overrides: Partial<ResolvedTemplateVariables<TemplateVariables>> = {},
+): ResolvedTemplateVariables<TemplateVariables> {
   return {
     name: 'user',
+
     className: 'User',
 
     controllerName: 'UserController',

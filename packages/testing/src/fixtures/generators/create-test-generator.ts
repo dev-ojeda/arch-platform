@@ -23,7 +23,27 @@ export function createTestGenerator<TValues extends NamedVariables = NamedVariab
       ...overrides.schema,
     },
 
-    templates: overrides.templates ?? [],
+    templates: [
+      {
+        template: 'frameworks/express/controller.hbs',
+        output: '{{folderLayout.controller}}/{{controllerName}}{{fileExtension}}',
+      },
+
+      {
+        template: 'frameworks/express/service.hbs',
+        output: '{{folderLayout.service}}/{{serviceName}}{{fileExtension}}',
+      },
+
+      {
+        template: 'frameworks/express/repository.hbs',
+        output: '{{folderLayout.repository}}/{{repositoryName}}{{fileExtension}}',
+      },
+
+      {
+        template: 'frameworks/express/model.hbs',
+        output: '{{folderLayout.model}}/{{modelName}}{{fileExtension}}',
+      },
+    ],
 
     capabilities: overrides.capabilities,
 

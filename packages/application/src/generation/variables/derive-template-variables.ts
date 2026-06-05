@@ -7,10 +7,6 @@ export interface TemplateVariables extends NamedVariables {
   readonly name: string;
 }
 
-export interface TemplateVariables extends NamedVariables {
-  readonly name: string;
-}
-
 export function deriveTemplateVariables<TVariables extends TemplateVariables>(
   variables: TVariables,
 ): ResolvedTemplateVariables<TVariables> {

@@ -1,16 +1,16 @@
 // packages\application\test\__tests__\resolve-template-output-path.step.test.ts
 
+import { createTestGenerator } from '@arch/testing/fixtures';
 import { createTestPipelineContext } from '@arch/testing/pipeline';
 import { describe, expect, it } from 'vitest';
 
-import { testGenerator } from '../../../testing/src/fixtures/generators/test-generator.js';
 import { ResolveTemplatesStep } from '../../src/generation/steps/resolve-templates.step.js';
 import { createResolvedTemplateVariables } from '../createResolvedTemplateVariables.js';
 
 describe('ResolveTemplatesStep', () => {
   it('resolves output variables', async () => {
     const context = createTestPipelineContext({
-      generator: testGenerator,
+      generator: createTestGenerator(),
 
       variables: {
         name: 'user',
