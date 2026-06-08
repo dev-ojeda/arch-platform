@@ -4,6 +4,7 @@ export const ExecutionStatus = {
   Pending: 'pending',
   Running: 'running',
   Success: 'success',
+  Completed: 'completed',
   Failed: 'failed',
   Cancelled: 'cancelled',
 } as const;

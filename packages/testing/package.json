@@ -23,6 +23,10 @@
       "types": "./dist/generation/index.d.ts",
       "import": "./dist/generation.js"
     },
+    "./logging": {
+      "types": "./dist/logging/index.d.ts",
+      "import": "./dist/logging.js"
+    },
     "./prompts": {
       "types": "./dist/prompts/index.d.ts",
       "import": "./dist/prompts.js"

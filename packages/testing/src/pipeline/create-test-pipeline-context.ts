@@ -9,7 +9,7 @@ import { testGenerator } from '../fixtures/generators/test-generator.js';
 import { createTestContext } from '../runtime/create-test-context.js';
 
 export interface CreateTestPipelineContextOptions<TVariables extends TemplateVariables> {
-  generator?: GeneratorDefinition<TVariables>;
+  generator?: GeneratorDefinition<TVariables> | null;
 
   variables?: TVariables;
 
@@ -22,8 +22,11 @@ export function createTestPipelineContext<TVariables extends TemplateVariables>(
   const context = createTestContext({
     variables: options.variables,
   });
-
-  context.generator = options.generator ?? testGenerator;
+  if (options.generator === null) {
+    context.generator = undefined;
+  } else {
+    context.generator = options.generator ?? testGenerator;
+  }
 
   context.resolvedVariables = options.resolvedVariables;
 

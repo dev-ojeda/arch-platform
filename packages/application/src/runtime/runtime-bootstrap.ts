@@ -3,6 +3,7 @@
 import type { IdGenerator } from '@arch/contracts/runtime';
 
 import { InMemoryRuntimeEventBus } from './execution/events/in-memory-runtime-event-bus.js';
+import { RuntimeExecutionStore } from './execution/runtime-execution-store.js';
 import { TimelineAggregator } from './execution/timeline/timeline-aggregator.js';
 import { TimelineConsoleRenderer } from './execution/timeline/timeline-console-renderer.js';
 
@@ -14,6 +15,8 @@ export interface RuntimeBootstrap {
   timelineAggregator: TimelineAggregator;
 
   timelineRenderer: TimelineConsoleRenderer;
+
+  store: RuntimeExecutionStore;
 }
 
 export interface RuntimeBootstrapOptions {
@@ -27,8 +30,10 @@ export function createRuntime(options: RuntimeBootstrapOptions): RuntimeBootstra
 
   const timelineRenderer = new TimelineConsoleRenderer();
 
-  runtimeEvents.subscribe(timelineAggregator);
+  const store = new RuntimeExecutionStore();
 
+  runtimeEvents.subscribe(timelineAggregator);
+  runtimeEvents.subscribe(store);
   return {
     idGenerator: options.idGenerator,
 
@@ -37,5 +42,7 @@ export function createRuntime(options: RuntimeBootstrapOptions): RuntimeBootstra
     timelineAggregator,
 
     timelineRenderer,
+
+    store,
   };
 }

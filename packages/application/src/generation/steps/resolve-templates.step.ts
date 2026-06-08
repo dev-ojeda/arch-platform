@@ -11,7 +11,7 @@ export class ResolveTemplatesStep<
 > implements GenerationPipelineStep<TVariables> {
   readonly name = 'resolve-template';
 
-  execute(context: GenerationContext<TVariables>): Promise<void> {
+  async execute(context: GenerationContext<TVariables>): Promise<void> {
     const generator = context.generator;
 
     if (!generator) {

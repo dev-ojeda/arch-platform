@@ -1,43 +1,23 @@
-// packages/application/src/application/use-cases/generate-project/generate-project.use-case.ts
+// packages\application\src\use-cases\generate-project\generate-project.use-case.ts
 
-import type { GenerationResult } from '@arch/contracts/generation';
-import type { LoggerPort } from '@arch/contracts/logging';
-import { GeneratorNotFoundError } from '@arch/core/errors';
-import type { GeneratorRegistry } from '@arch/core/registry';
+import type { GenerationRequest, GenerationResult } from '@arch/contracts/generation';
+import type { GeneratorRegistry } from '@arch/contracts/generators';
 
 import type { GenerationEngine } from '../../generation/engine/generation-engine.js';
-
-export interface GenerateProjectRequest {
-  readonly generatorId: string;
-
-  readonly targetDir: string;
-
-  readonly logger?: LoggerPort;
-
-  readonly signal?: AbortSignal;
-}
 
 export class GenerateProjectUseCase {
   constructor(
     private readonly registry: GeneratorRegistry,
-
     private readonly engine: GenerationEngine,
   ) {}
 
-  async execute(request: GenerateProjectRequest): Promise<GenerationResult> {
-    const generator = this.registry.get(request.generatorId);
-
-    if (!generator) {
-      throw new GeneratorNotFoundError(request.generatorId);
-    }
+  async execute(request: GenerationRequest): Promise<GenerationResult> {
+    const generator = await this.registry.get(request.generator.descriptor.id);
 
     return await this.engine.generate({
       generator,
-
       targetDir: request.targetDir,
-
       logger: request.logger,
-
       signal: request.signal,
     });
   }

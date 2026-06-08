@@ -17,6 +17,7 @@ export default defineConfig({
     ...PIPELINE_ENTRIES,
     events: 'src/events/index.ts',
     generation: 'src/generation/index.ts',
+    logging: 'src/logging/index.ts',
     pipeline: 'src/pipeline/index.ts',
     prompts: 'src/prompts/index.ts',
     runtime: 'src/runtime/index.ts',
