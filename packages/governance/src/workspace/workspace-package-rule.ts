@@ -1,6 +1,6 @@
 // packages/governance/src/workspace/workspace-package-rule.ts
 
-import { access } from 'node:fs/promises';
+import { stat } from 'node:fs/promises';
 import path from 'node:path';
 
 import type { GovernanceContext } from '../context/governance-context.js';
@@ -16,7 +16,7 @@ export class WorkspacePackageRule implements GovernanceRule {
     const packageJsonPath = path.join(context.workspaceRoot, 'package.json');
 
     try {
-      await access(packageJsonPath);
+      await stat(packageJsonPath);
     } catch {
       diagnostics.push({
         code: 'WORKSPACE_PACKAGE_JSON_MISSING',

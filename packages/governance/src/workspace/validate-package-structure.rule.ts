@@ -1,6 +1,6 @@
 // packages/governance/src/workspace/validate-package-structure.rule.ts
 
-import { access } from 'node:fs/promises';
+import { stat } from 'node:fs/promises';
 import path from 'node:path';
 
 import type { GovernanceContext } from '../context/governance-context.js';
@@ -17,7 +17,7 @@ export class ValidatePackageStructureRule implements GovernanceRule {
       const srcPath = path.join(pkg.rootPath, 'src');
 
       try {
-        await access(srcPath);
+        await stat(srcPath);
       } catch {
         diagnostics.push({
           code: 'PACKAGE_SRC_DIRECTORY_MISSING',

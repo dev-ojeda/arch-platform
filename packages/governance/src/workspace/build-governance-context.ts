@@ -77,6 +77,10 @@ export async function buildGovernanceContext(workspaceRoot: string): Promise<Gov
 
           type: manifest.type,
 
+          exports: manifest.exports,
+
+          sideEffects: manifest.sideEffects,
+
           dependencies: manifest.dependencies,
 
           devDependencies: manifest.devDependencies,
