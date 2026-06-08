@@ -1,3 +1,4 @@
 // packages/testing/src/prompts/index.ts
-export * from './create-test-prompt-adapter.js';
-export * from './create-test-prompt-resolver.js';
+export { createMockPromptAdapter } from './create-mock-prompt-adapter.js';
+export { createTestPromptAdapter } from './create-test-prompt-adapter.js';
+export { createTestPromptResolver } from './create-test-prompt-resolver.js';

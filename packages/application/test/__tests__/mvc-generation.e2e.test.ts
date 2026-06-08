@@ -1,5 +1,6 @@
 // packages/application/test/__tests__/mvc-generation.e2e.test.ts
 
+import type { GenerationContext } from '@arch/contracts/generation';
 import type {
   RenderTemplateInput,
   RenderedFile,
@@ -9,6 +10,7 @@ import { createTestGenerator } from '@arch/testing/fixtures';
 import { createTestPipelineContext } from '@arch/testing/pipeline';
 import { describe, expect, it } from 'vitest';
 
+import { GeneratorValidationError } from '../../src/generation/errors/generator-validation-error.js';
 import { RenderFilesStep } from '../../src/generation/steps/render-files.step.js';
 import { ResolveTemplatesStep } from '../../src/generation/steps/resolve-templates.step.js';
 import { createResolvedTemplateVariables } from '../createResolvedTemplateVariables.js';
@@ -65,5 +67,14 @@ describe('MVC Generation', () => {
       'repositories/UserRepository.ts',
       'models/User.ts',
     ]);
+  });
+  it('throws when generator is missing', async () => {
+    const step = new ResolveTemplatesStep();
+
+    const context = {
+      resolvedVariables: {},
+    } as GenerationContext;
+
+    await expect(step.execute(context)).rejects.toBeInstanceOf(GeneratorValidationError);
   });
 });

@@ -1,12 +1,11 @@
 import type { GeneratorDefinition, GeneratorRegistry } from '@arch/contracts/generators';
+import type { TemplateVariables } from '@arch/contracts/variables';
 
 export class InMemoryGeneratorRegistry implements GeneratorRegistry {
   readonly #generators = new Map<string, GeneratorDefinition>();
-
   has(id: string): Promise<boolean> {
     return Promise.resolve(this.#generators.has(id));
   }
-
   register(generator: GeneratorDefinition): void {
     const id = generator.descriptor.id;
 
@@ -17,11 +16,11 @@ export class InMemoryGeneratorRegistry implements GeneratorRegistry {
     this.#generators.set(id, generator);
   }
 
-  get(id: string): Promise<GeneratorDefinition> {
+  get<TValues extends TemplateVariables>(id: string): Promise<GeneratorDefinition<TValues>> {
     const generator = this.#generators.get(id);
 
     if (generator === undefined) {
-      throw new Error(`Generator "${id}" not found`);
+      return Promise.reject(new Error(`Generator "${id}" not found`));
     }
 
     return Promise.resolve(generator);
