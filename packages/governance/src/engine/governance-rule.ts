@@ -1,4 +1,4 @@
-// packages/governance/src/rules/governance-rule.ts
+// packages/governance/src/engine/governance-rule.ts
 
 import type { GovernanceContext } from '../context/governance-context.js';
 import type { Diagnostic } from '../diagnostics/diagnostic.js';

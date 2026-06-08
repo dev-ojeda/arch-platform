@@ -1,3 +1,3 @@
 // packages/governance/src/validate/index.ts
 
-export * from './validate-workspace.js';
+export { validateWorkspace } from './validate-workspace.js';

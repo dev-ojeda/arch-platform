@@ -2,8 +2,7 @@
 
 import type { GovernanceContext } from '../context/governance-context.js';
 import type { Diagnostic } from '../diagnostics/diagnostic.js';
-
-import type { GovernanceRule } from './governance-rule.js';
+import type { GovernanceRule } from '../engine/governance-rule.js';
 
 export class PackageJsonRule implements GovernanceRule {
   readonly name = 'package-json-rule';

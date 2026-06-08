@@ -5,7 +5,7 @@ import path from 'node:path';
 
 import type { GovernanceContext } from '../context/governance-context.js';
 import type { Diagnostic } from '../diagnostics/diagnostic.js';
-import type { GovernanceRule } from '../rules/governance-rule.js';
+import type { GovernanceRule } from '../engine/governance-rule.js';
 
 export class WorkspacePackageRule implements GovernanceRule {
   readonly name = 'workspace-package-rule';
