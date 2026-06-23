@@ -38,6 +38,24 @@ export const sharedVitestConfig = defineConfig({
         find: /^@arch\/testing\/(.*)$/,
         replacement: resolve(root, 'packages/testing/src/$1'),
       },
+      {
+        find: /^@arch\/build-core$/,
+        replacement: resolve(root, 'packages/build-core/src'),
+      },
+
+      {
+        find: /^@arch\/build-core\/(.*)$/,
+        replacement: resolve(root, 'packages/build-core/src/$1'),
+      },
+      {
+        find: /^@arch\/application$/,
+        replacement: resolve(root, 'packages/application/src'),
+      },
+
+      {
+        find: /^@arch\/application\/(.*)$/,
+        replacement: resolve(root, 'packages/application/src/$1'),
+      },
     ],
   },
 
