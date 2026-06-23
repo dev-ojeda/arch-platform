@@ -29,6 +29,11 @@ const projects = [
     name: 'infrastructure',
     tests: 'packages/infrastructure/test/**/*.{test,spec}.ts',
   },
+
+  {
+    name: 'code-analysis',
+    tests: 'packages/code-analysis/test/**/*.{test,spec}.ts',
+  },
 ];
 
 export default defineConfig({
