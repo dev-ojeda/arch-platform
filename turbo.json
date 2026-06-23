@@ -5,15 +5,8 @@
     "package.json",
     "pnpm-lock.yaml",
     "pnpm-workspace.yaml",
-
     "tsconfig.base.json",
-
-    "tsup.base.ts",
-
-    "vitest.shared.ts",
-    "vitest.workspace.ts",
-    "vitest.setup.ts",
-
+    "tsconfig.eslint.json",
     "eslint.config.mjs"
   ],
 
@@ -37,105 +30,28 @@
 
     "build": {
       "dependsOn": ["^build"],
-
-      "inputs": [
-        "$TURBO_DEFAULT$",
-
-        "src/**/*.ts",
-
-        "tsconfig*.json",
-        "tsup.config.*",
-
-        "!dist/**",
-        "!coverage/**",
-        "!node_modules/**"
-      ],
-
+      "inputs": ["$TURBO_DEFAULT$"],
       "outputs": ["dist/**"]
     },
 
     "typecheck": {
       "dependsOn": ["^build"],
-
-      "inputs": [
-        "$TURBO_DEFAULT$",
-
-        "src/**/*.ts",
-
-        "tsconfig*.json",
-
-        "!dist/**",
-        "!coverage/**",
-        "!node_modules/**"
-      ],
-
+      "inputs": ["$TURBO_DEFAULT$"],
       "outputs": []
     },
 
     "lint": {
-      "dependsOn": ["^lint"],
-
-      "inputs": [
-        "$TURBO_DEFAULT$",
-
-        "src/**/*.ts",
-
-        "eslint.config.*",
-
-        "!dist/**",
-        "!coverage/**",
-        "!node_modules/**"
-      ],
-
+      "inputs": ["$TURBO_DEFAULT$"],
       "outputs": []
     },
 
     "test": {
-      "dependsOn": ["^build", "build"],
-
-      "inputs": [
-        "$TURBO_DEFAULT$",
-
-        "src/**/*.ts",
-
-        "**/*.test.ts",
-        "**/*.spec.ts",
-        "**/*.snap",
-
-        "vitest.config.*",
-
-        "!dist/**",
-        "!coverage/**",
-        "!node_modules/**"
-      ],
-
-      "outputs": ["coverage/**"]
-    },
-
-    "coverage": {
-      "dependsOn": ["^build", "test"],
-
-      "inputs": [
-        "$TURBO_DEFAULT$",
-
-        "src/**/*.ts",
-
-        "**/*.test.ts",
-        "**/*.spec.ts",
-
-        "vitest.config.*",
-
-        "!dist/**",
-        "!coverage/**",
-        "!node_modules/**"
-      ],
-
-      "outputs": ["coverage/**"]
+      "inputs": ["$TURBO_DEFAULT$"],
+      "outputs": []
     },
 
     "validate": {
-      "dependsOn": ["^validate", "lint", "typecheck", "test"],
-
+      "dependsOn": ["lint", "typecheck", "test"],
       "outputs": []
     }
   }

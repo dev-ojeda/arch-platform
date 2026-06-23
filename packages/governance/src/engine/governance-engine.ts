@@ -1,7 +1,7 @@
 // packages\governance\src\engine\governance-engine.ts
 
-import type { GovernanceContext } from '../context/governance-context.js';
 import type { Diagnostic } from '../diagnostics/diagnostic.js';
+import type { GovernanceContext } from '../types/governance-context.js';
 
 import type { GovernanceEngineResult } from './governance-engine-result.js';
 import type { GovernanceRule } from './governance-rule.js';

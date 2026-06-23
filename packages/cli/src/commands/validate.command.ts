@@ -2,8 +2,7 @@
 
 import process from 'node:process';
 
-import { renderDiagnostics } from '@arch/governance/diagnostics';
-import { validateWorkspace } from '@arch/governance/validate';
+import { renderDiagnostics, validateWorkspace } from '@arch/governance';
 import type { CAC } from 'cac';
 
 export async function runValidateCommand(): Promise<number> {

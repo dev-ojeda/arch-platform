@@ -1,3 +1,3 @@
 // packages/testing/src/snapshots/index.ts
 
-export * from './normalize-snapshot-paths.js';
+export { normalizeSnapshotPaths } from './normalize-snapshot-paths.js';

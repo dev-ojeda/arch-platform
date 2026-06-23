@@ -1,8 +1,6 @@
 // packages/core/src/engine/generation-hooks.ts
 
-import type { FileHookContext } from '@arch/contracts/generation';
-import type { FileDefinition } from '@arch/contracts/templates';
-import type { NamedVariables } from '@arch/contracts/variables';
+import type { FileDefinition, FileHookContext, NamedVariables } from '@arch/contracts';
 
 export async function runBeforeWriteHook<TVariables extends NamedVariables>(
   file: FileDefinition<TVariables>,

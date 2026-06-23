@@ -2,7 +2,7 @@
 
 import { rm } from 'node:fs/promises';
 
-import { logger } from '../../utils/logger.js';
+import { logger } from '../../logging/logger.js';
 
 import { normalizePathPermissions } from './normalize-path-permissions.js';
 

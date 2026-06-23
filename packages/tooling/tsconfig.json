@@ -5,16 +5,19 @@
     "outDir": "./dist",
     "composite": true,
     "declaration": true,
-    "declarationMap": false
+    "declarationMap": true,
+    "tsBuildInfoFile": "./.turbo/tooling.tsbuildinfo"
   },
   "include": [
     "src/**/*.ts"
   ],
   "exclude": [
     "dist",
-    "node_modules",
-    "**/*.js",
-    "**/*.d.ts",
-    "**/*.d.ts.map"
+    "node_modules"
+  ],
+  "references": [
+    {
+      "path": "../build-core"
+    }
   ]
 }

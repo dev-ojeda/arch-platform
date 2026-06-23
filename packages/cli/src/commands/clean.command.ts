@@ -1,6 +1,6 @@
 // packages/cli/src/commands/clean.command.ts
 
-import { cleanCommand } from '@arch/tooling/commands/clean';
+import { cleanCommand } from '@arch/tooling';
 import type { CAC } from 'cac';
 
 import { logger } from '../ui/logger.js';

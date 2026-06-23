@@ -1,10 +1,25 @@
 // packages\contracts\src\index.ts
-export type { ConfigurationPort } from './configuration/configuration.port.js';
-export type { NotificationPort } from './notification/notification.port.js';
-export type {
-  RenderedFile,
-  RenderTemplateInput,
-  TemplateRendererPort,
-} from './renderer/renderer.port.js';
-export type { PathService } from './runtime/runtime-path-service.js';
-export type { WorkspacePort } from './workspace/workspace.port.js';
+
+export * from './configuration/index.js';
+export * from './diagnostics/index.js';
+export * from './events/index.js';
+export * from './exporters/index.js';
+export * from './filesystem/index.js';
+export * from './generation/index.js';
+export * from './generators/index.js';
+export * from './hooks/index.js';
+export * from './languages/index.js';
+export * from './logging/index.js';
+export * from './notification/index.js';
+export * from './pipeline/index.js';
+export * from './profiles/index.js';
+export * from './prompts/index.js';
+export * from './renderer/index.js';
+export * from './reports/index.js';
+export * from './runtime/index.js';
+export * from './stacks/index.js';
+export * from './telemetry/index.js';
+export * from './templates/index.js';
+export * from './variables/index.js';
+export * from './workspace/index.js';
+// test 7

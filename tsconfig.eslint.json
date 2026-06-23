@@ -1,20 +1,22 @@
 {
-  // tsconfig.eslint.json
+  // tsconfig.eslint.json -> (root)
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "noEmit": true
   },
   "include": [
+    "tsconfig.ts",
+    "vitest.setup.ts",
+    "vitest.shared.ts",
+    "vitest.config.ts",
     "packages/**/*.ts",
-    "packages/**/*.tsx",
-    "apps/**/*.ts",
-    "apps/**/*.tsx",
+    "scripts/**/*.ts",
+    "packages/*/src/**/*.ts",
+    "packages/*/test/**/*.ts",
+    "apps/*/src/**/*.ts",
     "*.ts",
     "*.mts",
-    "*.cts",
-    "*.js",
-    "*.mjs",
-    "*.cjs"
+    "*.cts"
   ],
   "exclude": [
     "**/dist/**",

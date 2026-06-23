@@ -13,11 +13,11 @@
 # WORKSPACE PACKAGES
 # -----------------------------------------------------------------------------
 packages:
-  # Core platform packages
-  - 'packages/*'
+# Core platform packages
+- 'packages/*'
 
-  # Generators / scaffolding
-  - 'packages/generators/*'
+# Generators / scaffolding
+- 'packages/generators/*'
 
 # -----------------------------------------------------------------------------
 # SHARED DEPENDENCY CATALOG
@@ -60,7 +60,7 @@ catalog:
   '@typescript-eslint/parser': 8.59.4
 
   '@vitest/coverage-v8': 4.1.7
-
+  '@eslint/js': ^9.39.4
   # ===========================================================================
   # VSCODE / EXTENSION DEVELOPMENT
   # ===========================================================================
@@ -75,7 +75,7 @@ catalog:
 
   esbuild-visualizer: 0.7.0
 
-  eslint: 9.39.1
+  eslint: 9.39.4
   eslint-config-prettier: 10.1.8
 
   eslint-import-resolver-node: 0.4.0
@@ -148,21 +148,21 @@ nodeVersion: 24.12.4
 # - supply-chain attacks
 # -----------------------------------------------------------------------------
 onlyBuiltDependencies:
-  # Native bundler runtime
+# Native bundler runtime
 
-  # Native SWC compiler
-  - '@swc/core'
-  - '@unrs/resolver-binding-win32-x64-msvc'
+# Native SWC compiler
+- '@swc/core'
+- '@unrs/resolver-binding-win32-x64-msvc'
 
-  # VSCode extension signing
-  - '@vscode/vsce-sign'
-  - esbuild
+# VSCode extension signing
+- '@vscode/vsce-sign'
+- esbuild
 
-  # Secure OS credential access
-  - keytar
+# Secure OS credential access
+- keytar
 
-  # Fast Rust-based module resolver
-  - unrs-resolver
+# Fast Rust-based module resolver
+- unrs-resolver
 
 # -----------------------------------------------------------------------------
 # GLOBAL VERSION OVERRIDES
@@ -186,9 +186,9 @@ overrides:
 peerDependencyRules:
   # Ignore peer dependency warnings intentionally managed at root.
   ignoreMissing:
-    - eslint
+  - eslint
 
-    - typescript
+  - typescript
 
 # -----------------------------------------------------------------------------
 # HOISTING STRATEGY
@@ -196,9 +196,9 @@ peerDependencyRules:
 # Improve compatibility for tooling ecosystems that expect hoisted deps.
 # -----------------------------------------------------------------------------
 publicHoistPattern:
-  - '*eslint*'
-  - '*typescript*'
-  - '*vitest*'
+- '*eslint*'
+- '*typescript*'
+- '*vitest*'
 
 # Automatically use workspace:* protocol for internal packages.
 saveWorkspaceProtocol: rolling
@@ -208,7 +208,7 @@ saveWorkspaceProtocol: rolling
 # -----------------------------------------------------------------------------
 supportedArchitectures:
   cpu:
-    - x64
+  - x64
   os:
-    - win32
-    - linux
+  - win32
+  - linux

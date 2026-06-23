@@ -1,5 +1,4 @@
-import type { GeneratorDefinition, GeneratorRegistry } from '@arch/contracts/generators';
-import type { TemplateVariables } from '@arch/contracts/variables';
+import type { GeneratorDefinition, GeneratorRegistry, TemplateVariables } from '@arch/contracts';
 
 export class InMemoryGeneratorRegistry implements GeneratorRegistry {
   readonly #generators = new Map<string, GeneratorDefinition>();

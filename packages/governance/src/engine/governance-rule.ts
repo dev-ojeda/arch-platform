@@ -1,10 +1,9 @@
 // packages/governance/src/engine/governance-rule.ts
 
-import type { GovernanceContext } from '../context/governance-context.js';
 import type { Diagnostic } from '../diagnostics/diagnostic.js';
+import type { GovernanceContext } from '../types/governance-context.js';
 
 export interface GovernanceRule {
-  name: string;
-
+  readonly name: string;
   run(context: GovernanceContext): Promise<Diagnostic[]>;
 }

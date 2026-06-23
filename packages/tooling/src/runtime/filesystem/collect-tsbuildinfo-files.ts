@@ -3,7 +3,7 @@
 import { readdir } from 'node:fs/promises';
 import path from 'node:path';
 
-import { logger } from '../../utils/logger.js';
+import { logger } from '../../logging/logger.js';
 
 import { IGNORED_DIRECTORIES } from './ignored-directories.js';
 

@@ -1,4 +1,4 @@
-import type { GenerationPipelineStep } from '@arch/contracts/generation';
+import type { GenerationPipelineStep } from '@arch/contracts';
 
 export function createStep(
   name: string,

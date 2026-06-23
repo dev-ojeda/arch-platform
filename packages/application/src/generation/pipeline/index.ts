@@ -1,3 +1,3 @@
 // packages/application/src/generation/pipeline/index.ts
-export * from './generation-pipeline-options.js';
-export * from './generation-pipeline.js';
+export type { GenerationPipelineOptions } from './generation-pipeline-options.js';
+export { GenerationPipeline } from './generation-pipeline.js';

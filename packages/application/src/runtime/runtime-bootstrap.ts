@@ -1,6 +1,6 @@
 // packages/application/src/runtime/runtime-bootstrap.ts
 
-import type { IdGenerator } from '@arch/contracts/runtime';
+import type { IdGenerator } from '@arch/contracts';
 
 import { InMemoryRuntimeEventBus } from './execution/events/in-memory-runtime-event-bus.js';
 import { RuntimeExecutionStore } from './execution/runtime-execution-store.js';

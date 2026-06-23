@@ -1,10 +1,10 @@
 // packages/tooling/src/commands/clean/clean-command.ts
 
+import { logger } from '../../logging/logger.js';
 import { ToolingEvents } from '../../runtime/events/tooling-event.js';
 import { collectTsBuildInfoFiles } from '../../runtime/filesystem/collect-tsbuildinfo-files.js';
 import { removePaths } from '../../runtime/filesystem/remove-paths.js';
 import { createStopwatch } from '../../runtime/helpers/create-stopwatch.js';
-import { logger } from '../../utils/logger.js';
 
 import type { CleanCommandOptions } from './clean-command-options.js';
 import { createPathsToRemove } from './create-paths-to-remove.js';

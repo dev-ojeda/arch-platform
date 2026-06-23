@@ -1,3 +1,3 @@
 // Auto-generated index
 
-export * from './template-resolver.js';
+export { resolveTemplateDir } from './template-resolver.js';

@@ -1,3 +1,3 @@
 // Auto-generated index
 
-export * from './language-registry.js';
+export { getLanguage, registerLanguage } from './language-registry.js';

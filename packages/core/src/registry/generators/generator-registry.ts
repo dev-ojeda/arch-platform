@@ -4,9 +4,9 @@ import {
   eraseGeneratorType,
   restoreGeneratorType,
   type GeneratorDefinition,
+  type NamedVariables,
   type RegisteredGeneratorDefinition,
-} from '@arch/contracts/generators';
-import type { NamedVariables } from '@arch/contracts/variables';
+} from '@arch/contracts';
 
 export class GeneratorRegistry {
   readonly #registry = new Map<string, RegisteredGeneratorDefinition>();

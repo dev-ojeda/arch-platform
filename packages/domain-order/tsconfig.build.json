@@ -2,9 +2,12 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "emitDeclarationOnly": true,
-    "rootDir": "src",
-    "tsBuildInfoFile": "./.turbo/.tsbuildinfo"
+    "noEmit": false
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["**/*.test.ts", "**/*.spec.ts", "**/__tests__/**"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "test"
+  ]
 }

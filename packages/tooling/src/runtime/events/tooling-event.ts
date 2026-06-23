@@ -6,9 +6,7 @@ import type { ToolingTaskEvents } from './tooling-task-events.js';
 export const ToolingEvents = {
   build: createTaskEvents('tooling.build'),
 
-  buildBundle: createTaskEvents('tooling.build.bundle'),
-
-  buildTypes: createTaskEvents('tooling.build.types'),
+  buildDev: createTaskEvents('tooling.build.dev'),
 
   clean: createTaskEvents('tooling.clean'),
 

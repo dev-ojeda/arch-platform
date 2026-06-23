@@ -1,10 +1,6 @@
 // packages/core/src/events/in-memory-generation-event-bus.ts
 
-import type {
-  GenerationEvent,
-  GenerationEventBus,
-  GenerationEventHandler,
-} from '@arch/contracts/events';
+import type { GenerationEvent, GenerationEventBus, GenerationEventHandler } from '@arch/contracts';
 
 export class InMemoryGenerationEventBus implements GenerationEventBus {
   private readonly handlers: GenerationEventHandler[] = [];

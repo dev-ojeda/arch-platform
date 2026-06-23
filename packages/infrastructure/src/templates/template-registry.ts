@@ -1,4 +1,4 @@
-import type { PathService } from '@arch/contracts/runtime';
+import type { PathService } from '@arch/contracts';
 
 export class TemplateRegistry {
   constructor(

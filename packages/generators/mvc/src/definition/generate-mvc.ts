@@ -1,6 +1,6 @@
 // packages/generators/mvc/src/definition/generate-mvc.ts
 
-import type { GeneratorDefinition } from '@arch/contracts/generators';
+import type { GeneratorDefinition } from '@arch/contracts';
 
 import type { MvcVariables } from '../variables/mvc.variables.js';
 

@@ -1,7 +1,6 @@
 // packages/testing/src/fixtures/generators/create-test-generator.ts
 
-import type { GeneratorDefinition } from '@arch/contracts/generators';
-import type { NamedVariables } from '@arch/contracts/variables';
+import type { GeneratorDefinition, NamedVariables } from '@arch/contracts';
 
 export function createTestGenerator<TValues extends NamedVariables = NamedVariables>(
   overrides: Partial<GeneratorDefinition<TValues>> = {},

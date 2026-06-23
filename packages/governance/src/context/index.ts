@@ -1,3 +1,3 @@
 // packages/governance/src/context/index.ts
 
-export * from './governance-context.js';
+export { buildGovernanceContext } from './build-governance-context.js';

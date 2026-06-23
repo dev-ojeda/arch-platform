@@ -16,11 +16,9 @@ export default mergeConfig(
       include: ['test/**/*.test.ts', 'test/**/*.spec.ts'],
 
       coverage: {
-        include: ['src/**/*.ts'],
+        include: ['src/**/*.{ts,tsx}'],
 
-        exclude: ['src/index.ts', '**/*.test.ts', '**/*.spec.ts', '**/index.ts'],
-
-        reportsDirectory: './coverage',
+        exclude: ['src/index.ts', '**/*.test.ts', '**/*.spec.ts'],
 
         thresholds: {
           lines: 40,

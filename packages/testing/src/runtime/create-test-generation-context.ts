@@ -1,5 +1,4 @@
-import type { GenerationContext } from '@arch/contracts/generation';
-import type { TemplateVariables } from '@arch/contracts/variables';
+import type { GenerationContext, TemplateVariables } from '@arch/contracts';
 
 import { createTestEventBus } from '../events/create-test-event-bus.js';
 import { createMemoryFilesystem } from '../filesystem/create-memory-filesystem.js';

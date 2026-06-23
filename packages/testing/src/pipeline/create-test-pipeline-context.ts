@@ -1,9 +1,11 @@
 // packages/testing/src/pipeline/create-test-pipeline-context.ts
 
-import type { GenerationContext } from '@arch/contracts/generation';
-import type { GeneratorDefinition } from '@arch/contracts/generators';
-import type { ResolvedTemplateVariables } from '@arch/contracts/templates';
-import type { TemplateVariables } from '@arch/contracts/variables';
+import type {
+  GenerationContext,
+  GeneratorDefinition,
+  ResolvedTemplateVariables,
+  TemplateVariables,
+} from '@arch/contracts';
 
 import { testGenerator } from '../fixtures/generators/test-generator.js';
 import { createTestContext } from '../runtime/create-test-context.js';

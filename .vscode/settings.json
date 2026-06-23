@@ -36,7 +36,7 @@
   "files.exclude": {
     "**/.turbo": true,
     "**/.pnpm-store": true,
-    "**/coverage": true
+    "**/coverage": false
   },
   "files.watcherExclude": {
     "**/.pnpm-store/**": true,
@@ -263,5 +263,6 @@
     "editor.suggest.insertMode": "replace",
     "diffEditor.ignoreTrimWhitespace": true,
     "editor.defaultFormatter": "toramameseven.bat-tools"
-  }
+  },
+  "terminal.integrated.tabs.defaultColor": "terminal.ansiGreen"
 }

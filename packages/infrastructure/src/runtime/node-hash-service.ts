@@ -2,7 +2,7 @@
 
 import crypto from 'node:crypto';
 
-import type { HashService } from '@arch/contracts/runtime';
+import type { HashService } from '@arch/contracts';
 
 export class NodeHashService implements HashService {
   hash(value: string): string {

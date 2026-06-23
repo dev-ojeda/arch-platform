@@ -1,3 +1,6 @@
 // packages/testing/src/generation/index.ts
-
-export * from './test-generation-runtime.js';
+export { BaseTestGenerationRuntime } from './create-test-generation-runtime.js';
+export type {
+  TestGenerationExecution,
+  TestGenerationRuntime,
+} from './create-test-generation-runtime.js';

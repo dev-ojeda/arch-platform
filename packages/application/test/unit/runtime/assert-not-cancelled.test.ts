@@ -1,6 +1,6 @@
 // packages\application\test\unit\runtime\assert-not-cancelled.test.ts
 
-import { GenerationCancelledError } from '@arch/core/errors';
+import { GenerationCancelledError } from '@arch/core';
 import { describe, expect, it } from 'vitest';
 
 import { assertNotCancelled } from '../../../src/generation/runtime/assert-not-cancelled.js';

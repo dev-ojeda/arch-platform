@@ -1,6 +1,6 @@
 // packages/application/test/__tests__/event-generation-hooks.test.ts
 
-import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts/generation';
+import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { EventGenerationHooks } from '../../src/generation/hooks/event-generation-hooks.js';

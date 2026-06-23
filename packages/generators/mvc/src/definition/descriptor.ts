@@ -1,4 +1,4 @@
-import type { GeneratorDescriptor } from '@arch/contracts/generators';
+import type { GeneratorDescriptor } from '@arch/contracts';
 
 export const mvcDescriptor: GeneratorDescriptor = {
   id: 'mvc',

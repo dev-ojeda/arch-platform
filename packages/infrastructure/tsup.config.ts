@@ -5,12 +5,10 @@ import { baseConfig } from '../../tsup.base.js';
 
 export default defineConfig({
   ...baseConfig,
+  external: ['vitest', /^@arch\//],
   entry: {
     index: 'src/index.ts',
   },
-  bundle: true,
   dts: false,
-  sourcemap: false,
-  splitting: false,
-  treeshake: false,
+  clean: false,
 });

@@ -2,8 +2,8 @@
 
 import { execa, ExecaError } from 'execa';
 
+import { logger } from '../logging/logger.js';
 import { formatCommand } from '../utils/format-command.js';
-import { logger } from '../utils/logger.js';
 
 import { RuntimeEvents } from './events/runtime-event.js';
 import type { ExecuteCommandOptions } from './execution/execute-command-option.js';

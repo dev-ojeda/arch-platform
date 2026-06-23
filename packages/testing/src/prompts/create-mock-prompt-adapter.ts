@@ -2,12 +2,12 @@
 
 import type {
   BooleanField,
+  NamedVariables,
   PromptAdapter,
   SelectField,
   SelectOption,
   StringField,
-} from '@arch/contracts/prompts';
-import type { NamedVariables } from '@arch/contracts/variables';
+} from '@arch/contracts';
 import { vi } from 'vitest';
 
 import { createTestPromptAdapter } from './create-test-prompt-adapter.js';

@@ -1,11 +1,13 @@
 // packages/application/src/generation/composition/create-default-engine.ts
 
-import type { FileSystemPort } from '@arch/contracts/filesystem';
-import type { LoggerPort } from '@arch/contracts/logging';
-import type { PromptAdapter } from '@arch/contracts/prompts';
-import { PromptEngine } from '@arch/contracts/prompts';
-import type { TemplateRendererPort } from '@arch/contracts/renderer';
-import type { IdGenerator } from '@arch/contracts/runtime';
+import {
+  PromptEngine,
+  type FileSystemPort,
+  type IdGenerator,
+  type LoggerPort,
+  type PromptAdapter,
+  type TemplateRendererPort,
+} from '@arch/contracts';
 
 import { DefaultGenerationEngine } from '../engine/default-generation-engine.js';
 import { GenerationContextFactory } from '../runtime/generation-context-factory.js';

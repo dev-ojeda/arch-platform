@@ -1,7 +1,6 @@
 // packages/application/src/generation/steps/resolve-templates.step.ts
 
-import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts/generation';
-import type { TemplateVariables } from '@arch/contracts/variables';
+import type { GenerationContext, GenerationPipelineStep, TemplateVariables } from '@arch/contracts';
 
 import { GeneratorValidationError } from '../errors/generator-validation-error.js';
 import { resolveTemplateDefinition } from '../templates/resolve-template-definition.js';

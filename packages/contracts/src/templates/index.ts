@@ -1,6 +1,8 @@
 export type { FileDefinition } from './file-definition.js';
-export { RESERVED_TEMPLATE_VARIABLES } from './reserved-template-variables.js';
-export type { ReservedTemplateVariable } from './reserved-template-variables.js';
+export {
+  RESERVED_TEMPLATE_VARIABLES,
+  type ReservedTemplateVariable,
+} from './reserved-template-variables.js';
 export type {
   DerivedTemplateVariables,
   ResolvedTemplateVariables,

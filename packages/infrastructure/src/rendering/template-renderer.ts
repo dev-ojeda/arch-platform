@@ -1,7 +1,11 @@
 // packages/infrastructure/src/rendering/template-renderer.ts
 
-import type { RenderedFile, RenderTemplateInput, TemplateRendererPort } from '@arch/contracts';
-import type { FileSystemPort } from '@arch/contracts/filesystem';
+import type {
+  FileSystemPort,
+  RenderedFile,
+  RenderTemplateInput,
+  TemplateRendererPort,
+} from '@arch/contracts';
 
 import { renderTemplate } from '../templates/handlebars-template-engine.js';
 

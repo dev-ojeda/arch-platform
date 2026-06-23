@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
     "target": "ES2023",
-    "lib": ["ES2023", "ESNext.Disposable"],
+    "lib": [
+      "ES2023",
+      "ESNext.Disposable"
+    ],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "moduleDetection": "force",
@@ -16,6 +19,9 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "sourceMap": true,
-    "types": ["node"]
+    "skipLibCheck": true,
+    "types": [
+      "node"
+    ]
   }
 }

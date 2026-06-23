@@ -1,7 +1,10 @@
 // packages/application/src/generation/variables/derive-template-variables.ts
 
-import type { ResolvedTemplateVariables } from '@arch/contracts/templates';
-import { getStringVariable, type NamedVariables } from '@arch/contracts/variables';
+import {
+  getStringVariable,
+  type NamedVariables,
+  type ResolvedTemplateVariables,
+} from '@arch/contracts';
 
 export interface TemplateVariables extends NamedVariables {
   readonly name: string;

@@ -6,48 +6,28 @@
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./context": {
-      "types": "./dist/context/index.d.ts",
-      "import": "./dist/context.js"
-    },
-    "./diagnostics": {
-      "types": "./dist/diagnostics/index.d.ts",
-      "import": "./dist/diagnostics.js"
-    },
-    "./engine": {
-      "types": "./dist/engine/index.d.ts",
-      "import": "./dist/engine.js"
-    },
-    "./policies": {
-      "types": "./dist/policies/index.d.ts",
-      "import": "./dist/policies.js"
-    },
-    "./rules": {
-      "types": "./dist/rules/index.d.ts",
-      "import": "./dist/rules.js"
-    },
-    "./validate": {
-      "types": "./dist/validate/index.d.ts",
-      "import": "./dist/validate.js"
-    },
-    "./workspace": {
-      "types": "./dist/workspace/index.d.ts",
-      "import": "./dist/workspace.js"
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "import": "./dist/*.js"
     }
   },
   "files": [
     "dist"
   ],
+  "sideEffects": false,
   "scripts": {
-    "build": "tsx ../tooling/src/bin/build.ts",
+    "build": "pnpm build:js && pnpm build:dts",
+    "build:js": "tsup",
+    "build:dts": "tsc -p tsconfig.build.json",
     "clean": "tsx ../tooling/src/bin/clean.ts",
     "lint": "tsx ../tooling/src/bin/lint.ts",
-    "typecheck": "tsx ../tooling/src/bin/typecheck.ts"
+    "typecheck": "tsx ../tooling/src/bin/typecheck.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
   }
 }

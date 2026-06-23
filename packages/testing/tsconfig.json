@@ -1,13 +1,16 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "rootDir": "./src",
     "outDir": "./dist",
     "composite": true,
     "declaration": true,
-    "declarationMap": true
+    "declarationMap": true,
+    "tsBuildInfoFile": "./.turbo/testing.tsbuildinfo"
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["dist", "node_modules", "**/*.js", "**/*.d.ts", "**/*.d.ts.map"],
+  "include": [
+    "src/**/*.ts"
+  ],
   "references": [
     {
       "path": "../contracts"
@@ -15,5 +18,9 @@
     {
       "path": "../core"
     }
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
   ]
 }

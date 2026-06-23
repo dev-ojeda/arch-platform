@@ -1,6 +1,9 @@
 // packages/tooling/src/utils/format-duration.ts
 
 export function formatDuration(durationMs: number): string {
+  if (!Number.isFinite(durationMs)) {
+    return '0ms';
+  }
   if (durationMs < 1000) {
     return `${durationMs}ms`;
   }

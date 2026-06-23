@@ -1,6 +1,6 @@
 // packages\application\test\__tests__\write-files-steps.test.ts
 
-import { createTestPipelineContext } from '@arch/testing/pipeline';
+import { createTestPipelineContext } from '@arch/testing';
 import { describe, expect, it, vi } from 'vitest';
 
 import { WriteFilesStep } from '../../src/generation/steps/write-files.step.js';

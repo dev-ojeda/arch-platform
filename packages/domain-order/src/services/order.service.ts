@@ -5,10 +5,10 @@ import type {
   CreateOrderInput,
   OrderServiceContract,
 } from '../contracts/order-service.contract.js';
+import { toOrder } from '../domain/order.mapper.js';
+import { validateCreateOrderInput } from '../domain/order.validators.js';
 import { OrderNotFoundError } from '../errors/order-not-found.error.js';
 import { OrderCreatedEvent } from '../events/order-created.event.js';
-import { toOrder } from '../internal/order.mapper.js';
-import { validateCreateOrderInput } from '../internal/order.validators.js';
 import type { Order } from '../models/order.js';
 import { OrderId } from '../value-objects/order-id.js';
 
