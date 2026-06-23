@@ -50,6 +50,7 @@ module.exports = {
         'rendering',
         'mvc',
         'exports',
+        'code-analysis',
 
         'application/engine',
         'application/runtime',

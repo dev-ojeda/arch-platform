@@ -25,11 +25,12 @@
     "syncpack": "catalog:",
     "tsup": "catalog:",
     "tsx": "catalog:",
-    "turbo": "^2.9.18",
+    "turbo": "catalog:",
     "typescript": "catalog:",
     "typescript-eslint": "catalog:",
     "vitest": "catalog:",
-    "zod": "catalog:"
+    "zod": "catalog:",
+    "ts-morph": "catalog:"
   },
   "workspaces": [
     "packages/*",
