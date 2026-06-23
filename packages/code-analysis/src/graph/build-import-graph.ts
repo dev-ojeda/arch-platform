@@ -1,8 +1,10 @@
+// packages/code-analysis/src/graph/build-import-graph.ts
+
 import type { ImportReference } from '../imports/import-types.js';
 
 import type { ProjectGraphEdge, ProjectGraphNode, ProjectImportGraph } from './graph-types.js';
 
-export function buildDependencyGraph(imports: ImportReference[]): ProjectImportGraph {
+export function buildImportGraph(imports: ImportReference[]): ProjectImportGraph {
   const nodes = new Map<string, ProjectGraphNode>();
 
   const edges: ProjectGraphEdge[] = [];

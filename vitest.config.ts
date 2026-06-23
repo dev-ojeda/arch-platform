@@ -34,6 +34,10 @@ const projects = [
     name: 'code-analysis',
     tests: 'packages/code-analysis/test/**/*.{test,spec}.ts',
   },
+  {
+    name: 'build-core',
+    tests: 'packages/build-core/test/**/*.{test,spec}.ts',
+  },
 ];
 
 export default defineConfig({

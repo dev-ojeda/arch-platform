@@ -1,27 +1,29 @@
-// packages/code-analysis/src/test/__tests__/import-analyzer.test.ts
+// packages/code-analysis/test/__tests__/import-analyzer.test.ts
+
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 import { describe, expect, it } from 'vitest';
 
-import { buildProjectImportGraph } from '../../src/graph/build-project-import-graph.js';
+import { buildProjectImportGraph } from '../../src/graph/build-import-project-graph.js';
 import { createTsProject } from '../../src/project/ts-project-factory.js';
 
+const currentDir = fileURLToPath(new URL('.', import.meta.url));
+
+const rootPath = resolve(currentDir, '../../../..');
+
 describe('buildProjectImportGraph', () => {
+  const project = createTsProject({
+    tsConfigFilePath: resolve(rootPath, 'packages/application/tsconfig.json'),
+  });
+
+  const graph = buildProjectImportGraph(project);
+
   it('should create graph nodes', () => {
-    const project = createTsProject({
-      tsConfigFilePath: '../../packages/application/tsconfig.json',
-    });
-
-    const graph = buildProjectImportGraph(project);
-
-    expect(graph.nodes.length).toBeGreaterThan(0);
+    expect(graph.nodes.length).toBeGreaterThan(1);
   });
 
   it('should create graph edges', () => {
-    const project = createTsProject({
-      tsConfigFilePath: '../../packages/application/tsconfig.json',
-    });
-
-    const graph = buildProjectImportGraph(project);
-
-    expect(graph.edges.length).toBeGreaterThan(0);
+    expect(graph.edges.length).toBeGreaterThan(1);
   });
 });
