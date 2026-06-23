@@ -1,6 +1,6 @@
 // packages/cli/src/commands/lint.command.ts
 
-import { lintCommand } from '@arch/tooling/commands/lint';
+import { lintCommand } from '@arch/tooling';
 import type { CAC } from 'cac';
 
 import { logger } from '../ui/logger.js';

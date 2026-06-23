@@ -1,6 +1,6 @@
 // packages/core/src/generation/__tests__/output-path.test.ts
 
-import type { PathService } from '@arch/contracts/runtime';
+import type { PathService } from '@arch/contracts';
 import { describe, expect, it } from 'vitest';
 
 import { resolveOutputPath } from '../../src/generation/output/output-path.js';

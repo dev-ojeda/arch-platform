@@ -2,12 +2,13 @@
 
 import type {
   BooleanField,
+  NamedVariables,
   PromptAdapter,
   SelectField,
   SelectOption,
   StringField,
-} from '@arch/contracts/prompts';
-import type { NamedVariables, VariableValue } from '@arch/contracts/variables';
+  VariableValue,
+} from '@arch/contracts';
 
 function getStringValue(value: VariableValue): string | undefined {
   return typeof value === 'string' ? value : undefined;

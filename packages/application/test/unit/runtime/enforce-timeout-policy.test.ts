@@ -1,7 +1,7 @@
 // packages\application\test\unit\runtime\enforce-timeout-policy.test.ts
 
-import type { GenerationContext } from '@arch/contracts/generation';
-import { createTestPipelineContext } from '@arch/testing/pipeline';
+import type { GenerationContext } from '@arch/contracts';
+import { createTestPipelineContext } from '@arch/testing';
 import { describe, expect, it, vi } from 'vitest';
 
 import { enforceTimeoutPolicy } from '../../../src/generation/runtime/enforce-timeout-policy.js';

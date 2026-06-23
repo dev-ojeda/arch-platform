@@ -1,12 +1,12 @@
 // packages/application/src/application/engine/default-generation-engine.ts
 
-import type { GenerationReportExporter } from '@arch/contracts/exporters';
 import type {
   GenerationContext,
+  GenerationReportExporter,
   GenerationRequest,
   GenerationResult,
-} from '@arch/contracts/generation';
-import type { TemplateVariables } from '@arch/contracts/variables';
+  TemplateVariables,
+} from '@arch/contracts';
 
 import { runGenerationReportExporters } from '../../generation/exporters/run-generation-report-exporters.js';
 import type { GenerationPipeline } from '../pipeline/generation-pipeline.js';

@@ -1,10 +1,6 @@
 // packages/testing/src/events/create-test-event-bus.ts
 
-import type {
-  GenerationEvent,
-  GenerationEventBus,
-  GenerationEventHandler,
-} from '@arch/contracts/events';
+import type { GenerationEvent, GenerationEventBus, GenerationEventHandler } from '@arch/contracts';
 
 export interface TestEventBus extends GenerationEventBus {
   readonly publishedEvents: readonly GenerationEvent[];

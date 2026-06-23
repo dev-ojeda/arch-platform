@@ -1,11 +1,13 @@
-import type { GovernanceContext } from '../context/governance-context.js';
+// packages\governance\src\engine\governance-engine.ts
+
 import type { Diagnostic } from '../diagnostics/diagnostic.js';
-import type { GovernanceRule } from '../rules/governance-rule.js';
+import type { GovernanceContext } from '../types/governance-context.js';
 
 import type { GovernanceEngineResult } from './governance-engine-result.js';
+import type { GovernanceRule } from './governance-rule.js';
 
 export class GovernanceEngine {
-  constructor(private readonly rules: GovernanceRule[]) {}
+  constructor(private readonly rules: readonly GovernanceRule[]) {}
 
   async run(context: GovernanceContext): Promise<GovernanceEngineResult> {
     const start = performance.now();
@@ -36,6 +38,8 @@ export class GovernanceEngine {
 
         message:
           result.reason instanceof Error ? result.reason.message : 'Unknown governance rule error',
+
+        hint: `Review implementation of governance rule "${rule.name}".`,
       });
     }
 

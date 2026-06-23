@@ -1,7 +1,6 @@
 // packages/application/src/generation/steps/write-files.step.ts
 
-import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts/generation';
-import type { TemplateVariables } from '@arch/contracts/variables';
+import type { GenerationContext, GenerationPipelineStep, TemplateVariables } from '@arch/contracts';
 
 export class WriteFilesStep<
   TVariables extends TemplateVariables,

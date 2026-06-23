@@ -1,4 +1,4 @@
-import type { GenerationPipelineStep } from '@arch/contracts/generation';
+import type { GenerationPipelineStep } from '@arch/contracts';
 
 function noop(): Promise<void> {
   return Promise.resolve();

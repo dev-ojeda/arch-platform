@@ -1,8 +1,11 @@
 // packages/testing/src/generation/test-generation-runtime.ts
 
-import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts/generation';
-import type { GeneratorDefinition } from '@arch/contracts/generators';
-import type { TemplateVariables } from '@arch/contracts/variables';
+import type {
+  GenerationContext,
+  GenerationPipelineStep,
+  GeneratorDefinition,
+  TemplateVariables,
+} from '@arch/contracts';
 
 import { createTestContext } from '../runtime/create-test-context.js';
 

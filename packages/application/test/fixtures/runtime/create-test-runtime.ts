@@ -1,12 +1,19 @@
 // packages/application/test/fixtures/runtime/create-test-runtime.ts
 
-import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts/generation';
-import type { GeneratorDefinition } from '@arch/contracts/generators';
-import type { NamedVariables, TemplateVariables } from '@arch/contracts/variables';
-import { createTestEventBus } from '@arch/testing/events';
-import { createMemoryFilesystem } from '@arch/testing/filesystem';
-import { createTestGenerator } from '@arch/testing/fixtures';
-import { createTestGenerationContext, createTestIdGenerator } from '@arch/testing/runtime';
+import type {
+  GenerationContext,
+  GenerationPipelineStep,
+  GeneratorDefinition,
+  NamedVariables,
+  TemplateVariables,
+} from '@arch/contracts';
+import {
+  createMemoryFilesystem,
+  createTestEventBus,
+  createTestGenerationContext,
+  createTestGenerator,
+  createTestIdGenerator,
+} from '@arch/testing';
 
 import { GenerationPipeline } from '../../../src/generation/pipeline/generation-pipeline.js';
 

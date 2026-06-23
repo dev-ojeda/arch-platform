@@ -1,6 +1,6 @@
 // packages/testing/src/contracts/filesystem-port.contract.ts
 
-import type { FileSystemPort } from '@arch/contracts/filesystem';
+import type { FileSystemPort } from '@arch/contracts';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 export interface FilesystemPortContractOptions {

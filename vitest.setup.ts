@@ -1,2 +1,2 @@
-// vitest.setup.ts
+// vitest.setup.ts -> (root)
 export {};

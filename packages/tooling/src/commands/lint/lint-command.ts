@@ -1,11 +1,11 @@
 // packages/tooling/src/commands/lint/lint-command.ts
 
+import { logger } from '../../logging/logger.js';
 import { ToolingEvents } from '../../runtime/events/tooling-event.js';
 import { executeCommand } from '../../runtime/execute-command.js';
 import { createSkippedCommandResult } from '../../runtime/execution/create-skipped-command-result.js';
 import type { ExecuteCommandResult } from '../../runtime/execution/execute-command-result.js';
 import { pathExists } from '../../runtime/filesystem/path-exists.js';
-import { logger } from '../../utils/logger.js';
 
 import { createLintArguments } from './create-lint-arguments.js';
 import type { LintCommandOptions } from './lint-command-options.js';

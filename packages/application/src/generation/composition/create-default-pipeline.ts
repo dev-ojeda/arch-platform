@@ -1,11 +1,13 @@
 // packages/application/src/generation/composition/create-default-pipeline.ts
 
-import type { GenerationPipelineStep } from '@arch/contracts/generation';
-import type { GenerationHooks } from '@arch/contracts/hooks';
-import type { PromptResolver } from '@arch/contracts/prompts';
-import type { TemplateRendererPort } from '@arch/contracts/renderer';
-import type { IdGenerator } from '@arch/contracts/runtime';
-import type { TemplateVariables } from '@arch/contracts/variables';
+import type {
+  GenerationHooks,
+  GenerationPipelineStep,
+  IdGenerator,
+  PromptResolver,
+  TemplateRendererPort,
+  TemplateVariables,
+} from '@arch/contracts';
 
 import { CompositeGenerationHooks } from '../hooks/composite-generation-hooks.js';
 import { EventGenerationHooks } from '../hooks/event-generation-hooks.js';

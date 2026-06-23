@@ -1,36 +1,38 @@
 {
   "name": "@arch/generator-mvc",
-  "type": "module",
   "version": "0.1.0",
+  "private": true,
+  "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "sideEffects": false,
-  "dependencies": {
-    "@arch/contracts": "workspace:*"
-  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./definition": {
-      "types": "./dist/definition/index.d.ts",
-      "import": "./dist/definition.js"
-    },
-    "./variables": {
-      "types": "./dist/variables/index.d.ts",
-      "import": "./dist/variables.js"
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "import": "./dist/*.js"
     }
   },
   "files": [
     "dist"
   ],
-  "private": true,
   "scripts": {
-    "build": "tsx ../../tooling/src/bin/build.ts",
+    "build": "pnpm build:js && pnpm build:dts",
+    "build:js": "tsup",
+    "build:dts": "tsc -p tsconfig.build.json",
     "clean": "tsx ../../tooling/src/bin/clean.ts",
     "lint": "tsx ../../tooling/src/bin/lint.ts",
     "typecheck": "tsx ../../tooling/src/bin/typecheck.ts"
+  },
+  "dependencies": {
+    "@arch/contracts": "workspace:*",
+    "@arch/tooling": "workspace:*"
+  },
+  "devDependencies": {
+    "@arch/tooling": "workspace:*"
   }
 }

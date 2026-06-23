@@ -1,9 +1,7 @@
 // packages/application/src/generation/reports/create-generation-report.ts
 
-import type { GenerationContext } from '@arch/contracts/generation';
-import type { GenerationReport } from '@arch/contracts/reports';
-import type { TemplateVariables } from '@arch/contracts/variables';
-import { RecordingGenerationEventBus } from '@arch/core/events';
+import type { GenerationContext, GenerationReport, TemplateVariables } from '@arch/contracts';
+import { RecordingGenerationEventBus } from '@arch/core';
 
 export interface CreateGenerationReportOptions {
   success: boolean;

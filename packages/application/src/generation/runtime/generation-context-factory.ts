@@ -1,10 +1,13 @@
 // packages/application/src/generation/runtime/generation-context-factory.ts
 
-import type { FileSystemPort } from '@arch/contracts/filesystem';
-import type { GenerationContext, GenerationRequest } from '@arch/contracts/generation';
-import type { LoggerPort } from '@arch/contracts/logging';
-import type { TemplateVariables } from '@arch/contracts/variables';
-import { InMemoryGenerationEventBus } from '@arch/core/events';
+import type {
+  FileSystemPort,
+  GenerationContext,
+  GenerationRequest,
+  LoggerPort,
+  TemplateVariables,
+} from '@arch/contracts';
+import { InMemoryGenerationEventBus } from '@arch/core';
 
 export class GenerationContextFactory {
   constructor(

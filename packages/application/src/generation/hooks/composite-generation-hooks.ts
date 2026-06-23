@@ -1,8 +1,11 @@
 // packages/application/src/generation/hooks/composite-generation-hooks.ts
 
-import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts/generation';
-import type { GenerationHooks } from '@arch/contracts/hooks';
-import type { TemplateVariables } from '@arch/contracts/variables';
+import type {
+  GenerationContext,
+  GenerationHooks,
+  GenerationPipelineStep,
+  TemplateVariables,
+} from '@arch/contracts';
 
 export class CompositeGenerationHooks<
   TVariables extends TemplateVariables = TemplateVariables,

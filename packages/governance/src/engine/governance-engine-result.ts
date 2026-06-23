@@ -3,11 +3,11 @@
 import type { Diagnostic } from '../diagnostics/diagnostic.js';
 
 export interface GovernanceEngineResult {
-  success: boolean;
+  readonly success: boolean;
 
-  diagnostics: Diagnostic[];
+  readonly diagnostics: readonly Diagnostic[];
 
-  durationMs: number;
+  readonly durationMs: number;
 
-  evaluatedRules: number;
+  readonly evaluatedRules: number;
 }

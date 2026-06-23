@@ -1,3 +1,3 @@
 // packages/governance/src/policies/index.ts
 
-export * from './workspace-policy.js';
+export { workspacePolicy } from './workspace-policy.js';

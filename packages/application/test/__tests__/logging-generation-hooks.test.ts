@@ -1,6 +1,6 @@
 // packages\application\test\__tests__\logging-generation-hooks.test.ts
 
-import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts/generation';
+import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts';
 import { describe, expect, it, vi } from 'vitest';
 
 import { LoggingGenerationHooks } from '../../src/generation/hooks/logging-generation-hooks.js';

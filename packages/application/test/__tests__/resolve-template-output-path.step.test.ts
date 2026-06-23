@@ -1,7 +1,6 @@
 // packages\application\test\__tests__\resolve-template-output-path.step.test.ts
 
-import { createTestGenerator } from '@arch/testing/fixtures';
-import { createTestPipelineContext } from '@arch/testing/pipeline';
+import { createTestGenerator, createTestPipelineContext } from '@arch/testing';
 import { describe, expect, it } from 'vitest';
 
 import { ResolveTemplatesStep } from '../../src/generation/steps/resolve-templates.step.js';

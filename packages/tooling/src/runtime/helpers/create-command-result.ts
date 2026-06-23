@@ -9,13 +9,14 @@ export function createCommandResult(options: ExecuteCommandResultOptions): Execu
     commandLine,
     args,
     cwd,
-    exitCode,
+    exitCode = 1,
     stdout,
     stderr,
     durationMs,
     signal,
-    failed = exitCode !== 0,
   } = options;
+
+  const failed = exitCode !== 0;
 
   return {
     command,

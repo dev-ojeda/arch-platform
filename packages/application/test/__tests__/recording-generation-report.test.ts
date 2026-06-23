@@ -1,7 +1,7 @@
 // packages/application/test/__tests__/recording-generation-report.test.ts
 
-import type { GenerationEvent } from '@arch/contracts/events';
-import { RecordingGenerationEventBus } from '@arch/core/events';
+import type { GenerationEvent } from '@arch/contracts';
+import { RecordingGenerationEventBus } from '@arch/core';
 import { describe, expect, it, vi } from 'vitest';
 
 import { createGenerationReport } from '../../src/generation/reports/create-generation-report.js';

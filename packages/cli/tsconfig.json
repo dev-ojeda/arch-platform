@@ -1,22 +1,15 @@
 {
-  // packages\cli\tsconfig.json
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "dist",
+    "rootDir": "./src",
+    "outDir": "./dist",
     "composite": true,
     "declaration": true,
-    "declarationMap": true
+    "declarationMap": true,
+    "tsBuildInfoFile": "./.turbo/cli.tsbuildinfo"
   },
   "include": [
     "src/**/*.ts"
-  ],
-  "exclude": [
-    "dist",
-    "node_modules",
-    "**/*.js",
-    "**/*.d.ts",
-    "**/*.d.ts.map"
   ],
   "references": [
     {
@@ -25,5 +18,9 @@
     {
       "path": "../tooling"
     }
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
   ]
 }

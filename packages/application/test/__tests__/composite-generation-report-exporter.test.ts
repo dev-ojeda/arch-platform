@@ -1,6 +1,6 @@
 // packages\application\test\__tests__\composite-generation-report-exporter.test.ts
 
-import type { GenerationReport } from '@arch/contracts/reports';
+import type { GenerationReport } from '@arch/contracts';
 import { describe, expect, it, vi } from 'vitest';
 
 import { CompositeGenerationReportExporter } from '../../src/generation/exporters/composite-generation-report-exporter.js';

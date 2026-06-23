@@ -1,7 +1,7 @@
 // packages/application/test/integration/generation-pipeline/resolve-templates.integration.test.ts
 
-import type { TemplateVariables } from '@arch/contracts/variables';
-import { createTestGenerationContext } from '@arch/testing/runtime';
+import type { TemplateVariables } from '@arch/contracts';
+import { createTestGenerationContext } from '@arch/testing';
 import { describe, expect, it } from 'vitest';
 
 import { ResolveVariablesStep } from '../../../src/generation/steps/resolve-variables.step.js';

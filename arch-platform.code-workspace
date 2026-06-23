@@ -4,5 +4,155 @@
       "name": "arch-platform",
       "path": "."
     }
-  ]
+  ],
+  "settings": {
+    "window.commandCenter": true,
+    "debug.inlineValues": "on",
+    // -----------------------------------------------------------------------------
+    // EXPLORER
+    // -----------------------------------------------------------------------------
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    "files.associations": {
+      "*.ts": "typescript",
+      "*.js": "javascript",
+      "*.yml": "yaml",
+      "*.bat": "bat",
+      "*.scpt": "shellscript",
+      ".npmrc": "ini",
+      ".json": "json"
+    },
+    // -----------------------------------------------------------------------------
+    // SEARCH
+    // -----------------------------------------------------------------------------
+    "search.followSymlinks": false,
+    "search.sortOrder": "type",
+    // -----------------------------------------------------------------------------
+    // GIT
+    // -----------------------------------------------------------------------------
+    "git.confirmForcePush": false,
+    // -----------------------------------------------------------------------------
+    // TASKS
+    // -----------------------------------------------------------------------------
+    "task.allowAutomaticTasks": "on",
+    "task.quickOpen.history": 30,
+    "task.quickOpen.skip": true,
+    // -----------------------------------------------------------------------------
+    // TESTING
+    // -----------------------------------------------------------------------------
+    "testing.automaticallyOpenPeekView": "never",
+    // -----------------------------------------------------------------------------
+    // TYPESCRIPT / JAVASCRIPT
+    // -----------------------------------------------------------------------------
+    "typescript.disableAutomaticTypeAcquisition": true,
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.tsserver.maxTsServerMemory": 4096,
+    "typescript.tsserver.experimental.enableProjectDiagnostics": true,
+    "typescript.preferences.includePackageJsonAutoImports": "off",
+    "typescript.tsserver.log": "off",
+    "typescript.tsserver.watchOptions": {
+      "watchFile": "dynamicPriorityPolling",
+      "watchDirectory": "fixedPollingInterval"
+    },
+    // -----------------------------------------------------------------------------
+    // TERMINAL / POWERSHELL
+    // -----------------------------------------------------------------------------
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "terminal.integrated.enablePersistentSessions": false,
+    "terminal.integrated.profiles.windows": {
+      "PowerShell": {
+        "path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+        "icon": "terminal-powershell"
+      },
+      "Command Prompt": {
+        "path": [
+          "${env:windir}\\Sysnative\\cmd.exe",
+          "${env:windir}\\System32\\cmd.exe"
+        ],
+        "args": [],
+        "icon": "terminal-cmd",
+        "overrideName": true
+      },
+      "Git Bash": {
+        "source": "Git Bash"
+      }
+    },
+    "powershell.cwd": "${workspaceFolder}",
+    "powershell.powerShellAdditionalExePaths": {
+      "pwsh": "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+    },
+    "powershell.integratedConsole.focusConsoleOnExecute": false,
+    "powershell.promptToUpdatePowerShell": false,
+    // -----------------------------------------------------------------------------
+    // BETTER COMMENTS
+    // -----------------------------------------------------------------------------
+    "better-comments.multilineComments": true,
+    "better-comments.highlightPlainText": false,
+    "better-comments.tags": [
+      {
+        "tag": "!",
+        "color": "#FF5555",
+        "bold": true
+      },
+      {
+        "tag": "?",
+        "color": "#61AFEF",
+        "bold": true
+      },
+      {
+        "tag": "todo",
+        "color": "#FFB86C",
+        "bold": true
+      },
+      {
+        "tag": "fix",
+        "color": "#FF6B6B",
+        "bold": true
+      },
+      {
+        "tag": "hack",
+        "color": "#E06C75",
+        "bold": true,
+        "italic": true
+      },
+      {
+        "tag": "perf",
+        "color": "#C678DD",
+        "bold": true
+      },
+      {
+        "tag": "deprecated",
+        "color": "#7F848E",
+        "italic": true,
+        "strikethrough": true
+      },
+      {
+        "tag": "*",
+        "color": "#98C379"
+      }
+    ],
+    // -----------------------------------------------------------------------------
+    // TODO TREE
+    // -----------------------------------------------------------------------------
+    "todo-tree.general.tags": [
+      "todo",
+      "fix",
+      "hack",
+      "perf",
+      "deprecated"
+    ],
+    // -----------------------------------------------------------------------------
+    // FOLDER TEMPLATES
+    // -----------------------------------------------------------------------------
+    "folderTemplates.structures": [
+      {
+        "structure": [
+          {
+            "fileName": "index.ts",
+            "template": "export * from './';"
+          }
+        ]
+      }
+    ],
+  }
 }

@@ -8,7 +8,4 @@ export {
 } from './output/output-path.js';
 export { transformContent } from './transforms/content-transformer.js';
 export { buildVariables } from './variables/build-variables.js';
-export {
-  type DerivedTemplateVariables,
-  type ResolvedTemplateVariables,
-} from './variables/types.js';
+export type { DerivedTemplateVariables, ResolvedTemplateVariables } from './variables/types.js';

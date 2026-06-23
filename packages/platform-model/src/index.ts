@@ -2,5 +2,6 @@
 export * from './artifacts/index.js';
 export * from './capabilities/index.js';
 export * from './conventions/index.js';
+export * from './patterns/index.js';
 export * from './shared/index.js';
 export * from './stacks/index.js';

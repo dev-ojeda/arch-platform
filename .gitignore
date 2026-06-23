@@ -178,7 +178,8 @@ dist
 ### Turbo ###
 # Turborepo task cache
 .turbo
-
+.arch/
+.arch-cache/
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json

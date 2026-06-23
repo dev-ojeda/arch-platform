@@ -1,7 +1,7 @@
 // packages\application\test\__tests__\generate-project.use-case.test.ts
 
-import type { GenerationResult } from '@arch/contracts/generation';
-import { createTestGenerator } from '@arch/testing/fixtures';
+import type { GenerationResult } from '@arch/contracts';
+import { createTestGenerator } from '@arch/testing';
 import { describe, expect, it, vi } from 'vitest';
 
 import type { GenerationEngine } from '../../src/generation/engine/generation-engine.js';

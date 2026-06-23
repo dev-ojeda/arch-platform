@@ -1,8 +1,6 @@
 // packages\application\test\unit\runtime\generation-context-factory.test.ts
 
-import { createMockFilesystem } from '@arch/testing/filesystem';
-import { createTestGenerator } from '@arch/testing/fixtures';
-import { createTestLogger } from '@arch/testing/logging';
+import { createMockFilesystem, createTestGenerator, createTestLogger } from '@arch/testing';
 import { describe, expect, it } from 'vitest';
 
 import { GenerationContextFactory } from '../../../src/generation/runtime/generation-context-factory.js';

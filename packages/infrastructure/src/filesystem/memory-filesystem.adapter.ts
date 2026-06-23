@@ -2,7 +2,7 @@
 
 import path from 'node:path';
 
-import type { DirectoryEntry, FileSystemPort, WriteFileOptions } from '@arch/contracts/filesystem';
+import type { DirectoryEntry, FileSystemPort, WriteFileOptions } from '@arch/contracts';
 
 export class MemoryFileSystemAdapter implements FileSystemPort {
   readonly #files = new Map<string, string>();

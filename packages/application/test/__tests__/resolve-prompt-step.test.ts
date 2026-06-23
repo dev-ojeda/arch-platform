@@ -1,8 +1,10 @@
 // packages\application\test\__tests__\resolve-prompt-step.test.ts
 
-import { createTestGenerator } from '@arch/testing/fixtures';
-import { createTestPipelineContext } from '@arch/testing/pipeline';
-import { createTestPromptResolver } from '@arch/testing/prompts';
+import {
+  createTestGenerator,
+  createTestPipelineContext,
+  createTestPromptResolver,
+} from '@arch/testing';
 import { describe, expect, it, vi } from 'vitest';
 
 import { ResolvePromptsStep } from '../../src/generation/steps/resolve-prompts.step.js';

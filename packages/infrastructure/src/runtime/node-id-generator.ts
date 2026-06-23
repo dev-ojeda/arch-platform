@@ -2,7 +2,7 @@
 
 import { randomUUID } from 'node:crypto';
 
-import type { IdGenerator } from '@arch/contracts/runtime';
+import type { IdGenerator } from '@arch/contracts';
 
 export class NodeIdGenerator implements IdGenerator {
   generate(): string {

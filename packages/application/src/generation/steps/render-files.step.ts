@@ -4,9 +4,9 @@ import type {
   GeneratedFile,
   GenerationContext,
   GenerationPipelineStep,
-} from '@arch/contracts/generation';
-import type { TemplateRendererPort } from '@arch/contracts/renderer';
-import type { TemplateVariables } from '@arch/contracts/variables';
+  TemplateRendererPort,
+  TemplateVariables,
+} from '@arch/contracts';
 
 export class RenderFilesStep<
   TVariables extends TemplateVariables = TemplateVariables,

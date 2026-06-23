@@ -1,8 +1,11 @@
 // packages/application/src/generation/steps/resolve-prompts.step.ts
 
-import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts/generation';
-import type { PromptResolver } from '@arch/contracts/prompts';
-import type { TemplateVariables } from '@arch/contracts/variables';
+import type {
+  GenerationContext,
+  GenerationPipelineStep,
+  PromptResolver,
+  TemplateVariables,
+} from '@arch/contracts';
 
 export class ResolvePromptsStep<
   TVariables extends TemplateVariables = TemplateVariables,

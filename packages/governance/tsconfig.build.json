@@ -1,19 +1,9 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "declaration": true,
     "emitDeclarationOnly": true,
+    "declaration": true,
     "declarationMap": true,
-    "outDir": "dist",
-    "rootDir": "src",
-    "tsBuildInfoFile": "./dist/.tsbuildinfo"
-  },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "**/*.test.ts",
-    "**/*.spec.ts",
-    "**/__tests__/**"
-  ]
+    "skipLibCheck": true
+  }
 }

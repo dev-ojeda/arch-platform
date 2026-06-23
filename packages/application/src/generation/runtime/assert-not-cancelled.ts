@@ -1,7 +1,7 @@
 // packages/application/src/generation/runtime/assert-not-cancelled.ts
 
-import type { GenerationCancellationReason } from '@arch/contracts/runtime';
-import { GenerationCancelledError } from '@arch/core/errors';
+import type { GenerationCancellationReason } from '@arch/contracts';
+import { GenerationCancelledError } from '@arch/core';
 
 export function assertNotCancelled(
   signal?: AbortSignal,

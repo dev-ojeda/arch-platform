@@ -1,7 +1,6 @@
 // packages/governance/src/diagnostics/index.ts
 
-export * from './diagnostic-engine.js';
-export * from './diagnostic-formatter.js';
-export * from './diagnostic-level.js';
-export * from './diagnostic.js';
-export * from './render-diagnostics.js';
+export { formatDiagnostic } from './diagnostic-formatter.js';
+export type { DiagnosticLevel } from './diagnostic-level.js';
+export type { Diagnostic, DiagnosticLocation, DiagnosticSeverity } from './diagnostic.js';
+export { renderDiagnostics } from './render-diagnostics.js';

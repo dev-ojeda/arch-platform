@@ -1,33 +1,93 @@
 // eslint.config.mjs
-
+import eslint from '@eslint/js';
 import importPlugin from 'eslint-plugin-import';
 import tseslint from 'typescript-eslint';
 
-const IGNORE_PATTERNS = ['**/dist/**', '**/coverage/**', '**/.turbo/**', '**/node_modules/**'];
+const IGNORES = [
+  '**/dist/**',
+  '**/coverage/**',
+  '**/.turbo/**',
+  '**/node_modules/**',
+  '**/.pnpm/**',
+  '**/.cache/**',
+  '**/*.d.ts',
+];
+
 const TOOLING_FILES = [
   '**/vitest.config.ts',
+  '**/vitest.shared.ts',
+  '**/vitest.setup.ts',
   '**/tsup.config.ts',
-
-  'eslint.config.mjs',
-  'commitlint.config.cjs',
-
-  'vitest.shared.ts',
-  'vitest.workspace.ts',
-  'tsup.base.ts',
-
-  '*.config.js',
-  '*.config.cjs',
-  '*.config.mjs',
+  '**/tsup.base.ts',
+  '**/tsup.library.ts',
+  '**/tsup.app.ts',
+  '**/eslint.config.mjs',
+  '**/*.config.{js,cjs,mjs,ts}',
 ];
+
+const TEST_FILES = ['**/*.test.ts', '**/*.spec.ts', '**/test/**/*.ts', '**/__tests__/**/*.ts'];
+
 export default tseslint.config(
   {
-    ignores: IGNORE_PATTERNS,
+    ignores: IGNORES,
   },
 
+  eslint.configs.recommended,
+
   ...tseslint.configs.recommendedTypeChecked,
+  {
+    files: ['**/*.cjs'],
+
+    extends: [tseslint.configs.disableTypeChecked],
+
+    languageOptions: {
+      sourceType: 'commonjs',
+
+      globals: {
+        module: 'readonly',
+        require: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+      },
+    },
+
+    rules: {
+      'import/no-commonjs': 'off',
+    },
+  },
+  /**
+   * CommonJS configs
+   */
+  {
+    files: [
+      '**/*.cjs',
+      '**/*.config.cjs',
+      '**/commitlint.config.cjs',
+      '**/.dependency-cruiser.cjs',
+    ],
+
+    languageOptions: {
+      sourceType: 'commonjs',
+
+      globals: {
+        module: 'readonly',
+        require: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+      },
+
+      parserOptions: {
+        projectService: false,
+      },
+    },
+
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off',
+    },
+  },
 
   {
-    files: ['**/*.ts'],
+    files: ['**/*.ts', '**/*.tsx', '**/*.js'],
 
     languageOptions: {
       parser: tseslint.parser,
@@ -55,10 +115,6 @@ export default tseslint.config(
     },
 
     rules: {
-      // ----------------------------------------------------
-      // TypeScript
-      // ----------------------------------------------------
-
       '@typescript-eslint/consistent-type-imports': [
         'error',
         {
@@ -74,10 +130,6 @@ export default tseslint.config(
         },
       ],
 
-      // ----------------------------------------------------
-      // Imports
-      // ----------------------------------------------------
-
       'import/extensions': [
         'error',
         'ignorePackages',
@@ -85,6 +137,7 @@ export default tseslint.config(
           js: 'always',
           mjs: 'always',
           ts: 'never',
+          tsx: 'never',
         },
       ],
 
@@ -92,11 +145,19 @@ export default tseslint.config(
 
       'import/no-duplicates': 'error',
 
-      'import/no-unresolved': 'off',
+      'import/no-unresolved': [
+        'error',
+        {
+          commonjs: true,
+          amd: true,
+        },
+      ],
 
       'import/first': 'error',
 
       'import/newline-after-import': 'error',
+
+      'import/no-commonjs': 'error',
 
       'import/order': [
         'error',
@@ -120,10 +181,6 @@ export default tseslint.config(
         },
       ],
 
-      // ----------------------------------------------------
-      // Architecture
-      // ----------------------------------------------------
-
       'no-restricted-imports': [
         'error',
         {
@@ -132,21 +189,23 @@ export default tseslint.config(
       ],
     },
   },
+
   {
-    files: ['**/test/**/*.ts', '**/__tests__/**/*.ts', '**/*.test.ts', '**/*.spec.ts'],
+    files: TEST_FILES,
+
+    extends: [tseslint.configs.disableTypeChecked],
 
     rules: {
       'no-restricted-imports': 'off',
     },
   },
+
   {
     files: TOOLING_FILES,
 
     extends: [tseslint.configs.disableTypeChecked],
 
     languageOptions: {
-      parser: tseslint.parser,
-
       parserOptions: {
         projectService: false,
       },

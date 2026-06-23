@@ -1,0 +1,30 @@
+{
+  // tsconfig.json(root)
+  "files": [],
+  "references": [
+    {
+      "path": "packages/core"
+    },
+    {
+      "path": "packages/contracts"
+    },
+    {
+      "path": "packages/testing"
+    },
+    {
+      "path": "packages/tooling"
+    },
+    {
+      "path": "packages/governance"
+    },
+    {
+      "path": "packages/cli"
+    },
+    {
+      "path": "packages/application"
+    },
+    {
+      "path": "packages/build-core"
+    }
+  ]
+}

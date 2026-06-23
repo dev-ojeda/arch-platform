@@ -1,5 +1,5 @@
 // packages\core\src\languages\language-convention-registry.ts
-import type { LanguageConvention } from '@arch/contracts/languages';
+import type { LanguageConvention } from '@arch/contracts';
 
 export class LanguageConventionRegistry {
   readonly #registry = new Map<string, LanguageConvention>();

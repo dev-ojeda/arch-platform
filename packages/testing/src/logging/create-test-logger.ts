@@ -1,6 +1,6 @@
 // packages/testing/src/logging/create-test-logger.ts
 
-import type { LoggerPort } from '@arch/contracts/logging';
+import type { LoggerPort } from '@arch/contracts';
 
 export function createTestLogger(): LoggerPort {
   return {

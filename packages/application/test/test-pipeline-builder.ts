@@ -1,10 +1,12 @@
 // packages/application/test/test-pipeline-builder.ts
 
-import type { TemplateRendererPort } from '@arch/contracts/renderer';
-import type { TemplateVariables } from '@arch/contracts/variables';
-import { BaseTestGenerationRuntime, type TestGenerationExecution } from '@arch/testing/generation';
-import { createTestPromptResolver } from '@arch/testing/prompts';
-import { createTestIdGenerator } from '@arch/testing/runtime';
+import type { TemplateRendererPort, TemplateVariables } from '@arch/contracts';
+import {
+  BaseTestGenerationRuntime,
+  type TestGenerationExecution,
+  createTestIdGenerator,
+  createTestPromptResolver,
+} from '@arch/testing';
 
 import { GenerationPipeline } from '../src/generation/pipeline/generation-pipeline.js';
 import { RenderFilesStep } from '../src/generation/steps/render-files.step.js';

@@ -1,6 +1,6 @@
 // packages\application\test\__tests__\composite-generation-hooks.test.ts
 
-import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts/generation';
+import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts';
 import { describe, expect, it, vi } from 'vitest';
 
 import { CompositeGenerationHooks } from '../../src/generation/hooks/composite-generation-hooks.js';

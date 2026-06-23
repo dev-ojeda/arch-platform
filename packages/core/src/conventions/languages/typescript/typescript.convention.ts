@@ -1,5 +1,5 @@
 // packages\core\src\languages\conventions\typescript.convention.ts
-import type { FolderLayout, LanguageConvention } from '@arch/contracts/languages';
+import type { FolderLayout, LanguageConvention } from '@arch/contracts';
 
 function pascalCase(value: string): string {
   return value

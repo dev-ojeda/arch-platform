@@ -1,6 +1,6 @@
 // packages/testing/src/logging/test-logger.ts
 
-import type { LoggerPort } from '@arch/contracts/logging';
+import type { LoggerPort } from '@arch/contracts';
 
 export interface TestLogEntry {
   level: 'debug' | 'info' | 'warn' | 'error';

@@ -1,13 +1,9 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "composite": true,
-    "declaration": true,
     "emitDeclarationOnly": true,
+    "declaration": true,
     "declarationMap": true,
-    "rootDir": "src",
-    "tsBuildInfoFile": "./.turbo/.tsbuildinfo"
-  },
-  "include": ["src/**/*.ts"],
-  "exclude": ["**/*.test.ts", "**/*.spec.ts", "**/__tests__/**"]
+    "skipLibCheck": true
+  }
 }

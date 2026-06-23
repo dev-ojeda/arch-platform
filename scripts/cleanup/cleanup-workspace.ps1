@@ -69,7 +69,9 @@ $CleanupDirectories = @(
   'dist',
   '.turbo',
   'coverage',
-  '.next'
+  '.next',
+  '.arch',
+  '.arch-cache'
 )
 
 $CleanupFiles = @(

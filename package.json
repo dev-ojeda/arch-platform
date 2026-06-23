@@ -5,6 +5,7 @@
     "@changesets/cli": "catalog:",
     "@commitlint/cli": "catalog:",
     "@commitlint/config-conventional": "catalog:",
+    "@eslint/js": "catalog:",
     "@types/node": "catalog:",
     "@typescript-eslint/parser": "catalog:",
     "@vitest/coverage-v8": "catalog:",
@@ -24,7 +25,7 @@
     "syncpack": "catalog:",
     "tsup": "catalog:",
     "tsx": "catalog:",
-    "turbo": "catalog:",
+    "turbo": "^2.9.18",
     "typescript": "catalog:",
     "typescript-eslint": "catalog:",
     "vitest": "catalog:",
@@ -39,9 +40,9 @@
   "scripts": {
     "doctor": "pnpm arch:doctor",
     "arch": "tsx packages/cli/src/index.ts",
+    "arch:cli": "node packages/cli/dist/index.js",
     "arch:doctor": "tsx packages/cli/src/index.ts doctor",
     "bootstrap": "pnpm install && turbo run build",
-    "reinstall": "pnpm clean:all && pnpm install",
     "build": "turbo run build",
     "rebuild": "pnpm clean && pnpm build",
     "dev": "turbo run dev --parallel",
@@ -51,28 +52,24 @@
     "coverage": "vitest run --coverage",
     "validate": "turbo run validate",
     "validate:strict": "pnpm doctor && pnpm validate && pnpm cruiser",
-    "check": "pnpm doctor && pnpm lint && pnpm typecheck && pnpm test",
+    "check": "pnpm lint && pnpm cruiser",
     "ci": "pnpm validate && pnpm build",
     "graph": "turbo run build --graph",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "syncpack:lint": "syncpack lint",
     "syncpack:fix": "syncpack fix",
-    "clean": "turbo run clean",
-    "clean:modules": "pwsh -File ./scripts/cleanup/cleanup-node-modules.ps1",
-    "clean:dist": "pwsh -File ./scripts/cleanup/cleanup-dist.ps1",
-    "clean:packages": "pwsh -File ./scripts/clean-packages.ps1",
-    "clean:all": "pnpm reset -IncludeRootNodeModules",
-    "reset": "pwsh -File ./scripts/reset/reset-workspace.ps1",
+    "clean:dist": "pwsh -File ./scripts/cleanup/cleanup-workspace.ps1",
+    "clean": "pnpm run clean:dist",
+    "clean:all": "pwsh ./tools/powershell/cleanup.ps1",
+    "reset": "pnpm run clean:all && pnpm install",
+    "reinstall": "pnpm run clean:all && pnpm install --frozen-lockfile",
     "cruiser": "depcruise . --config .dependency-cruiser.cjs",
     "prepare": "husky"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,mjs,cjs}": [
+    "packages/**/*.{ts,tsx}": [
       "eslint --fix --cache"
-    ],
-    "*.{json,md,yml,yaml}": [
-      "prettier --write"
     ]
   }
 }

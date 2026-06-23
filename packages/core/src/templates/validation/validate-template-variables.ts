@@ -1,6 +1,6 @@
 // packages/core/src/templates/validate-template-variables.ts
 
-import type { NamedVariables } from '@arch/contracts/variables';
+import type { NamedVariables } from '@arch/contracts';
 
 import { isReservedTemplateVariable } from '../reserved/is-reserved-template-variable.js';
 

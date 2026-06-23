@@ -1,6 +1,6 @@
 // packages/tooling/src/runtime/filesystem/path-exists.ts
 
-import { existsSync } from 'node:fs';
+import { lstatSync } from 'node:fs';
 
 /**
  * Returns true when a filesystem path exists.
@@ -8,8 +8,13 @@ import { existsSync } from 'node:fs';
  * Supports:
  * - files
  * - directories
- * - symlinks
+ * - valid symlinks
  */
 export function pathExists(targetPath: string): boolean {
-  return existsSync(targetPath);
+  try {
+    lstatSync(targetPath);
+    return true;
+  } catch {
+    return false;
+  }
 }

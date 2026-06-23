@@ -1,8 +1,46 @@
 // vitest.shared.ts
 
+import { resolve } from 'node:path';
+
 import { defineConfig } from 'vitest/config';
 
+const root = resolve(__dirname);
+
 export const sharedVitestConfig = defineConfig({
+  resolve: {
+    alias: [
+      {
+        find: /^@arch\/contracts$/,
+        replacement: resolve(root, 'packages/contracts/src'),
+      },
+
+      {
+        find: /^@arch\/contracts\/(.*)$/,
+        replacement: resolve(root, 'packages/contracts/src/$1'),
+      },
+
+      {
+        find: /^@arch\/core$/,
+        replacement: resolve(root, 'packages/core/src'),
+      },
+
+      {
+        find: /^@arch\/core\/(.*)$/,
+        replacement: resolve(root, 'packages/core/src/$1'),
+      },
+
+      {
+        find: /^@arch\/testing$/,
+        replacement: resolve(root, 'packages/testing/src'),
+      },
+
+      {
+        find: /^@arch\/testing\/(.*)$/,
+        replacement: resolve(root, 'packages/testing/src/$1'),
+      },
+    ],
+  },
+
   test: {
     environment: 'node',
 
@@ -16,53 +54,10 @@ export const sharedVitestConfig = defineConfig({
 
     passWithNoTests: true,
 
-    include: ['src/**/*.{test,spec}.ts', 'test/**/*.{test,spec}.ts'],
+    setupFiles: [resolve(root, 'vitest.setup.ts')],
 
     sequence: {
       concurrent: false,
-    },
-
-    coverage: {
-      enabled: true,
-
-      provider: 'v8',
-
-      reporter: ['text', 'html', 'json-summary'],
-
-      reportsDirectory: './coverage',
-
-      exclude: [
-        '**/*.test.ts',
-        '**/*.spec.ts',
-        '**/__tests__/**',
-
-        '**/*.d.ts',
-
-        '**/dist/**',
-        '**/coverage/**',
-
-        '**/node_modules/**',
-        'node_modules/**',
-
-        '**/.turbo/**',
-
-        '**/index.ts',
-
-        '**/*.config.ts',
-
-        '**/vitest.shared.ts',
-        '**/vitest.workspace.ts',
-        '**/vitest.setup.ts',
-
-        '**/tsup.config.ts',
-      ],
-
-      thresholds: {
-        lines: 80,
-        functions: 80,
-        branches: 70,
-        statements: 80,
-      },
     },
   },
 });

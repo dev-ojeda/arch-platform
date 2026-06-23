@@ -1,6 +1,6 @@
 // packages\application\test\__tests__\create-mock-filesystem.test.ts
 
-import { createMockFilesystem } from '@arch/testing/filesystem';
+import { createMockFilesystem } from '@arch/testing';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('createMockFilesystem', () => {

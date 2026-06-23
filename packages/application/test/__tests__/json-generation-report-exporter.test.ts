@@ -1,6 +1,6 @@
 // packages\application\test\__tests__\json-generation-report-exporter.test.ts
 
-import type { GenerationReport } from '@arch/contracts/reports';
+import type { GenerationReport } from '@arch/contracts';
 import { describe, expect, it, vi } from 'vitest';
 
 import { JsonGenerationReportExporter } from '../../src/generation/exporters/json-generation-report-exporter.js';

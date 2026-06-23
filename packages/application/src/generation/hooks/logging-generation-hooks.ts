@@ -1,9 +1,12 @@
 // packages/application/src/generation/hooks/logging-generation-hooks.ts
 
-import { reportDiagnostic } from '@arch/contracts/diagnostics';
-import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts/generation';
-import type { GenerationHooks } from '@arch/contracts/hooks';
-import type { TemplateVariables } from '@arch/contracts/variables';
+import {
+  reportDiagnostic,
+  type GenerationContext,
+  type GenerationHooks,
+  type GenerationPipelineStep,
+  type TemplateVariables,
+} from '@arch/contracts';
 
 export class LoggingGenerationHooks<
   TVariables extends TemplateVariables = TemplateVariables,

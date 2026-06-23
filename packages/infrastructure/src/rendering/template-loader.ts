@@ -1,8 +1,8 @@
 // packages\infrastructure\src\rendering\template-loader.ts
 import * as path from 'node:path';
 
-import type { FileSystemPort } from '@arch/contracts/filesystem';
-import { InvalidGeneratorDefinitionError } from '@arch/core/errors';
+import type { FileSystemPort } from '@arch/contracts';
+import { InvalidGeneratorDefinitionError } from '@arch/core';
 
 export async function loadTemplate(
   fs: FileSystemPort,
