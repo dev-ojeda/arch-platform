@@ -8,13 +8,17 @@ export function buildDependencyGraph(imports: ImportReference[]): DependencyGrap
   const edges: GraphEdge[] = [];
 
   for (const item of imports) {
-    nodes.set(item.filePath, {
-      id: item.filePath,
+    nodes.set(item.sourceFile, {
+      id: item.sourceFile,
+    });
+
+    nodes.set(item.moduleSpecifier, {
+      id: item.moduleSpecifier,
     });
 
     edges.push({
-      from: item.filePath,
-      to: item.source,
+      from: item.sourceFile,
+      to: item.moduleSpecifier,
     });
   }
 

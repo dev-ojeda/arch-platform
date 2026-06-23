@@ -4,14 +4,34 @@ import type { SourceFile } from 'ts-morph';
 
 import type { ImportReference } from './import-types.js';
 
-export function analyzeImports(file: SourceFile): ImportReference[] {
-  return file.getImportDeclarations().map((importDecl) => ({
-    source: importDecl.getModuleSpecifierValue(),
+export function analyzeImports(sourceFile: SourceFile): readonly ImportReference[] {
+  return sourceFile.getImportDeclarations().map((declaration) => {
+    const moduleSpecifier = declaration.getModuleSpecifierValue();
 
-    filePath: file.getFilePath(),
+    return {
+      sourceFile: sourceFile.getFilePath(),
 
-    isTypeOnly: importDecl.isTypeOnly(),
+      moduleSpecifier,
 
-    symbols: importDecl.getNamedImports().map((x) => x.getName()),
-  }));
+      isRelative: moduleSpecifier.startsWith('.'),
+
+      isPackage: !moduleSpecifier.startsWith('.'),
+
+      packageName: resolvePackageName(moduleSpecifier),
+    };
+  });
+}
+
+function resolvePackageName(moduleSpecifier: string): string | undefined {
+  if (moduleSpecifier.startsWith('.')) {
+    return undefined;
+  }
+
+  if (moduleSpecifier.startsWith('@')) {
+    const parts = moduleSpecifier.split('/');
+
+    return parts.length >= 2 ? `${parts[0]}/${parts[1]}` : moduleSpecifier;
+  }
+
+  return moduleSpecifier.split('/')[0];
 }

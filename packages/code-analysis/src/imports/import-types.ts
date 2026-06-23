@@ -1,13 +1,15 @@
 // packages/code-analysis/src/imports/import-types.ts
 
 export interface ImportReference {
-  source: string;
+  sourceFile: string;
 
-  filePath: string;
+  moduleSpecifier: string;
 
-  isTypeOnly: boolean;
+  isRelative: boolean;
 
-  symbols: string[];
+  isPackage: boolean;
+
+  packageName?: string;
 }
 export interface ImportDependency {
   readonly sourceFile: string;
