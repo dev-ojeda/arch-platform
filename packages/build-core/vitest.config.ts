@@ -1,4 +1,4 @@
-// packages\governance\vitest.config.ts
+// packages\build-core\vitest.config.ts
 
 import { defineConfig, mergeConfig } from 'vitest/config';
 
@@ -9,7 +9,7 @@ export default mergeConfig(
 
   defineConfig({
     test: {
-      name: 'code-analysis',
+      name: 'build-core',
 
       setupFiles: ['../../vitest.setup.ts'],
 
