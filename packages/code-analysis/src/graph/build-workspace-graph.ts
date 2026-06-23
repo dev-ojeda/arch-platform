@@ -1,6 +1,10 @@
 // packages/code-analysis/src/graph/build-workspace-graph.ts
 
-import type { WorkspaceGraph, WorkspaceGraphNode, WorkspacePackage } from './graph-types.js';
+import type {
+  WorkspaceGraph,
+  WorkspaceGraphNode,
+  WorkspacePackage,
+} from '../workspace/workspace-types.js';
 
 export function buildWorkspaceGraph(packages: readonly WorkspacePackage[]): WorkspaceGraph {
   const nodes = new Map<string, WorkspaceGraphNode>();
