@@ -2,15 +2,10 @@
 
 import type { SymbolDefinition } from '../symbols/symbol-types.js';
 
-export type SymbolGraphNode = SymbolDefinition;
-
-export interface SymbolGraphEdge {
-  readonly from: string;
-  readonly to: string;
-  readonly kind: string;
-}
+import type { SymbolGraphEdge } from './symbol-edge-types.js';
 
 export interface SymbolGraph {
-  readonly nodes: readonly SymbolGraphNode[];
+  readonly nodes: readonly SymbolDefinition[];
+
   readonly edges: readonly SymbolGraphEdge[];
 }
