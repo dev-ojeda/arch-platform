@@ -26,4 +26,12 @@ describe('buildProjectImportGraph', () => {
   it('should create graph edges', () => {
     expect(graph.edges.length).toBeGreaterThan(1);
   });
+
+  it('should only generate known edge kinds', () => {
+    const allowedKinds = new Set(['file-import', 'package-import', 'external-import']);
+
+    for (const edge of graph.edges) {
+      expect(allowedKinds.has(edge.kind)).toBe(true);
+    }
+  });
 });

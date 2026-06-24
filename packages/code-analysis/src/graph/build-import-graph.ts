@@ -2,7 +2,12 @@
 
 import type { ResolvedImportReference } from '../imports/import-types.js';
 
-import type { ProjectGraphEdge, ProjectGraphNode, ProjectImportGraph } from './graph-types.js';
+import type {
+  ProjectGraphEdge,
+  ProjectGraphEdgeType,
+  ProjectGraphNode,
+  ProjectImportGraph,
+} from './graph-types.js';
 
 export function buildImportGraph(imports: readonly ResolvedImportReference[]): ProjectImportGraph {
   const nodes = new Map<string, ProjectGraphNode>();
@@ -23,8 +28,7 @@ export function buildImportGraph(imports: readonly ResolvedImportReference[]): P
     edges.push({
       from: item.sourceFile,
       to: target,
-      kind: item.targetFile ? 'file-import' : 'package-import',
-
+      kind: resolveEdgeType(item),
       resolved: item.resolved,
     });
   }
@@ -33,4 +37,16 @@ export function buildImportGraph(imports: readonly ResolvedImportReference[]): P
     nodes: [...nodes.values()],
     edges,
   };
+}
+
+function resolveEdgeType(item: ResolvedImportReference): ProjectGraphEdgeType {
+  if (item.targetFile) {
+    return 'file-import';
+  }
+
+  if (item.isPackage) {
+    return 'package-import';
+  }
+
+  return 'external-import';
 }
