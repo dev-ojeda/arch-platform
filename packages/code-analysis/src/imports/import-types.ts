@@ -1,16 +1,37 @@
 // packages/code-analysis/src/imports/import-types.ts
 
 export interface ImportReference {
-  sourceFile: string;
+  readonly sourceFile: string;
 
-  moduleSpecifier: string;
+  readonly moduleSpecifier: string;
 
-  isRelative: boolean;
+  readonly isRelative: boolean;
 
-  isPackage: boolean;
+  readonly isPackage: boolean;
 
-  packageName?: string;
+  readonly packageName?: string;
 }
+
+export type ImportResolutionType = 'relative' | 'package' | 'external' | 'unknown';
+
+export interface ResolvedImport {
+  readonly sourceFile: string;
+
+  readonly moduleSpecifier: string;
+
+  readonly resolutionType: ImportResolutionType;
+
+  readonly targetFile?: string;
+
+  readonly targetPackage?: string;
+}
+
+export interface ResolvedImportReference extends ImportReference {
+  readonly targetFile?: string;
+
+  readonly resolved: boolean;
+}
+
 export interface ImportDependency {
   readonly sourceFile: string;
   readonly moduleSpecifier: string;
