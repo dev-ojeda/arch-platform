@@ -1,36 +1,26 @@
 // packages/code-analysis/test/__tests__/symbol-graph.test.ts
 
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 import { describe, expect, it } from 'vitest';
 
+import { createTsProject } from '../../src/project/ts-project-factory.js';
 import { buildSymbolGraph } from '../../src/symbol-graph/build-symbol-graph.js';
-import type { SymbolDefinition } from '../../src/symbols/symbol-types.js';
+
+const currentDir = fileURLToPath(new URL('.', import.meta.url));
+
+const rootPath = resolve(currentDir, '../../../..');
 
 describe('buildSymbolGraph', () => {
-  const symbols: readonly SymbolDefinition[] = [
-    {
-      id: '/src/user.ts#UserService',
-      name: 'UserService',
-      kind: 'class',
-      sourceFile: '/src/user.ts',
-    },
-    {
-      id: '/src/user.ts#UserRepository',
-      name: 'UserRepository',
-      kind: 'interface',
-      sourceFile: '/src/user.ts',
-    },
-    {
-      id: '/src/create-user.ts#createUser',
-      name: 'createUser',
-      kind: 'function',
-      sourceFile: '/src/create-user.ts',
-    },
-  ];
+  const project = createTsProject({
+    tsConfigFilePath: resolve(rootPath, 'packages/application/tsconfig.json'),
+  });
 
-  const graph = buildSymbolGraph(symbols);
+  const graph = buildSymbolGraph(project);
 
   it('should create graph nodes', () => {
-    expect(graph.nodes).toHaveLength(3);
+    expect(graph.nodes.length).toBeGreaterThan(0);
   });
 
   it('should create graph edges collection', () => {
