@@ -3,6 +3,7 @@
 import type { Project } from 'ts-morph';
 
 import { analyzeImports } from '../imports/import-analyzer.js';
+import { resolveImports } from '../imports/import-resolver.js';
 import type { ImportReference } from '../imports/import-types.js';
 
 import { buildImportGraph } from './build-import-graph.js';
@@ -15,5 +16,7 @@ export function buildProjectImportGraph(project: Project): ProjectImportGraph {
     imports.push(...analyzeImports(sourceFile));
   }
 
-  return buildImportGraph(imports);
+  const resolvedImports = resolveImports(project, imports);
+
+  return buildImportGraph(resolvedImports);
 }
