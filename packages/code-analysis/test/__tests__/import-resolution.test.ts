@@ -33,7 +33,7 @@ describe('buildImportGraph', () => {
         targetFile: undefined,
         isRelative: false,
         resolved: false,
-        isPackage: false,
+        isPackage: true,
       },
     ]);
 
@@ -41,6 +41,25 @@ describe('buildImportGraph', () => {
       from: '/src/a.ts',
       to: '@arch/core',
       kind: 'package-import',
+      resolved: false,
+    });
+  });
+  it('should classify external imports', () => {
+    const graph = buildImportGraph([
+      {
+        sourceFile: '/src/a.ts',
+        moduleSpecifier: 'node:path',
+        targetFile: undefined,
+        isRelative: false,
+        resolved: false,
+        isPackage: false,
+      },
+    ]);
+
+    expect(graph.edges[0]).toEqual({
+      from: '/src/a.ts',
+      to: 'node:path',
+      kind: 'external-import',
       resolved: false,
     });
   });

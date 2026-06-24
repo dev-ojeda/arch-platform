@@ -1,6 +1,5 @@
 // packages/code-analysis/src/graph/graph-types.ts
-
-export type ProjectGraphEdgeType = 'relative' | 'package' | 'unknown';
+export type ProjectGraphEdgeType = 'file-import' | 'package-import' | 'external-import';
 
 export interface ProjectGraphNode {
   readonly id: string;
@@ -11,10 +10,10 @@ export interface ProjectGraphNode {
 }
 
 export interface ProjectGraphEdge {
-  from: string;
-  to: string;
-  kind: 'file-import' | 'package-import';
-  resolved: boolean;
+  readonly from: string;
+  readonly to: string;
+  readonly kind: ProjectGraphEdgeType;
+  readonly resolved: boolean;
 }
 export interface ProjectImportGraph {
   readonly nodes: readonly ProjectGraphNode[];
