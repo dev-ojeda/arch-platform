@@ -1,4 +1,5 @@
 // packages/code-analysis/src/index.ts
+export * from './architecture/index.js';
 export * from './graph/index.js';
 export * from './impact/index.js';
 export * from './imports/index.js';
