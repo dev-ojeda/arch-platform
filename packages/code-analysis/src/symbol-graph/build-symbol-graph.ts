@@ -8,8 +8,18 @@ import { scanSymbols } from '../symbols/scan-symbols.js';
 import type { SymbolGraph } from './symbol-graph-types.js';
 
 export function buildSymbolGraph(project: Project): SymbolGraph {
+  const definitions = scanSymbols(project);
+
+  const nodes = definitions.map((symbol) => ({
+    ...symbol,
+    package: 'unknown',
+    exported: false,
+  }));
+
+  const edges = [...scanSymbolReferences(project)];
+
   return {
-    nodes: [...scanSymbols(project)],
-    edges: [...scanSymbolReferences(project)],
+    nodes,
+    edges,
   };
 }

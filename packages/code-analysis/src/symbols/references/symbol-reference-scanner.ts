@@ -2,10 +2,10 @@
 
 import type { Project } from 'ts-morph';
 
-import type { SymbolGraphEdge } from '../../symbol-graph/symbol-edge-types.js';
+import type { SymbolEdge } from '../../symbol-graph/symbol-edge-types.js';
 
-export function scanSymbolReferences(project: Project): readonly SymbolGraphEdge[] {
-  const edges: SymbolGraphEdge[] = [];
+export function scanSymbolReferences(project: Project): readonly SymbolEdge[] {
+  const edges: SymbolEdge[] = [];
 
   for (const sourceFile of project.getSourceFiles()) {
     for (const declaration of sourceFile.getClasses()) {
@@ -21,7 +21,7 @@ export function scanSymbolReferences(project: Project): readonly SymbolGraphEdge
         edges.push({
           from,
           to: symbol.getFullyQualifiedName(),
-          kind: 'property-type',
+          type: 'return-type',
         });
       }
 
@@ -34,7 +34,7 @@ export function scanSymbolReferences(project: Project): readonly SymbolGraphEdge
           edges.push({
             from,
             to: returnSymbol.getFullyQualifiedName(),
-            kind: 'return-type',
+            type: 'return-type',
           });
         }
 
@@ -46,7 +46,7 @@ export function scanSymbolReferences(project: Project): readonly SymbolGraphEdge
           edges.push({
             from,
             to: parameterSymbol.getFullyQualifiedName(),
-            kind: 'parameter-type',
+            type: 'parameter-type',
           });
         }
       }
