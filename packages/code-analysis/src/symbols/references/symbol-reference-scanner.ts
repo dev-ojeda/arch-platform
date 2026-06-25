@@ -4,6 +4,8 @@ import type { Project } from 'ts-morph';
 
 import type { SymbolEdge } from '../../symbol-graph/symbol-edge-types.js';
 
+import { scanImportSymbolReferences } from './import-symbol-reference-scanner.js';
+
 export function scanSymbolReferences(project: Project): readonly SymbolEdge[] {
   const edges: SymbolEdge[] = [];
 
@@ -53,5 +55,5 @@ export function scanSymbolReferences(project: Project): readonly SymbolEdge[] {
     }
   }
 
-  return edges;
+  return [...edges, ...scanImportSymbolReferences(project)];
 }

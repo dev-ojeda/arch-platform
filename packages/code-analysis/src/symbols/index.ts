@@ -7,7 +7,8 @@ export type {
 } from './class-metadata.js';
 export { scanFunctions } from './function-scanner.js';
 export type { InterfaceMetadata, InterfacePropertyMetadata } from './interface-metadata.js';
-export * from './references/symbol-reference-scanner.js';
+export { scanImportSymbolReferences } from './references/import-symbol-reference-scanner.js';
+export { scanSymbolReferences } from './references/symbol-reference-scanner.js';
 export { scanClasses } from './scan-classes.js';
 export { scanInterfaces } from './scan-interfaces.js';
 export { scanSymbols } from './scan-symbols.js';
