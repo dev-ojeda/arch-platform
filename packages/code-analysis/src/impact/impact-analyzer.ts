@@ -7,31 +7,68 @@ import type { ImpactResult } from './impact-result.js';
 export class ImpactAnalyzer {
   constructor(private readonly dependencyGraph: SymbolDependencyGraph) {}
 
-  analyze(symbolId: string): ImpactResult {
-    const edges = this.dependencyGraph.getDependents(symbolId);
+  analyze(
+    symbolId: string,
+    options: {
+      maxDepth?: number;
+    } = {},
+  ): ImpactResult {
+    const maxDepth = options.maxDepth ?? Infinity;
 
-    const affectedSymbols = edges.map((edge) => edge.from);
+    const affectedSymbols = new Set<string>();
+    const affectedPackages = new Set<string>();
+    const affectedFiles = new Set<string>();
 
-    const affectedPackages = affectedSymbols
-      .map((id) => this.dependencyGraph.getNode(id))
-      .filter(Boolean)
-      .map((node) => node!.package);
+    const visited = new Set<string>();
 
-    const affectedFiles = affectedSymbols
-      .map((id) => this.dependencyGraph.getNode(id))
-      .filter(Boolean)
-      .map((node) => node!.sourceFile);
+    this.traverse(symbolId, 0, maxDepth, visited, affectedSymbols, affectedPackages, affectedFiles);
 
     return {
       symbolId,
 
-      affectedSymbols: [...new Set(affectedSymbols)],
+      affectedSymbols: [...affectedSymbols],
 
-      affectedPackages: [...new Set(affectedPackages)],
+      affectedPackages: [...affectedPackages],
 
-      affectedFiles: [...new Set(affectedFiles)],
+      affectedFiles: [...affectedFiles],
 
-      depth: 1,
+      depth: this.calculateDepth(visited),
     };
+  }
+
+  private traverse(
+    symbolId: string,
+    depth: number,
+    maxDepth: number,
+    visited: Set<string>,
+    symbols: Set<string>,
+    packages: Set<string>,
+    files: Set<string>,
+  ): void {
+    if (visited.has(symbolId) || depth >= maxDepth) {
+      return;
+    }
+
+    visited.add(symbolId);
+
+    const dependents = this.dependencyGraph.getDependents(symbolId);
+
+    for (const edge of dependents) {
+      const node = this.dependencyGraph.getNode(edge.from);
+
+      if (!node) {
+        continue;
+      }
+
+      symbols.add(node.id);
+      packages.add(node.package);
+      files.add(node.sourceFile);
+
+      this.traverse(node.id, depth + 1, maxDepth, visited, symbols, packages, files);
+    }
+  }
+
+  private calculateDepth(visited: Set<string>): number {
+    return visited.size;
   }
 }
