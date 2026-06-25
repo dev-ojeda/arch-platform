@@ -5,6 +5,7 @@ import type { Project } from 'ts-morph';
 import { scanSymbolReferences } from '../symbols/references/symbol-reference-scanner.js';
 import { scanSymbols } from '../symbols/scan-symbols.js';
 
+import { resolvePackageName } from './package-name-resolver.js';
 import type { SymbolGraph } from './symbol-graph-types.js';
 
 export function buildSymbolGraph(project: Project): SymbolGraph {
@@ -12,7 +13,7 @@ export function buildSymbolGraph(project: Project): SymbolGraph {
 
   const nodes = definitions.map((symbol) => ({
     ...symbol,
-    package: 'unknown',
+    package: resolvePackageName(symbol.sourceFile) ?? 'unknown',
     exported: false,
   }));
 
