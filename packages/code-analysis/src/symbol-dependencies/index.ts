@@ -7,6 +7,3 @@ export * from './symbol-dependency.js';
 
 export * from './package-dependency-graph.js';
 export * from './package-dependency.js';
-
-export * from './exported-symbol-index.js';
-export * from './exported-symbol.js';
