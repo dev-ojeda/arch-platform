@@ -3,26 +3,37 @@
 import type { Project } from 'ts-morph';
 
 import type { SymbolEdge } from '../../symbol-graph/symbol-edge-types.js';
+import { resolveSymbolId } from '../../symbol-graph/symbol-id-resolver.js';
 
 export function scanImportSymbolReferences(project: Project): readonly SymbolEdge[] {
   const edges: SymbolEdge[] = [];
 
   for (const sourceFile of project.getSourceFiles()) {
-    for (const declaration of sourceFile.getImportDeclarations()) {
-      const namedImports = declaration.getNamedImports();
+    const imports = sourceFile.getImportDeclarations();
 
-      for (const namedImport of namedImports) {
-        const symbol = namedImport.getAliasNode()?.getSymbol();
+    const classes = sourceFile.getClasses();
+
+    const fromNodes = classes.map((item) => ({
+      id: `${sourceFile.getFilePath()}#${item.getName()}`,
+    }));
+
+    for (const declaration of imports) {
+      for (const namedImport of declaration.getNamedImports()) {
+        const symbol = namedImport.getNameNode().getSymbol();
 
         if (!symbol) continue;
 
-        const from = sourceFile.getFilePath();
+        const to = resolveSymbolId(symbol);
 
-        edges.push({
-          from,
-          to: symbol.getFullyQualifiedName(),
-          type: 'import',
-        });
+        if (!to) continue;
+
+        for (const node of fromNodes) {
+          edges.push({
+            from: node.id,
+            to,
+            type: 'import',
+          });
+        }
       }
     }
   }

@@ -3,6 +3,7 @@
 import type { Project } from 'ts-morph';
 
 import type { SymbolEdge } from '../../symbol-graph/symbol-edge-types.js';
+import { resolveSymbolId } from '../../symbol-graph/symbol-id-resolver.js';
 
 import { scanImportSymbolReferences } from './import-symbol-reference-scanner.js';
 
@@ -20,9 +21,13 @@ export function scanSymbolReferences(project: Project): readonly SymbolEdge[] {
 
         if (!symbol) continue;
 
+        const id = resolveSymbolId(symbol);
+
+        if (!id) continue;
+
         edges.push({
           from,
-          to: symbol.getFullyQualifiedName(),
+          to: id,
           type: 'return-type',
         });
       }
@@ -32,10 +37,16 @@ export function scanSymbolReferences(project: Project): readonly SymbolEdge[] {
 
         const returnSymbol = returnType.getSymbol();
 
+        if (!returnSymbol) continue;
+
+        const id = resolveSymbolId(returnSymbol);
+
+        if (!id) continue;
+
         if (returnSymbol) {
           edges.push({
             from,
-            to: returnSymbol.getFullyQualifiedName(),
+            to: id,
             type: 'return-type',
           });
         }
@@ -45,9 +56,12 @@ export function scanSymbolReferences(project: Project): readonly SymbolEdge[] {
 
           if (!parameterSymbol) continue;
 
+          const id = resolveSymbolId(parameterSymbol);
+
+          if (!id) continue;
           edges.push({
             from,
-            to: parameterSymbol.getFullyQualifiedName(),
+            to: id,
             type: 'parameter-type',
           });
         }
