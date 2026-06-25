@@ -3,7 +3,7 @@
 export function resolvePackageName(filePath: string): string | undefined {
   const normalized = filePath.replace(/\\/g, '/');
 
-  const match = normalized.match(/packages\/([^/]+)/);
+  const match = normalized.match(/\/?packages\/([^/]+)/);
 
   if (!match) {
     return undefined;

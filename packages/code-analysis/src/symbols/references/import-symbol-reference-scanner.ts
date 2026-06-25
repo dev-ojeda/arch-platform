@@ -19,12 +19,12 @@ export function scanImportSymbolReferences(project: Project): readonly SymbolEdg
 
     for (const declaration of imports) {
       for (const namedImport of declaration.getNamedImports()) {
-        const symbol = namedImport.getNameNode().getSymbol();
-
+        const symbol = namedImport.getSymbol();
         if (!symbol) continue;
+        const aliasedSymbol = symbol?.getAliasedSymbol();
+        if (!aliasedSymbol) continue;
 
-        const to = resolveSymbolId(symbol);
-
+        const to = resolveSymbolId(aliasedSymbol);
         if (!to) continue;
 
         for (const node of fromNodes) {
@@ -32,6 +32,7 @@ export function scanImportSymbolReferences(project: Project): readonly SymbolEdg
             from: node.id,
             to,
             type: 'import',
+            kind: 'import',
           });
         }
       }

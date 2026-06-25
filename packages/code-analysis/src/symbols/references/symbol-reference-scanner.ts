@@ -28,7 +28,8 @@ export function scanSymbolReferences(project: Project): readonly SymbolEdge[] {
         edges.push({
           from,
           to: id,
-          type: 'return-type',
+          type: 'property-type',
+          kind: 'property-type',
         });
       }
 
@@ -48,6 +49,7 @@ export function scanSymbolReferences(project: Project): readonly SymbolEdge[] {
             from,
             to: id,
             type: 'return-type',
+            kind: 'return-type',
           });
         }
 
@@ -63,6 +65,7 @@ export function scanSymbolReferences(project: Project): readonly SymbolEdge[] {
             from,
             to: id,
             type: 'parameter-type',
+            kind: 'parameter-type',
           });
         }
       }

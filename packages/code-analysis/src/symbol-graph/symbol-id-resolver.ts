@@ -9,13 +9,15 @@ export function resolveSymbolId(symbol: Symbol): string | undefined {
     return undefined;
   }
 
-  const sourceFile = declaration.getSourceFile().getFilePath();
+  const sourceFile = normalizePath(declaration.getSourceFile().getFilePath());
 
-  const name = symbol.getName();
+  return `${sourceFile}#${symbol.getName()}`;
+}
 
+export function normalizeSymbolId(sourceFile: string, name: string): string {
   return `${normalizePath(sourceFile)}#${name}`;
 }
 
-function normalizePath(value: string) {
+function normalizePath(value: string): string {
   return value.replace(/\\/g, '/');
 }
