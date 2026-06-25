@@ -2,10 +2,13 @@
 
 import type { Project } from 'ts-morph';
 
-import type { SymbolGraphEdge } from '../../symbol-graph/symbol-edge-types.js';
+import type { SymbolEdge } from '../../symbol-graph/symbol-edge-types.js';
+import { resolveSymbolId } from '../../symbol-graph/symbol-id-resolver.js';
 
-export function scanSymbolReferences(project: Project): readonly SymbolGraphEdge[] {
-  const edges: SymbolGraphEdge[] = [];
+import { scanImportSymbolReferences } from './import-symbol-reference-scanner.js';
+
+export function scanSymbolReferences(project: Project): readonly SymbolEdge[] {
+  const edges: SymbolEdge[] = [];
 
   for (const sourceFile of project.getSourceFiles()) {
     for (const declaration of sourceFile.getClasses()) {
@@ -18,9 +21,14 @@ export function scanSymbolReferences(project: Project): readonly SymbolGraphEdge
 
         if (!symbol) continue;
 
+        const id = resolveSymbolId(symbol);
+
+        if (!id) continue;
+
         edges.push({
           from,
-          to: symbol.getFullyQualifiedName(),
+          to: id,
+          type: 'property-type',
           kind: 'property-type',
         });
       }
@@ -30,10 +38,17 @@ export function scanSymbolReferences(project: Project): readonly SymbolGraphEdge
 
         const returnSymbol = returnType.getSymbol();
 
+        if (!returnSymbol) continue;
+
+        const id = resolveSymbolId(returnSymbol);
+
+        if (!id) continue;
+
         if (returnSymbol) {
           edges.push({
             from,
-            to: returnSymbol.getFullyQualifiedName(),
+            to: id,
+            type: 'return-type',
             kind: 'return-type',
           });
         }
@@ -43,9 +58,13 @@ export function scanSymbolReferences(project: Project): readonly SymbolGraphEdge
 
           if (!parameterSymbol) continue;
 
+          const id = resolveSymbolId(parameterSymbol);
+
+          if (!id) continue;
           edges.push({
             from,
-            to: parameterSymbol.getFullyQualifiedName(),
+            to: id,
+            type: 'parameter-type',
             kind: 'parameter-type',
           });
         }
@@ -53,5 +72,5 @@ export function scanSymbolReferences(project: Project): readonly SymbolGraphEdge
     }
   }
 
-  return edges;
+  return [...edges, ...scanImportSymbolReferences(project)];
 }

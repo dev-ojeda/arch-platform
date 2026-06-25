@@ -1,14 +1,22 @@
 // packages/code-analysis/src/symbol-graph/symbol-edge-types.ts
 
-export type SymbolEdgeKind =
+export type SymbolEdgeType =
+  | 'import'
   | 'extends'
   | 'implements'
+  | 'call'
+  | 'type-reference'
   | 'property-type'
   | 'parameter-type'
-  | 'return-type';
+  | 'return-type'
+  | 'instanceof';
 
-export interface SymbolGraphEdge {
+export interface SymbolEdge {
   readonly from: string;
+
   readonly to: string;
-  readonly kind: SymbolEdgeKind;
+
+  readonly type: SymbolEdgeType;
+
+  readonly kind: SymbolEdgeType;
 }
