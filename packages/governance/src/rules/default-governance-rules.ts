@@ -6,11 +6,11 @@ import { WorkspacePackageRule } from '../workspace/workspace-package-rule.js';
 
 import { DependencyLayerRule } from './dependency-layer-rule.js';
 import { ForbiddenDependencyRule } from './forbidden-dependency-rule.js';
+import { OnlyPublicApiRule } from './public-api/only-public-api.rule.js';
 import { ValidatePackageStructureRule } from './validate-package-structure.rule.js';
 
 export function createDefaultGovernanceRules(): GovernanceRule[] {
   return [
-    // Workspace structure
     new WorkspacePackageRule(),
 
     new ValidatePackageStructureRule(),
@@ -22,5 +22,7 @@ export function createDefaultGovernanceRules(): GovernanceRule[] {
 
     // Architecture governance
     new DependencyLayerRule(),
+
+    new OnlyPublicApiRule(),
   ];
 }
