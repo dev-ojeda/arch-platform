@@ -258,7 +258,11 @@ importers:
         specifier: workspace:*
         version: link:../../tooling
 
-  packages/governance: {}
+  packages/governance:
+    dependencies:
+      '@arch/code-analysis':
+        specifier: workspace:*
+        version: link:../code-analysis
 
   packages/infrastructure:
     dependencies:

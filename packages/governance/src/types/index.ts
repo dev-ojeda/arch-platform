@@ -3,11 +3,11 @@
 export type { CycleDetectionResult } from './cycle-detection-result.js';
 export type { DependencyMatrix, Layer } from './dependency-layer.js';
 export type {
+  GovernanceAnalysisContext,
   GovernanceArchMetadata,
   GovernanceBoundaries,
   GovernanceContext,
-  GovernancePackage,
-  GovernancePackageManifest,
+  GovernanceExecutionContext,
   PackageManifest,
   ResolvedPackage,
 } from './governance-context.js';

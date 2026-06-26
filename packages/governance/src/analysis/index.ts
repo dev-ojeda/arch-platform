@@ -7,3 +7,5 @@ export {
   topoLevels,
   topologySort,
 } from './graph/index.js';
+
+export * from './code-analysis/index.js';
