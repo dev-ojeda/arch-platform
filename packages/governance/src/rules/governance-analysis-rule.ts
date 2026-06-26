@@ -1,6 +1,6 @@
 // packages/governance/src/rules/governance-analysis-rule.ts
 
-import type { Diagnostic } from '../diagnostics/diagnostic.js';
+import type { Diagnostic } from '../types/diagnostic.js';
 import type { GovernanceExecutionContext } from '../types/governance-context.js';
 
 export interface GovernanceAnalysisRule {

@@ -1,13 +1,17 @@
 // packages/governance/src/engine/governance-engine-result.ts
 
-import type { Diagnostic } from '../diagnostics/diagnostic.js';
+import type { Diagnostic } from '../types/diagnostic.js';
+
+import type { GovernanceRuleExecution } from './governance-rule-execution.js';
 
 export interface GovernanceEngineResult {
   readonly success: boolean;
 
-  readonly diagnostics: Diagnostic[];
+  readonly diagnostics: readonly Diagnostic[];
 
   readonly durationMs: number;
 
   readonly evaluatedRules: number;
+
+  readonly executions: readonly GovernanceRuleExecution[];
 }

@@ -1,6 +1,6 @@
-// packages/governance/src/diagnostics/diagnostic.ts
-export type DiagnosticSeverity = 'info' | 'warning' | 'error';
-
+// packages/governance/src/types/diagnostic.ts
+export type DiagnosticSeverity = 'error' | 'warning' | 'info';
+export type DiagnosticLevel = 'info' | 'warning' | 'error';
 export interface DiagnosticLocation {
   file?: string;
 

@@ -1,6 +1,6 @@
 // packages/governance/src/rules/public-api/public-api-scanner.ts
 
-import type { Diagnostic } from '../../diagnostics/diagnostic.js';
+import type { Diagnostic } from '../../types/diagnostic.js';
 import type {
   GovernanceExecutionContext,
   ResolvedPackage,

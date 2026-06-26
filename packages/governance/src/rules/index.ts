@@ -2,6 +2,7 @@
 
 export { createDefaultGovernanceRules } from './default-governance-rules.js';
 export { DependencyRulesEngine } from './dependency-rules.engine.js';
+export type { RuleExecutionResult } from './execution-result-rule.js';
 export { ForbiddenDependencyRule } from './forbidden-dependency-rule.js';
 export type { GovernanceAnalysisRule } from './governance-analysis-rule.js';
 export { PackageJsonRule } from './package-json-rule.js';

@@ -1,8 +1,8 @@
 // packages/governance/src/rules/validate-workspace.ts
 
 import { buildGovernanceExecutionContext } from '../context/build-governance-execution-context.js';
-import type { Diagnostic } from '../diagnostics/diagnostic.js';
 import { GovernanceEngine } from '../engine/governance-engine.js';
+import type { Diagnostic } from '../types/diagnostic.js';
 
 import { createDefaultGovernanceRules } from './default-governance-rules.js';
 

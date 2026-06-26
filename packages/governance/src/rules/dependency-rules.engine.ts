@@ -1,7 +1,7 @@
 // packages/governance/src/analysis/rules/dependency-rules.engine.ts
 
-import type { Diagnostic } from '../diagnostics/diagnostic.js';
 import type { DependencyMatrix, Layer } from '../types/dependency-layer.js';
+import type { Diagnostic } from '../types/diagnostic.js';
 import type { GovernanceContext } from '../types/governance-context.js';
 
 const defaultMatrix: DependencyMatrix = {

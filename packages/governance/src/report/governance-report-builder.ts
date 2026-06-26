@@ -1,33 +1,35 @@
 // packages/governance/src/report/governance-report-builder.ts
 
-import type { Diagnostic } from '../diagnostics/diagnostic.js';
+import type { GovernanceEngineResult } from '../engine/governance-engine-result.js';
 
 import type { GovernanceReport } from './governance-report.js';
 
 export class GovernanceReportBuilder {
-  build(diagnostics: readonly Diagnostic[]): GovernanceReport {
-    const errors = diagnostics.filter((item) => item.severity === 'error').length;
-
-    const warnings = diagnostics.filter((item) => item.severity === 'warning').length;
-
-    const info = diagnostics.filter((item) => item.severity === 'info').length;
-
+  build(result: GovernanceEngineResult): GovernanceReport {
     return {
-      status: errors > 0 ? 'failed' : 'passed',
+      status: result.success ? 'passed' : 'failed',
 
-      summary: {
-        errors,
+      summary: this.createSummary(result.diagnostics),
 
-        warnings,
+      diagnostics: result.diagnostics,
 
-        info,
+      executions: result.executions,
 
-        total: diagnostics.length,
-      },
-
-      diagnostics,
+      durationMs: result.durationMs,
 
       generatedAt: new Date().toISOString(),
+    };
+  }
+
+  private createSummary(diagnostics: readonly { severity: string }[]) {
+    return {
+      errors: diagnostics.filter((item) => item.severity === 'error').length,
+
+      warnings: diagnostics.filter((item) => item.severity === 'warning').length,
+
+      info: diagnostics.filter((item) => item.severity === 'info').length,
+
+      total: diagnostics.length,
     };
   }
 }
