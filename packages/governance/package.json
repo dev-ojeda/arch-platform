@@ -29,5 +29,8 @@
     "typecheck": "tsx ../tooling/src/bin/typecheck.ts",
     "test": "vitest run -c ./vitest.config.ts",
     "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@arch/code-analysis": "workspace:*"
   }
 }

@@ -11,6 +11,11 @@
   "include": [
     "src/**/*.ts"
   ],
+  "references": [
+    {
+      "path": "../code-analysis"
+    }
+  ],
   "exclude": [
     "dist",
     "node_modules"

@@ -1,7 +1,7 @@
 // packages\governance\src\engine\governance-engine.ts
 
 import type { Diagnostic } from '../diagnostics/diagnostic.js';
-import type { GovernanceContext } from '../types/governance-context.js';
+import type { GovernanceExecutionContext } from '../types/governance-context.js';
 
 import type { GovernanceEngineResult } from './governance-engine-result.js';
 import type { GovernanceRule } from './governance-rule.js';
@@ -9,7 +9,7 @@ import type { GovernanceRule } from './governance-rule.js';
 export class GovernanceEngine {
   constructor(private readonly rules: readonly GovernanceRule[]) {}
 
-  async run(context: GovernanceContext): Promise<GovernanceEngineResult> {
+  async run(context: GovernanceExecutionContext): Promise<GovernanceEngineResult> {
     const start = performance.now();
 
     const diagnostics: Diagnostic[] = [];
@@ -47,7 +47,7 @@ export class GovernanceEngine {
 
     const durationMs = performance.now() - start;
 
-    return {
+    return Promise.resolve({
       success: !hasErrors,
 
       diagnostics,
@@ -55,6 +55,6 @@ export class GovernanceEngine {
       durationMs,
 
       evaluatedRules: this.rules.length,
-    };
+    });
   }
 }

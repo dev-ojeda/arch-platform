@@ -5,7 +5,7 @@ import type { Diagnostic } from '../diagnostics/diagnostic.js';
 export interface GovernanceEngineResult {
   readonly success: boolean;
 
-  readonly diagnostics: readonly Diagnostic[];
+  readonly diagnostics: Diagnostic[];
 
   readonly durationMs: number;
 

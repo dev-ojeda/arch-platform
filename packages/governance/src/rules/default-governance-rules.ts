@@ -10,10 +10,17 @@ import { ValidatePackageStructureRule } from './validate-package-structure.rule.
 
 export function createDefaultGovernanceRules(): GovernanceRule[] {
   return [
+    // Workspace structure
     new WorkspacePackageRule(),
+
     new ValidatePackageStructureRule(),
+
+    // Dependency governance
     new ForbiddenDependencyRule(),
+
     new DetectCyclesRule(),
+
+    // Architecture governance
     new DependencyLayerRule(),
   ];
 }
