@@ -18,21 +18,32 @@ export function scanImportSymbolReferences(project: Project): readonly SymbolEdg
     }));
 
     for (const declaration of imports) {
+      const importPath = declaration.getModuleSpecifierValue();
+
       for (const namedImport of declaration.getNamedImports()) {
         const symbol = namedImport.getSymbol();
+
         if (!symbol) continue;
-        const aliasedSymbol = symbol?.getAliasedSymbol();
+
+        const aliasedSymbol = symbol.getAliasedSymbol();
+
         if (!aliasedSymbol) continue;
 
         const to = resolveSymbolId(aliasedSymbol);
+
         if (!to) continue;
 
         for (const node of fromNodes) {
           edges.push({
             from: node.id,
+
             to,
+
             type: 'import',
+
             kind: 'import',
+
+            importPath,
           });
         }
       }

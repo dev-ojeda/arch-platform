@@ -19,4 +19,6 @@ export interface SymbolEdge {
   readonly type: SymbolEdgeType;
 
   readonly kind: SymbolEdgeType;
+
+  readonly importPath?: string;
 }

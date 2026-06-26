@@ -3,11 +3,13 @@
 import type { PackageManifest } from '../../types/governance-context.js';
 
 export class ExportMapReader {
-  isExported(importPath: string, manifest: PackageManifest): boolean {
+  isExported(packageName: string, importPath: string, manifest: PackageManifest): boolean {
     if (!manifest.exports) {
-      return importPath === manifest.name;
+      return importPath === packageName;
     }
 
-    return Object.keys(manifest.exports).includes(importPath);
+    const exportKey = importPath === packageName ? '.' : importPath.replace(`${packageName}`, '.');
+
+    return Object.keys(manifest.exports).some((key) => key === exportKey);
   }
 }
