@@ -1,6 +1,6 @@
 // packages/governance/src/diagnostics/render-diagnostics.ts
 
-import type { Diagnostic } from './diagnostic.js';
+import type { Diagnostic } from '../types/diagnostic.js';
 
 export function renderDiagnostics(diagnostics: Diagnostic[]): void {
   if (diagnostics.length === 0) {

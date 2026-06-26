@@ -1,10 +1,12 @@
 // packages/governance/src/rules/forbidden-dependency-rule.ts
 
-import type { Diagnostic } from '../diagnostics/diagnostic.js';
+import { GovernanceRuleId } from '../engine/governance-rule-id.js';
 import type { GovernanceRule } from '../engine/governance-rule.js';
+import type { Diagnostic } from '../types/diagnostic.js';
 import type { GovernanceContext } from '../types/governance-context.js';
 
 export class ForbiddenDependencyRule implements GovernanceRule {
+  readonly id = GovernanceRuleId.ForbiddenDependency;
   readonly name = 'forbidden-dependency-rule';
 
   run(context: GovernanceContext): Promise<Diagnostic[]> {

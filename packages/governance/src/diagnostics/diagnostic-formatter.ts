@@ -1,5 +1,6 @@
 // packages/governance/src/diagnostics/diagnostic-formatter.ts
-import type { Diagnostic } from './diagnostic.js';
+
+import type { Diagnostic } from '../types/diagnostic.js';
 
 export function formatDiagnostic(diagnostic: Diagnostic): string {
   const location = diagnostic.location?.file ? ` (${diagnostic.location.file})` : '';

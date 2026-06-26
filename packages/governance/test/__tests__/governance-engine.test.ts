@@ -1,113 +1,116 @@
-// packages\governance\test\__tests__\governance-engine.test.ts
+// packages/governance/test/__tests__/governance-engine.test.ts
+
 import { describe, expect, it } from 'vitest';
 
 import { GovernanceEngine } from '../../src/engine/governance-engine.js';
 import type { GovernanceRule } from '../../src/engine/governance-rule.js';
-import type { GovernanceContext } from '../../src/types/governance-context.js';
+import type { Diagnostic } from '../../src/types/diagnostic.js';
+import type { GovernanceExecutionContext } from '../../src/types/governance-context.js';
+import { TestRuleId } from '../helpers/test-rule-id.js';
 
-describe('CreateTestGovernanceEngine', () => {
-  const context: GovernanceContext = {
+describe('GovernanceEngine', () => {
+  const warningDiagnostic: Diagnostic = {
+    code: 'TEST_WARNING',
+    severity: 'warning',
+    message: 'test warning',
+  };
+
+  const createSuccessfulRule = (
+    id: TestRuleId,
+    diagnostics: Diagnostic[] = [],
+  ): GovernanceRule => ({
+    id,
+    name: id,
+    run: async () => diagnostics,
+  });
+
+  const createFailingRule = (id: TestRuleId, message = 'boom'): GovernanceRule => ({
+    id,
+    name: id,
+    run: async () => {
+      throw new Error(message);
+    },
+  });
+  const context: GovernanceExecutionContext = {
     workspaceRoot: '/workspace',
 
     packages: [],
+
+    analysis: {
+      packageGraph: {} as never,
+      symbolGraph: {
+        nodes: [],
+        edges: [],
+      },
+    },
   };
   it('returns successful result when no rules are registered', async () => {
     const result = await new GovernanceEngine([]).run(context);
-
     expect(result.success).toBe(true);
 
     expect(result.diagnostics).toEqual([]);
 
     expect(result.evaluatedRules).toBe(0);
 
+    expect(result.executions).toEqual([]);
+
     expect(result.durationMs).toBeGreaterThanOrEqual(0);
   });
+
   it('collects diagnostics from successful rules', async () => {
-    const rule: GovernanceRule = {
-      name: 'test-rule',
-
-      run: () => {
-        return Promise.resolve([
-          {
-            code: 'TEST_WARNING',
-
-            severity: 'warning',
-
-            message: 'test warning',
-          },
-        ]);
-      },
-    };
+    const rule = createSuccessfulRule(TestRuleId.TestSuccess, [warningDiagnostic]);
 
     const result = await new GovernanceEngine([rule]).run(context);
-
     expect(result.success).toBe(true);
-
     expect(result.evaluatedRules).toBe(1);
-
     expect(result.diagnostics).toHaveLength(1);
+    expect(result.executions).toHaveLength(1);
 
-    expect(result.diagnostics[0]?.code).toBe('TEST_WARNING');
+    expect(result.executions[0]).toMatchObject({
+      rule: TestRuleId.TestSuccess,
+      success: true,
+      diagnostics: 1,
+    });
   });
-  it('converts rule failures into diagnostics', async () => {
-    const rule: GovernanceRule = {
-      name: 'failing-rule',
 
-      run: async () => Promise.reject(new Error('boom')),
-    };
+  it('converts rule failures into execution failures', async () => {
+    const rule = createFailingRule(TestRuleId.TestFailure, 'boom');
 
     const result = await new GovernanceEngine([rule]).run(context);
-
     expect(result.success).toBe(false);
-
-    expect(result.evaluatedRules).toBe(1);
-
-    expect(result.diagnostics).toHaveLength(1);
 
     expect(result.diagnostics[0]).toMatchObject({
       code: 'RULE_EXECUTION_FAILURE',
-
       severity: 'error',
-
-      source: 'failing-rule',
-
+      source: TestRuleId.TestFailure,
       message: 'boom',
     });
+
+    expect(result.executions[0]).toMatchObject({
+      rule: TestRuleId.TestFailure,
+      success: false,
+    });
   });
-  it('aggregates diagnostics from successful and failed rules', async () => {
-    const successfulRule: GovernanceRule = {
-      name: 'success-rule',
 
-      run: () => {
-        return Promise.resolve([
-          {
-            code: 'TEST_WARNING',
+  it('tracks independent execution state per rule', async () => {
+    const successRule = createSuccessfulRule(TestRuleId.TestSuccess, [warningDiagnostic]);
 
-            severity: 'warning',
+    const failureRule = createFailingRule(TestRuleId.TestFailure, 'failure');
 
-            message: 'warning',
-          },
-        ]);
-      },
-    };
-
-    const failingRule: GovernanceRule = {
-      name: 'failure-rule',
-      run: async () => Promise.reject(new Error('failure')),
-    };
-
-    const result = await new GovernanceEngine([successfulRule, failingRule]).run(context);
-
+    const result = await new GovernanceEngine([successRule, failureRule]).run(context);
     expect(result.success).toBe(false);
 
-    expect(result.evaluatedRules).toBe(2);
-
-    expect(result.diagnostics).toHaveLength(2);
-
-    expect(result.diagnostics.some((diagnostic) => diagnostic.code === 'TEST_WARNING')).toBe(true);
-
-    expect(
-      result.diagnostics.some((diagnostic) => diagnostic.code === 'RULE_EXECUTION_FAILURE'),
-    ).toBe(true);
+    expect(result.executions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          rule: TestRuleId.TestSuccess,
+          success: true,
+        }),
+        expect.objectContaining({
+          rule: TestRuleId.TestFailure,
+          success: false,
+        }),
+      ]),
+    );
   });
 });

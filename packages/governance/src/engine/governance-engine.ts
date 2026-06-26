@@ -1,60 +1,111 @@
 // packages\governance\src\engine\governance-engine.ts
 
-import type { Diagnostic } from '../diagnostics/diagnostic.js';
+import { createStopwatch } from '../helpers/create-stopwatch.js';
+import type { RuleExecutionResult } from '../rules/execution-result-rule.js';
+import type { Diagnostic, DiagnosticSeverity } from '../types/diagnostic.js';
 import type { GovernanceExecutionContext } from '../types/governance-context.js';
 
 import type { GovernanceEngineResult } from './governance-engine-result.js';
+import type { GovernanceRuleExecution } from './governance-rule-execution.js';
 import type { GovernanceRule } from './governance-rule.js';
 
 export class GovernanceEngine {
   constructor(private readonly rules: readonly GovernanceRule[]) {}
 
   async run(context: GovernanceExecutionContext): Promise<GovernanceEngineResult> {
-    const start = performance.now();
+    const stopwatch = createStopwatch();
 
     const diagnostics: Diagnostic[] = [];
+    const executions: GovernanceRuleExecution[] = [];
 
-    const results = await Promise.allSettled(this.rules.map((rule) => rule.run(context)));
+    const results = await Promise.all(this.rules.map((rule) => this.executeRule(rule, context)));
 
-    for (const [index, result] of results.entries()) {
-      const rule = this.rules[index];
-
-      if (!rule) {
-        continue;
+    for (const execution of results) {
+      if (execution.error) {
+        diagnostics.push(this.createFailureDiagnostic(execution));
+      } else {
+        diagnostics.push(...execution.diagnostics);
       }
 
-      if (result.status === 'fulfilled') {
-        diagnostics.push(...result.value);
+      executions.push({
+        rule: execution.rule.id,
 
-        continue;
-      }
+        name: execution.rule.name,
 
-      diagnostics.push({
-        code: 'RULE_EXECUTION_FAILURE',
+        success: execution.error === undefined,
 
-        severity: 'error',
+        durationMs: execution.durationMs,
 
-        source: rule.name,
+        diagnostics: execution.diagnostics.length,
 
-        message:
-          result.reason instanceof Error ? result.reason.message : 'Unknown governance rule error',
+        severity: execution.error ? 'error' : this.getSeverity(execution.diagnostics),
 
-        hint: `Review implementation of governance rule "${rule.name}".`,
+        error: this.getErrorMessage(execution.error),
       });
     }
 
-    const hasErrors = diagnostics.some((diagnostic) => diagnostic.severity === 'error');
-
-    const durationMs = performance.now() - start;
-
-    return Promise.resolve({
-      success: !hasErrors,
+    return {
+      success: !diagnostics.some((d) => d.severity === 'error'),
 
       diagnostics,
 
-      durationMs,
+      durationMs: stopwatch.milliseconds(),
 
       evaluatedRules: this.rules.length,
-    });
+
+      executions,
+    };
+  }
+
+  private async executeRule(
+    rule: GovernanceRule,
+    context: GovernanceExecutionContext,
+  ): Promise<RuleExecutionResult> {
+    const stopwatch = createStopwatch();
+
+    try {
+      return {
+        rule,
+        diagnostics: await rule.run(context),
+        durationMs: stopwatch.milliseconds(),
+      };
+    } catch (error) {
+      return {
+        rule,
+        diagnostics: [],
+        durationMs: stopwatch.milliseconds(),
+        error,
+      };
+    }
+  }
+
+  private createFailureDiagnostic(execution: RuleExecutionResult): Diagnostic {
+    return {
+      code: 'RULE_EXECUTION_FAILURE',
+      severity: 'error',
+      source: execution.rule.name,
+      message: this.getErrorMessage(execution.error),
+      hint: `Review implementation of governance rule "${execution.rule.name}".`,
+    };
+  }
+
+  private getErrorMessage(error: unknown): string {
+    if (error instanceof Error) {
+      return error.message;
+    }
+
+    return String(error);
+  }
+
+  private getSeverity(diagnostics: Diagnostic[]): DiagnosticSeverity {
+    if (diagnostics.some((d) => d.severity === 'error')) {
+      return 'error';
+    }
+
+    if (diagnostics.some((d) => d.severity === 'warning')) {
+      return 'warning';
+    }
+
+    return 'info';
   }
 }

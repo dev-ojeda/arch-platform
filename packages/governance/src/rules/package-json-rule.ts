@@ -1,6 +1,6 @@
 // packages/governance/src/rules/package-json-rule.ts
 
-import type { Diagnostic } from '../diagnostics/diagnostic.js';
+import type { Diagnostic } from '../types/diagnostic.js';
 import type { GovernanceContext } from '../types/governance-context.js';
 
 export class PackageJsonRule {

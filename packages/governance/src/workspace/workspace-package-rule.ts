@@ -3,11 +3,13 @@
 import { stat } from 'node:fs/promises';
 import path from 'node:path';
 
-import type { Diagnostic } from '../diagnostics/diagnostic.js';
+import { GovernanceRuleId } from '../engine/governance-rule-id.js';
 import type { GovernanceRule } from '../engine/governance-rule.js';
+import type { Diagnostic } from '../types/diagnostic.js';
 import type { GovernanceContext } from '../types/governance-context.js';
 
 export class WorkspacePackageRule implements GovernanceRule {
+  readonly id = GovernanceRuleId.WorkspacePackageRule;
   readonly name = 'workspace-package-rule';
 
   async run(context: GovernanceContext): Promise<Diagnostic[]> {
