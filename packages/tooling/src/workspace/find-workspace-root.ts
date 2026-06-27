@@ -1,21 +1,21 @@
 // packages/tooling/src/workspace/find-workspace-root.ts
 
-import fs from 'node:fs';
-import path from 'node:path';
+import { existsSync } from 'node:fs';
+import { dirname, join, resolve } from 'node:path';
 
 const WORKSPACE_FILE = 'pnpm-workspace.yaml';
 
 export function findWorkspaceRoot(startDir: string): string {
-  let current = path.resolve(startDir);
+  let current = resolve(startDir);
 
   while (true) {
-    const workspaceFile = path.join(current, WORKSPACE_FILE);
+    const workspaceFile = join(current, WORKSPACE_FILE);
 
-    if (fs.existsSync(workspaceFile)) {
+    if (existsSync(workspaceFile)) {
       return current;
     }
 
-    const parent = path.dirname(current);
+    const parent = dirname(current);
 
     if (parent === current) {
       throw new Error(`Unable to locate workspace root from "${startDir}"`);

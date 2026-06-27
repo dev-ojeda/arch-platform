@@ -1,12 +1,11 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../config/tsconfig/library.json",
   "compilerOptions": {
-    "rootDir": "./src",
-    "outDir": "./dist",
-    "composite": true,
+    "outDir": "dist",
+    "rootDir": "src",
     "tsBuildInfoFile": "./.turbo/code-analysis.tsbuildinfo"
   },
   "include": [
-    "src"
+    "src/**/*.ts"
   ]
 }

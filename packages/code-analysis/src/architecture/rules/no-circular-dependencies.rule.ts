@@ -43,11 +43,13 @@ export class NoCircularDependenciesRule implements ArchitectureRule {
         continue;
       }
 
-      if (!result.has(from.package)) {
-        result.set(from.package, new Set());
-      }
+      const dependencies = result.get(from.package);
 
-      result.get(from.package)!.add(to.package);
+      if (dependencies) {
+        dependencies.add(to.package);
+      } else {
+        result.set(from.package, new Set([to.package]));
+      }
     }
 
     return result;
@@ -80,7 +82,7 @@ export class NoCircularDependenciesRule implements ArchitectureRule {
 
     stack.add(current);
 
-    const dependencies = graph.get(current) ?? [];
+    const dependencies: ReadonlySet<string> = graph.get(current) ?? new Set<string>();
 
     for (const next of dependencies) {
       this.detectCycle(next, graph, visited, stack, violations);

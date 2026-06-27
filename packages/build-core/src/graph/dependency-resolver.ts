@@ -64,8 +64,12 @@ export class DependencyResolver {
 
     const result: string[] = [];
 
-    while (ready.length) {
-      const name = ready.shift()!;
+    while (ready.length > 0) {
+      const name = ready.shift();
+
+      if (!name) {
+        continue;
+      }
 
       result.push(name);
 
@@ -79,7 +83,6 @@ export class DependencyResolver {
         }
       }
     }
-
     return result;
   }
 }

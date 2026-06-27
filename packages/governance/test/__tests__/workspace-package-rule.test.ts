@@ -1,8 +1,8 @@
 // packages\governance\test\__tests__\workspace-package-rule.test.ts
 
-import fs from 'node:fs/promises';
-import os from 'node:os';
-import path from 'node:path';
+import { mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
@@ -14,7 +14,7 @@ describe('CreateTestWorkspacePackageRule', () => {
   afterEach(async () => {
     await Promise.all(
       temporaryDirectories.map((directory) =>
-        fs.rm(directory, {
+        rm(directory, {
           recursive: true,
           force: true,
         }),
@@ -24,11 +24,11 @@ describe('CreateTestWorkspacePackageRule', () => {
     temporaryDirectories.length = 0;
   });
   it('does not report diagnostics when root package.json exists', async () => {
-    const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'governance-workspace-'));
+    const workspaceRoot = await mkdtemp(join(tmpdir(), 'governance-workspace-'));
 
     temporaryDirectories.push(workspaceRoot);
 
-    await fs.writeFile(path.join(workspaceRoot, 'package.json'), '{}', 'utf8');
+    await writeFile(join(workspaceRoot, 'package.json'), '{}', 'utf8');
 
     const diagnostics = await new WorkspacePackageRule().run({
       workspaceRoot,
@@ -38,7 +38,7 @@ describe('CreateTestWorkspacePackageRule', () => {
     expect(diagnostics).toEqual([]);
   });
   it('reports diagnostics when root package.json is missing', async () => {
-    const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'governance-workspace-'));
+    const workspaceRoot = await mkdtemp(join(tmpdir(), 'governance-workspace-'));
 
     temporaryDirectories.push(workspaceRoot);
 

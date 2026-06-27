@@ -1,7 +1,7 @@
 // packages/governance/src/rules/validate-package-structure.rule.ts
 
 import { stat } from 'node:fs/promises';
-import path from 'node:path';
+import { join } from 'node:path';
 
 import { GovernanceRuleId } from '../engine/governance-rule-id.js';
 import type { GovernanceRule } from '../engine/governance-rule.js';
@@ -16,7 +16,7 @@ export class ValidatePackageStructureRule implements GovernanceRule {
     const diagnostics: Diagnostic[] = [];
 
     for (const pkg of context.packages) {
-      const srcPath = path.join(pkg.rootPath, 'src');
+      const srcPath = join(pkg.rootPath, 'src');
 
       try {
         await stat(srcPath);

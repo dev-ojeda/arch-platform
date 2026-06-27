@@ -1,15 +1,21 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
+    "target": "ES2023",
+    "lib": ["ES2023", "ESNext.Disposable"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "strict": true,
-    "isolatedModules": true,
-    "verbatimModuleSyntax": true,
     "moduleDetection": "force",
-    "resolveJsonModule": true,
+    "strict": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "useDefineForClassFields": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
     "skipLibCheck": true,
     "types": ["node"]
   }

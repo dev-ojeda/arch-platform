@@ -1,7 +1,7 @@
 // packages/testing/src/utils/normalize-path.ts
 
-import path from 'node:path';
+import { posix } from 'node:path';
 
 export function normalizePath(targetPath: string): string {
-  return path.posix.normalize(targetPath.replaceAll('\\', '/'));
+  return posix.normalize(targetPath.replaceAll('\\', '/'));
 }

@@ -1,13 +1,13 @@
 // packages/build-core/src/fs/path-utils.ts
 
-import path from 'node:path';
+import { dirname, join, relative, resolve } from 'node:path';
 
 export function joinPath(...segments: string[]): string {
-  return path.join(...segments);
+  return join(...segments);
 }
 
 export function packagePath(root: string, ...segments: string[]): string {
-  return path.join(root, ...segments);
+  return join(root, ...segments);
 }
 
 export function getStatePath(workspaceRoot: string): string {
@@ -22,16 +22,16 @@ export function distPath(root: string): string {
 }
 
 export function dirName(dirPath: string): string {
-  return path.dirname(dirPath);
+  return dirname(dirPath);
 }
 
 export function statePath(workspaceRoot: string): string {
-  return path.join(workspaceRoot, '.arch', 'state.json');
+  return join(workspaceRoot, '.arch', 'state.json');
 }
 export function resolvePath(...segments: string[]): string {
-  return path.resolve(...segments);
+  return resolve(...segments);
 }
 
 export function relativePath(from: string, to: string): string {
-  return path.relative(from, to);
+  return relative(from, to);
 }

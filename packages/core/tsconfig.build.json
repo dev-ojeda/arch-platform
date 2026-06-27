@@ -2,12 +2,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "emitDeclarationOnly": true,
-    "noEmit": false
-  },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "test"
-  ]
+    "declaration": true,
+    "declarationMap": true,
+    "skipLibCheck": true
+  }
 }

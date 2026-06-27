@@ -1,35 +1,35 @@
 // packages/infrastructure/src/runtime/node-path-service.ts
 
-import path from 'node:path';
+import { basename, dirname, isAbsolute, join, normalize, relative, resolve } from 'node:path';
 
 import type { PathService } from '@arch/contracts';
 
 export class NodePathService implements PathService {
   join(...segments: string[]): string {
-    return path.join(...segments);
+    return join(...segments);
   }
 
   normalize(targetPath: string): string {
-    return path.normalize(targetPath);
+    return normalize(targetPath);
   }
 
   relative(from: string, to: string): string {
-    return path.relative(from, to);
+    return relative(from, to);
   }
 
   isAbsolute(targetPath: string): boolean {
-    return path.isAbsolute(targetPath);
+    return isAbsolute(targetPath);
   }
 
   resolve(...segments: string[]): string {
-    return path.resolve(...segments);
+    return resolve(...segments);
   }
 
   dirname(targetPath: string): string {
-    return path.dirname(targetPath);
+    return dirname(targetPath);
   }
 
   basename(targetPath: string): string {
-    return path.basename(targetPath);
+    return basename(targetPath);
   }
 }

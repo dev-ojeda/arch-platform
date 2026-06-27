@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../config/tsconfig/library.json",
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
@@ -13,13 +13,7 @@
   ],
   "exclude": [
     "dist",
-    "node_modules",
-    "test",
-    "**/*.test.ts",
-    "**/__tests__/**",
-    "**/*.js",
-    "**/*.d.ts",
-    "**/*.d.ts.map"
+    "node_modules"
   ],
   "references": [
     {

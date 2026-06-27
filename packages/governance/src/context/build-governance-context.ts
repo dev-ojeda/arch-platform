@@ -1,7 +1,7 @@
 // packages/governance/src/context/build-governance-context.ts
 
-import fs from 'node:fs/promises';
-import path from 'node:path';
+import { readdir, readFile, stat } from 'node:fs/promises';
+import { join } from 'node:path';
 
 import { parseJson } from '../helpers/helpers-json-parse.js';
 import type {
@@ -26,10 +26,10 @@ function collectInternalDependencies(manifest: PackageManifest): string[] {
 }
 
 async function loadBoundaries(packageRoot: string): Promise<GovernanceBoundaries | undefined> {
-  const boundariesPath = path.join(packageRoot, '.boundaries.json');
+  const boundariesPath = join(packageRoot, '.boundaries.json');
 
   try {
-    const content = await fs.readFile(boundariesPath, 'utf8');
+    const content = await readFile(boundariesPath, 'utf8');
 
     return parseJson<GovernanceBoundaries>(content);
   } catch (error) {
@@ -46,12 +46,12 @@ async function loadBoundaries(packageRoot: string): Promise<GovernanceBoundaries
 export async function buildGovernanceContext(workspaceRoot: string): Promise<GovernanceContext> {
   const packages: ResolvedPackage[] = [];
 
-  const packagesRoot = path.join(workspaceRoot, 'packages');
+  const packagesRoot = join(workspaceRoot, 'packages');
 
   let directories: string[];
 
   try {
-    directories = await fs.readdir(packagesRoot);
+    directories = await readdir(packagesRoot);
   } catch (error) {
     if (isNodeError(error) && error.code === 'ENOENT') {
       return {
@@ -64,18 +64,18 @@ export async function buildGovernanceContext(workspaceRoot: string): Promise<Gov
   }
 
   for (const directory of directories) {
-    const packageRoot = path.join(packagesRoot, directory);
+    const packageRoot = join(packagesRoot, directory);
 
-    const stat = await fs.stat(packageRoot);
+    const stats = await stat(packageRoot);
 
-    if (!stat.isDirectory()) {
+    if (!stats.isDirectory()) {
       continue;
     }
 
-    const manifestPath = path.join(packageRoot, 'package.json');
+    const manifestPath = join(packageRoot, 'package.json');
 
     try {
-      const content = await fs.readFile(manifestPath, 'utf8');
+      const content = await readFile(manifestPath, 'utf8');
 
       const manifest = parseJson<PackageManifest>(content);
 

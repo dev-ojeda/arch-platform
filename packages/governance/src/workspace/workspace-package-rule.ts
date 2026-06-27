@@ -1,7 +1,7 @@
 // packages/governance/src/workspace/workspace-package-rule.ts
 
 import { stat } from 'node:fs/promises';
-import path from 'node:path';
+import { join } from 'node:path';
 
 import { GovernanceRuleId } from '../engine/governance-rule-id.js';
 import type { GovernanceRule } from '../engine/governance-rule.js';
@@ -15,7 +15,7 @@ export class WorkspacePackageRule implements GovernanceRule {
   async run(context: GovernanceContext): Promise<Diagnostic[]> {
     const diagnostics: Diagnostic[] = [];
 
-    const packageJsonPath = path.join(context.workspaceRoot, 'package.json');
+    const packageJsonPath = join(context.workspaceRoot, 'package.json');
 
     try {
       await stat(packageJsonPath);

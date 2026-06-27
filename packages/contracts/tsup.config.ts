@@ -1,15 +1,3 @@
-// packages\contracts\tsup.config.ts
+import { createLibraryConfig } from '../../config/tsup/index.js';
 
-import { defineConfig } from 'tsup';
-
-import { baseConfig } from '../../tsup.base.js';
-
-export default defineConfig({
-  ...baseConfig,
-
-  entry: ['src/index.ts'],
-
-  dts: false,
-
-  external: [/^@arch\//],
-});
+export default createLibraryConfig();

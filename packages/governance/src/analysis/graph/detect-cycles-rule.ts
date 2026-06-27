@@ -11,23 +11,26 @@ import { detectCycles } from './detect-cycles.js';
 export class DetectCyclesRule implements GovernanceRule {
   readonly id = GovernanceRuleId.DetectCycles;
   readonly name = 'detect-cycles-rule';
+
   run(context: GovernanceContext): Promise<Diagnostic[]> {
     const graph = buildWorkspaceGraph(context);
 
     const result = detectCycles(graph.nodes);
 
     if (!result.hasCycle) {
-      return Promise.resolve([]);
+      const diagnostics: Diagnostic[] = [];
+
+      return Promise.resolve(diagnostics);
     }
 
-    return Promise.resolve(
-      result.cycles.map((cycle) => ({
-        code: 'CYCLE_DETECTED',
-        severity: 'error',
-        source: this.name,
-        message: `Cycle detected: ${cycle.join(' -> ')}`,
-        metadata: { cycle },
-      })),
-    );
+    const diagnostics = result.cycles.map<Diagnostic>((cycle) => ({
+      code: 'CYCLE_DETECTED',
+      severity: 'error',
+      source: this.name,
+      message: `Cycle detected: ${cycle.join(' -> ')}`,
+      metadata: { cycle },
+    }));
+
+    return Promise.resolve(diagnostics);
   }
 }

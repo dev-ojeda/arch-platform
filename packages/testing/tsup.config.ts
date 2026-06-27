@@ -1,12 +1,3 @@
-// packages\testing\tsup.config.ts
-import { defineConfig } from 'tsup';
+import { createLibraryConfig } from '../../config/tsup/index.js';
 
-import { libraryConfig } from '../../tsup.library.js';
-
-export default defineConfig({
-  ...libraryConfig,
-
-  entry: {
-    index: 'src/index.ts',
-  },
-});
+export default createLibraryConfig();

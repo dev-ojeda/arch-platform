@@ -1,7 +1,7 @@
 // packages/cli/src/services/checks/check-package-consistency.ts
 
-import fs from 'node:fs';
-import path from 'node:path';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 
 import type { DoctorCheck } from './doctor-check.js';
 
@@ -13,9 +13,9 @@ export const checkPackageConsistency: DoctorCheck = {
   name: 'package-consistency',
 
   async run() {
-    const packagesDir = path.resolve('packages');
+    const packagesDir = resolve('packages');
 
-    if (!fs.existsSync(packagesDir)) {
+    if (!existsSync(packagesDir)) {
       return {
         severity: 'error',
 
@@ -25,20 +25,20 @@ export const checkPackageConsistency: DoctorCheck = {
       };
     }
 
-    const packageDirectories = fs.readdirSync(packagesDir);
+    const packageDirectories = readdirSync(packagesDir);
 
     const names = new Set<string>();
 
     const duplicates: string[] = [];
 
     for (const packageDirectory of packageDirectories) {
-      const packageJsonPath = path.join(packagesDir, packageDirectory, 'package.json');
+      const packageJsonPath = join(packagesDir, packageDirectory, 'package.json');
 
-      if (!fs.existsSync(packageJsonPath)) {
+      if (!existsSync(packageJsonPath)) {
         continue;
       }
 
-      const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8')) as PackageJson;
+      const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8')) as PackageJson;
 
       const packageName = packageJson.name;
 

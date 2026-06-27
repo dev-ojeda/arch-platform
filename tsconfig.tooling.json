@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false,
+    "noEmit": true
+  },
+  "include": [
+    "*.ts",
+    "*.mts",
+    "*.cts"
+  ],
+  "exclude": [
+    "node_modules",
+    "packages/**"
+  ]
+}

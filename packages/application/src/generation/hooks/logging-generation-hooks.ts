@@ -8,6 +8,8 @@ import {
   type TemplateVariables,
 } from '@arch/contracts';
 
+import { errorMessage } from '../../errors/error-message.js';
+
 export class LoggingGenerationHooks<
   TVariables extends TemplateVariables = TemplateVariables,
 > implements GenerationHooks<TVariables> {
@@ -42,12 +44,12 @@ export class LoggingGenerationHooks<
   onError(error: unknown, context: GenerationContext<TVariables>): Promise<void> {
     reportDiagnostic(context, {
       level: 'error',
-      message: error instanceof Error ? error.message : String(error),
+      message: error instanceof Error ? error.message : errorMessage(error),
       timestamp: 0,
     });
 
     context.logger.error('[arch] generation failed', {
-      error: error instanceof Error ? error.message : String(error),
+      error: error instanceof Error ? error.message : errorMessage(error),
     });
 
     return Promise.resolve();

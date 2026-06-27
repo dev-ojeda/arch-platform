@@ -1,6 +1,6 @@
 // packages/core/src/filesystem/memory-filesystem.adapter.ts
 
-import path from 'node:path';
+import { dirname, normalize } from 'node:path';
 
 import type { DirectoryEntry, FileSystemPort, WriteFileOptions } from '@arch/contracts';
 
@@ -10,7 +10,7 @@ export class MemoryFileSystemAdapter implements FileSystemPort {
   private readonly directories = new Set<string>();
 
   private normalizePath(targetPath: string): string {
-    return path.normalize(targetPath).replaceAll('\\', '/');
+    return normalize(targetPath).replaceAll('\\', '/');
   }
 
   read(targetPath: string): Promise<string> {
@@ -48,7 +48,7 @@ export class MemoryFileSystemAdapter implements FileSystemPort {
 
     this.files.set(normalized, content);
 
-    this.directories.add(path.dirname(normalized));
+    this.directories.add(dirname(normalized));
 
     return Promise.resolve();
   }

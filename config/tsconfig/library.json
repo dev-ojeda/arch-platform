@@ -1,17 +1,12 @@
 {
-  "extends": "./base.json",
-
   "compilerOptions": {
     "composite": true,
-
     "incremental": true,
 
     "declaration": true,
+    "declarationMap": true,
 
-    "declarationMap": false,
-
-    "sourceMap": false,
-
-    "noEmitOnError": true
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext"
   }
 }
