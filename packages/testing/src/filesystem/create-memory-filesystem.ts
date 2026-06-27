@@ -1,6 +1,6 @@
 // packages/testing/src/filesystem/create-memory-filesystem.ts
 
-import path from 'node:path';
+import { posix } from 'node:path';
 
 import type { DirectoryEntry, FileSystemPort, WriteFileOptions } from '@arch/contracts';
 
@@ -116,9 +116,9 @@ export function createMemoryFilesystem(): MemoryFilesystem {
       const normalizedDirectory = resolvePath(directoryPath);
 
       const fileEntries = Array.from(internalState.files.keys())
-        .filter((filePath) => path.posix.dirname(filePath) === normalizedDirectory)
+        .filter((filePath) => posix.dirname(filePath) === normalizedDirectory)
         .map<DirectoryEntry>((filePath) => ({
-          name: path.posix.basename(filePath),
+          name: posix.basename(filePath),
           path: filePath,
           isDirectory: false,
         }));
@@ -127,10 +127,10 @@ export function createMemoryFilesystem(): MemoryFilesystem {
         .filter(
           (directoryPath) =>
             directoryPath !== normalizedDirectory &&
-            path.posix.dirname(directoryPath) === normalizedDirectory,
+            posix.dirname(directoryPath) === normalizedDirectory,
         )
         .map<DirectoryEntry>((directoryPath) => ({
-          name: path.posix.basename(directoryPath),
+          name: posix.basename(directoryPath),
           path: directoryPath,
           isDirectory: true,
         }));
@@ -154,7 +154,7 @@ function resolvePath(targetPath: string): string {
 }
 
 function ensureParentDirectories(state: MutableMemoryFilesystemState, targetPath: string): void {
-  const parentDirectory = path.posix.dirname(targetPath);
+  const parentDirectory = posix.dirname(targetPath);
 
   ensureDirectoryHierarchy(state, parentDirectory);
 }

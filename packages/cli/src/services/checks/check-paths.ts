@@ -1,6 +1,6 @@
 // packages/cli/src/services/checks/check-paths.ts
 
-import fs from 'node:fs';
+import { existsSync } from 'node:fs';
 
 import type { DoctorCheck } from './doctor-check.js';
 
@@ -10,7 +10,7 @@ export const checkPaths: DoctorCheck = {
   name: 'paths',
 
   async run() {
-    const missingDirectories = requiredDirectories.filter((directory) => !fs.existsSync(directory));
+    const missingDirectories = requiredDirectories.filter((directory) => !existsSync(directory));
 
     if (missingDirectories.length > 0) {
       return {

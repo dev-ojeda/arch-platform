@@ -1,7 +1,7 @@
 // packages/cli/src/services/checks/check-workspace.ts
 
-import fs from 'node:fs';
-import path from 'node:path';
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 import type { DoctorCheck } from './doctor-check.js';
 
@@ -9,9 +9,9 @@ export const checkWorkspace: DoctorCheck = {
   name: 'workspace',
 
   async run() {
-    const workspacePath = path.resolve('pnpm-workspace.yaml');
+    const workspacePath = resolve('pnpm-workspace.yaml');
 
-    const exists = fs.existsSync(workspacePath);
+    const exists = existsSync(workspacePath);
 
     if (exists) {
       return Promise.resolve({

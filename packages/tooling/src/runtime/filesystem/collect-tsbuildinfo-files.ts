@@ -1,7 +1,7 @@
 // packages/tooling/src/runtime/filesystem/collect-tsbuildinfo-files.ts
 
 import { readdir } from 'node:fs/promises';
-import path from 'node:path';
+import { join } from 'node:path';
 
 import { logger } from '../../logging/logger.js';
 
@@ -16,7 +16,7 @@ export async function collectTsBuildInfoFiles(directory: string): Promise<string
     const files: string[] = [];
 
     for (const entry of entries) {
-      const fullPath = path.join(directory, entry.name);
+      const fullPath = join(directory, entry.name);
 
       if (entry.isDirectory()) {
         if (IGNORED_DIRECTORIES.has(entry.name)) {

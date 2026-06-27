@@ -1,12 +1,12 @@
 // packages\infrastructure\src\filesystem\node-filesystem.adapter.ts
-import { promises as fs } from 'node:fs';
-import * as path from 'node:path';
+import { access, copyFile, mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { dirname, join } from 'node:path';
 
 import type { DirectoryEntry, FileSystemPort, WriteFileOptions } from '@arch/contracts';
 
 export class NodeFileSystemAdapter implements FileSystemPort {
   async read(filePath: string): Promise<string> {
-    return await fs.readFile(filePath, 'utf8');
+    return await readFile(filePath, 'utf8');
   }
 
   async write(
@@ -34,9 +34,9 @@ export class NodeFileSystemAdapter implements FileSystemPort {
       }
     }
 
-    await this.createDirectory(path.dirname(filePath));
+    await this.createDirectory(dirname(filePath));
 
-    await fs.writeFile(filePath, content, 'utf8');
+    await writeFile(filePath, content, 'utf8');
   }
 
   async copy(
@@ -44,20 +44,20 @@ export class NodeFileSystemAdapter implements FileSystemPort {
 
     destination: string,
   ): Promise<void> {
-    await this.createDirectory(path.dirname(destination));
+    await this.createDirectory(dirname(destination));
 
-    await fs.copyFile(source, destination);
+    await copyFile(source, destination);
   }
 
   async createDirectory(directoryPath: string): Promise<void> {
-    await fs.mkdir(directoryPath, {
+    await mkdir(directoryPath, {
       recursive: true,
     });
   }
 
   async exists(targetPath: string): Promise<boolean> {
     try {
-      await fs.access(targetPath);
+      await access(targetPath);
 
       return true;
     } catch {
@@ -66,21 +66,21 @@ export class NodeFileSystemAdapter implements FileSystemPort {
   }
 
   async remove(targetPath: string): Promise<void> {
-    await fs.rm(targetPath, {
+    await rm(targetPath, {
       recursive: true,
       force: true,
     });
   }
 
   async readDirectory(directoryPath: string): Promise<DirectoryEntry[]> {
-    const entries = await fs.readdir(directoryPath, {
+    const entries = await readdir(directoryPath, {
       withFileTypes: true,
     });
 
     return entries.map((entry) => ({
       name: entry.name,
 
-      path: path.join(directoryPath, entry.name),
+      path: join(directoryPath, entry.name),
 
       isDirectory: entry.isDirectory(),
     }));

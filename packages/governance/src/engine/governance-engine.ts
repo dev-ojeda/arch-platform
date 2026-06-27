@@ -94,7 +94,15 @@ export class GovernanceEngine {
       return error.message;
     }
 
-    return String(error);
+    if (typeof error === 'string') {
+      return error;
+    }
+
+    try {
+      return JSON.stringify(error);
+    } catch {
+      return 'Unknown error';
+    }
   }
 
   private getSeverity(diagnostics: Diagnostic[]): DiagnosticSeverity {

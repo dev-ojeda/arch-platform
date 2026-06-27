@@ -4,59 +4,44 @@ import { resolve } from 'node:path';
 
 import { defineConfig } from 'vitest/config';
 
-const root = resolve(__dirname);
+const root = resolve(import.meta.dirname);
+
+/**
+ * -----------------------------------------------------------------------------
+ * Workspace aliases
+ * -----------------------------------------------------------------------------
+ */
+
+const packages = [
+  'contracts',
+  'core',
+  'testing',
+  'build-core',
+  'application',
+  'governance',
+  'infrastructure',
+  'platform-model',
+  'code-analysis',
+  'domain-order',
+];
+
+const aliases = packages.flatMap((pkg) => [
+  {
+    find: new RegExp(`^@arch/${pkg}$`),
+
+    replacement: resolve(root, `packages/${pkg}/src`),
+  },
+
+  {
+    find: new RegExp(`^@arch/${pkg}/(.*)$`),
+
+    replacement: resolve(root, `packages/${pkg}/src/$1`),
+  },
+]);
 
 export const sharedVitestConfig = defineConfig({
   resolve: {
-    alias: [
-      {
-        find: /^@arch\/contracts$/,
-        replacement: resolve(root, 'packages/contracts/src'),
-      },
-
-      {
-        find: /^@arch\/contracts\/(.*)$/,
-        replacement: resolve(root, 'packages/contracts/src/$1'),
-      },
-
-      {
-        find: /^@arch\/core$/,
-        replacement: resolve(root, 'packages/core/src'),
-      },
-
-      {
-        find: /^@arch\/core\/(.*)$/,
-        replacement: resolve(root, 'packages/core/src/$1'),
-      },
-
-      {
-        find: /^@arch\/testing$/,
-        replacement: resolve(root, 'packages/testing/src'),
-      },
-
-      {
-        find: /^@arch\/testing\/(.*)$/,
-        replacement: resolve(root, 'packages/testing/src/$1'),
-      },
-      {
-        find: /^@arch\/build-core$/,
-        replacement: resolve(root, 'packages/build-core/src'),
-      },
-
-      {
-        find: /^@arch\/build-core\/(.*)$/,
-        replacement: resolve(root, 'packages/build-core/src/$1'),
-      },
-      {
-        find: /^@arch\/application$/,
-        replacement: resolve(root, 'packages/application/src'),
-      },
-
-      {
-        find: /^@arch\/application\/(.*)$/,
-        replacement: resolve(root, 'packages/application/src/$1'),
-      },
-    ],
+    alias: aliases,
   },
 
   test: {
@@ -64,6 +49,9 @@ export const sharedVitestConfig = defineConfig({
 
     globals: true,
 
+    /**
+     * Vitest workers
+     */
     pool: 'forks',
 
     isolate: true,
@@ -72,7 +60,17 @@ export const sharedVitestConfig = defineConfig({
 
     passWithNoTests: true,
 
+    /**
+     * Common setup
+     */
     setupFiles: [resolve(root, 'vitest.setup.ts')],
+
+    /**
+     * TypeScript project for tests
+     */
+    typecheck: {
+      tsconfig: './tsconfig.test.json',
+    },
 
     sequence: {
       concurrent: false,

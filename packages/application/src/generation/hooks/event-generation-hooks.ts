@@ -7,6 +7,7 @@ import type {
   TemplateVariables,
 } from '@arch/contracts';
 
+import { errorMessage } from '../../errors/error-message.js';
 import { publishGenerationEvent } from '../../runtime/execution/events/publish-generation-event.js';
 
 export class EventGenerationHooks<
@@ -71,7 +72,7 @@ export class EventGenerationHooks<
       'GENERATION_FAILED',
 
       {
-        error: error instanceof Error ? error.message : String(error),
+        error: error instanceof Error ? error.message : errorMessage(error),
       },
     );
   }

@@ -3,12 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "sideEffects": false,
-  "files": [
-    "dist"
-  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -20,8 +15,7 @@
     }
   },
   "scripts": {
-    "build": "pnpm build:js && pnpm build:dts",
-    "build:js": "tsup",
+    "build": "tsc -p tsconfig.json",
     "build:dts": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "clean": "tsx ../tooling/src/bin/clean.ts",

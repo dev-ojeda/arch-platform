@@ -1,30 +1,47 @@
+// tsconfig.json
 {
-  // tsconfig.json(root)
+  // Root TypeScript project.
+  // Used only to define project references for `tsc --build`.
   "files": [],
   "references": [
     {
-      "path": "packages/core"
+      "path": "./packages/contracts"
     },
     {
-      "path": "packages/contracts"
+      "path": "./packages/core"
     },
     {
-      "path": "packages/testing"
+      "path": "./packages/platform-model"
     },
     {
-      "path": "packages/tooling"
+      "path": "./packages/domain-order"
     },
     {
-      "path": "packages/governance"
+      "path": "./packages/code-analysis"
     },
     {
-      "path": "packages/cli"
+      "path": "./packages/generators/mvc"
     },
     {
-      "path": "packages/application"
+      "path": "./packages/build-core"
     },
     {
-      "path": "packages/build-core"
+      "path": "./packages/testing"
+    },
+    {
+      "path": "./packages/application"
+    },
+    {
+      "path": "./packages/governance"
+    },
+    {
+      "path": "./packages/infrastructure"
+    },
+    {
+      "path": "./packages/tooling"
+    },
+    {
+      "path": "./packages/cli"
     }
   ]
 }

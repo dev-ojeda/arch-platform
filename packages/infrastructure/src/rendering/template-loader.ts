@@ -1,5 +1,5 @@
 // packages\infrastructure\src\rendering\template-loader.ts
-import * as path from 'node:path';
+import { join } from 'node:path';
 
 import type { FileSystemPort } from '@arch/contracts';
 import { InvalidGeneratorDefinitionError } from '@arch/core';
@@ -11,7 +11,7 @@ export async function loadTemplate(
 
   templateName: string,
 ): Promise<string> {
-  const templatePath = path.join(templateDir, templateName);
+  const templatePath = join(templateDir, templateName);
 
   const template = await fs.read(templatePath);
 

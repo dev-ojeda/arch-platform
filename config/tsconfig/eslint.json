@@ -1,0 +1,29 @@
+{
+  "extends": "./base.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [
+    "tsconfig.ts",
+    "vitest.setup.ts",
+    "vitest.shared.ts",
+    "vitest.config.ts",
+    "packages/**/*.ts",
+    "scripts/**/*.ts",
+    "packages/*/src/**/*.ts",
+    "packages/*/test/**/*.ts",
+    "apps/*/src/**/*.ts",
+    "*.ts",
+    "*.mts",
+    "*.cts"
+  ],
+  "exclude": [
+    "**/dist/**",
+    "**/coverage/**",
+    "**/node_modules/**",
+    "**/.turbo/**",
+    "**/.changeset/**",
+    "**/.cache/**",
+    "**/generated/**"
+  ]
+}

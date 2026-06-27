@@ -1,8 +1,8 @@
 // packages\governance\test\__tests__\validate-package-structure-rule.test.ts
 
-import fs from 'node:fs/promises';
-import os from 'node:os';
-import path from 'node:path';
+import { mkdir, mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
@@ -15,7 +15,7 @@ describe('CreateTestValidatePackageStructureRule', () => {
   afterEach(async () => {
     await Promise.all(
       temporaryDirectories.map((directory) =>
-        fs.rm(directory, {
+        rm(directory, {
           recursive: true,
           force: true,
         }),
@@ -25,11 +25,11 @@ describe('CreateTestValidatePackageStructureRule', () => {
     temporaryDirectories.length = 0;
   });
   it('does not report diagnostics when src directory exists', async () => {
-    const packageRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'governance-package-'));
+    const packageRoot = await mkdtemp(join(tmpdir(), 'governance-package-'));
 
     temporaryDirectories.push(packageRoot);
 
-    await fs.mkdir(path.join(packageRoot, 'src'));
+    await mkdir(join(packageRoot, 'src'));
 
     const context: GovernanceContext = {
       workspaceRoot: packageRoot,
@@ -40,7 +40,7 @@ describe('CreateTestValidatePackageStructureRule', () => {
 
           rootPath: packageRoot,
 
-          manifestPath: path.join(packageRoot, 'package.json'),
+          manifestPath: join(packageRoot, 'package.json'),
 
           manifest: {
             name: '',
@@ -55,7 +55,7 @@ describe('CreateTestValidatePackageStructureRule', () => {
     expect(diagnostics).toEqual([]);
   });
   it('reports diagnostics when src directory is missing', async () => {
-    const packageRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'governance-package-'));
+    const packageRoot = await mkdtemp(join(tmpdir(), 'governance-package-'));
 
     temporaryDirectories.push(packageRoot);
 
@@ -68,7 +68,7 @@ describe('CreateTestValidatePackageStructureRule', () => {
 
           rootPath: packageRoot,
 
-          manifestPath: path.join(packageRoot, 'package.json'),
+          manifestPath: join(packageRoot, 'package.json'),
 
           manifest: {
             name: '',

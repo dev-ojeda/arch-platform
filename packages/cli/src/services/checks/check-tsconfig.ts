@@ -1,6 +1,6 @@
 // packages/cli/src/services/checks/check-tsconfig.ts
 
-import fs from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 
 import type { DoctorCheck } from './doctor-check.js';
 
@@ -10,7 +10,7 @@ export const checkTsConfig: DoctorCheck = {
   async run() {
     const tsconfigPath = 'tsconfig.json';
 
-    if (!fs.existsSync(tsconfigPath)) {
+    if (!existsSync(tsconfigPath)) {
       return {
         severity: 'error',
 
@@ -21,7 +21,7 @@ export const checkTsConfig: DoctorCheck = {
     }
 
     try {
-      const rawConfig = fs.readFileSync(tsconfigPath, 'utf8');
+      const rawConfig = readFileSync(tsconfigPath, 'utf8');
 
       JSON.parse(rawConfig);
       return Promise.resolve({

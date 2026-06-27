@@ -1,5 +1,4 @@
 // packages/code-analysis/src/symbol-dependencies/semantic-dependency-scanner.ts
-// packages/code-analysis/src/symbol-dependencies/semantic-dependency-scanner.ts
 
 import type { Project } from 'ts-morph';
 

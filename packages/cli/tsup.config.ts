@@ -1,21 +1,5 @@
 // packages/cli/tsup.config.ts
 
-import { defineConfig } from 'tsup';
+import { createCliConfig } from '../../config/tsup/index.js';
 
-import { baseConfig } from '../../tsup.base.js';
-
-export default defineConfig({
-  ...baseConfig,
-
-  entry: {
-    index: 'src/index.ts',
-  },
-
-  banner: {
-    js: '#!/usr/bin/env node',
-  },
-
-  dts: false,
-
-  external: [/^@arch\//],
-});
+export default createCliConfig();

@@ -1,9 +1,7 @@
 {
   "extends": "./base.json",
-
   "compilerOptions": {
-    "types": ["node", "vitest/globals"],
-
-    "sourceMap": true
+    "noEmit": true,
+    "types": ["vitest/globals"]
   }
 }

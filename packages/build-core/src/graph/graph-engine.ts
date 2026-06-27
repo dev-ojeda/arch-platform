@@ -35,7 +35,11 @@ export class GraphEngine {
     const queue = [...changed];
 
     while (queue.length) {
-      const name = queue.pop()!;
+      const name = queue.pop();
+
+      if (!name) {
+        continue;
+      }
 
       if (result.has(name)) {
         continue;

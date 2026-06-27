@@ -1,6 +1,6 @@
 // packages/infrastructure/src/filesystem/memory-filesystem.adapter.ts
 
-import path from 'node:path';
+import { basename, dirname, normalize } from 'node:path';
 
 import type { DirectoryEntry, FileSystemPort, WriteFileOptions } from '@arch/contracts';
 
@@ -14,18 +14,18 @@ export class MemoryFileSystemAdapter implements FileSystemPort {
   }
 
   private normalizePath(targetPath: string): string {
-    const normalized = path.normalize(targetPath).replaceAll('\\', '/');
+    const normalized = normalize(targetPath).replaceAll('\\', '/');
 
     return normalized.startsWith('/') ? normalized : `/${normalized}`;
   }
 
   private ensureParentDirectories(filePath: string): void {
-    let current = this.normalizePath(path.dirname(filePath));
+    let current = this.normalizePath(dirname(filePath));
 
     while (current !== '/' && current !== '.') {
       this.#directories.add(current);
 
-      const parent = this.normalizePath(path.dirname(current));
+      const parent = this.normalizePath(dirname(current));
 
       if (parent === current) {
         break;
@@ -131,9 +131,9 @@ export class MemoryFileSystemAdapter implements FileSystemPort {
     const entries: DirectoryEntry[] = [];
 
     for (const directory of this.#directories) {
-      if (directory !== normalized && path.dirname(directory) === normalized) {
+      if (directory !== normalized && dirname(directory) === normalized) {
         entries.push({
-          name: path.basename(directory),
+          name: basename(directory),
           path: directory,
           isDirectory: true,
         });
@@ -141,12 +141,12 @@ export class MemoryFileSystemAdapter implements FileSystemPort {
     }
 
     for (const filePath of this.#files.keys()) {
-      if (path.dirname(filePath) !== normalized) {
+      if (dirname(filePath) !== normalized) {
         continue;
       }
 
       entries.push({
-        name: path.basename(filePath),
+        name: basename(filePath),
         path: filePath,
         isDirectory: false,
       });

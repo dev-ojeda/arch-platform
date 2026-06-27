@@ -2,7 +2,7 @@
 
 import { defineConfig, mergeConfig } from 'vitest/config';
 
-import { sharedVitestConfig } from '../../vitest.shared.js';
+import { sharedVitestConfig } from '../../config/vitest/shared.js';
 
 export default mergeConfig(
   sharedVitestConfig,
@@ -10,11 +10,7 @@ export default mergeConfig(
   defineConfig({
     test: {
       name: 'code-analysis',
-
-      setupFiles: ['../../vitest.setup.ts'],
-
-      include: ['test/**/*.test.ts', 'test/**/*.spec.ts'],
-
+      include: ['test/**/*.test.ts'],
       coverage: {
         include: ['src/**/*.{ts,tsx}'],
 

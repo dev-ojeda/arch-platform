@@ -1,6 +1,9 @@
 // packages/governance/src/analysis/code-analysis/build-code-analysis-context.ts
 
-import type { GovernanceContext, GovernanceExecutionContext } from '../../types/index.js';
+import type {
+  GovernanceContext,
+  GovernanceExecutionContext,
+} from '../../types/governance-context.js';
 
 import type { CodeAnalysisAdapter } from './code-analysis-adapter.js';
 
