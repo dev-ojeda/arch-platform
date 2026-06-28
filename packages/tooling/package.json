@@ -3,8 +3,6 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "sideEffects": false,
   "files": [
@@ -12,20 +10,15 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    },
-    "./*": {
-      "types": "./dist/*.d.ts",
-      "import": "./dist/*.js"
+      "types": "./dist/index.d.ts"
     }
   },
   "scripts": {
     "build:js": "tsup",
     "build:dts": "tsc -p tsconfig.build.json",
-    "build": "pnpm build:js && pnpm build:dts",
+    "build": "pnpm build:dts",
     "clean": "tsx ../tooling/src/bin/clean.ts",
-    "typecheck": "tsx ../tooling/src/bin/typecheck.ts"
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
     "@arch/build-core": "workspace:*",

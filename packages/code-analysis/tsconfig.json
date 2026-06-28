@@ -1,11 +1,18 @@
 {
   "extends": "../../config/tsconfig/library.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
     "tsBuildInfoFile": "./.turbo/code-analysis.tsbuildinfo"
   },
   "include": [
     "src/**/*.ts"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
   ]
 }

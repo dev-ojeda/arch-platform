@@ -11,9 +11,6 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts"
-    },
-    "./*": {
-      "types": "./dist/*.d.ts"
     }
   },
   "scripts": {
