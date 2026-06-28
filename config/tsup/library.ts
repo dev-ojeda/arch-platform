@@ -10,13 +10,13 @@ export function createLibraryConfig(overrides: BuildConfigOptions = {}) {
   return defineConfig({
     ...createBaseConfig(),
 
-    entry: ['src/**/*.ts'],
+    entry: ['src/index.ts'],
 
     dts: false,
 
     splitting: false,
 
-    clean: true,
+    clean: false,
 
     ...overrides,
   });

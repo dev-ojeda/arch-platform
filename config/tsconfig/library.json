@@ -1,12 +1,10 @@
 {
+  "extends": "./base.json",
   "compilerOptions": {
     "composite": true,
     "incremental": true,
 
     "declaration": true,
-    "declarationMap": true,
-
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext"
+    "declarationMap": true
   }
 }
