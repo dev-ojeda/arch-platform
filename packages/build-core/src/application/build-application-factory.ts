@@ -1,7 +1,6 @@
 // packages/build-core/src/application/build-application-factory.ts
 
 import { FilesystemArtifactCache } from '../artifact/filesystem-artifact-cache.js';
-import { createBuildSteps } from '../executor/build-step-factory.js';
 import { ExecutorFactory } from '../executor/executor-factory.js';
 import { joinPath } from '../fs/path-utils.js';
 import { buildGraph } from '../graph/build-graph.js';
@@ -30,12 +29,10 @@ export class BuildApplicationFactory {
       joinPath(this.workspaceRoot, '.arch-cache', 'artifacts'),
     );
 
-    const steps = createBuildSteps();
-
     const executor = new ExecutorFactory().create({
       runner: this.runner,
-      steps,
     });
+
     return new BuildService({
       graph,
       engine,

@@ -6,6 +6,7 @@ import { logger } from '../logging/logger.js';
 import type { BuildPlanEntry } from '../planning/plan-entry.js';
 
 import type { BuildExecutionContext } from './build-execution-context.js';
+import { createBuildSteps } from './build-step-factory.js';
 
 export class BuildExecutor {
   constructor(private ctx: BuildExecutionContext) {}
@@ -13,7 +14,9 @@ export class BuildExecutor {
   async execute(node: DagNode, plan: BuildPlanEntry): Promise<BuildResult> {
     const start = Date.now();
 
-    for (const step of this.ctx.steps) {
+    const steps = createBuildSteps(node.build);
+
+    for (const step of steps) {
       const res = await this.ctx.runner(step.command, step.args, {
         cwd: node.root,
       });
@@ -31,6 +34,7 @@ export class BuildExecutor {
 
         return {
           package: node.name,
+
           status: 'failed',
 
           changeReason: plan.changeReason,

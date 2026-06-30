@@ -246,6 +246,10 @@ importers:
       '@arch/contracts':
         specifier: workspace:*
         version: link:../contracts
+    devDependencies:
+      '@arch/tooling':
+        specifier: workspace:*
+        version: link:../tooling
 
   packages/domain-order: {}
 
@@ -254,6 +258,7 @@ importers:
       '@arch/contracts':
         specifier: workspace:*
         version: link:../../contracts
+    devDependencies:
       '@arch/tooling':
         specifier: workspace:*
         version: link:../../tooling
@@ -263,6 +268,10 @@ importers:
       '@arch/code-analysis':
         specifier: workspace:*
         version: link:../code-analysis
+    devDependencies:
+      '@arch/tooling':
+        specifier: workspace:*
+        version: link:../tooling
 
   packages/infrastructure:
     dependencies:

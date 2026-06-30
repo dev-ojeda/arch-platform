@@ -10,12 +10,20 @@ export function buildGraph(packages: WorkspacePackage[]): Graph {
   const names = new Set(packages.map((p) => p.name));
 
   for (const pkg of packages) {
+    const workspaceDependencies = [...pkg.dependencies, ...pkg.buildDependencies].filter((d) =>
+      names.has(d),
+    );
+
     const node: DagNode = {
       name: pkg.name,
       root: pkg.root,
       outputs: pkg.outputs,
-      dependencies: pkg.dependencies.filter((d) => names.has(d)),
+
+      dependencies: workspaceDependencies,
+
       dependents: [],
+
+      build: pkg.build,
     };
 
     graph.set(node.name, node);

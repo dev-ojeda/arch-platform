@@ -1,28 +1,23 @@
-// packages\governance\vitest.config.ts
-
 import { defineConfig, mergeConfig } from 'vitest/config';
 
-import { sharedVitestConfig } from '../../config/vitest/shared.js';
+import { sharedCoverage, sharedVitestConfig } from '../../config/vitest/index.js';
 
 export default mergeConfig(
   sharedVitestConfig,
-
   defineConfig({
     test: {
       name: 'governance',
 
-      include: ['test/**/*.test.ts'],
-
       coverage: {
-        include: ['src/**/*.{ts,tsx}'],
-
-        exclude: ['**/index.ts', '**/*.test.ts', '**/*.spec.ts'],
+        ...sharedCoverage,
 
         thresholds: {
+          ...sharedCoverage.thresholds,
+
           lines: 40,
-          functions: 25,
           statements: 40,
           branches: 25,
+          functions: 25,
         },
       },
     },

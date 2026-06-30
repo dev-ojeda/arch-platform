@@ -1,11 +1,11 @@
 // packages/core/variables/build-variables.ts
 
 import {
-  getStringVariable,
   type GenerationContext,
   type LanguageConvention,
   type ResolvedTemplateVariables,
   type TemplateVariables,
+  type VariableValue,
 } from '@arch/contracts';
 
 export function buildVariables<TVariables extends TemplateVariables>(
@@ -31,4 +31,12 @@ export function buildVariables<TVariables extends TemplateVariables>(
 
     folderLayout: language.folderLayout,
   };
+}
+
+export function getStringVariable(value: VariableValue, variableName: string): string {
+  if (typeof value !== 'string') {
+    throw new Error(`Variable "${variableName}" must be a string`);
+  }
+
+  return value;
 }

@@ -5,6 +5,8 @@ import { isDirectory } from '../fs/fs-sync.js';
 import { joinPath } from '../fs/path-utils.js';
 
 import { IGNORED_DIRECTORIES } from './ignored-directories.js';
+import { isPackageJson } from './package-json.js';
+import { readPackageJson } from './read-package-json.js';
 
 export async function findPackageRoots(directory: string): Promise<string[]> {
   const roots: string[] = [];
@@ -22,9 +24,17 @@ export async function findPackageRoots(directory: string): Promise<string[]> {
       continue;
     }
 
-    if (await pathExists(joinPath(fullPath, 'package.json'))) {
-      roots.push(fullPath);
-      continue;
+    const packageFile = joinPath(fullPath, 'package.json');
+
+    if (await pathExists(packageFile)) {
+      const pkg = readPackageJson(packageFile);
+
+      if (isPackageJson(pkg) && pkg.name.startsWith('@arch/')) {
+        roots.push(fullPath);
+      }
+
+      // importante:
+      // no hacemos return porque puede haber nested packages
     }
 
     roots.push(...(await findPackageRoots(fullPath)));

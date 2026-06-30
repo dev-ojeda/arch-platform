@@ -22,17 +22,8 @@ const IGNORES = [
 
 const TOOLING_FILES = [
   '**/vitest.config.ts',
-  '**/vitest.shared.ts',
-  '**/vitest.setup.ts',
-
-  '**/tsup.config.ts',
-  '**/tsup.base.ts',
-  '**/tsup.library.ts',
-  '**/tsup.app.ts',
-
   '**/eslint.config.mjs',
   '**/*.config.{js,cjs,mjs,ts}',
-
   '**/commitlint.config.cjs',
   '**/.dependency-cruiser.cjs',
 ];
@@ -94,8 +85,8 @@ const COMMON_IMPORT_RULES = {
   'import/no-unresolved': [
     'error',
     {
-      commonjs: true,
-      amd: true,
+      commonjs: false,
+      amd: false,
     },
   ],
 
@@ -180,7 +171,11 @@ export default tseslint.config(
 
       'import/resolver': {
         typescript: {
-          alwaysTryTypes: true,
+          project: ['./tsconfig.json'],
+        },
+
+        node: {
+          extensions: ['.js', '.ts'],
         },
       },
     },
@@ -258,6 +253,10 @@ export default tseslint.config(
 
     extends: [tseslint.configs.disableTypeChecked],
 
+    plugins: {
+      import: importPlugin,
+    },
+
     languageOptions: {
       globals: {
         describe: 'readonly',
@@ -289,6 +288,10 @@ export default tseslint.config(
     files: TOOLING_FILES,
 
     extends: [tseslint.configs.disableTypeChecked],
+
+    plugins: {
+      import: importPlugin,
+    },
 
     languageOptions: {
       parserOptions: {

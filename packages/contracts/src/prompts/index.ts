@@ -1,6 +1,5 @@
 export type { BooleanField } from './boolean-field.js';
 export type { PromptAdapter } from './prompt-adapter.js';
-export { PromptEngine } from './prompt-engine.js';
 export type { PromptEngineContext } from './prompt-engine.js';
 export type { PromptFieldBase } from './prompt-field-base.js';
 export type { PromptField } from './prompt-field.js';

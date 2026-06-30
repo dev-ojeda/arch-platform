@@ -9,5 +9,4 @@ export type { GeneratorRegistry } from './generator-registry.js';
 export type { GeneratorRuntime } from './generator-runtime.js';
 export type { GeneratorField } from './generator-schema.js';
 
-export { eraseGeneratorType, restoreGeneratorType } from './generator-type-erasure.js';
 export type { RegisteredGeneratorDefinition } from './generator-type-erasure.js';

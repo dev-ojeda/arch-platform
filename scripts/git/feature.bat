@@ -2,15 +2,18 @@
 setlocal enabledelayedexpansion
 
 REM =========================================
-REM Git Flow Helper (Windows BAT)
+REM Git Flow Helper
 REM =========================================
 REM Uso:
 REM
 REM feature.bat start feature/nombre
-REM feature.bat finish feature/nombre
+REM feature.bat start fix/nombre
+REM feature.bat start refactor/nombre
+REM feature.bat start chore/nombre
 REM
-REM feature.bat fixstart fix/nombre
-REM feature.bat fixfinish fix/nombre
+REM feature.bat finish feature/nombre
+REM feature.bat finish fix/nombre
+REM feature.bat finish refactor/nombre
 REM
 REM feature.bat sync
 REM feature.bat cleanup
@@ -21,10 +24,6 @@ set DEV_BRANCH=dev
 set COMMAND=%1
 set BRANCH_NAME=%2
 
-REM =========================================
-REM Validar Git
-REM =========================================
-
 git rev-parse --is-inside-work-tree >nul 2>&1
 
 if errorlevel 1 (
@@ -33,13 +32,13 @@ if errorlevel 1 (
 )
 
 REM =========================================
-REM START FEATURE
+REM START
 REM =========================================
 
-if "%COMMAND%"=="start" (
+if /I "%COMMAND%"=="start" (
 
     if "%BRANCH_NAME%"=="" (
-        echo [ERROR] Debes indicar el nombre de la feature
+        echo [ERROR] Debes indicar el nombre de la rama.
         exit /b 1
     )
 
@@ -49,30 +48,35 @@ if "%COMMAND%"=="start" (
     echo =======================================
 
     git checkout %DEV_BRANCH%
+    if errorlevel 1 exit /b 1
+
     git pull origin %DEV_BRANCH%
+    if errorlevel 1 exit /b 1
 
     echo.
     echo =======================================
-    echo Creando feature %BRANCH_NAME%
+    echo Creando rama %BRANCH_NAME%
     echo =======================================
 
     git checkout -b %BRANCH_NAME%
+    if errorlevel 1 exit /b 1
 
     git push -u origin %BRANCH_NAME%
+    if errorlevel 1 exit /b 1
 
     echo.
-    echo [OK] Feature creada correctamente
+    echo [OK] Rama creada correctamente.
     exit /b 0
 )
 
 REM =========================================
-REM FINISH FEATURE
+REM FINISH
 REM =========================================
 
-if "%COMMAND%"=="finish" (
+if /I "%COMMAND%"=="finish" (
 
     if "%BRANCH_NAME%"=="" (
-        echo [ERROR] Debes indicar el nombre de la feature
+        echo [ERROR] Debes indicar el nombre de la rama.
         exit /b 1
     )
 
@@ -82,144 +86,26 @@ if "%COMMAND%"=="finish" (
     echo =======================================
 
     git checkout %DEV_BRANCH%
+    if errorlevel 1 exit /b 1
 
     echo.
     echo =======================================
-    echo Eliminando branch local
+    echo Eliminando rama local
     echo =======================================
 
     git branch -d %BRANCH_NAME%
 
     if errorlevel 1 (
-        echo [WARN] Eliminacion segura fallo, forzando...
+        echo [WARN] Eliminacion segura fallo. Forzando...
         git branch -D %BRANCH_NAME%
     )
 
     echo.
     echo =======================================
-    echo Eliminando branch remota
+    echo Eliminando rama remota
     echo =======================================
 
     git push origin --delete %BRANCH_NAME%
-
-    echo.
-    echo =======================================
-    echo Limpiando referencias remotas
-    echo =======================================
-
-    git fetch --prune
-
-    echo.
-    echo [OK] Feature eliminada correctamente
-    exit /b 0
-)
-
-REM =========================================
-REM START FIX
-REM =========================================
-
-if "%COMMAND%"=="fixstart" (
-
-    if "%BRANCH_NAME%"=="" (
-        echo [ERROR] Debes indicar el nombre del fix
-        exit /b 1
-    )
-
-    echo.
-    echo =======================================
-    echo Sincronizando %DEV_BRANCH%
-    echo =======================================
-
-    git checkout %DEV_BRANCH%
-    git pull origin %DEV_BRANCH%
-
-    echo.
-    echo =======================================
-    echo Creando fix %BRANCH_NAME%
-    echo =======================================
-
-    git checkout -b %BRANCH_NAME%
-
-    git push -u origin %BRANCH_NAME%
-
-    echo.
-    echo [OK] Fix creado correctamente
-    exit /b 0
-)
-
-REM =========================================
-REM FINISH FIX
-REM =========================================
-
-if "%COMMAND%"=="fixfinish" (
-
-    if "%BRANCH_NAME%"=="" (
-        echo [ERROR] Debes indicar el nombre del fix
-        exit /b 1
-    )
-
-    echo.
-    echo =======================================
-    echo Cambiando a %DEV_BRANCH%
-    echo =======================================
-
-    git checkout %DEV_BRANCH%
-
-    echo.
-    echo =======================================
-    echo Eliminando branch local
-    echo =======================================
-
-    git branch -d %BRANCH_NAME%
-
-    if errorlevel 1 (
-        echo [WARN] Eliminacion segura fallo, forzando...
-        git branch -D %BRANCH_NAME%
-    )
-
-    echo.
-    echo =======================================
-    echo Eliminando branch remota
-    echo =======================================
-
-    git push origin --delete %BRANCH_NAME%
-
-    echo.
-    echo =======================================
-    echo Limpiando referencias remotas
-    echo =======================================
-
-    git fetch --prune
-
-    echo.
-    echo [OK] Fix eliminado correctamente
-    exit /b 0
-)
-
-REM =========================================
-REM SYNC
-REM =========================================
-
-if "%COMMAND%"=="sync" (
-
-    echo.
-    echo =======================================
-    echo Sincronizando %DEV_BRANCH%
-    echo =======================================
-
-    git checkout %DEV_BRANCH%
-    git pull origin %DEV_BRANCH%
-
-    echo.
-    echo [OK] Sync completado
-    exit /b 0
-)
-
-REM =========================================
-REM CLEANUP
-REM =========================================
-
-if "%COMMAND%"=="cleanup" (
 
     echo.
     echo =======================================
@@ -230,13 +116,40 @@ if "%COMMAND%"=="cleanup" (
     git remote prune origin
 
     echo.
-    echo [OK] Cleanup completado
+    echo [OK] Rama eliminada correctamente.
     exit /b 0
 )
 
 REM =========================================
-REM HELP
+REM SYNC
 REM =========================================
+
+if /I "%COMMAND%"=="sync" (
+
+    git checkout %DEV_BRANCH%
+    if errorlevel 1 exit /b 1
+
+    git pull origin %DEV_BRANCH%
+    if errorlevel 1 exit /b 1
+
+    echo.
+    echo [OK] Sync completado.
+    exit /b 0
+)
+
+REM =========================================
+REM CLEANUP
+REM =========================================
+
+if /I "%COMMAND%"=="cleanup" (
+
+    git fetch --prune
+    git remote prune origin
+
+    echo.
+    echo [OK] Cleanup completado.
+    exit /b 0
+)
 
 echo.
 echo =======================================
@@ -245,12 +158,17 @@ echo =======================================
 echo.
 echo Uso:
 echo.
-echo   feature.bat start feature/nombre
-echo   feature.bat finish feature/nombre
+echo   feature.bat start tipo/nombre
+echo   feature.bat finish tipo/nombre
 echo.
-echo   feature.bat fixstart fix/nombre
-echo   feature.bat fixfinish fix/nombre
+echo Ejemplos:
+echo.
+echo   feature.bat start feature/cache
+echo   feature.bat start fix/output-validator
+echo   feature.bat start refactor/build-runtime-bootstrap
+echo   feature.bat start chore/update-eslint
+echo.
+echo   feature.bat finish refactor/build-runtime-bootstrap
 echo.
 echo   feature.bat sync
 echo   feature.bat cleanup
-echo.

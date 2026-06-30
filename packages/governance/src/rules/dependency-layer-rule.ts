@@ -1,11 +1,10 @@
 // packages/governance/src/rules/dependency-layer-rule.ts
 
+import { DependencyRulesEngine } from '../engine/dependency-rules.engine.js';
 import { GovernanceRuleId } from '../engine/governance-rule-id.js';
 import type { GovernanceRule } from '../engine/governance-rule.js';
 import type { Diagnostic } from '../types/diagnostic.js';
 import type { GovernanceContext } from '../types/governance-context.js';
-
-import { DependencyRulesEngine } from './dependency-rules.engine.js';
 
 export class DependencyLayerRule implements GovernanceRule {
   readonly id = GovernanceRuleId.DependencyLayer;

@@ -1,7 +1,6 @@
 // packages/application/src/generation/composition/create-default-engine.ts
 
 import {
-  PromptEngine,
   type FileSystemPort,
   type IdGenerator,
   type LoggerPort,
@@ -10,6 +9,7 @@ import {
 } from '@arch/contracts';
 
 import { DefaultGenerationEngine } from '../engine/default-generation-engine.js';
+import { PromptEngine } from '../engine/prompt-engine.js';
 import { GenerationContextFactory } from '../runtime/generation-context-factory.js';
 
 import { createDefaultPipeline } from './create-default-pipeline.js';

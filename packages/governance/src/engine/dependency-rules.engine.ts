@@ -1,4 +1,4 @@
-// packages/governance/src/analysis/rules/dependency-rules.engine.ts
+// packages/governance/src/engine/dependency-rules.engine.ts
 
 import type { DependencyMatrix, Layer } from '../types/dependency-layer.js';
 import type { Diagnostic } from '../types/diagnostic.js';
