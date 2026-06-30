@@ -14,7 +14,6 @@
     }
   },
   "scripts": {
-    "build:js": "tsup",
     "build:dts": "tsc -p tsconfig.build.json",
     "build": "pnpm build:dts",
     "clean": "tsx ../tooling/src/bin/clean.ts",

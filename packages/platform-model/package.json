@@ -14,6 +14,7 @@
     }
   },
   "scripts": {
+    "mode": "tsc-declaration",
     "build": "pnpm build:dts",
     "build:dts": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",

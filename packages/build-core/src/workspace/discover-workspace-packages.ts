@@ -14,14 +14,28 @@ export async function discoverWorkspacePackages(
 
   const roots = await findPackageRoots(packagesDir);
 
-  return roots.map((root) => {
+  const packages = roots.map((root) => {
     const pkg = readPackageJson(joinPath(root, 'package.json'));
+
+    const dependencies = Object.keys(pkg.dependencies ?? {}).sort();
+
+    const buildDependencies = Object.keys(pkg.devDependencies ?? {})
+      .filter((dep) => dep.startsWith('@arch/'))
+      .sort();
 
     return {
       name: pkg.name,
       root,
-      dependencies: Object.keys(pkg.dependencies ?? {}),
+
+      dependencies,
+
+      buildDependencies,
+
       outputs: resolveOutputs(pkg),
+
+      build: pkg.arch?.build,
     };
   });
+
+  return packages;
 }

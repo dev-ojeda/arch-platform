@@ -1,5 +1,5 @@
 {
-  "extends": "../../config/tsconfig/library.json",
+  "extends": "../../config/tsconfig/declarations.json",
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
@@ -11,6 +11,10 @@
   "include": [
     "src/**/*.ts"
   ],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ],
   "references": [
     {
       "path": "../contracts"
@@ -19,8 +23,4 @@
       "path": "../core"
     }
   ],
-  "exclude": [
-    "dist",
-    "node_modules"
-  ]
 }

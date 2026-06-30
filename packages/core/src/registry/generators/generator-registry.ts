@@ -1,8 +1,6 @@
 // packages/core/src/registry/generator-registry.ts
 
 import {
-  eraseGeneratorType,
-  restoreGeneratorType,
   type GeneratorDefinition,
   type NamedVariables,
   type RegisteredGeneratorDefinition,
@@ -18,7 +16,7 @@ export class GeneratorRegistry {
       throw new Error(`Generator already registered: ${id}`);
     }
 
-    this.#registry.set(id, eraseGeneratorType(generator));
+    this.#registry.set(id, this.eraseGeneratorType(generator));
   }
 
   has(id: string): boolean {
@@ -26,10 +24,30 @@ export class GeneratorRegistry {
   }
 
   get<TVariables extends NamedVariables>(id: string): GeneratorDefinition<TVariables> | undefined {
-    return restoreGeneratorType<TVariables>(this.#registry.get(id));
+    return this.restoreGeneratorType<TVariables>(this.#registry.get(id));
   }
 
   list(): RegisteredGeneratorDefinition[] {
     return [...this.#registry.values()];
+  }
+  /**
+   * Erases the concrete variable type so heterogeneous
+   * generator definitions can be stored in registries.
+   */
+  private eraseGeneratorType<TVariables extends NamedVariables>(
+    generator: GeneratorDefinition<TVariables>,
+  ): RegisteredGeneratorDefinition {
+    return generator as RegisteredGeneratorDefinition;
+  }
+  /**
+   * Restores the expected variable type.
+   *
+   * The caller is responsible for requesting the
+   * correct variable type.
+   */
+  private restoreGeneratorType<TVariables extends NamedVariables>(
+    generator: RegisteredGeneratorDefinition | undefined,
+  ): GeneratorDefinition<TVariables> | undefined {
+    return generator;
   }
 }

@@ -10,19 +10,23 @@ export const sharedVitestConfig = defineConfig({
 
   test: {
     environment: 'node',
-    globals: true,
-    pool: 'forks',
-    isolate: true,
-    testTimeout: 10_000,
-    passWithNoTests: true,
-    setupFiles: [VITEST_SETUP_FILE],
 
-    typecheck: {
-      tsconfig: './tsconfig.test.json',
-    },
+    globals: true,
+
+    isolate: true,
+
+    pool: 'forks',
+
+    passWithNoTests: true,
+
+    setupFiles: [VITEST_SETUP_FILE],
 
     sequence: {
       concurrent: false,
+    },
+
+    typecheck: {
+      tsconfig: './tsconfig.test.json',
     },
   },
 });

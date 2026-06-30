@@ -1,8 +1,8 @@
 // packages/application/src/generation/hooks/logging-generation-hooks.ts
 
 import {
-  reportDiagnostic,
   type GenerationContext,
+  type GenerationDiagnostic,
   type GenerationHooks,
   type GenerationPipelineStep,
   type TemplateVariables,
@@ -23,7 +23,7 @@ export class LoggingGenerationHooks<
     step: GenerationPipelineStep<TVariables>,
     context: GenerationContext<TVariables>,
   ): Promise<void> {
-    reportDiagnostic(context, {
+    this.reportDiagnostic(context, {
       level: 'info',
       message: `Running ${step.name}`,
       step: step.name,
@@ -42,7 +42,7 @@ export class LoggingGenerationHooks<
   }
 
   onError(error: unknown, context: GenerationContext<TVariables>): Promise<void> {
-    reportDiagnostic(context, {
+    this.reportDiagnostic(context, {
       level: 'error',
       message: error instanceof Error ? error.message : errorMessage(error),
       timestamp: 0,
@@ -53,5 +53,12 @@ export class LoggingGenerationHooks<
     });
 
     return Promise.resolve();
+  }
+
+  private reportDiagnostic(
+    context: Pick<GenerationContext, 'diagnostics'>,
+    diagnostic: GenerationDiagnostic,
+  ): void {
+    context.diagnostics.push(diagnostic);
   }
 }

@@ -1,29 +1,23 @@
 // packages/build-core/src/workspace/package-json.ts
 
+export type PackageBuildConfig = {
+  mode?: 'tsc' | 'tsup' | 'custom' | 'script';
+  command?: string;
+  args?: string[];
+};
+
 export type PackageJson = {
   name: string;
 
-  version?: string;
+  dependencies?: Record<string, string>;
+  devDependencies?: Record<string, string>;
 
-  type?: string;
+  arch?: {
+    build?: PackageBuildConfig;
+  };
 
   main?: string;
-  module?: string;
   types?: string;
-
-  exports?: Record<
-    string,
-    {
-      types?: string;
-      import?: string;
-      require?: string;
-    }
-  >;
-
-  files?: string[];
-
-  dependencies?: Record<string, string>;
-
   outputs?: string[];
 };
 export function isPackageJson(value: unknown): value is PackageJson {
