@@ -1,9 +1,5 @@
 // packages/build-core/src/executor/execution-types.ts
 
-export type ExecutionReason =
-  | 'scheduled'
-  | 'cached'
-  | 'artifact-restored'
-  | 'propagated'
-  | 'restored'
-  | 'dependency-failed';
+export type ExecutionReason = 'cached' | 'restored' | 'executed' | 'failed';
+
+export type SkipReason = 'dependency-failed' | 'not-in-scope';

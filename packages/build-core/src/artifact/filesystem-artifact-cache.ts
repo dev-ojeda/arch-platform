@@ -1,15 +1,20 @@
 // packages/build-core/src/artifact/filesystem-artifact-cache.ts
 
-import { copyPath, ensureDir, removePath } from '../fs/fs-async.js';
-import { writeJsonFileSync } from '../fs/fs-sync.js';
+import { copyPath } from '../fs/fs-async.js';
 import { joinPath } from '../fs/path-utils.js';
+import { LOG_EVENTS } from '../logging/log-events.js';
+import { logger } from '../logging/logger.js';
 
 import type { ArtifactCache } from './artifact-cache.js';
 import { readArtifactManifest } from './artifact-manifest-reader.js';
 import { ARTIFACT_SCHEMA_VERSION, type ArtifactManifest } from './artifact-manifest.js';
+import type { ArtifactPublisher } from './publisher/artifact-publisher.js';
 
 export class FilesystemArtifactCache implements ArtifactCache {
-  constructor(private cacheRoot: string) {}
+  constructor(
+    private readonly cacheRoot: string,
+    private readonly publisher: ArtifactPublisher,
+  ) {}
 
   async exists(key: string): Promise<boolean> {
     const manifest = await readArtifactManifest(joinPath(this.cacheRoot, key, 'manifest.json'));
@@ -20,16 +25,6 @@ export class FilesystemArtifactCache implements ArtifactCache {
   async save(key: string, root: string, outputs: string[]): Promise<void> {
     const target = joinPath(this.cacheRoot, key);
 
-    await removePath(target);
-    await ensureDir(target);
-
-    for (const output of outputs) {
-      await copyPath(joinPath(root, output), joinPath(target, output), {
-        force: true,
-        recursive: true,
-      });
-    }
-
     const manifest: ArtifactManifest = {
       key,
       outputs,
@@ -37,9 +32,21 @@ export class FilesystemArtifactCache implements ArtifactCache {
       schemaVersion: ARTIFACT_SCHEMA_VERSION,
     };
 
-    writeJsonFileSync(joinPath(target, 'manifest.json'), manifest);
-  }
+    try {
+      await this.publisher.publish(root, manifest, target);
+    } catch (error) {
+      if (error instanceof Error) {
+        logger.error(LOG_EVENTS.ARTIFACT_FAIL, {
+          metadata: {
+            key,
+            error: error.message,
+          },
+        });
+      }
 
+      throw error;
+    }
+  }
   async restore(key: string, root: string): Promise<boolean> {
     const source = joinPath(this.cacheRoot, key);
 
@@ -58,7 +65,14 @@ export class FilesystemArtifactCache implements ArtifactCache {
       }
 
       return true;
-    } catch {
+    } catch (error) {
+      logger.error(LOG_EVENTS.ARTIFACT_FAIL, {
+        metadata: {
+          key,
+          error: error instanceof Error ? error.message : String(error),
+        },
+      });
+
       return false;
     }
   }

@@ -1,6 +1,6 @@
 // packages/build-core/src/graph/graph-runtime-scheduler.ts
 
-import type { BuildResult } from '../cache/cache-types.js';
+import type { BuildResult } from '../executor/build-result.js';
 import { logger } from '../logging/logger.js';
 
 import type { BuildTaskRunner } from './build-task-runner.js';
@@ -71,8 +71,28 @@ export class GraphRuntimeScheduler {
         this.runtime.set(name, 'done');
       }
     } catch (error) {
+      logger.error('Task execution failed', {
+        metadata: {
+          package: name,
+          error,
+        },
+      });
       this.runtime.set(name, 'failed');
-      throw error;
+
+      results.push({
+        package: name,
+        status: 'failed',
+        changeReason: 'none',
+
+        execution: {
+          reason: 'failed',
+        },
+
+        cache: {
+          decision: 'miss',
+          action: 'none',
+        },
+      });
     }
   }
 
@@ -99,12 +119,11 @@ export class GraphRuntimeScheduler {
     return name;
   }
 
-  private trackTask(name: string, task: Promise<void>, running: Map<string, Promise<void>>): void {
-    running.set(name, task);
+  private trackTask(name: string, task: Promise<void>, running: Map<string, Promise<void>>) {
+    const tracked = task.finally(() => {
+      running.delete(name);
+    });
 
-    task.then(
-      () => running.delete(name),
-      () => running.delete(name),
-    );
+    running.set(name, tracked);
   }
 }

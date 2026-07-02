@@ -3,6 +3,7 @@
 import type { CacheEvaluator } from '../cache/cache-evaluator.js';
 import type { Graph } from '../graph/dag-types.js';
 import type { HashResult } from '../hash/hash-result.js';
+import { logger } from '../logging/logger.js';
 
 import { BuildPlan } from './build-plan.js';
 
@@ -32,18 +33,27 @@ export class ChangePlanner {
 
         shouldExecute: evaluation.decision !== 'hit' && evaluation.decision !== 'restore',
 
-        cacheDecision: evaluation.decision,
+        cache: {
+          decision: evaluation.decision,
+
+          action: evaluation.decision === 'restore' ? 'restore' : 'none',
+        },
 
         changeReason: evaluation.changeReason,
 
-        executionReason:
-          evaluation.decision === 'hit'
-            ? 'cached'
-            : evaluation.decision === 'restore'
-              ? 'artifact-restored'
-              : 'scheduled',
-
         hash,
+        execution: {
+          reason: 'cached',
+        },
+      });
+
+      logger.trace('build.plan', {
+        metadata: {
+          package: name,
+          hash: hash.hash,
+          changeReason: evaluation.changeReason,
+          cacheDecision: evaluation.decision,
+        },
       });
     }
 

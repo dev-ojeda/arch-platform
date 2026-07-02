@@ -1,6 +1,6 @@
 // packages/build-core/src/planning/plan-entry.ts
 
-import type { CacheDecision, ChangeReason } from '../cache/cache-types.js';
+import type { CacheAction, CacheDecision, ChangeReason } from '../cache/cache-types.js';
 import type { ExecutionReason } from '../executor/execution-types.js';
 import type { HashResult } from '../hash/hash-result.js';
 
@@ -13,19 +13,21 @@ export interface BuildPlanEntry {
   shouldExecute: boolean;
 
   /**
-   * Qué pasó con cache
+   * Resultado de evaluación de cache
    */
-  cacheDecision: CacheDecision;
+  cache: {
+    decision: CacheDecision;
+    action: CacheAction;
+  };
 
   /**
-   * Por qué cambió
+   * Motivo del cambio detectado
    */
   changeReason: ChangeReason;
 
-  /**
-   * Por qué se ejecuta
-   */
-  executionReason: ExecutionReason;
+  execution: {
+    reason: ExecutionReason;
+  };
 
   /**
    * Hash evaluado para esta planificación.

@@ -3,8 +3,8 @@
 import type { ArtifactCache } from '../artifact/artifact-cache.js';
 import { createArtifactKey } from '../artifact/artifact-key.js';
 import type { OutputValidator } from '../artifact/output-validator.js';
-import type { BuildResult } from '../cache/cache-types.js';
 import type { BuildExecutor } from '../executor/build-executor.js';
+import type { BuildResult } from '../executor/build-result.js';
 import type { BuildPlan } from '../planning/build-plan.js';
 import type { BuildPlanEntry } from '../planning/plan-entry.js';
 import type { BuildStateWriter } from '../state/state-writer.js';
@@ -24,24 +24,12 @@ export class BuildTaskRunner {
   async run(name: string): Promise<BuildResult> {
     const node = this.requireNode(name);
     const entry = this.requirePlan(name);
-    if (entry.cacheDecision === 'restore') {
-      const restored = await this.artifactCache.restore(createArtifactKey(entry.hash), node.root);
 
-      if (restored) {
-        this.writer.commit(node, entry.hash);
-        return {
-          package: entry.package,
-          status: 'skipped',
-          changeReason: entry.changeReason,
-          executionReason: 'artifact-restored',
-          cacheDecision: 'restore',
-        };
-      }
-
-      return this.executeAndCache(node, entry);
+    if (entry.cache.action === 'restore') {
+      return this.restore(node, entry);
     }
 
-    if (!entry.shouldExecute) {
+    if (entry.cache.decision === 'hit') {
       return this.createCachedResult(entry);
     }
 
@@ -74,9 +62,14 @@ export class BuildTaskRunner {
 
       changeReason: plan.changeReason,
 
-      executionReason: 'cached',
+      execution: {
+        reason: 'cached',
+      },
 
-      cacheDecision: plan.cacheDecision,
+      cache: {
+        decision: plan.cache.decision,
+        action: plan.cache.action,
+      },
     };
   }
   private async executeAndCache(node: DagNode, entry: BuildPlanEntry): Promise<BuildResult> {
@@ -101,5 +94,30 @@ export class BuildTaskRunner {
     this.writer.commit(node, entry.hash);
 
     return result;
+  }
+  private async restore(node: DagNode, entry: BuildPlanEntry): Promise<BuildResult> {
+    const restored = await this.artifactCache.restore(createArtifactKey(entry.hash), node.root);
+
+    if (!restored) {
+      return this.executeAndCache(node, entry);
+    }
+
+    this.writer.commit(node, entry.hash);
+
+    return {
+      package: entry.package,
+      status: 'skipped',
+
+      changeReason: entry.changeReason,
+
+      execution: {
+        reason: 'restored',
+      },
+
+      cache: {
+        decision: entry.cache.decision,
+        action: entry.cache.action,
+      },
+    };
   }
 }

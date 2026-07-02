@@ -15,7 +15,7 @@ export class DependencyResolver {
   isReady(name: string, scope: Set<string>): boolean {
     const deps = this.graph.getDependencies(name);
 
-    const ready = deps.every((dep) => !scope.has(dep) || this.runtime.isDone(dep));
+    const ready = deps.every((dep) => !scope.has(dep) || this.runtime.isCompleted(dep));
 
     logger.trace(LOG_EVENTS.DEPENDENCY_RESOLVER, {
       metadata: {

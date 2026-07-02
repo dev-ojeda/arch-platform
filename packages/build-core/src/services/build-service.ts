@@ -3,8 +3,8 @@
 import type { ArtifactCache } from '../artifact/artifact-cache.js';
 import { FilesystemOutputValidator } from '../artifact/filesystem-output-validator.js';
 import { CacheEvaluator } from '../cache/cache-evaluator.js';
-import type { BuildResult } from '../cache/cache-types.js';
 import type { BuildExecutor } from '../executor/build-executor.js';
+import type { BuildResult } from '../executor/build-result.js';
 import { BuildTaskRunner } from '../graph/build-task-runner.js';
 import type { Graph } from '../graph/dag-types.js';
 import { DependencyResolver } from '../graph/dependency-resolver.js';
@@ -105,11 +105,11 @@ export class BuildService {
     return {
       results,
 
-      executed: results.filter((r) => r.executionReason === 'scheduled').length,
+      executed: results.filter((r) => r.execution.reason === 'executed').length,
 
-      restored: results.filter((r) => r.executionReason === 'artifact-restored').length,
+      restored: results.filter((r) => r.execution.reason === 'restored').length,
 
-      cached: results.filter((r) => r.executionReason === 'cached').length,
+      cached: results.filter((r) => r.execution.reason === 'cached').length,
 
       failed: results.filter((r) => r.status === 'failed').length,
     };

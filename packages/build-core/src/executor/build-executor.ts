@@ -1,19 +1,17 @@
 // packages/build-core/src/executor/build-executor.ts
 
-import type { BuildResult } from '../cache/cache-types.js';
 import type { DagNode } from '../graph/dag-types.js';
 import { logger } from '../logging/logger.js';
 import type { BuildPlanEntry } from '../planning/plan-entry.js';
 
 import type { BuildExecutionContext } from './build-execution-context.js';
+import type { BuildResult } from './build-result.js';
 import { createBuildSteps } from './build-step-factory.js';
 
 export class BuildExecutor {
   constructor(private ctx: BuildExecutionContext) {}
 
   async execute(node: DagNode, plan: BuildPlanEntry): Promise<BuildResult> {
-    const start = Date.now();
-
     const steps = createBuildSteps(node.build);
 
     for (const step of steps) {
@@ -39,14 +37,13 @@ export class BuildExecutor {
 
           changeReason: plan.changeReason,
 
-          executionReason: plan.executionReason,
+          execution: {
+            reason: plan.execution.reason,
+          },
 
-          cacheDecision: plan.cacheDecision,
-
-          meta: {
-            exitCode: res.exitCode,
-            durationMs: Date.now() - start,
-            step: step.name,
+          cache: {
+            action: plan.cache.action,
+            decision: plan.cache.decision,
           },
         };
       }
@@ -59,13 +56,13 @@ export class BuildExecutor {
 
       changeReason: plan.changeReason,
 
-      executionReason: plan.executionReason,
+      execution: {
+        reason: plan.execution.reason,
+      },
 
-      cacheDecision: plan.cacheDecision,
-
-      meta: {
-        exitCode: 0,
-        durationMs: Date.now() - start,
+      cache: {
+        action: plan.cache.action,
+        decision: plan.cache.decision,
       },
     };
   }

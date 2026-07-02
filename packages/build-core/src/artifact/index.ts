@@ -7,3 +7,4 @@ export type { ArtifactManifest } from './artifact-manifest.js';
 export { FilesystemArtifactCache } from './filesystem-artifact-cache.js';
 export { FilesystemOutputValidator } from './filesystem-output-validator.js';
 export type { OutputValidator } from './output-validator.js';
+export * from './publisher/index.js';

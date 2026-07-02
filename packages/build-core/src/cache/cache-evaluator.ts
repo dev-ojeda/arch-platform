@@ -9,12 +9,8 @@ import { LOG_EVENTS } from '../logging/log-events.js';
 import { logger } from '../logging/logger.js';
 import type { BuildState } from '../state/state-types.js';
 
-import type { CacheDecision, ChangeReason } from './cache-types.js';
-
-export interface CacheEvaluation {
-  decision: CacheDecision;
-  changeReason: ChangeReason;
-}
+import type { CacheEvaluation } from './cache-evaluation.js';
+import type { ChangeReason } from './cache-types.js';
 
 export class CacheEvaluator {
   constructor(
