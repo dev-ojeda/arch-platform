@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildGraph } from '../../src/graph/build-graph.js';
-import type { WorkspacePackage } from '../../src/workspace/workspace-package.js';
+import { buildGraph } from '../../../src/graph/build-graph.js';
+import type { WorkspacePackage } from '../../../src/workspace/workspace-package.js';
 
 describe('buildGraph', () => {
   it('should include runtime dependencies', () => {

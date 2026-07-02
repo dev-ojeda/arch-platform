@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildWorkspaceGraph } from '../../src/workspace/build-workspace-graph.js';
-import type { WorkspacePackage } from '../../src/workspace/workspace-package.js';
+import { buildWorkspaceGraph } from '../../../src/workspace/build-workspace-graph.js';
+import type { WorkspacePackage } from '../../../src/workspace/workspace-package.js';
 
 const pkg = (overrides: Partial<WorkspacePackage>): WorkspacePackage => ({
   name: '@arch/test',
