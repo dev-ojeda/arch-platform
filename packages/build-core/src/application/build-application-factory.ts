@@ -1,23 +1,23 @@
 // packages/build-core/src/application/build-application-factory.ts
 
-import type { ArtifactCache } from '../artifact/artifact-cache.js';
-import { FilesystemArtifactCache } from '../artifact/filesystem-artifact-cache.js';
-import { FilesystemArtifactPublisher } from '../artifact/publisher/filesystem-artifact-publisher.js';
-import { ExecutorFactory } from '../executor/executor-factory.js';
-import { joinPath } from '../fs/path-utils.js';
 import { buildGraph } from '../graph/build-graph.js';
-import { GraphEngine } from '../graph/graph-engine.js';
 import type { CommandRunner } from '../runtime/command-runner.js';
 import { BuildService } from '../services/build-service.js';
 import { loadBuildState } from '../state/state-reader.js';
 import { discoverWorkspacePackages } from '../workspace/discover-workspace-packages.js';
 import { findWorkspaceRoot } from '../workspace/find-workspace-root.js';
 
+import { BuildCompositionRoot } from './build-composition-root.js';
+
 export class BuildApplicationFactory {
+  private readonly compositionRoot: BuildCompositionRoot;
+
   constructor(
     private readonly fromDirectory: string,
-    private readonly runner: CommandRunner,
-  ) {}
+    runner: CommandRunner,
+  ) {
+    this.compositionRoot = new BuildCompositionRoot(runner);
+  }
 
   async create(): Promise<BuildService> {
     const workspaceRoot = findWorkspaceRoot(this.fromDirectory);
@@ -26,15 +26,13 @@ export class BuildApplicationFactory {
 
     const graph = buildGraph(packages);
 
-    const engine = new GraphEngine(graph);
+    const engine = this.compositionRoot.createEngine(graph);
 
     const state = loadBuildState(workspaceRoot);
 
-    const artifactCache = this.createArtifactCache(workspaceRoot);
+    const artifactCache = this.compositionRoot.createArtifactCache(workspaceRoot);
 
-    const executor = new ExecutorFactory().create({
-      runner: this.runner,
-    });
+    const executor = this.compositionRoot.createExecutor();
 
     return new BuildService({
       graph,
@@ -44,14 +42,5 @@ export class BuildApplicationFactory {
       executor,
       workspaceRoot,
     });
-  }
-
-  private createArtifactCache(workspaceRoot: string): ArtifactCache {
-    const publisher = new FilesystemArtifactPublisher();
-
-    return new FilesystemArtifactCache(
-      joinPath(workspaceRoot, '.arch-cache', 'artifacts'),
-      publisher,
-    );
   }
 }
