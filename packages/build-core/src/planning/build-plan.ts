@@ -17,12 +17,12 @@ export class BuildPlan {
     return this.store.has(name);
   }
 
-  values(): IterableIterator<BuildPlanEntry> {
-    return this.store.values();
+  values(): ReadonlyArray<BuildPlanEntry> {
+    return Array.from(this.store.values());
   }
 
-  entries(): IterableIterator<[string, BuildPlanEntry]> {
-    return this.store.entries();
+  entries(): ReadonlyArray<[string, BuildPlanEntry]> {
+    return Array.from(this.store.entries());
   }
 
   [Symbol.iterator](): IterableIterator<[string, BuildPlanEntry]> {

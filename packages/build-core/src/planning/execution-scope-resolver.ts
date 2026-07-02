@@ -33,7 +33,7 @@ export class ExecutionScopeResolver {
   private getAffectedNodes(): Set<string> {
     return new Set(
       [...this.plan.entries()]
-        .filter(([, entry]) => this.isAffected(entry.cacheDecision))
+        .filter(([, entry]) => this.isAffected(entry.cache.decision))
         .map(([name]) => name),
     );
   }

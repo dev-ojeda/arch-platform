@@ -9,20 +9,20 @@ export interface RunCommandOptions {
 
   readonly action: () => Promise<number>;
 }
-function logResult(exitCode: number, events: ToolingTaskEvents): void {
-  const metadata = { exitCode };
+// function logResult(exitCode: number, events: ToolingTaskEvents): void {
+//   const metadata = { exitCode };
 
-  if (exitCode === 0) {
-    logger.success(events.completed, { metadata });
-    return;
-  }
+//   if (exitCode === 0) {
+//     logger.success(events.completed, { metadata });
+//     return;
+//   }
 
-  logger.error(events.failed, { metadata });
-}
+//   logger.error(events.failed, { metadata });
+// }
 export async function runCommand(options: RunCommandOptions): Promise<number> {
   try {
     const exitCode = await options.action();
-    logResult(exitCode, options.events);
+    // logResult(exitCode, options.events);
     return exitCode;
   } catch (error) {
     logger.error(options.events.failed, {

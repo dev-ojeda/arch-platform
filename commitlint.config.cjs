@@ -51,6 +51,8 @@ module.exports = {
         'mvc',
         'exports',
         'code-analysis',
+        'build-core',
+        'repo',
 
         'application/engine',
         'application/runtime',
