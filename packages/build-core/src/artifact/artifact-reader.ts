@@ -1,4 +1,4 @@
-// packages/build-core/src/artifact/artifact-manifest-reader.ts
+// packages/build-core/src/artifact/artifact-reader.ts
 
 import { pathExists, readJsonFile } from '../fs/fs-async.js';
 

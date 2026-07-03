@@ -1,21 +1,17 @@
 // packages/build-core/src/artifact/artifact-cache.ts
 
+import type { Artifact } from './artifact.js';
+
 /**
- * Stores and restores build artifacts identified by a cache key.
+ * Stores and restores build artifacts.
  *
- * Implementations are responsible for cache semantics, while the
- * underlying persistence mechanism is implementation-specific.
+ * Implementations define the persistence mechanism.
  *
- * Keys are derived from build hashes.
- *
- * Guarantees:
- * - exists() only returns true for valid artifacts.
- * - restore() returns false when an artifact is missing, invalid or incomplete.
+ * restore() returns false when the artifact
+ * cannot be restored (missing, invalid or incomplete).
  */
 export interface ArtifactCache {
-  exists(key: string): Promise<boolean>;
+  save(artifact: Artifact, root: string, outputs: readonly string[]): Promise<void>;
 
-  save(key: string, root: string, outputs: string[]): Promise<void>;
-
-  restore(key: string, destination: string): Promise<boolean>;
+  restore(artifact: Artifact, root: string): Promise<boolean>;
 }

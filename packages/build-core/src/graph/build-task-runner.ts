@@ -1,7 +1,7 @@
 // packages/build-core/src/graph/build-task-runner.ts
 
 import type { ArtifactCache } from '../artifact/artifact-cache.js';
-import { createArtifactKey } from '../artifact/artifact-key.js';
+import type { DefaultArtifactProvider } from '../artifact/default-artifact-provider.js';
 import type { OutputValidator } from '../artifact/output-validator.js';
 import type { BuildExecutor } from '../executor/build-executor.js';
 import type { BuildResult } from '../executor/build-result.js';
@@ -19,6 +19,7 @@ export class BuildTaskRunner {
     private writer: BuildStateWriter,
     private artifactCache: ArtifactCache,
     private outputValidator: OutputValidator,
+    private defaultArtifactProvider: DefaultArtifactProvider,
   ) {}
 
   async run(name: string): Promise<BuildResult> {
@@ -89,14 +90,17 @@ export class BuildTaskRunner {
       );
     }
 
-    await this.artifactCache.save(createArtifactKey(entry.hash), node.root, node.outputs);
+    const artifact = this.defaultArtifactProvider.create(node.name, entry.hash);
+
+    await this.artifactCache.save(artifact, node.root, node.outputs);
 
     this.writer.commit(node, entry.hash);
 
     return result;
   }
   private async restore(node: DagNode, entry: BuildPlanEntry): Promise<BuildResult> {
-    const restored = await this.artifactCache.restore(createArtifactKey(entry.hash), node.root);
+    const artifact = this.defaultArtifactProvider.create(node.name, entry.hash);
+    const restored = await this.artifactCache.restore(artifact, node.root);
 
     if (!restored) {
       return this.executeAndCache(node, entry);

@@ -2,6 +2,7 @@
 
 import type { ArtifactCache } from '../artifact/artifact-cache.js';
 import { FilesystemArtifactCache } from '../artifact/filesystem-artifact-cache.js';
+import { FilesystemArtifactLayoutFactory } from '../artifact/filesystem-artifact-layout-factory.js';
 import { FilesystemArtifactPublisher } from '../artifact/publisher/filesystem-artifact-publisher.js';
 import { ExecutorFactory } from '../executor/executor-factory.js';
 import { joinPath } from '../fs/path-utils.js';
@@ -13,12 +14,13 @@ export class BuildCompositionRoot {
   constructor(private readonly runner: CommandRunner) {}
 
   createArtifactCache(workspaceRoot: string): ArtifactCache {
+    const layoutFactory = new FilesystemArtifactLayoutFactory(
+      joinPath(workspaceRoot, '.arch-cache', 'artifacts'),
+    );
+
     const publisher = new FilesystemArtifactPublisher();
 
-    return new FilesystemArtifactCache(
-      joinPath(workspaceRoot, '.arch-cache', 'artifacts'),
-      publisher,
-    );
+    return new FilesystemArtifactCache(layoutFactory, publisher);
   }
 
   createExecutor() {
