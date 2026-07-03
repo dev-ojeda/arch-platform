@@ -2,33 +2,34 @@
 
 import { copyPath, ensureDir, removePath, renamePath, writeJsonFile } from '../../fs/fs-async.js';
 import { joinPath } from '../../fs/path-utils.js';
+import type { ArtifactLayout } from '../artifact-layout.js';
 import type { ArtifactManifest } from '../artifact-manifest.js';
 
 import type { ArtifactPublisher } from './artifact-publisher.js';
 
 export class FilesystemArtifactPublisher implements ArtifactPublisher {
-  async publish(root: string, manifest: ArtifactManifest, destination: string): Promise<void> {
-    const temp = `${destination}.${process.pid}.tmp`;
+  async publish(root: string, manifest: ArtifactManifest, layout: ArtifactLayout): Promise<void> {
+    const temp = layout.temporary();
 
     try {
-      await removePath(temp);
+      await removePath(temp.root);
 
-      await ensureDir(temp);
+      await ensureDir(temp.root);
 
       for (const output of manifest.outputs) {
-        await copyPath(joinPath(root, output), joinPath(temp, output), {
+        await copyPath(joinPath(root, output), temp.output(output), {
           force: true,
           recursive: true,
         });
       }
 
-      await writeJsonFile(joinPath(temp, 'manifest.json'), manifest);
+      await writeJsonFile(temp.manifest(), manifest);
 
-      await removePath(destination);
+      await removePath(layout.root);
 
-      await renamePath(temp, destination);
+      await renamePath(temp.root, layout.root);
     } finally {
-      await removePath(temp);
+      await removePath(temp.root);
     }
   }
 }

@@ -1,15 +1,12 @@
-// packages/build-core/src/workspace/discover-workspace-packages.ts
+// packages/build-core/src/discovery/discover-packages-root.ts
 
 import { joinPath } from '../fs/path-utils.js';
+import { findPackageRoots } from '../package/find-package.js';
+import type { PackageRoot } from '../package/packages-root.js';
+import { readPackageJson } from '../package/read-package-json.js';
+import { resolvePackageOutputs } from '../package/resolve-package-outputs.js';
 
-import { findPackageRoots } from './find-package-roots.js';
-import { readPackageJson } from './read-package-json.js';
-import { resolveOutputs } from './resolve-package-outputs.js';
-import type { WorkspacePackage } from './workspace-package.js';
-
-export async function discoverWorkspacePackages(
-  workspaceRoot: string,
-): Promise<WorkspacePackage[]> {
+export async function discoverWorkspacePackages(workspaceRoot: string): Promise<PackageRoot[]> {
   const packagesDir = joinPath(workspaceRoot, 'packages');
 
   const roots = await findPackageRoots(packagesDir);
@@ -31,7 +28,7 @@ export async function discoverWorkspacePackages(
 
       buildDependencies,
 
-      outputs: resolveOutputs(pkg),
+      outputs: resolvePackageOutputs(pkg),
 
       build: pkg.arch?.build,
     };

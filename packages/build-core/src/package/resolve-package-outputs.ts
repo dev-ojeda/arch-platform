@@ -1,8 +1,8 @@
-// packages/build-core/src/workspace/resolve-package-outputs.ts
+// packages/build-core/src/packages/resolve-package-outputs.ts
 
 import type { PackageJson } from './package-json.js';
 
-export function resolveOutputs(pkg: PackageJson): string[] {
+export function resolvePackageOutputs(pkg: PackageJson): string[] {
   if (pkg.outputs?.length) {
     return [...pkg.outputs];
   }

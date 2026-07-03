@@ -10,7 +10,7 @@ import { BuildPlan } from './build-plan.js';
 export class ChangePlanner {
   constructor(private evaluator: CacheEvaluator) {}
 
-  async createPlan(graph: Graph, hashes: Map<string, HashResult>): Promise<BuildPlan> {
+  createPlan(graph: Graph, hashes: Map<string, HashResult>): BuildPlan {
     const plan = new BuildPlan();
 
     for (const [name, node] of graph) {
@@ -20,7 +20,7 @@ export class ChangePlanner {
         throw new Error(`[ChangePlanner] Missing hash for "${name}"`);
       }
 
-      const evaluation = await this.evaluator.evaluate(
+      const evaluation = this.evaluator.evaluate(
         node.name,
         node.root,
         node.outputs,

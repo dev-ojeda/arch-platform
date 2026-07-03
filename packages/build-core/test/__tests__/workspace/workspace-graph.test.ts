@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildWorkspaceGraph } from '../../src/workspace/build-workspace-graph.js';
-import type { WorkspacePackage } from '../../src/workspace/workspace-package.js';
+import type { PackageRoot } from '../../../src/package/packages-root.js';
+import { buildWorkspaceGraph } from '../../../src/workspace/build-workspace.js';
 
-const pkg = (overrides: Partial<WorkspacePackage>): WorkspacePackage => ({
+const pkg = (overrides: Partial<PackageRoot>): PackageRoot => ({
   name: '@arch/test',
   root: 'packages/test',
   dependencies: [],
@@ -33,7 +33,7 @@ describe('buildWorkspaceGraph', () => {
   });
 
   it('should create workspace graph nodes and edges', () => {
-    const packages: readonly WorkspacePackage[] = [
+    const packages: readonly PackageRoot[] = [
       pkg({
         name: '@arch/application',
         root: 'packages/application',

@@ -1,9 +1,6 @@
 // packages/build-core/src/workspace/workspace-graph.ts
 
-export interface WorkspaceGraphNode {
-  readonly name: string;
-  readonly rootPath: string;
-}
+import type { WorkspaceGraphNode } from './workspace-graph-node.js';
 
 export interface WorkspaceGraph {
   readonly nodes: Map<string, WorkspaceGraphNode>;

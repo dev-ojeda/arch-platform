@@ -1,7 +1,9 @@
 // packages/build-core/src/artifact/artifact-manifest.ts
 
+import type { Artifact } from './artifact.js';
+
 export interface ArtifactManifest {
-  readonly key: string;
+  readonly artifact: Artifact;
 
   readonly outputs: string[];
 

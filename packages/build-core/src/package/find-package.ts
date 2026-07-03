@@ -1,12 +1,11 @@
-// packages/build-core/src/workspace/find-package-roots.ts
+// packages/build-core/src/package/find-package.ts
 
+import { IGNORED_DIRECTORIES } from '../discovery/ignored-directories.js';
 import { pathExists, readDirectoryEntries } from '../fs/fs-async.js';
 import { isDirectory } from '../fs/fs-sync.js';
 import { joinPath } from '../fs/path-utils.js';
 
-import { IGNORED_DIRECTORIES } from './ignored-directories.js';
-import { isPackageJson } from './package-json.js';
-import { readPackageJson } from './read-package-json.js';
+import { isPackageJson, readPackageJson } from './read-package-json.js';
 
 export async function findPackageRoots(directory: string): Promise<string[]> {
   const roots: string[] = [];

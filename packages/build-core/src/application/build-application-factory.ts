@@ -1,10 +1,10 @@
 // packages/build-core/src/application/build-application-factory.ts
 
+import { discoverWorkspacePackages } from '../discovery/discover-packages-root.js';
 import { buildGraph } from '../graph/build-graph.js';
 import type { CommandRunner } from '../runtime/command-runner.js';
 import { BuildService } from '../services/build-service.js';
 import { loadBuildState } from '../state/state-reader.js';
-import { discoverWorkspacePackages } from '../workspace/discover-workspace-packages.js';
 import { findWorkspaceRoot } from '../workspace/find-workspace-root.js';
 
 import { BuildCompositionRoot } from './build-composition-root.js';
