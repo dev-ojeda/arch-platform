@@ -1,15 +1,13 @@
 // packages/build-core/src/workspace/index.ts
 
-export { buildWorkspaceGraph } from './build-workspace-graph.js';
-export { discoverWorkspacePackages } from './discover-workspace-packages.js';
-export { findPackageRoots } from './find-package-roots.js';
+export { discoverWorkspacePackages } from '../discovery/discover-packages-root.js';
+export { IGNORED_DIRECTORIES } from '../discovery/ignored-directories.js';
+export { findPackageRoots } from '../package/find-package.js';
+export type { PackageJson } from '../package/package-json.js';
+export { readPackageJson } from '../package/read-package-json.js';
+export { buildWorkspaceGraph } from './build-workspace.js';
 export { findWorkspaceRoot } from './find-workspace-root.js';
-export { IGNORED_DIRECTORIES } from './ignored-directories.js';
-export { isPackageJson } from './package-json.js';
-export type { PackageBuildConfig, PackageJson } from './package-json.js';
-export { readPackageJson } from './read-package-json.js';
-export { resolveOutputs } from './resolve-package-outputs.js';
 export type { WorkspaceContext } from './workspace-context.js';
-export type { WorkspaceGraph, WorkspaceGraphNode } from './workspace-graph.js';
-export type { WorkspacePackage } from './workspace-package.js';
+export type { WorkspaceGraphNode } from './workspace-graph-node.js';
+export type { WorkspaceGraph } from './workspace-graph.js';
 export type { WorkspaceProvider } from './workspace-provider.js';

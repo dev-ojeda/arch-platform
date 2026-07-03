@@ -1,9 +1,9 @@
-// packages/build-core/src/workspace/read-package-json.ts
+// packages/build-core/src/packages/read-package-json.ts
 
 import { readTextFileSync } from '../fs/fs-sync.js';
 import { safeParse } from '../serialization/safe-stringify.js';
 
-import { isPackageJson, type PackageJson } from './package-json.js';
+import type { PackageJson } from './package-json.js';
 
 export function readPackageJson(path: string): PackageJson {
   const raw = readTextFileSync(path);
@@ -15,4 +15,10 @@ export function readPackageJson(path: string): PackageJson {
   }
 
   return parsed;
+}
+
+export function isPackageJson(value: unknown): value is PackageJson {
+  return (
+    typeof value === 'object' && value !== null && 'name' in value && typeof value.name === 'string'
+  );
 }
