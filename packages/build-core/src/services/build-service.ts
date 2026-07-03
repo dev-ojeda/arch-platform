@@ -1,6 +1,7 @@
 // packages/build-core/src/services/build-service.ts
 
 import type { ArtifactCache } from '../artifact/artifact-cache.js';
+import { DefaultArtifactProvider } from '../artifact/default-artifact-provider.js';
 import { FilesystemOutputValidator } from '../artifact/filesystem-output-validator.js';
 import { CacheEvaluator } from '../cache/cache-evaluator.js';
 import type { BuildExecutor } from '../executor/build-executor.js';
@@ -48,11 +49,11 @@ export class BuildService {
 
     const hashes = new HashGraphBuilder(graph, new DagHasher()).build();
     const outputValidator = new FilesystemOutputValidator();
-    const cache = new CacheEvaluator(state, outputValidator, artifactCache);
+    const cache = new CacheEvaluator(state, outputValidator);
 
     const planner = new ChangePlanner(cache);
 
-    const plan = await planner.createPlan(graph, hashes);
+    const plan = planner.createPlan(graph, hashes);
 
     const scope = new ExecutionScopeResolver(plan, engine).resolve(request.packageName);
 
@@ -65,7 +66,7 @@ export class BuildService {
     const resolver = new DependencyResolver(engine, runtime);
 
     const writer = new BuildStateWriter(state, workspaceRoot);
-
+    const artifactKeyProvider = new DefaultArtifactProvider();
     const runner = new BuildTaskRunner(
       graph,
       executor,
@@ -73,6 +74,7 @@ export class BuildService {
       writer,
       artifactCache,
       outputValidator,
+      artifactKeyProvider,
     );
 
     const scheduler = new GraphRuntimeScheduler(

@@ -1,6 +1,6 @@
 // packages/build-core/src/graph/dag-types.ts
 
-import type { PackageBuildConfig } from '../workspace/package-json.js';
+import type { PackageBuildConfig } from '../package/package-config.js';
 
 export type DagNode = {
   name: string;

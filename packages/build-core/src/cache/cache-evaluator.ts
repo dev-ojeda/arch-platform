@@ -1,7 +1,5 @@
 // packages/build-core/src/cache/cache-evaluator.ts
 
-import type { ArtifactCache } from '../artifact/artifact-cache.js';
-import { createArtifactKey } from '../artifact/artifact-key.js';
 import type { OutputValidator } from '../artifact/output-validator.js';
 import type { HashResult } from '../hash/hash-result.js';
 import { HASH_SCHEMA_VERSION } from '../hash/hash-version.js';
@@ -16,16 +14,15 @@ export class CacheEvaluator {
   constructor(
     private state: BuildState,
     private outputValidator: OutputValidator,
-    private artifactCache: ArtifactCache,
   ) {}
 
-  async evaluate(
+  evaluate(
     packageName: string,
     root: string,
     outputs: string[],
     dependencies: string[],
     current: HashResult,
-  ): Promise<CacheEvaluation> {
+  ): CacheEvaluation {
     logger.trace(LOG_EVENTS.CACHE_EVALUATE, {
       metadata: {
         packageName,
@@ -70,15 +67,6 @@ export class CacheEvaluator {
     }
 
     if (!this.outputValidator.exists(root, outputs)) {
-      const key = this.getArtifactKey(previous.hash);
-
-      if (await this.artifactCache.exists(key)) {
-        return {
-          decision: 'restore',
-          changeReason: 'missing-output',
-        };
-      }
-
       return {
         decision: 'invalid',
         changeReason: 'missing-output',
@@ -103,10 +91,6 @@ export class CacheEvaluator {
       decision: 'stale',
       changeReason: reason,
     };
-  }
-
-  private getArtifactKey(hash: HashResult): string {
-    return createArtifactKey(hash);
   }
   private hasMissingDependencyOutputs(dependencies: string[], root: string): boolean {
     for (const dependency of dependencies) {

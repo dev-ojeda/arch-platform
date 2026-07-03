@@ -1,10 +1,10 @@
 // packages/build-core/src/graph/build-graph.ts
 
-import type { WorkspacePackage } from '../workspace/workspace-package.js';
+import type { PackageRoot } from '../package/packages-root.js';
 
 import type { DagNode, Graph } from './dag-types.js';
 
-export function buildGraph(packages: WorkspacePackage[]): Graph {
+export function buildGraph(packages: PackageRoot[]): Graph {
   const graph: Graph = new Map();
 
   const names = new Set(packages.map((p) => p.name));
