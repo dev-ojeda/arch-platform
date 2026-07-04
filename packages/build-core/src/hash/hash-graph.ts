@@ -7,33 +7,39 @@ import type { HashResult } from './hash-result.js';
 
 export class HashGraphBuilder {
   constructor(
-    private graph: Graph,
-    private hasher: DagHasher,
+    private readonly graph: Graph,
+    private readonly hasher: DagHasher,
   ) {}
 
   build(): Map<string, HashResult> {
-    const hashes = new Map<string, HashResult>();
+    const cache = new Map<string, HashResult>();
+    const visiting = new Set<string>();
 
     const visit = (name: string): HashResult => {
-      const cached = hashes.get(name);
+      const cached = cache.get(name);
+      if (cached) return cached;
 
-      if (cached) {
-        return cached;
+      if (visiting.has(name)) {
+        throw new Error(`Cycle detected at ${name}`);
       }
+
+      visiting.add(name);
 
       const node = this.graph.get(name);
+      if (!node) throw new Error(`Missing node ${name}`);
 
-      if (!node) {
-        throw new Error(`Missing node ${name}`);
+      const dependencyHashes: string[] = [];
+
+      for (const dep of node.dependencies) {
+        dependencyHashes.push(visit(dep).hash);
       }
-
-      const dependencyHashes = node.dependencies.map((dep) => visit(dep).hash);
 
       const result = this.hasher.hash(node, {
         dependencyHashes,
       });
 
-      hashes.set(name, result);
+      visiting.delete(name);
+      cache.set(name, result);
 
       return result;
     };
@@ -42,6 +48,6 @@ export class HashGraphBuilder {
       visit(name);
     }
 
-    return hashes;
+    return cache;
   }
 }

@@ -12,15 +12,18 @@ import { createHash, createObjectHash } from './hash-utils.js';
 import { HASH_SCHEMA_VERSION } from './hash-version.js';
 import type { HashValidator } from './validator/hash-validator.js';
 
+function stableJoin(values: readonly string[]): string {
+  return [...values].sort().join('|');
+}
+
 export class DagHasher {
   constructor(private readonly validator?: HashValidator) {}
 
   hash(node: DagNode, context: HashContext): HashResult {
     const sourceHash = hashDirectory(joinPath(node.root, 'src'));
-
     const configHash = hashConfig(node.root);
 
-    const depsHash = createHash(context.dependencyHashes.toSorted().join('|'));
+    const depsHash = createHash(stableJoin(context.dependencyHashes));
 
     const hashInput: HashInput = {
       nodeName: node.name,

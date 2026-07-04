@@ -2,38 +2,61 @@
 
 import type { PackageRoot } from '../package/packages-root.js';
 
-import type { DagNode, Graph } from './dag-types.js';
+import type { Graph, MutableGraph } from './dag-types.js';
 
-export function buildGraph(packages: PackageRoot[]): Graph {
-  const graph: Graph = new Map();
+export function buildGraph(packages: readonly PackageRoot[]): Graph {
+  const graph = createGraph(packages);
 
-  const names = new Set(packages.map((p) => p.name));
+  linkDependents(graph);
 
-  for (const pkg of packages) {
-    const workspaceDependencies = [...pkg.dependencies, ...pkg.buildDependencies].filter((d) =>
-      names.has(d),
-    );
-
-    const node: DagNode = {
-      name: pkg.name,
-      root: pkg.root,
-      outputs: pkg.outputs,
-
-      dependencies: workspaceDependencies,
-
-      dependents: [],
-
-      build: pkg.build,
-    };
-
-    graph.set(node.name, node);
-  }
-
-  for (const node of graph.values()) {
-    for (const dep of node.dependencies) {
-      graph.get(dep)?.dependents.push(node.name);
-    }
-  }
+  freezeGraph(graph);
 
   return graph;
+}
+function createGraph(packages: readonly PackageRoot[]): MutableGraph {
+  const graph: MutableGraph = new Map();
+  const workspacePackages = new Set(packages.map((pkg) => pkg.name));
+
+  for (const pkg of packages) {
+    graph.set(pkg.name, {
+      name: pkg.name,
+      root: pkg.root,
+      dependencies: resolveWorkspaceDependencies(pkg, workspacePackages),
+      dependents: [],
+      outputs: [...pkg.outputs],
+      build: pkg.build,
+    });
+  }
+  function resolveWorkspaceDependencies(
+    pkg: PackageRoot,
+    workspacePackages: ReadonlySet<string>,
+  ): string[] {
+    return [...pkg.dependencies, ...pkg.buildDependencies].filter((dependency) =>
+      workspacePackages.has(dependency),
+    );
+  }
+  return graph;
+}
+function linkDependents(graph: MutableGraph): void {
+  for (const node of graph.values()) {
+    for (const dependency of node.dependencies) {
+      const dependencyNode = graph.get(dependency);
+
+      if (!dependencyNode) {
+        throw new Error(`Graph invariant violated: dependency "${dependency}" does not exist.`);
+      }
+
+      dependencyNode.dependents.push(node.name);
+    }
+  }
+}
+
+function freezeGraph(graph: MutableGraph): void {
+  for (const node of graph.values()) {
+    Object.freeze(node.dependencies);
+    Object.freeze(node.dependents);
+    Object.freeze(node.outputs);
+
+    Object.freeze(node);
+  }
 }

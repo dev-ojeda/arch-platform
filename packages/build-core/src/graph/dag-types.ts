@@ -2,13 +2,22 @@
 
 import type { PackageBuildConfig } from '../package/package-config.js';
 
-export type DagNode = {
-  name: string;
-  root: string;
+export interface DagNode {
+  readonly name: string;
+  readonly root: string;
+
+  readonly dependencies: readonly string[];
+  readonly dependents: readonly string[];
+  readonly outputs: readonly string[];
+
+  readonly build?: PackageBuildConfig;
+}
+
+export interface MutableDagNode extends Omit<DagNode, 'dependencies' | 'dependents' | 'outputs'> {
   dependencies: string[];
   dependents: string[];
   outputs: string[];
+}
 
-  build?: PackageBuildConfig;
-};
-export type Graph = Map<string, DagNode>;
+export type Graph = ReadonlyMap<string, DagNode>;
+export type MutableGraph = Map<string, MutableDagNode>;

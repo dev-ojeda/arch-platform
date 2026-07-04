@@ -31,20 +31,21 @@ export class ChangePlanner {
       plan.set(name, {
         package: name,
 
-        shouldExecute: evaluation.decision !== 'hit' && evaluation.decision !== 'restore',
-
+        shouldExecute:
+          evaluation.decision === 'miss' ||
+          evaluation.decision === 'stale' ||
+          evaluation.decision === 'invalid',
+        execution: {
+          reason: 'cached',
+        },
         cache: {
           decision: evaluation.decision,
-
           action: evaluation.decision === 'restore' ? 'restore' : 'none',
         },
 
         changeReason: evaluation.changeReason,
 
         hash,
-        execution: {
-          reason: 'cached',
-        },
       });
 
       logger.trace('build.plan', {

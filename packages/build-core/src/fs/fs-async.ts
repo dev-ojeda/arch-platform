@@ -38,7 +38,20 @@ export async function removePath(targetPath: string): Promise<void> {
 }
 
 export async function renamePath(source: string, destination: string): Promise<void> {
-  await rename(source, destination);
+  let lastError: unknown;
+
+  for (let attempt = 0; attempt < 5; attempt++) {
+    try {
+      await rename(source, destination);
+      return;
+    } catch (error) {
+      lastError = error;
+
+      await new Promise((r) => setTimeout(r, 20 * (attempt + 1)));
+    }
+  }
+
+  throw lastError;
 }
 
 export async function readDirectoryEntries(directoryPath: string): Promise<Dirent[]> {
