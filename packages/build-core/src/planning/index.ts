@@ -1,8 +1,12 @@
 // packages/build-core/src/planning/index.ts
 
-export { BuildPlan } from './build-plan.js';
 export { ChangePlanner } from './change-planner.js';
-export { ExecutionPlanBuilder } from './execution-plan-builder.js';
-export type { ExecutionNode, ExecutionPlan, ExecutionState } from './execution-plan.js';
-export { ExecutionScopeResolver } from './execution-scope-resolver.js';
+export { ExecutionPlanBuilder } from './execution-dag-compiler.js';
+export type {
+  ExecutionContext,
+  ExecutionNode,
+  ExecutionPlan,
+  ExecutionState,
+} from './execution-dag.js';
 export type { BuildPlanEntry } from './plan-entry.js';
+export { ScopeResolver } from './scope-resolver.js';

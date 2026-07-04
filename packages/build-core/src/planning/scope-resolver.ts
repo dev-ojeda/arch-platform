@@ -1,11 +1,11 @@
-// packages/build-core/src/planning/execution-scope-resolver.ts
+// packages/build-core/src/planning/scope-resolver.ts
 
 import type { CacheDecision } from '../cache/cache-types.js';
 import type { GraphQueryService } from '../graph/graph-query-services.js';
 
 import type { BuildPlan } from './build-plan.js';
 
-export class ExecutionScopeResolver {
+export class ScopeResolver {
   constructor(
     private readonly plan: BuildPlan,
     private readonly query: GraphQueryService,

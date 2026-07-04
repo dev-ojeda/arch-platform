@@ -1,9 +1,9 @@
-// packages/build-core/src/planning/execution-plan-builder.ts
+// packages/build-core/src/planning/execution-dag-compiler.ts
 
 import type { GraphQueryService } from '../graph/graph-query-services.js';
 
 import type { BuildPlan } from './build-plan.js';
-import type { ExecutionNode, ExecutionPlan } from './execution-plan.js';
+import type { ExecutionNode, ExecutionPlan } from './execution-dag.js';
 
 type ExecutionPlanBuilderInput = {
   plan: BuildPlan;
@@ -27,12 +27,10 @@ export class ExecutionPlanBuilder {
 
       nodes.set(name, {
         name,
-        dependencies,
-        dependents: [],
-        shouldRun: entry.cache.decision !== 'hit',
+        dependencies: dependencies,
         cacheDecision: entry.cache.decision,
-        depsRemaining: dependencies.length,
-        ready: true,
+        shouldRun: entry.cache.decision !== 'hit',
+        dependents: [],
       });
     }
 

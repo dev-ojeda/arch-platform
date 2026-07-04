@@ -14,9 +14,10 @@ import { HashGraphBuilder } from '../hash/hash-graph.js';
 import { LOG_EVENTS } from '../logging/log-events.js';
 import { logger } from '../logging/logger.js';
 import { ChangePlanner } from '../planning/change-planner.js';
-import { ExecutionPlanBuilder } from '../planning/execution-plan-builder.js';
-import { ExecutionPlanScheduler } from '../planning/execution-plan-scheduler.js';
-import { ExecutionScopeResolver } from '../planning/execution-scope-resolver.js';
+import { ExecutionPlanBuilder } from '../planning/execution-dag-compiler.js';
+import { ScopeResolver } from '../planning/scope-resolver.js';
+import { createExecutionContext } from '../runtime/execution/execution-context.js';
+import { ExecutionPlanScheduler } from '../runtime/execution/execution-plan-scheduler.js';
 import type { BuildState } from '../state/state-types.js';
 import { BuildStateWriter } from '../state/state-writer.js';
 
@@ -57,7 +58,7 @@ export class BuildService {
     // -------------------------
     // 3. SCOPE (SIN ENGINE)
     // -------------------------
-    const scope = new ExecutionScopeResolver(buildPlan, query).resolve(request.packageName);
+    const scope = new ScopeResolver(buildPlan, query).resolve(request.packageName);
 
     if (scope.size === 0) {
       return this.summarize([]);
@@ -88,7 +89,11 @@ export class BuildService {
 
     const scheduler = new ExecutionPlanScheduler(runner, request.concurrency ?? 4);
 
-    const results = await scheduler.run(executionPlan);
+    const ctx = createExecutionContext(executionPlan);
+
+    // TODO: populate ctx from executionPlan (adapter step)
+
+    const results = await scheduler.run(executionPlan, ctx);
 
     // -------------------------
     // 6. STATE PERSISTENCE
