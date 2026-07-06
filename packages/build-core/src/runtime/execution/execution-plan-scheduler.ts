@@ -38,7 +38,11 @@ export class ExecutionPlanScheduler {
   private initializeReadyQueue(plan: ExecutionPlan, ctx: ExecutionContext): string[] {
     const ready: string[] = [];
 
-    for (const [name] of plan.nodes) {
+    for (const [name, node] of plan.nodes) {
+      if (node.dependencies.length !== 0) {
+        continue;
+      }
+
       ctx.nodeStates.set(name, 'ready');
       ready.push(name);
     }
