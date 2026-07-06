@@ -1,7 +1,6 @@
 // packages/build-core/src/planning/plan-entry.ts
 
 import type { CacheAction, CacheDecision, ChangeReason } from '../cache/cache-types.js';
-import type { ExecutionReason } from '../executor/execution-types.js';
 import type { HashResult } from '../hash/hash-result.js';
 
 export interface BuildPlanEntry {
@@ -24,10 +23,6 @@ export interface BuildPlanEntry {
    * Motivo del cambio detectado
    */
   changeReason: ChangeReason;
-
-  execution: {
-    reason: ExecutionReason;
-  };
 
   /**
    * Hash evaluado para esta planificación.

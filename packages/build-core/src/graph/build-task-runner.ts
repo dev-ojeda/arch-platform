@@ -5,6 +5,7 @@ import type { DefaultArtifactProvider } from '../artifact/default-artifact-provi
 import type { OutputValidator } from '../artifact/output-validator.js';
 import type { BuildExecutor } from '../executor/build-executor.js';
 import type { BuildResult } from '../executor/build-result.js';
+import { logger } from '../logging/logger.js';
 import type { BuildPlan } from '../planning/build-plan.js';
 import type { BuildPlanEntry } from '../planning/plan-entry.js';
 import type { BuildStateWriter } from '../state/state-writer.js';
@@ -27,10 +28,26 @@ export class BuildTaskRunner {
     const entry = this.requirePlan(name);
 
     if (entry.cache.action === 'restore') {
+      logger.info('runner.entry', {
+        metadata: {
+          package: name,
+          shouldExecute: entry.shouldExecute,
+          cacheDecision: entry.cache.decision,
+          cacheAction: entry.cache.action,
+        },
+      });
       return this.restore(node, entry);
     }
 
     if (entry.cache.decision === 'hit') {
+      logger.info('runner.entry', {
+        metadata: {
+          package: name,
+          shouldExecute: entry.shouldExecute,
+          cacheDecision: entry.cache.decision,
+          cacheAction: entry.cache.action,
+        },
+      });
       return this.createCachedResult(entry);
     }
 

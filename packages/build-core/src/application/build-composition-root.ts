@@ -7,7 +7,8 @@ import { FilesystemArtifactPublisher } from '../artifact/publisher/filesystem-ar
 import { ExecutorFactory } from '../executor/executor-factory.js';
 import { joinPath } from '../fs/path-utils.js';
 import type { Graph } from '../graph/dag-types.js';
-import { GraphEngine } from '../graph/graph-engine.js';
+import { GraphQueryService } from '../graph/graph-query-services.js';
+import { WorkspaceExecutionContractResolver } from '../planning/workspace-execution-contract-resolver.js';
 import type { CommandRunner } from '../runtime/command-runner.js';
 
 export class BuildCompositionRoot {
@@ -29,7 +30,11 @@ export class BuildCompositionRoot {
     });
   }
 
-  createEngine(graph: Graph) {
-    return new GraphEngine(graph);
+  createQuery(graph: Graph): GraphQueryService {
+    return new GraphQueryService(graph);
+  }
+
+  createExecutionContractResolver(query: GraphQueryService) {
+    return new WorkspaceExecutionContractResolver(query);
   }
 }

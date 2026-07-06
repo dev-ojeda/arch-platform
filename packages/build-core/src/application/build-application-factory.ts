@@ -26,7 +26,7 @@ export class BuildApplicationFactory {
 
     const graph = buildGraph(packages);
 
-    const engine = this.compositionRoot.createEngine(graph);
+    const query = this.compositionRoot.createQuery(graph);
 
     const state = loadBuildState(workspaceRoot);
 
@@ -34,13 +34,16 @@ export class BuildApplicationFactory {
 
     const executor = this.compositionRoot.createExecutor();
 
+    const contractResolver = this.compositionRoot.createExecutionContractResolver(query);
+
     return new BuildService({
       graph,
-      engine,
+      query,
       state,
       artifactCache,
       executor,
       workspaceRoot,
+      contractResolver,
     });
   }
 }

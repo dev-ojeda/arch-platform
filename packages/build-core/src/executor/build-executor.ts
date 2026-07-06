@@ -38,7 +38,7 @@ export class BuildExecutor {
           changeReason: plan.changeReason,
 
           execution: {
-            reason: plan.execution.reason,
+            reason: 'failed',
           },
 
           cache: {
@@ -51,13 +51,12 @@ export class BuildExecutor {
 
     return {
       package: node.name,
-
       status: 'success',
 
       changeReason: plan.changeReason,
 
       execution: {
-        reason: plan.execution.reason,
+        reason: 'executed',
       },
 
       cache: {

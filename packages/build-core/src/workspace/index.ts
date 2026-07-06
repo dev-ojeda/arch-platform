@@ -2,10 +2,8 @@
 
 export { discoverWorkspacePackages } from '../discovery/discover-packages-root.js';
 export { IGNORED_DIRECTORIES } from '../discovery/ignored-directories.js';
-export { findPackageRoots } from '../package/find-package.js';
 export type { PackageJson } from '../package/package-json.js';
 export { readPackageJson } from '../package/read-package-json.js';
-export { buildWorkspaceGraph } from './build-workspace.js';
 export { findWorkspaceRoot } from './find-workspace-root.js';
 export type { WorkspaceContext } from './workspace-context.js';
 export type { WorkspaceGraphNode } from './workspace-graph-node.js';

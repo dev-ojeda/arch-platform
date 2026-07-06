@@ -19,8 +19,8 @@ export class CacheEvaluator {
   evaluate(
     packageName: string,
     root: string,
-    outputs: string[],
-    dependencies: string[],
+    outputs: readonly string[],
+    dependencies: readonly string[],
     current: HashResult,
   ): CacheEvaluation {
     logger.trace(LOG_EVENTS.CACHE_EVALUATE, {
@@ -92,7 +92,7 @@ export class CacheEvaluator {
       changeReason: reason,
     };
   }
-  private hasMissingDependencyOutputs(dependencies: string[], root: string): boolean {
+  private hasMissingDependencyOutputs(dependencies: readonly string[], root: string): boolean {
     for (const dependency of dependencies) {
       const entry = this.state.get(dependency);
 

@@ -2,4 +2,5 @@
 
 export interface HashContext {
   dependencyHashes: readonly string[];
+  dependencyNames?: readonly string[]; // opcional para debug futuro
 }
