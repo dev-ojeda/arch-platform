@@ -14,7 +14,8 @@ import { HashGraphBuilder } from '../hash/hash-graph.js';
 import { LOG_EVENTS } from '../logging/log-events.js';
 import { logger } from '../logging/logger.js';
 import { ChangePlanner } from '../planning/change-planner.js';
-import { ExecutionPlanBuilder } from '../planning/execution-dag-compiler.js';
+import type { ExecutionContractResolver } from '../planning/execution-contract-resolver.js';
+import { ExecutionDagCompiler } from '../planning/execution-dag-compiler.js';
 import { ScopeResolver } from '../planning/scope-resolver.js';
 import { createExecutionContext } from '../runtime/execution/execution-context.js';
 import { ExecutionPlanScheduler } from '../runtime/execution/execution-plan-scheduler.js';
@@ -30,6 +31,7 @@ export interface BuildRequest {
 export interface BuildContext {
   graph: Graph;
   query: GraphQueryService;
+  contractResolver: ExecutionContractResolver;
   state: BuildState;
   executor: BuildExecutor;
   artifactCache: ArtifactCache;
@@ -39,7 +41,8 @@ export class BuildService {
   constructor(private readonly context: BuildContext) {}
 
   async run(request: BuildRequest): Promise<BuildServiceSummary> {
-    const { graph, query, state, executor, artifactCache, workspaceRoot } = this.context;
+    const { graph, query, contractResolver, state, executor, artifactCache, workspaceRoot } =
+      this.context;
 
     // -------------------------
     // 1. HASH
@@ -67,11 +70,11 @@ export class BuildService {
     // -------------------------
     // 4. EXECUTION PLAN
     // -------------------------
-    const executionPlan = new ExecutionPlanBuilder(query).build({
+
+    const executionPlan = new ExecutionDagCompiler(query, contractResolver).compile({
       plan: buildPlan,
       scope,
     });
-
     // -------------------------
     // 5. RUNTIME
     // -------------------------
@@ -88,10 +91,7 @@ export class BuildService {
     );
 
     const scheduler = new ExecutionPlanScheduler(runner, request.concurrency ?? 4);
-
     const ctx = createExecutionContext(executionPlan);
-
-    // TODO: populate ctx from executionPlan (adapter step)
 
     const results = await scheduler.run(executionPlan, ctx);
 

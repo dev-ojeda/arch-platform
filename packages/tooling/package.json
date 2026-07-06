@@ -20,8 +20,10 @@
     "clean": "tsx ../tooling/src/bin/clean.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
+  "dependencies": {
+    "@arch/build-core": "workspace:*"
+  },
   "devDependencies": {
-    "@arch/build-core": "workspace:*",
     "typescript": "catalog:",
     "execa": "catalog:"
   }

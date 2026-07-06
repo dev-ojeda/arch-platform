@@ -35,9 +35,7 @@ export class ChangePlanner {
           evaluation.decision === 'miss' ||
           evaluation.decision === 'stale' ||
           evaluation.decision === 'invalid',
-        execution: {
-          reason: 'cached',
-        },
+
         cache: {
           decision: evaluation.decision,
           action: evaluation.decision === 'restore' ? 'restore' : 'none',

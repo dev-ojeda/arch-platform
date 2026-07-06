@@ -34,6 +34,8 @@ export class BuildApplicationFactory {
 
     const executor = this.compositionRoot.createExecutor();
 
+    const contractResolver = this.compositionRoot.createExecutionContractResolver(query);
+
     return new BuildService({
       graph,
       query,
@@ -41,6 +43,7 @@ export class BuildApplicationFactory {
       artifactCache,
       executor,
       workspaceRoot,
+      contractResolver,
     });
   }
 }

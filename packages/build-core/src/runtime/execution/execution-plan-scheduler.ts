@@ -3,7 +3,9 @@
 import type { BuildResult } from '../../executor/build-result.js';
 import type { BuildTaskRunner } from '../../graph/build-task-runner.js';
 import { logger } from '../../logging/logger.js';
-import type { ExecutionContext, ExecutionPlan } from '../../planning/execution-dag.js';
+import type { ExecutionNode, ExecutionPlan } from '../../planning/execution-dag.js';
+
+import type { ExecutionContext } from './execution-context.js';
 
 export class ExecutionPlanScheduler {
   constructor(
@@ -15,13 +17,14 @@ export class ExecutionPlanScheduler {
     const results: BuildResult[] = [];
 
     const running = new Map<string, Promise<void>>();
-
     const readyQueue = this.initializeReadyQueue(plan, ctx);
 
     while (readyQueue.length > 0 || running.size > 0) {
       this.dispatch(plan, ctx, readyQueue, running, results);
 
-      if (running.size === 0 && readyQueue.length === 0) break;
+      if (running.size === 0) {
+        break;
+      }
 
       await Promise.race(running.values());
     }
@@ -35,13 +38,9 @@ export class ExecutionPlanScheduler {
   private initializeReadyQueue(plan: ExecutionPlan, ctx: ExecutionContext): string[] {
     const ready: string[] = [];
 
-    for (const [name, node] of plan.nodes) {
-      const deps = ctx.depsRemaining.get(name) ?? 0;
-
-      if (deps === 0 && node.shouldRun) {
-        ctx.state.set(name, 'ready');
-        ready.push(name);
-      }
+    for (const [name] of plan.nodes) {
+      ctx.nodeStates.set(name, 'ready');
+      ready.push(name);
     }
 
     return ready;
@@ -59,15 +58,16 @@ export class ExecutionPlanScheduler {
   ): void {
     while (running.size < this.concurrency && readyQueue.length > 0) {
       const name = readyQueue.shift();
-      if (!name) return;
 
-      const node = plan.nodes.get(name);
+      if (!name) {
+        return;
+      }
 
-      if (!node) {
+      if (!plan.nodes.has(name)) {
         throw new Error(`Missing node in ExecutionPlan: ${name}`);
       }
 
-      const task = this.execute(name, plan, ctx, results);
+      const task = this.execute(name, plan, ctx, readyQueue, results);
 
       running.set(
         name,
@@ -83,35 +83,27 @@ export class ExecutionPlanScheduler {
     name: string,
     plan: ExecutionPlan,
     ctx: ExecutionContext,
+    readyQueue: string[],
     results: BuildResult[],
   ): Promise<void> {
     try {
-      ctx.state.set(name, 'running');
+      ctx.nodeStates.set(name, 'running');
 
       const result = await this.runner.run(name);
 
       results.push(result);
 
-      ctx.state.set(name, 'success');
+      ctx.nodeStates.set(name, 'success');
 
       const node = plan.nodes.get(name);
-      if (!node) return;
 
-      for (const dep of node.dependents) {
-        const current = ctx.depsRemaining.get(dep) ?? 0;
-        const next = current - 1;
-
-        ctx.depsRemaining.set(dep, next);
-
-        const depNode = plan.nodes.get(dep);
-        if (!depNode) continue;
-
-        if (next === 0 && depNode.shouldRun) {
-          ctx.state.set(dep, 'ready');
-        }
+      if (!node) {
+        return;
       }
+
+      this.notifyDependentsReady(node, plan, ctx, readyQueue);
     } catch (error) {
-      ctx.state.set(name, 'failed');
+      ctx.nodeStates.set(name, 'failed');
 
       logger.error('[execution-plan-scheduler] execution failed', {
         metadata: {
@@ -124,9 +116,47 @@ export class ExecutionPlanScheduler {
         package: name,
         status: 'failed',
         changeReason: 'none',
-        execution: { reason: 'failed' },
-        cache: { decision: 'miss', action: 'none' },
+        execution: {
+          reason: 'failed',
+        },
+        cache: {
+          decision: 'miss',
+          action: 'none',
+        },
       });
+    }
+  }
+
+  // ---------------------------
+  // READY PROPAGATION
+  // ---------------------------
+  private notifyDependentsReady(
+    node: ExecutionNode,
+    plan: ExecutionPlan,
+    ctx: ExecutionContext,
+    readyQueue: string[],
+  ): void {
+    for (const dependent of node.dependents) {
+      const depNode = plan.nodes.get(dependent);
+
+      if (!depNode || !depNode.shouldRun) {
+        continue;
+      }
+
+      if (ctx.nodeStates.get(dependent) !== 'pending') {
+        continue;
+      }
+
+      const ready = depNode.dependencies.every(
+        (dependency) => ctx.nodeStates.get(dependency) === 'success',
+      );
+
+      if (!ready) {
+        continue;
+      }
+
+      ctx.nodeStates.set(dependent, 'ready');
+      readyQueue.push(dependent);
     }
   }
 }

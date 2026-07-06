@@ -14,4 +14,7 @@ export const LOG_EVENTS = {
   ARTIFACT_SAVE: 'file.system.artifact.cache.save',
   ARTIFACT_RESTORE: 'file.system.artifact.cache.restore',
   ARTIFACT_FAIL: 'file.system.artifact.cache.fail',
+  SCOPE_INFO: 'build.service.scope.info',
+  PLAN_INFO: 'build.service.plan.info',
+  SCHEDULER_INFO: 'build.service.scheduler.info',
 } as const;

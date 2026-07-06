@@ -1,22 +1,19 @@
 // packages/build-core/src/runtime/execution/execution-context.ts
-import type {
-  ExecutionContext,
-  ExecutionPlan,
-  ExecutionState,
-} from '../../planning/execution-dag.js';
+import type { ExecutionPlan } from '../../planning/execution-dag.js';
 
+export type ExecutionState = 'pending' | 'ready' | 'running' | 'success' | 'failed' | 'cached';
+
+export interface ExecutionContext {
+  nodeStates: Map<string, ExecutionState>;
+}
 export function createExecutionContext(plan: ExecutionPlan): ExecutionContext {
-  const depsRemaining = new Map<string, number>();
+  const nodeStates = new Map<string, ExecutionState>();
 
-  const state = new Map<string, ExecutionState>();
-
-  for (const [name, node] of plan.nodes) {
-    depsRemaining.set(name, node.dependencies.length);
-    state.set(name, 'pending');
+  for (const [name] of plan.nodes) {
+    nodeStates.set(name, 'pending');
   }
 
   return {
-    depsRemaining,
-    state,
+    nodeStates,
   };
 }
