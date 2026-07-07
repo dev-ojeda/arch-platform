@@ -1,0 +1,23 @@
+import {
+  ARTIFACT_SCHEMA_VERSION,
+  type ArtifactManifest,
+} from '../../src/artifact/artifact-manifest.js';
+import type { Artifact } from '../../src/artifact/artifact.js';
+
+export function createArtifactManifest(options?: {
+  artifact?: Partial<Artifact>;
+  outputs?: string[];
+  createdAt?: number;
+  schemaVersion?: number;
+}): ArtifactManifest {
+  return {
+    artifact: {
+      packageName: '@arch/build-core',
+      id: 'artifact-id',
+      ...options?.artifact,
+    },
+    outputs: options?.outputs ?? ['dist'],
+    createdAt: options?.createdAt ?? 1,
+    schemaVersion: options?.schemaVersion ?? ARTIFACT_SCHEMA_VERSION,
+  };
+}
