@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
 import { buildGraph } from '../../../src/graph/build-graph.js';
-import type { WorkspacePackage } from '../../../src/workspace/workspace-package.js';
+import type { PackageRoot } from '../../../src/package/packages-root';
 
 describe('buildGraph', () => {
   it('should include runtime dependencies', () => {
-    const packages: WorkspacePackage[] = [
+    const packages: PackageRoot[] = [
       {
         name: '@arch/core',
         root: 'packages/core',
@@ -30,7 +30,7 @@ describe('buildGraph', () => {
   });
 
   it('should include build dependencies from devDependencies', () => {
-    const packages: WorkspacePackage[] = [
+    const packages: PackageRoot[] = [
       {
         name: '@arch/contracts',
         root: 'packages/contracts',

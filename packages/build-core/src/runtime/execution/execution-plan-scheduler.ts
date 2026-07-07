@@ -38,7 +38,11 @@ export class ExecutionPlanScheduler {
   private initializeReadyQueue(plan: ExecutionPlan, ctx: ExecutionContext): string[] {
     const ready: string[] = [];
 
-    for (const [name] of plan.nodes) {
+    for (const [name, node] of plan.nodes) {
+      if (node.dependencies.length !== 0) {
+        continue;
+      }
+
       ctx.nodeStates.set(name, 'ready');
       ready.push(name);
     }
@@ -124,6 +128,14 @@ export class ExecutionPlanScheduler {
           action: 'none',
         },
       });
+
+      const node = plan.nodes.get(name);
+
+      if (!node) {
+        return;
+      }
+
+      this.notifyDependentsFailed(node, plan, ctx, results);
     }
   }
 
@@ -157,6 +169,39 @@ export class ExecutionPlanScheduler {
 
       ctx.nodeStates.set(dependent, 'ready');
       readyQueue.push(dependent);
+    }
+  }
+  private notifyDependentsFailed(
+    node: ExecutionNode,
+    plan: ExecutionPlan,
+    ctx: ExecutionContext,
+    results: BuildResult[],
+  ): void {
+    for (const dependent of node.dependents) {
+      const depNode = plan.nodes.get(dependent);
+
+      if (!depNode) {
+        continue;
+      }
+
+      if (ctx.nodeStates.get(dependent) !== 'pending') {
+        continue;
+      }
+
+      ctx.nodeStates.set(dependent, 'skipped');
+
+      results.push({
+        package: dependent,
+        status: 'skipped',
+        changeReason: 'dependency-failed',
+        execution: {
+          reason: 'failed',
+        },
+        cache: {
+          decision: 'miss',
+          action: 'none',
+        },
+      });
     }
   }
 }
