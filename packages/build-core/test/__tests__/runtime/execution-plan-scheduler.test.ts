@@ -1,55 +1,20 @@
 // packages/build-core/test/__tests__/runtime/execution-plan-scheduler.test.ts
 
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import type { BuildResult } from '../../../src/executor/build-result.js';
-import type { BuildTaskRunner } from '../../../src/graph/build-task-runner.js';
-import type { ExecutionPlan } from '../../../src/planning/execution-dag.js';
-import { createExecutionContext } from '../../../src/runtime/execution/execution-context.js';
-import { ExecutionPlanScheduler } from '../../../src/runtime/execution/execution-plan-scheduler.js';
+import { createSuccessResult } from '../../helpers/build-result.js';
+import { createBuildTaskRunner } from '../../helpers/build-task-runner.js';
+import { createDeferred } from '../../helpers/deferred.js';
+import { createNode, createPlan, createScheduler } from '../../helpers/execution-plan.js';
 
 describe('ExecutionPlanScheduler', () => {
-  function createSuccessResult(packageName: string): BuildResult {
-    return {
-      package: packageName,
-      status: 'success',
-      changeReason: 'source',
-      execution: {
-        reason: 'executed',
-      },
-      cache: {
-        decision: 'miss',
-        action: 'none',
-      },
-    };
-  }
-
-  function createPlan(nodes: ExecutionPlan['nodes']): ExecutionPlan {
-    return {
-      nodes,
-    };
-  }
-
-  function createNode(name: string, dependencies: string[] = [], dependents: string[] = []) {
-    return {
-      name,
-      dependencies,
-      dependents,
-      shouldRun: true,
-      contract: undefined,
-    };
-  }
-
   it('should execute a node without dependencies and mark it as success', async () => {
-    const runner = {
-      run: vi.fn().mockResolvedValue(createSuccessResult('package-a')),
-    } as unknown as BuildTaskRunner;
+    const runner = createBuildTaskRunner(() => Promise.resolve(createSuccessResult('package-a')));
 
-    const plan = createPlan(new Map([['package-a', createNode('package-a')]]));
+    const plan = createPlan(createNode('package-a'));
 
-    const context = createExecutionContext(plan);
-
-    const scheduler = new ExecutionPlanScheduler(runner, 1);
+    const { scheduler, context } = createScheduler(plan, runner);
 
     const results = await scheduler.run(plan, context);
 
@@ -66,38 +31,35 @@ describe('ExecutionPlanScheduler', () => {
   });
 
   it('should execute dependent nodes only after dependencies succeed', async () => {
-    let resolvePackageA!: (result: BuildResult) => void;
+    const packageACompletion = createDeferred<BuildResult>();
 
-    const packageACompletion = new Promise<BuildResult>((resolve) => {
-      resolvePackageA = resolve;
-    });
-
-    const runner = {
-      run: vi.fn((name: string) =>
-        name === 'package-a' ? packageACompletion : Promise.resolve(createSuccessResult(name)),
-      ),
-    } as unknown as BuildTaskRunner;
-
-    const plan = createPlan(
-      new Map([
-        ['package-a', createNode('package-a', [], ['package-b'])],
-        ['package-b', createNode('package-b', ['package-a'])],
-      ]),
+    const runner = createBuildTaskRunner((name: string) =>
+      name === 'package-a'
+        ? packageACompletion.promise
+        : Promise.resolve(createSuccessResult(name)),
     );
 
-    const context = createExecutionContext(plan);
+    const plan = createPlan(
+      createNode('package-a', {
+        dependents: ['package-b'],
+      }),
+      createNode('package-b', {
+        dependencies: ['package-a'],
+      }),
+    );
 
-    const scheduler = new ExecutionPlanScheduler(runner, 1);
+    const { scheduler, context } = createScheduler(plan, runner);
 
     const execution = scheduler.run(plan, context);
 
     await Promise.resolve();
 
     expect(runner.run).toHaveBeenCalledTimes(1);
+
     expect(context.nodeStates.get('package-a')).toBe('running');
     expect(context.nodeStates.get('package-b')).toBe('pending');
 
-    resolvePackageA(createSuccessResult('package-a'));
+    packageACompletion.resolve(createSuccessResult('package-a'));
 
     await execution;
 
@@ -106,22 +68,20 @@ describe('ExecutionPlanScheduler', () => {
   });
 
   it('should skip dependent nodes when a dependency fails', async () => {
-    const runner = {
-      run: vi.fn(() => {
-        throw new Error('build failed');
-      }),
-    } as unknown as BuildTaskRunner;
+    const runner = createBuildTaskRunner(() => {
+      throw new Error('build failed');
+    });
 
     const plan = createPlan(
-      new Map([
-        ['package-a', createNode('package-a', [], ['package-b'])],
-        ['package-b', createNode('package-b', ['package-a'])],
-      ]),
+      createNode('package-a', {
+        dependents: ['package-b'],
+      }),
+      createNode('package-b', {
+        dependencies: ['package-a'],
+      }),
     );
 
-    const context = createExecutionContext(plan);
-
-    const scheduler = new ExecutionPlanScheduler(runner, 1);
+    const { scheduler, context } = createScheduler(plan, runner);
 
     const results = await scheduler.run(plan, context);
 
@@ -132,10 +92,59 @@ describe('ExecutionPlanScheduler', () => {
 
     expect(results).toContainEqual(
       expect.objectContaining({
+        package: 'package-a',
+        status: 'failed',
+      }),
+    );
+
+    expect(results).toContainEqual(
+      expect.objectContaining({
         package: 'package-b',
         status: 'skipped',
         changeReason: 'dependency-failed',
       }),
     );
+  });
+
+  it('should execute independent nodes concurrently up to the configured limit', async () => {
+    const packageACompletion = createDeferred<BuildResult>();
+    const packageBCompletion = createDeferred<BuildResult>();
+
+    const runner = createBuildTaskRunner((name: string) => {
+      switch (name) {
+        case 'package-a':
+          return packageACompletion.promise;
+
+        case 'package-b':
+          return packageBCompletion.promise;
+
+        default:
+          throw new Error(`Unexpected package: ${name}`);
+      }
+    });
+
+    const plan = createPlan(createNode('package-a'), createNode('package-b'));
+
+    const { scheduler, context } = createScheduler(plan, runner, 2);
+
+    const execution = scheduler.run(plan, context);
+
+    await Promise.resolve();
+
+    expect(runner.run).toHaveBeenCalledTimes(2);
+
+    expect(runner.run).toHaveBeenCalledWith('package-a');
+    expect(runner.run).toHaveBeenCalledWith('package-b');
+
+    expect(context.nodeStates.get('package-a')).toBe('running');
+    expect(context.nodeStates.get('package-b')).toBe('running');
+
+    packageACompletion.resolve(createSuccessResult('package-a'));
+    packageBCompletion.resolve(createSuccessResult('package-b'));
+
+    await execution;
+
+    expect(context.nodeStates.get('package-a')).toBe('success');
+    expect(context.nodeStates.get('package-b')).toBe('success');
   });
 });
