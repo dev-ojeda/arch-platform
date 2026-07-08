@@ -1,6 +1,6 @@
 // packages/build-core/src/executor/build-result.ts
 
-import type { CacheAction, CacheDecision, ChangeReason } from '../cache/cache-types.js';
+import type { ChangeReason } from '../cache/cache-types.js';
 
 import type { ExecutionReason } from './execution-types.js';
 
@@ -13,11 +13,11 @@ export type BuildResult = {
 
   execution: {
     reason: ExecutionReason;
-  };
 
-  cache: {
-    decision: CacheDecision;
-    action: CacheAction;
+    triggeredBy?: {
+      package: string;
+      reason: 'dependency-changed' | 'source-changed' | 'manual' | 'cache-invalidated';
+    };
   };
 
   meta?: {

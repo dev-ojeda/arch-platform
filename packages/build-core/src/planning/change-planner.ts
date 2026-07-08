@@ -1,11 +1,12 @@
 // packages/build-core/src/planning/change-planner.ts
 
 import type { CacheEvaluator } from '../cache/cache-evaluator.js';
+import type { CacheDecision } from '../cache/cache-types.js';
 import type { Graph } from '../graph/dag-types.js';
 import type { HashResult } from '../hash/hash-result.js';
-import { logger } from '../logging/logger.js';
 
 import { BuildPlan } from './build-plan.js';
+import type { BuildAction } from './plan-entry.js';
 
 export class ChangePlanner {
   constructor(private evaluator: CacheEvaluator) {}
@@ -31,31 +32,31 @@ export class ChangePlanner {
       plan.set(name, {
         package: name,
 
-        shouldExecute:
-          evaluation.decision === 'miss' ||
-          evaluation.decision === 'stale' ||
-          evaluation.decision === 'invalid',
+        buildAction: this.resolveBuildAction(evaluation.decision),
 
         cache: {
           decision: evaluation.decision,
-          action: evaluation.decision === 'restore' ? 'restore' : 'none',
         },
-
         changeReason: evaluation.changeReason,
 
         hash,
       });
-
-      logger.trace('build.plan', {
-        metadata: {
-          package: name,
-          hash: hash.hash,
-          changeReason: evaluation.changeReason,
-          cacheDecision: evaluation.decision,
-        },
-      });
     }
 
     return plan;
+  }
+  private resolveBuildAction(decision: CacheDecision): BuildAction {
+    switch (decision) {
+      case 'restore':
+        return 'restore';
+
+      case 'hit':
+        return 'skip';
+
+      case 'miss':
+      case 'stale':
+      case 'invalid':
+        return 'execute';
+    }
   }
 }

@@ -1,7 +1,8 @@
 // packages/build-core/src/artifact/filesystem-artifact-cache.ts
 
-import { copyPath } from '../fs/fs-async.js';
+import { copyPath, removePathWithRetry } from '../fs/fs-async.js';
 import { joinPath } from '../fs/path-utils.js';
+import { logger } from '../logging/logger.js';
 
 import type { ArtifactCache } from './artifact-cache.js';
 import type { ArtifactLayoutFactory } from './artifact-layout-factory.js';
@@ -32,18 +33,32 @@ export class FilesystemArtifactCache implements ArtifactCache {
     const layout = this.layoutFactory.create(artifact);
     const manifest = await readArtifactManifest(layout.manifest());
 
-    if (!manifest) return false;
+    if (!manifest) {
+      return false;
+    }
 
     try {
       for (const output of manifest.outputs) {
-        await copyPath(layout.output(output), joinPath(root, output), {
+        const source = layout.output(output);
+        const destination = joinPath(root, output);
+
+        await removePathWithRetry(destination);
+
+        await copyPath(source, destination, {
           force: true,
           recursive: true,
         });
       }
 
       return true;
-    } catch {
+    } catch (error) {
+      logger.warn('artifact.restore.failed', {
+        metadata: {
+          artifact: artifact.id,
+          error: error instanceof Error ? error.message : String(error),
+        },
+      });
+
       return false;
     }
   }

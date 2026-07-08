@@ -8,7 +8,7 @@ import { FilesystemArtifactPublisher } from '../../../src/artifact/publisher/fil
 import {
   copyPath,
   ensureDir,
-  removePath,
+  removePathWithRetry,
   renamePath,
   writeJsonFile,
 } from '../../../src/fs/fs-async.js';
@@ -52,7 +52,7 @@ describe('FilesystemArtifactPublisher', () => {
 
     await publisher.publish('/workspace', manifest, layout);
 
-    expect(removePath).toHaveBeenCalledWith('/cache/tmp');
+    expect(removePathWithRetry).toHaveBeenCalledWith('/cache/tmp');
 
     expect(ensureDir).toHaveBeenCalledWith('/cache/tmp');
 
@@ -69,7 +69,7 @@ describe('FilesystemArtifactPublisher', () => {
 
     expect(writeJsonFile).toHaveBeenCalledWith('/cache/tmp/manifest.json', manifest);
 
-    expect(removePath).toHaveBeenCalledWith('/cache/artifact');
+    expect(removePathWithRetry).toHaveBeenCalledWith('/cache/artifact');
 
     expect(renamePath).toHaveBeenCalledWith('/cache/tmp', '/cache/artifact');
   });
@@ -81,6 +81,6 @@ describe('FilesystemArtifactPublisher', () => {
 
     await expect(publisher.publish('/workspace', manifest, layout)).rejects.toThrow('copy failed');
 
-    expect(removePath).toHaveBeenLastCalledWith('/cache/tmp');
+    expect(removePathWithRetry).toHaveBeenLastCalledWith('/cache/tmp');
   });
 });

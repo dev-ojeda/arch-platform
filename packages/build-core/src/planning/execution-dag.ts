@@ -2,13 +2,15 @@
 
 import type { ExecutionContract } from '../runtime/execution/execution-contract.js';
 
+import type { BuildAction } from './plan-entry.js';
+
 export interface ExecutionNode {
   name: string;
 
   dependencies: string[];
   dependents: string[];
 
-  shouldRun: boolean;
+  buildAction: BuildAction;
 
   contract: ExecutionContract;
 }
