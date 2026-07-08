@@ -40,11 +40,6 @@ export class BuildExecutor {
           execution: {
             reason: 'failed',
           },
-
-          cache: {
-            action: plan.cache.action,
-            decision: plan.cache.decision,
-          },
         };
       }
     }
@@ -57,11 +52,6 @@ export class BuildExecutor {
 
       execution: {
         reason: 'executed',
-      },
-
-      cache: {
-        action: plan.cache.action,
-        decision: plan.cache.decision,
       },
     };
   }

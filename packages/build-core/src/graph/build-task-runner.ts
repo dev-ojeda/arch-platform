@@ -5,7 +5,7 @@ import type { DefaultArtifactProvider } from '../artifact/default-artifact-provi
 import type { OutputValidator } from '../artifact/output-validator.js';
 import type { BuildExecutor } from '../executor/build-executor.js';
 import type { BuildResult } from '../executor/build-result.js';
-import { logger } from '../logging/logger.js';
+import type { ExecutionReason } from '../executor/execution-types.js';
 import type { BuildPlan } from '../planning/build-plan.js';
 import type { BuildPlanEntry } from '../planning/plan-entry.js';
 import type { BuildStateWriter } from '../state/state-writer.js';
@@ -27,32 +27,9 @@ export class BuildTaskRunner {
     const node = this.requireNode(name);
     const entry = this.requirePlan(name);
 
-    if (entry.cache.action === 'restore') {
-      logger.info('runner.entry', {
-        metadata: {
-          package: name,
-          shouldExecute: entry.shouldExecute,
-          cacheDecision: entry.cache.decision,
-          cacheAction: entry.cache.action,
-        },
-      });
-      return this.restore(node, entry);
-    }
-
-    if (entry.cache.decision === 'hit') {
-      logger.info('runner.entry', {
-        metadata: {
-          package: name,
-          shouldExecute: entry.shouldExecute,
-          cacheDecision: entry.cache.decision,
-          cacheAction: entry.cache.action,
-        },
-      });
-      return this.createCachedResult(entry);
-    }
-
-    return this.executeAndCache(node, entry);
+    return this.executeBuildAction(node, entry);
   }
+
   private requireNode(name: string): DagNode {
     const node = this.graph.get(name);
 
@@ -73,23 +50,21 @@ export class BuildTaskRunner {
     return plan;
   }
 
-  private createCachedResult(plan: BuildPlanEntry): BuildResult {
+  private createResult(
+    entry: BuildPlanEntry,
+    status: BuildResult['status'],
+    reason: ExecutionReason,
+  ): BuildResult {
     return {
-      package: plan.package,
-      status: 'skipped',
-
-      changeReason: plan.changeReason,
-
+      package: entry.package,
+      status,
+      changeReason: entry.changeReason,
       execution: {
-        reason: 'cached',
-      },
-
-      cache: {
-        decision: plan.cache.decision,
-        action: plan.cache.action,
+        reason,
       },
     };
   }
+
   private async executeAndCache(node: DagNode, entry: BuildPlanEntry): Promise<BuildResult> {
     const result = await this.executor.execute(node, entry);
 
@@ -100,7 +75,7 @@ export class BuildTaskRunner {
     if (node.outputs.length > 0 && !this.outputValidator.exists(node.root, node.outputs)) {
       throw new Error(
         [
-          `Build completed but declared outputs are missing.`,
+          'Build completed but declared outputs are missing.',
           `package=${node.name}`,
           `outputs=${node.outputs.join(', ')}`,
         ].join(' '),
@@ -115,6 +90,7 @@ export class BuildTaskRunner {
 
     return result;
   }
+
   private async restore(node: DagNode, entry: BuildPlanEntry): Promise<BuildResult> {
     const artifact = this.defaultArtifactProvider.create(node.name, entry.hash);
     const restored = await this.artifactCache.restore(artifact, node.root);
@@ -125,20 +101,19 @@ export class BuildTaskRunner {
 
     this.writer.commit(node, entry.hash);
 
-    return {
-      package: entry.package,
-      status: 'skipped',
+    return this.createResult(entry, 'skipped', 'restored');
+  }
 
-      changeReason: entry.changeReason,
+  private async executeBuildAction(node: DagNode, entry: BuildPlanEntry): Promise<BuildResult> {
+    switch (entry.buildAction) {
+      case 'restore':
+        return this.restore(node, entry);
 
-      execution: {
-        reason: 'restored',
-      },
+      case 'skip':
+        return this.createResult(entry, 'skipped', 'cached');
 
-      cache: {
-        decision: entry.cache.decision,
-        action: entry.cache.action,
-      },
-    };
+      case 'execute':
+        return this.executeAndCache(node, entry);
+    }
   }
 }

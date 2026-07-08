@@ -10,18 +10,38 @@ export function createNode(
   options?: {
     dependencies?: string[];
     dependents?: string[];
-    shouldRun?: boolean;
   },
 ): ExecutionNode {
   return {
     name,
+
     dependencies: options?.dependencies ?? [],
     dependents: options?.dependents ?? [],
-    shouldRun: options?.shouldRun ?? true,
-    contract: undefined,
+
+    buildAction: async () => {},
+
+    contract: {
+      id: name,
+
+      inputs: {
+        files: [],
+        packages: [],
+      },
+
+      outputs: {
+        files: [],
+      },
+
+      cache: {
+        strategy: 'content-hash',
+      },
+
+      run: {
+        executor: 'node',
+      },
+    },
   };
 }
-
 export function createPlan(...nodes: ExecutionNode[]): ExecutionPlan {
   return {
     nodes: new Map(nodes.map((node) => [node.name, node])),

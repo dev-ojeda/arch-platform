@@ -21,12 +21,40 @@ export async function ensureDir(targetPath: string): Promise<void> {
     recursive: true,
   });
 }
+export async function removePathWithRetry(target: string, retries = 5, delay = 100): Promise<void> {
+  for (let attempt = 0; attempt < retries; attempt++) {
+    try {
+      await removePath(target);
+      return;
+    } catch (error: unknown) {
+      if (!isRetryableFsError(error)) {
+        throw error;
+      }
 
+      await sleep(delay * (attempt + 1));
+    }
+  }
+
+  await removePath(target);
+}
 export async function copyPath(
   source: string,
   destination: string,
   options: CopyPathOptions = {},
 ): Promise<void> {
+  for (let attempt = 0; attempt < 5; attempt++) {
+    try {
+      await cp(source, destination, options);
+      return;
+    } catch (error: unknown) {
+      if (!isRetryableFsError(error)) {
+        throw error;
+      }
+
+      await sleep(50 * (attempt + 1));
+    }
+  }
+
   await cp(source, destination, options);
 }
 
@@ -35,6 +63,19 @@ export async function removePath(targetPath: string): Promise<void> {
     recursive: true,
     force: true,
   });
+}
+
+function isRetryableFsError(error: unknown): boolean {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'code' in error &&
+    (error.code === 'EBUSY' || error.code === 'EPERM' || error.code === 'EACCES')
+  );
+}
+
+function sleep(milliseconds: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
 export async function renamePath(source: string, destination: string): Promise<void> {

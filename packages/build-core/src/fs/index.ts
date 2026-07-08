@@ -7,6 +7,7 @@ export {
   readDirectoryEntries,
   readTextFile,
   removePath,
+  removePathWithRetry,
   renamePath,
   writeTextFile,
 } from './fs-async.js';

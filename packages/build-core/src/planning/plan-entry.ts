@@ -1,26 +1,26 @@
-// packages/build-core/src/planning/plan-entry.ts
-
-import type { CacheAction, CacheDecision, ChangeReason } from '../cache/cache-types.js';
+import type { CacheDecision, ChangeReason } from '../cache/cache-types.js';
 import type { HashResult } from '../hash/hash-result.js';
+
+export type BuildAction = 'execute' | 'restore' | 'skip';
 
 export interface BuildPlanEntry {
   package: string;
 
   /**
-   * El scheduler decide si entra a ejecución
+   * Acción planificada por el ChangePlanner.
    */
-  shouldExecute: boolean;
+  buildAction: BuildAction;
 
   /**
-   * Resultado de evaluación de cache
+   * Resultado de la evaluación de caché.
+   * Se conserva para diagnóstico.
    */
   cache: {
     decision: CacheDecision;
-    action: CacheAction;
   };
 
   /**
-   * Motivo del cambio detectado
+   * Motivo del cambio detectado.
    */
   changeReason: ChangeReason;
 

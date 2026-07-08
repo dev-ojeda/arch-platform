@@ -20,7 +20,7 @@ describe('ExecutionPlanScheduler', () => {
 
     expect(runner.run).toHaveBeenCalledWith('package-a');
 
-    expect(context.nodeStates.get('package-a')).toBe('success');
+    expect(context.nodes.get('package-a')?.state).toBe('success');
 
     expect(results).toContainEqual(
       expect.objectContaining({
@@ -56,15 +56,18 @@ describe('ExecutionPlanScheduler', () => {
 
     expect(runner.run).toHaveBeenCalledTimes(1);
 
-    expect(context.nodeStates.get('package-a')).toBe('running');
-    expect(context.nodeStates.get('package-b')).toBe('pending');
+    expect(context.nodes.get('package-a')?.state).toBe('running');
+    expect(context.nodes.get('package-b')?.state).toBe('pending');
 
     packageACompletion.resolve(createSuccessResult('package-a'));
 
     await execution;
 
-    expect(context.nodeStates.get('package-a')).toBe('success');
-    expect(context.nodeStates.get('package-b')).toBe('success');
+    expect(context.nodes.get('package-a')?.state).toBe('success');
+    expect(context.triggers.get('package-b')).toEqual({
+      package: 'package-a',
+      reason: 'dependency-changed',
+    });
   });
 
   it('should skip dependent nodes when a dependency fails', async () => {
@@ -87,8 +90,8 @@ describe('ExecutionPlanScheduler', () => {
 
     expect(runner.run).toHaveBeenCalledTimes(1);
 
-    expect(context.nodeStates.get('package-a')).toBe('failed');
-    expect(context.nodeStates.get('package-b')).toBe('skipped');
+    expect(context.nodes.get('package-a')?.state).toBe('failed');
+    expect(context.nodes.get('package-b')?.state).toBe('skipped');
 
     expect(results).toContainEqual(
       expect.objectContaining({
@@ -136,15 +139,15 @@ describe('ExecutionPlanScheduler', () => {
     expect(runner.run).toHaveBeenCalledWith('package-a');
     expect(runner.run).toHaveBeenCalledWith('package-b');
 
-    expect(context.nodeStates.get('package-a')).toBe('running');
-    expect(context.nodeStates.get('package-b')).toBe('running');
+    expect(context.nodes.get('package-a')?.state).toBe('running');
+    expect(context.nodes.get('package-b')?.state).toBe('running');
 
     packageACompletion.resolve(createSuccessResult('package-a'));
     packageBCompletion.resolve(createSuccessResult('package-b'));
 
     await execution;
 
-    expect(context.nodeStates.get('package-a')).toBe('success');
-    expect(context.nodeStates.get('package-b')).toBe('success');
+    expect(context.nodes.get('package-a')?.state).toBe('success');
+    expect(context.nodes.get('package-b')?.state).toBe('success');
   });
 });

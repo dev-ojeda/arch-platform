@@ -2,7 +2,10 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { createExecutionContext } from '../../../src/runtime/execution/execution-context.js';
+import {
+  createExecutionContext,
+  updateExecutionState,
+} from '../../../src/runtime/execution/execution-context.js';
 import { createNode, createPlan } from '../../helpers/execution-plan.js';
 
 describe('createExecutionContext', () => {
@@ -18,11 +21,11 @@ describe('createExecutionContext', () => {
 
     const context = createExecutionContext(plan);
 
-    expect(context.nodeStates.size).toBe(2);
+    expect(context.nodes.size).toBe(2);
 
-    expect(context.nodeStates.get('package-a')).toBe('pending');
+    expect(context.nodes.get('package-a')?.state).toBe('pending');
 
-    expect(context.nodeStates.get('package-b')).toBe('pending');
+    expect(context.nodes.get('package-b')?.state).toBe('pending');
   });
 
   it('should create an empty execution context for an empty execution plan', () => {
@@ -30,7 +33,7 @@ describe('createExecutionContext', () => {
 
     const context = createExecutionContext(plan);
 
-    expect(context.nodeStates.size).toBe(0);
+    expect(context.nodes.size).toBe(0);
   });
 
   it('should create independent state for each execution context', () => {
@@ -39,10 +42,10 @@ describe('createExecutionContext', () => {
     const first = createExecutionContext(plan);
     const second = createExecutionContext(plan);
 
-    first.nodeStates.set('package-a', 'running');
+    updateExecutionState(first, 'package-a', 'running');
 
-    expect(first.nodeStates.get('package-a')).toBe('running');
+    expect(first.nodes.get('package-a')?.state).toBe('running');
 
-    expect(second.nodeStates.get('package-a')).toBe('pending');
+    expect(second.nodes.get('package-a')?.state).toBe('pending');
   });
 });

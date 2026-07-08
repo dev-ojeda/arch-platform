@@ -61,7 +61,7 @@ export class ExecutionDagCompiler {
       name,
       dependencies,
       dependents: [],
-      shouldRun: entry.shouldExecute,
+      buildAction: entry.buildAction,
       contract,
     };
   }
