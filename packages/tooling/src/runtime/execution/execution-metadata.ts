@@ -1,5 +1,7 @@
 // packages/tooling/src/runtime/execution/execution-metadata.ts
 
+import type { ExecuteCommandResult } from './execute-command-result.js';
+
 export interface ExecutionMetadata extends Record<string, unknown> {
   readonly command: string;
 
@@ -22,4 +24,12 @@ export interface ExecutionMetadata extends Record<string, unknown> {
   readonly stdoutSize: string;
 
   readonly stderrSize: string;
+}
+export interface ExecutionMetadataOptions extends Pick<
+  ExecuteCommandResult,
+  'command' | 'args' | 'commandLine' | 'cwd' | 'exitCode' | 'durationMs' | 'signal'
+> {
+  readonly stdout: string;
+
+  readonly stderr: string;
 }

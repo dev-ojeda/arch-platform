@@ -2,16 +2,15 @@
 
 import { logger } from '../../logging/logger.js';
 import { ToolingEvents } from '../../runtime/events/tooling-event.js';
-import { executeCommand } from '../../runtime/execute-command.js';
-import { createSkippedCommandResult } from '../../runtime/execution/create-skipped-command-result.js';
 import type { ExecuteCommandResult } from '../../runtime/execution/execute-command-result.js';
+import { executeProcess } from '../../runtime/process/execute-process.js';
 import { fileExists } from '../../utils/file-exists.js';
+import type { TypecheckCommandOptions } from '../command-options.js';
+import { createSkippedCommandResult } from '../common/create-skipped-command-result.js';
 import { FileConfigNames } from '../config/config-file-name.js';
 
-import type { TypecheckCommandOptions } from './typecheck-command-options.js';
-
 export async function runTypecheckCommand(
-  options: TypecheckCommandOptions = {},
+  options: TypecheckCommandOptions,
 ): Promise<ExecuteCommandResult> {
   const { configPath = FileConfigNames.tsconfig, events = ToolingEvents.typecheck } = options;
 
@@ -26,5 +25,5 @@ export async function runTypecheckCommand(
     return createSkippedCommandResult(events.skipped);
   }
 
-  return executeCommand('tsc', ['-b', configPath]);
+  return executeProcess('tsc', ['-b', configPath]);
 }

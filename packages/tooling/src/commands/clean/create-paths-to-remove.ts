@@ -2,7 +2,7 @@
 
 import { join } from 'path';
 
-import type { CleanCommandOptions } from './clean-command-options.js';
+import type { CleanCommandOptions } from '../command-options.js';
 
 export function createPathsToRemove(
   cwd: string,

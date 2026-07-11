@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "sideEffects": false,
   "files": [
@@ -10,14 +11,17 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     }
   },
   "scripts": {
-    "mode": "tsc",
-    "build": "tsx ../tooling/src/bin/build.ts --package @arch/tooling",
-    "build:dts": "tsc -p tsconfig.build.json",
-    "clean": "tsx ../tooling/src/bin/clean.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "build:dts": "tsc -p tsconfig.build.json --emitDeclarationOnly",
+    "lint": "node ../cli/dist/bin.js lint",
+    "arch:clean": "node ../cli/dist/bin.js clean",
+    "arch:lint": "node ../cli/dist/bin.js lint",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {

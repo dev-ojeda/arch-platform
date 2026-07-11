@@ -1,13 +1,14 @@
 // packages/tooling/src/commands/clean.ts
 
 import { ToolingEvents } from '../runtime/events/tooling-event.js';
-import { runCommand } from '../runtime/run-command.js';
+import { runTask } from '../runtime/task/run-task.js';
 
-import { cleanWorkspace } from './clean/clean-workspace.js';
+import { runCleanCommand } from './clean/clean-command.js';
+import type { CleanCommandOptions } from './command-options.js';
 
-export async function cleanCommand(): Promise<void> {
-  process.exitCode = await runCommand({
+export async function cleanCommand(options: CleanCommandOptions = {}): Promise<number> {
+  return await runTask({
     events: ToolingEvents.clean,
-    action: cleanWorkspace,
+    action: () => runCleanCommand(options),
   });
 }

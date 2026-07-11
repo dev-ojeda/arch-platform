@@ -4,9 +4,9 @@ import { defineConfig } from 'tsup';
 
 import { createBaseConfig } from './base.js';
 
-import type { BuildConfigOptions } from './types.js';
+import type { ConfigOverrides } from './types.js';
 
-export function createLibraryConfig(overrides: BuildConfigOptions = {}) {
+export function createLibraryConfig(overrides: ConfigOverrides = {}) {
   return defineConfig({
     ...createBaseConfig(),
 

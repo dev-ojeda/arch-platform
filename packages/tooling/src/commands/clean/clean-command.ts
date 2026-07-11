@@ -4,13 +4,14 @@ import { logger } from '../../logging/logger.js';
 import { ToolingEvents } from '../../runtime/events/tooling-event.js';
 import { collectTsBuildInfoFiles } from '../../runtime/filesystem/collect-tsbuildinfo-files.js';
 import { removePaths } from '../../runtime/filesystem/remove-paths.js';
-import { createStopwatch } from '../../runtime/helpers/create-stopwatch.js';
+import type { TaskResult } from '../../runtime/index.js';
+import { createStopwatch } from '../../runtime/process/create-stopwatch.js';
+import type { CleanCommandOptions } from '../command-options.js';
 
-import type { CleanCommandOptions } from './clean-command-options.js';
 import { createPathsToRemove } from './create-paths-to-remove.js';
 import { resolveCleanOptions } from './resolve-clean-options.js';
 
-export async function runCleanCommand(options: CleanCommandOptions = {}): Promise<number> {
+export async function runCleanCommand(options: CleanCommandOptions = {}): Promise<TaskResult> {
   const stopwatch = createStopwatch();
   const resolvedOptions = resolveCleanOptions(options);
 
@@ -39,5 +40,5 @@ export async function runCleanCommand(options: CleanCommandOptions = {}): Promis
     },
   });
 
-  return 0;
+  return { exitCode: 0 };
 }
