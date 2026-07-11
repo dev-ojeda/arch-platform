@@ -2,13 +2,13 @@
 
 import { logger } from '../../logging/logger.js';
 import { ToolingEvents } from '../../runtime/events/tooling-event.js';
-import { executeCommand } from '../../runtime/execute-command.js';
-import { createSkippedCommandResult } from '../../runtime/execution/create-skipped-command-result.js';
 import type { ExecuteCommandResult } from '../../runtime/execution/execute-command-result.js';
 import { pathExists } from '../../runtime/filesystem/path-exists.js';
+import { executeProcess } from '../../runtime/process/execute-process.js';
+import type { LintCommandOptions } from '../command-options.js';
+import { createSkippedCommandResult } from '../common/create-skipped-command-result.js';
 
 import { createLintArguments } from './create-lint-arguments.js';
-import type { LintCommandOptions } from './lint-command-options.js';
 
 const DEFAULT_LINT_TARGETS = ['src', 'test', 'testing'] as const;
 
@@ -43,5 +43,5 @@ export async function runLintCommand(
     return skippedResult;
   }
 
-  return executeCommand('eslint', createLintArguments(lintTargets, maxWarnings, args));
+  return executeProcess('eslint', createLintArguments(lintTargets, maxWarnings, args));
 }

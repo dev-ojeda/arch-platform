@@ -1,48 +1,53 @@
 // packages/build-core/src/services/build-service.ts
 
-import type { ArtifactCache } from '../artifact/artifact-cache.js';
-import { DefaultArtifactProvider } from '../artifact/default-artifact-provider.js';
 import { FilesystemOutputValidator } from '../artifact/filesystem-output-validator.js';
 import { CacheEvaluator } from '../cache/cache-evaluator.js';
-import type { BuildExecutor } from '../executor/build-executor.js';
 import type { BuildResult } from '../executor/build-result.js';
 import { BuildTaskRunner } from '../graph/build-task-runner.js';
-import type { Graph } from '../graph/dag-types.js';
-import type { GraphQueryService } from '../graph/graph-query-services.js';
 import { DagHasher } from '../hash/dag-hasher.js';
 import { HashGraphBuilder } from '../hash/hash-graph.js';
 import { LOG_EVENTS } from '../logging/log-events.js';
 import { logger } from '../logging/logger.js';
 import { ChangePlanner } from '../planning/change-planner.js';
-import type { ExecutionContractResolver } from '../planning/execution-contract-resolver.js';
 import { ExecutionDagCompiler } from '../planning/execution-dag-compiler.js';
 import { ScopeResolver } from '../planning/scope-resolver.js';
 import { createExecutionContext } from '../runtime/execution/execution-context.js';
 import { ExecutionPlanScheduler } from '../runtime/execution/execution-plan-scheduler.js';
-import type { BuildState } from '../state/state-types.js';
 import { BuildStateWriter } from '../state/state-writer.js';
 
+import type { BuildContext } from './build-context.js';
+import type { BuildOptions } from './build-option.js';
 import type { BuildServiceSummary } from './build-service-summary.js';
-
-export interface BuildRequest {
-  packageName: string;
-  concurrency?: number;
-}
-export interface BuildContext {
-  graph: Graph;
-  query: GraphQueryService;
-  contractResolver: ExecutionContractResolver;
-  state: BuildState;
-  executor: BuildExecutor;
-  artifactCache: ArtifactCache;
-  workspaceRoot: string;
-}
+/**
+ * Application service responsible for orchestrating the build pipeline.
+ *
+ * Pipeline stages:
+ *
+ * 1. Hash calculation
+ * 2. Cache evaluation
+ * 3. Change planning
+ * 4. Build scope resolution
+ * 5. Execution plan compilation
+ * 6. Task execution
+ * 7. State persistence
+ *
+ * The service coordinates these stages but delegates implementation details
+ * to specialized components.
+ */
 export class BuildService {
   constructor(private readonly context: BuildContext) {}
 
-  async run(request: BuildRequest): Promise<BuildServiceSummary> {
-    const { graph, query, contractResolver, state, executor, artifactCache, workspaceRoot } =
-      this.context;
+  async run(options: BuildOptions): Promise<BuildServiceSummary> {
+    const {
+      graph,
+      query,
+      contractResolver,
+      state,
+      executor,
+      artifactCache,
+      artifactProvider,
+      workspaceRoot,
+    } = this.context;
 
     // -------------------------
     // 1. HASH
@@ -61,7 +66,7 @@ export class BuildService {
     // -------------------------
     // 3. SCOPE (SIN ENGINE)
     // -------------------------
-    const scope = new ScopeResolver(buildPlan, query).resolve(request.packageName);
+    const scope = new ScopeResolver(buildPlan, query).resolve(options.packageName);
 
     if (scope.size === 0) {
       return this.summarize([]);
@@ -87,10 +92,10 @@ export class BuildService {
       writer,
       artifactCache,
       outputValidator,
-      new DefaultArtifactProvider(),
+      artifactProvider,
     );
 
-    const scheduler = new ExecutionPlanScheduler(runner, request.concurrency ?? 4);
+    const scheduler = new ExecutionPlanScheduler(runner, options.concurrency ?? 4);
     const ctx = createExecutionContext(executionPlan);
 
     const results = await scheduler.run(executionPlan, ctx);

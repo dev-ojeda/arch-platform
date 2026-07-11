@@ -1,11 +1,14 @@
+// packages\tooling\src\commands\lint.ts
+
 import { ToolingEvents } from '../runtime/events/tooling-event.js';
-import { runCommand } from '../runtime/run-command.js';
+import { runTask } from '../runtime/task/run-task.js';
 
-import { lintWorkspace } from './lint/lint-workspace.js';
+import type { LintCommandOptions } from './command-options.js';
+import { runLintCommand } from './lint/lint-command.js';
 
-export async function lintCommand(): Promise<void> {
-  process.exitCode = await runCommand({
+export async function lintCommand(options: LintCommandOptions = {}): Promise<number> {
+  return runTask({
     events: ToolingEvents.lint,
-    action: lintWorkspace,
+    action: () => runLintCommand(options),
   });
 }

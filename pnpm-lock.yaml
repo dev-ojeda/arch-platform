@@ -208,9 +208,6 @@ importers:
         specifier: workspace:*
         version: link:../testing
     devDependencies:
-      '@arch/tooling':
-        specifier: workspace:*
-        version: link:../tooling
       handlebars:
         specifier: ^4.7.9
         version: 4.7.9
@@ -222,7 +219,6 @@ importers:
       '@arch/governance':
         specifier: workspace:*
         version: link:../governance
-    devDependencies:
       '@arch/tooling':
         specifier: workspace:*
         version: link:../tooling
@@ -246,10 +242,6 @@ importers:
       '@arch/contracts':
         specifier: workspace:*
         version: link:../contracts
-    devDependencies:
-      '@arch/tooling':
-        specifier: workspace:*
-        version: link:../tooling
 
   packages/domain-order: {}
 
@@ -258,20 +250,12 @@ importers:
       '@arch/contracts':
         specifier: workspace:*
         version: link:../../contracts
-    devDependencies:
-      '@arch/tooling':
-        specifier: workspace:*
-        version: link:../../tooling
 
   packages/governance:
     dependencies:
       '@arch/code-analysis':
         specifier: workspace:*
         version: link:../code-analysis
-    devDependencies:
-      '@arch/tooling':
-        specifier: workspace:*
-        version: link:../tooling
 
   packages/infrastructure:
     dependencies:
@@ -285,9 +269,6 @@ importers:
         specifier: workspace:*
         version: link:../testing
     devDependencies:
-      '@arch/tooling':
-        specifier: workspace:*
-        version: link:../tooling
       handlebars:
         specifier: ^4.7.9
         version: 4.7.9
@@ -302,10 +283,6 @@ importers:
       '@arch/core':
         specifier: workspace:*
         version: link:../core
-    devDependencies:
-      '@arch/tooling':
-        specifier: workspace:*
-        version: link:../tooling
 
   packages/tooling:
     dependencies:

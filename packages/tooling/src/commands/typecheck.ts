@@ -1,13 +1,14 @@
 // packages/tooling/src/commands/typecheck.ts
 
 import { ToolingEvents } from '../runtime/events/tooling-event.js';
-import { runCommand } from '../runtime/run-command.js';
+import { runTask } from '../runtime/task/run-task.js';
 
-import { typecheckWorkspace } from './typecheck/typecheck-workspace.js';
+import type { TypecheckCommandOptions } from './command-options.js';
+import { runTypecheckCommand } from './typecheck/typecheck-command.js';
 
-export async function typecheckCommand(): Promise<void> {
-  process.exitCode = await runCommand({
+export async function typecheckCommand(options: TypecheckCommandOptions): Promise<number> {
+  return runTask({
     events: ToolingEvents.typecheck,
-    action: typecheckWorkspace,
+    action: () => runTypecheckCommand(options),
   });
 }

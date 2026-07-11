@@ -2,4 +2,4 @@
 
 import type { Options } from 'tsup';
 
-export type BuildConfigOptions = Partial<Options>;
+export type ConfigOverrides = Partial<Options>;

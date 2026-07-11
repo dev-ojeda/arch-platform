@@ -12,16 +12,19 @@
       "default": "./dist/index.js"
     }
   },
+  "arch": {
+    "builder": "tsc"
+  },
   "files": [
     "dist"
   ],
   "sideEffects": false,
   "scripts": {
-    "mode": "tsc",
-    "build": "tsx ../tooling/src/bin/build.ts --package @arch/application",
-    "build:dts": "tsc -p tsconfig.build.json",
-    "clean": "tsx ../tooling/src/bin/clean.ts",
-    "lint": "tsx ../tooling/src/bin/lint.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "lint": "node ../cli/dist/bin.js lint",
+    "arch:build": "arch build --package @arch/application",
+    "arch:clean": "arch clean",
+    "arch:lint": "arch lint",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",
@@ -35,7 +38,6 @@
     "@arch/testing": "workspace:*"
   },
   "devDependencies": {
-    "handlebars": "^4.7.9",
-    "@arch/tooling": "workspace:*"
+    "handlebars": "^4.7.9"
   }
 }

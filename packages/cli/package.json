@@ -3,32 +3,24 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "types": "./dist/index.d.ts",
   "sideEffects": false,
   "files": [
     "dist"
   ],
   "bin": {
-    "arch": "./dist/index.js"
-  },
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts"
-    }
+    "arch": "./dist/bin.js"
   },
   "scripts": {
-    "arch": "node ./dist/index.js",
-    "mode": "tsc",
-    "build": "tsx ../tooling/src/bin/build.ts --package @arch/cli",
-    "clean": "tsx ../tooling/src/bin/clean.ts",
-    "lint": "tsx ../tooling/src/bin/lint.ts",
+    "arch": "node ./dist/bin.js",
+    "build": "tsup",
+    "lint": "node ./dist/bin.js lint",
+    "arch:clean": "arch clean",
+    "arch:lint": "arch lint",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@arch/governance": "workspace:*"
-  },
-  "devDependencies": {
-    "cac": "catalog:",
-    "@arch/tooling": "workspace:*"
+    "@arch/governance": "workspace:*",
+    "@arch/tooling": "workspace:*",
+    "cac": "catalog:"
   }
 }

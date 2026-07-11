@@ -1,11 +1,9 @@
 {
-  "extends": "../../config/tsconfig/library.json",
+  "extends": "../../config/tsconfig/cli.json",
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
     "composite": true,
-    "declaration": true,
-    "declarationMap": true,
     "tsBuildInfoFile": "./.turbo/cli.tsbuildinfo"
   },
   "include": [

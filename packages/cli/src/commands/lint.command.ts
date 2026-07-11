@@ -9,6 +9,6 @@ export function registerLintCommand(cli: CAC): void {
   cli.command('lint', 'Lint workspace').action(async () => {
     logger.info('Linting workspace...');
 
-    await lintCommand();
+    return await lintCommand();
   });
 }

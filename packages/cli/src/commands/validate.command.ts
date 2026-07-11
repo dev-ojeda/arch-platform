@@ -1,12 +1,12 @@
 // validate.command.ts
 
-import process from 'node:process';
+import { cwd } from 'node:process';
 
 import { renderDiagnostics, validateWorkspace } from '@arch/governance';
 import type { CAC } from 'cac';
 
 export async function runValidateCommand(): Promise<number> {
-  const diagnostics = await validateWorkspace(process.cwd());
+  const diagnostics = await validateWorkspace(cwd());
 
   renderDiagnostics(diagnostics);
 

@@ -1,6 +1,6 @@
 // packages/tooling/src/runtime/clean/resolve-clean-options.ts
 
-import { DEFAULT_CLEAN_OPTIONS, type CleanCommandOptions } from './clean-command-options.js';
+import { DEFAULT_CLEAN_OPTIONS, type CleanCommandOptions } from '../command-options.js';
 
 export function resolveCleanOptions(
   options: CleanCommandOptions = {},

@@ -3,12 +3,10 @@
 import type { Artifact } from './artifact.js';
 
 /**
- * Stores and restores build artifacts.
+ * Defines the contract for storing and restoring build artifacts.
  *
- * Implementations define the persistence mechanism.
- *
- * restore() returns false when the artifact
- * cannot be restored (missing, invalid or incomplete).
+ * Implementations may use different storage mechanisms, but consumers
+ * should not depend on the underlying persistence strategy.
  */
 export interface ArtifactCache {
   save(artifact: Artifact, root: string, outputs: readonly string[]): Promise<void>;

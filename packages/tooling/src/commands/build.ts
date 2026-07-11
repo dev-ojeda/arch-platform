@@ -1,25 +1,27 @@
 // packages/tooling/src/commands/build.ts
 
-import { BuildApplicationFactory, findWorkspaceRoot } from '@arch/build-core';
+import { cwd } from 'node:process';
+
+import { BuildApplicationFactory } from '@arch/build-core';
 
 import { logger } from '../logging/logger.js';
-import { commandRunner } from '../runtime/command-runner.js';
 import { ToolingEvents } from '../runtime/events/tooling-event.js';
-import { runCommand } from '../runtime/run-command.js';
+import { processRunner } from '../runtime/process/process-runner.js';
+import { runTask } from '../runtime/task/run-task.js';
 
-export async function buildCommand(packageName: string): Promise<number> {
-  return runCommand({
+import type { BuildCommandOptions } from './command-options.js';
+
+export async function buildCommand(options: BuildCommandOptions): Promise<number> {
+  return runTask({
     events: ToolingEvents.build,
 
     action: async () => {
-      const workspaceRoot = findWorkspaceRoot(process.cwd());
-
-      const app = new BuildApplicationFactory(workspaceRoot, commandRunner);
+      const app = new BuildApplicationFactory(cwd(), processRunner);
 
       const service = await app.create();
 
       const summary = await service.run({
-        packageName,
+        packageName: options.packageName,
       });
 
       logger.success(ToolingEvents.build.completed, {
@@ -31,7 +33,10 @@ export async function buildCommand(packageName: string): Promise<number> {
         },
       });
 
-      return summary.failed === 0 ? 0 : 1;
+      return {
+        ...summary,
+        exitCode: summary.failed === 0 ? 0 : 1,
+      };
     },
   });
 }

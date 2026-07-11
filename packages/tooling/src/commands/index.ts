@@ -2,6 +2,5 @@
 
 export { buildCommand } from './build.js';
 export { cleanCommand } from './clean.js';
-export { devCommand } from './dev.js';
 export { lintCommand } from './lint.js';
 export { typecheckCommand } from './typecheck.js';

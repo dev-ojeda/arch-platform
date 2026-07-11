@@ -52,7 +52,7 @@ export function createBuildSteps(config?: PackageBuildConfig): BuildStep[] {
     {
       name: 'types',
       command: 'pnpm',
-      args: ['exec', 'tsc', '-b', 'tsconfig.build.json', '--force'],
+      args: ['exec', 'tsc', '-b', 'tsconfig.build.json'],
     },
   ];
 }
