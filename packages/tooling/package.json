@@ -9,6 +9,9 @@
   "files": [
     "dist"
   ],
+  "arch": {
+    "builder": "tsc"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -19,10 +22,10 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "build:dts": "tsc -p tsconfig.build.json --emitDeclarationOnly",
-    "lint": "node ../cli/dist/bin.js lint",
-    "arch:clean": "node ../cli/dist/bin.js clean",
-    "arch:lint": "node ../cli/dist/bin.js lint",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "arch": "arch build --package @arch/tooling",
+    "clean": "arch clean",
+    "lint": "arch lint",
+    "typecheck": "arch typecheck"
   },
   "dependencies": {
     "@arch/build-core": "workspace:*"

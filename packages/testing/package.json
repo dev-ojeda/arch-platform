@@ -18,11 +18,10 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "lint": "node ../cli/dist/bin.js lint",
-    "arch:build": "arch build --package @arch/testing",
-    "arch:clean": "arch clean",
-    "arch:lint": "arch lint",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "arch": "arch build --package @arch/testing",
+    "clean": "arch clean",
+    "typecheck": "arch typecheck",
+    "lint": "arch lint"
   },
   "dependencies": {
     "@arch/contracts": "workspace:*",

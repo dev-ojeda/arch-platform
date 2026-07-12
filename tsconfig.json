@@ -5,6 +5,9 @@
   "files": [],
   "references": [
     {
+      "path": "./config"
+    },
+    {
       "path": "./packages/contracts"
     },
     {

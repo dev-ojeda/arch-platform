@@ -3,6 +3,7 @@ import { defineConfig } from 'tsup';
 import { createBaseConfig } from './base.js';
 
 import type { ConfigOverrides } from './types.js';
+
 export function createCliConfig(overrides: ConfigOverrides = {}) {
   return defineConfig({
     ...createBaseConfig(),
@@ -14,10 +15,6 @@ export function createCliConfig(overrides: ConfigOverrides = {}) {
     dts: false,
 
     sourcemap: true,
-
-    banner: {
-      js: '#!/usr/bin/env node',
-    },
 
     ...overrides,
   });

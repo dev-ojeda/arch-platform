@@ -5,14 +5,16 @@
   "type": "module",
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "bin"
   ],
   "bin": {
-    "arch": "./dist/bin.js"
+    "arch": "./bin/arch.js"
   },
   "scripts": {
     "arch": "node ./dist/bin.js",
     "build": "tsup",
+    "arch:build": "arch build --package @arch/cli",
     "lint": "node ./dist/bin.js lint",
     "arch:clean": "arch clean",
     "arch:lint": "arch lint",

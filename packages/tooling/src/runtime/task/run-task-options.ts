@@ -9,4 +9,6 @@ export interface TaskResult {
 export interface RunTaskOptions<TResult extends TaskResult> {
   readonly events: ToolingTaskEvents;
   readonly action: () => Promise<TResult>;
+
+  readonly emitCompletedEvent?: boolean;
 }

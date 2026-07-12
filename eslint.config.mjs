@@ -12,6 +12,7 @@ import tseslint from 'typescript-eslint';
 
 const IGNORES = [
   '**/dist/**',
+  '**/bin/**',
   '**/coverage/**',
   '**/.turbo/**',
   '**/node_modules/**',
@@ -29,8 +30,8 @@ const TOOLING_FILES = [
 ];
 
 const TEST_FILES = ['**/*.test.ts', '**/*.spec.ts', '**/test/**/*.ts', '**/__tests__/**/*.ts'];
-
-const SOURCE_FILES = ['**/*.ts', '**/*.tsx', '**/*.js'];
+const CONFIG_TS_FILES = ['config/**/*.ts'];
+const SOURCE_FILES = ['packages/**/*.ts', 'packages/**/*.tsx', 'apps/**/*.ts', 'apps/**/*.tsx'];
 
 /**
  * -----------------------------------------------------------------------------
@@ -142,7 +143,50 @@ export default tseslint.config(
    * TypeScript recommended
    */
   ...tseslint.configs.recommendedTypeChecked,
+  /**
+   * -----------------------------------------------------------------------------
+   * Config source
+   * -----------------------------------------------------------------------------
+   */
+  {
+    files: CONFIG_TS_FILES,
 
+    languageOptions: {
+      parser: tseslint.parser,
+
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+
+    plugins: {
+      import: importPlugin,
+    },
+
+    settings: {
+      'import/parsers': {
+        '@typescript-eslint/parser': ['.ts'],
+      },
+
+      'import/resolver': {
+        typescript: {
+          project: ['./config/tsconfig.json'],
+        },
+      },
+    },
+
+    rules: {
+      ...COMMON_IMPORT_RULES,
+
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        {
+          prefer: 'type-imports',
+        },
+      ],
+    },
+  },
   /**
    * -----------------------------------------------------------------------------
    * Application source

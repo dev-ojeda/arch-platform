@@ -15,12 +15,6 @@ export async function runCleanCommand(options: CleanCommandOptions = {}): Promis
   const stopwatch = createStopwatch();
   const resolvedOptions = resolveCleanOptions(options);
 
-  logger.info(ToolingEvents.clean.started, {
-    metadata: {
-      cwd: resolvedOptions.cwd,
-    },
-  });
-
   await removePaths(createPathsToRemove(resolvedOptions.cwd, resolvedOptions));
 
   if (resolvedOptions.removeTsBuildInfo) {
