@@ -15,7 +15,9 @@
     "dist"
   ],
   "arch": {
-    "builder": "tsc"
+    "build": {
+      "builder": "tsc"
+    }
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",

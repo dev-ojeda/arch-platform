@@ -7,7 +7,9 @@
   "types": "./dist/index.d.ts",
   "sideEffects": false,
   "arch": {
-    "builder": "tsc"
+    "build": {
+      "builder": "tsc"
+    }
   },
   "files": [
     "dist"

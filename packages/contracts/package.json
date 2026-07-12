@@ -10,7 +10,9 @@
     }
   },
   "arch": {
-    "builder": "tsc-declaration"
+    "build": {
+      "builder": "tsc-declaration"
+    }
   },
   "scripts": {
     "build": "pnpm build:dts",

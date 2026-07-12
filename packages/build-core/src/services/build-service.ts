@@ -66,7 +66,7 @@ export class BuildService {
     // -------------------------
     // 3. SCOPE (SIN ENGINE)
     // -------------------------
-    const scope = new ScopeResolver(buildPlan, query).resolve(options.packageName);
+    const scope = new ScopeResolver(buildPlan, query).resolve(options);
 
     if (scope.size === 0) {
       return this.summarize([]);

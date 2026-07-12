@@ -6,7 +6,9 @@
   "types": "./dist/index.d.ts",
   "sideEffects": false,
   "arch": {
-    "builder": "tsc-declaration"
+    "build": {
+      "builder": "tsc-declaration"
+    }
   },
   "files": [
     "dist"
