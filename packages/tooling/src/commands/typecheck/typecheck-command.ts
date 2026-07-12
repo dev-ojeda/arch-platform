@@ -9,21 +9,23 @@ import type { TypecheckCommandOptions } from '../command-options.js';
 import { createSkippedCommandResult } from '../common/create-skipped-command-result.js';
 import { FileConfigNames } from '../config/config-file-name.js';
 
+import { createTypecheckArguments } from './create-typecheck-arguments.js';
+
 export async function runTypecheckCommand(
-  options: TypecheckCommandOptions,
+  options: TypecheckCommandOptions = {},
 ): Promise<ExecuteCommandResult> {
-  const { configPath = FileConfigNames.tsconfig, events = ToolingEvents.typecheck } = options;
+  const { configPath = FileConfigNames.tsconfig, noEmit = true, args = [] } = options;
 
   if (!fileExists(configPath)) {
-    logger.warn(events.skipped, {
+    logger.warn(ToolingEvents.typecheck.skipped, {
       metadata: {
         reason: `Missing ${configPath}`,
         configPath,
       },
     });
 
-    return createSkippedCommandResult(events.skipped);
+    return createSkippedCommandResult(ToolingEvents.typecheck.skipped);
   }
 
-  return executeProcess('tsc', ['-b', configPath]);
+  return executeProcess('tsc', createTypecheckArguments(configPath, noEmit, args));
 }

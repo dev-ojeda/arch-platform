@@ -6,6 +6,9 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "sideEffects": false,
+  "arch": {
+    "builder": "tsc"
+  },
   "files": [
     "dist"
   ],
@@ -19,10 +22,10 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "build:dts": "tsc -p tsconfig.build.json --emitDeclarationOnly",
-    "lint": "node ../cli/dist/bin.js lint",
-    "arch:clean": "arch clean",
-    "arch:lint": "arch lint",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "arch": "arch build --package @arch/build-core",
+    "clean": "arch clean",
+    "lint": "arch lint",
+    "typecheck": "arch typecheck",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",
     "test:watch": "vitest",

@@ -17,19 +17,8 @@ export async function runTask<TResult extends TaskResult>(
   options: RunTaskOptions<TResult>,
 ): Promise<number> {
   try {
-    logger.info(options.events.started);
     const result = await options.action();
     const exitCode = result.exitCode;
-
-    if (exitCode === 0) {
-      logger.info(options.events.completed);
-    } else {
-      logger.error(options.events.failed, {
-        metadata: {
-          result: exitCode,
-        },
-      });
-    }
 
     return exitCode;
   } catch (error) {

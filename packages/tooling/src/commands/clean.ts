@@ -10,5 +10,6 @@ export async function cleanCommand(options: CleanCommandOptions = {}): Promise<n
   return await runTask({
     events: ToolingEvents.clean,
     action: () => runCleanCommand(options),
+    emitCompletedEvent: false,
   });
 }

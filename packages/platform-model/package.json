@@ -19,9 +19,9 @@
   "scripts": {
     "build": "pnpm build:dts",
     "build:dts": "tsc -p tsconfig.build.json",
-    "lint": "node ../cli/dist/bin.js lint",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
-    "arch:clean": "arch clean",
-    "arch:lint": "arch lint"
+    "arch": "arch build --package @arch/platform-model",
+    "clean": "arch clean",
+    "typecheck": "arch typecheck",
+    "lint": "arch lint"
   }
 }
