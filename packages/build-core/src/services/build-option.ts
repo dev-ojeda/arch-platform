@@ -1,7 +1,11 @@
 // packages/build-core/src/services/build-option.ts
 
+import type { BuildScope } from '../planning/build-scope.js';
+
 export interface BuildOptions {
-  readonly packageName: string;
+  readonly scope?: BuildScope;
+
+  readonly packageName?: string;
 
   readonly dependencyMode?: 'required' | 'none' | 'only';
 

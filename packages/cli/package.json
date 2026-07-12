@@ -8,6 +8,11 @@
     "dist",
     "bin"
   ],
+  "arch": {
+    "build": {
+      "builder": "tsup"
+    }
+  },
   "bin": {
     "arch": "./bin/arch.js"
   },

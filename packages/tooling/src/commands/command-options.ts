@@ -32,7 +32,7 @@ export const DEFAULT_CLEAN_OPTIONS = {
 } as const satisfies Required<Omit<CleanCommandOptions, 'cwd'>>;
 
 export interface BuildCommandOptions extends CommandOptions {
-  readonly packageName: string;
+  readonly packageName?: string;
   readonly concurrency?: number;
   readonly force?: boolean;
 }

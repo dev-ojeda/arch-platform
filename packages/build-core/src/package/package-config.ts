@@ -1,7 +1,9 @@
 // packages/build-core/src/package/package-config.ts
 
-export type PackageBuildConfig = {
-  mode?: 'tsc' | 'tsup' | 'custom' | 'script';
+export interface PackageBuildConfig {
+  builder?: 'tsc' | 'tsc-declaration' | 'tsup' | 'script' | 'custom';
+
   command?: string;
+
   args?: string[];
-};
+}

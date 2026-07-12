@@ -10,7 +10,9 @@
     }
   },
   "arch": {
-    "builder": "tsc"
+    "build": {
+      "builder": "tsc"
+    }
   },
   "files": [
     "dist"

@@ -13,7 +13,9 @@
     "platform"
   ],
   "arch": {
-    "builder": "tsc-declaration"
+    "build": {
+      "builder": "tsc-declaration"
+    }
   },
   "files": [
     "dist"

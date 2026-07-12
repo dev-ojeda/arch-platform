@@ -5,54 +5,57 @@ import type { PackageBuildConfig } from '../package/package-config.js';
 import type { BuildStep } from './build-steps.js';
 
 export function createBuildSteps(config?: PackageBuildConfig): BuildStep[] {
-  const buildConfig: PackageBuildConfig = config ?? {};
+  const builder = config?.builder ?? 'tsc';
 
-  const mode = buildConfig.mode ?? 'tsc';
+  switch (builder) {
+    case 'script':
+      return [
+        {
+          name: 'build',
+          command: 'pnpm',
+          args: ['run', 'build'],
+        },
+      ];
 
-  if (mode === 'script') {
-    return [
-      {
-        name: 'build',
-        command: 'pnpm',
-        args: ['run', 'build'],
-      },
-    ];
+    case 'tsup':
+      return [
+        {
+          name: 'bundle',
+          command: 'pnpm',
+          args: ['exec', 'tsup'],
+        },
+      ];
+
+    case 'tsc-declaration':
+      return [
+        {
+          name: 'types',
+          command: 'pnpm',
+          args: ['exec', 'tsc', '-p', 'tsconfig.build.json', '--emitDeclarationOnly'],
+        },
+      ];
+
+    case 'custom':
+      if (!config?.command) {
+        throw new Error('Custom build requires command');
+      }
+
+      return [
+        {
+          name: 'custom',
+          command: config.command,
+          args: config.args ?? [],
+        },
+      ];
+
+    case 'tsc':
+    default:
+      return [
+        {
+          name: 'compile',
+          command: 'pnpm',
+          args: ['exec', 'tsc', '-p', 'tsconfig.build.json'],
+        },
+      ];
   }
-
-  if (mode === 'tsup') {
-    return [
-      {
-        name: 'bundle',
-        command: 'pnpm',
-        args: ['exec', 'tsup'],
-      },
-      {
-        name: 'types',
-        command: 'pnpm',
-        args: ['exec', 'tsc', '-b', 'tsconfig.build.json'],
-      },
-    ];
-  }
-
-  if (mode === 'custom') {
-    if (!buildConfig.command) {
-      throw new Error('Custom build requires command');
-    }
-
-    return [
-      {
-        name: 'custom',
-        command: buildConfig.command,
-        args: buildConfig.args ?? [],
-      },
-    ];
-  }
-
-  return [
-    {
-      name: 'types',
-      command: 'pnpm',
-      args: ['exec', 'tsc', '-b', 'tsconfig.build.json'],
-    },
-  ];
 }

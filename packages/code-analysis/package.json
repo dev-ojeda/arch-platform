@@ -6,7 +6,9 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "arch": {
-    "builder": "tsc"
+    "build": {
+      "builder": "tsc"
+    }
   },
   "exports": {
     ".": {
