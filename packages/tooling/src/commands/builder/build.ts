@@ -1,15 +1,16 @@
-// packages/tooling/src/commands/build.ts
+// packages/tooling/src/commands/builder/build.ts
 
 import { cwd } from 'node:process';
 
 import { BuildApplicationFactory } from '@arch/build-core';
 
-import { logger } from '../logging/logger.js';
-import { ToolingEvents } from '../runtime/events/tooling-event.js';
-import { processRunner } from '../runtime/process/process-runner.js';
-import { runTask } from '../runtime/task/run-task.js';
+import { logger } from '../../logging/logger.js';
+import { ToolingEvents } from '../../runtime/events/tooling-event.js';
+import { processRunner } from '../../runtime/process/process-runner.js';
+import { runTask } from '../../runtime/task/run-task.js';
+import type { BuildCommandOptions } from '../common/command-options.js';
 
-import type { BuildCommandOptions } from './command-options.js';
+import { createBuildScope } from './build-scope.js';
 
 export async function buildCommand(options: BuildCommandOptions): Promise<number> {
   return runTask({
@@ -21,7 +22,7 @@ export async function buildCommand(options: BuildCommandOptions): Promise<number
       const service = await app.create();
 
       const summary = await service.run({
-        packageName: options.packageName,
+        scope: createBuildScope(options),
       });
 
       logger.success(ToolingEvents.build.completed, {

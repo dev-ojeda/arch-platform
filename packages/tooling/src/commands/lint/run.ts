@@ -1,11 +1,13 @@
-// packages/tooling/src/commands/lint/lint-command.ts
+// packages/tooling/src/commands/lint/run.ts
+
+// packages/tooling/src/commands/lint-command/lint-command.ts
 
 import { logger } from '../../logging/logger.js';
 import { ToolingEvents } from '../../runtime/events/tooling-event.js';
 import type { ExecuteCommandResult } from '../../runtime/execution/execute-command-result.js';
 import { pathExists } from '../../runtime/filesystem/path-exists.js';
 import { executeProcess } from '../../runtime/process/execute-process.js';
-import type { LintCommandOptions } from '../command-options.js';
+import type { LintCommandOptions } from '../common/command-options.js';
 import { createSkippedCommandResult } from '../common/create-skipped-command-result.js';
 
 import { createLintArguments } from './create-lint-arguments.js';

@@ -1,4 +1,2 @@
 // packages\tooling\src\index.ts
-
-export * from './commands/index.js';
-export * from './runtime/index.js';
+export { buildCommand, cleanCommand, lintCommand, typecheckCommand } from './commands/index.js';
