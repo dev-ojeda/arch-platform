@@ -17,13 +17,11 @@
     "arch": "./bin/arch.js"
   },
   "scripts": {
-    "arch": "node ./dist/bin.js",
+    "arch": "arch build --package @arch/cli",
     "build": "tsup",
-    "arch:build": "arch build --package @arch/cli",
-    "lint": "node ./dist/bin.js lint",
-    "arch:clean": "arch clean",
-    "arch:lint": "arch lint",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "clean": "arch clean",
+    "lint": "arch lint",
+    "typecheck": "arch typecheck"
   },
   "dependencies": {
     "@arch/governance": "workspace:*",

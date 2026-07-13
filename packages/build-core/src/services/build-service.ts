@@ -16,7 +16,7 @@ import { ExecutionPlanScheduler } from '../runtime/execution/execution-plan-sche
 import { BuildStateWriter } from '../state/state-writer.js';
 
 import type { BuildContext } from './build-context.js';
-import type { BuildOptions } from './build-option.js';
+import type { BuildOptions } from './build-options.js';
 import type { BuildServiceSummary } from './build-service-summary.js';
 /**
  * Application service responsible for orchestrating the build pipeline.
@@ -66,7 +66,7 @@ export class BuildService {
     // -------------------------
     // 3. SCOPE (SIN ENGINE)
     // -------------------------
-    const scope = new ScopeResolver(buildPlan, query).resolve(options);
+    const scope = new ScopeResolver(buildPlan, query).resolve(options.scope);
 
     if (scope.size === 0) {
       return this.summarize([]);

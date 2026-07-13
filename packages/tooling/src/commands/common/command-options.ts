@@ -1,6 +1,6 @@
-// packages/tooling/src/commands/command-options.ts
+// packages/tooling/src/commands/common/command-options.ts
 
-import type { FileConfigName } from './config/config-file-name.js';
+import type { FileConfigName } from '../config/config-file-name.js';
 
 export interface CommandOptions {
   readonly args?: readonly string[];

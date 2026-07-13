@@ -2,9 +2,9 @@
 
 import type { CacheDecision } from '../cache/cache-types.js';
 import type { GraphQueryService } from '../graph/graph-query-services.js';
-import type { BuildOptions } from '../services/build-option.js';
 
 import type { BuildPlan } from './build-plan.js';
+import type { BuildScope } from './build-scope.js';
 
 export class ScopeResolver {
   constructor(
@@ -12,13 +12,13 @@ export class ScopeResolver {
     private readonly query: GraphQueryService,
   ) {}
 
-  resolve(options: BuildOptions): Set<string> {
+  resolve(scope: BuildScope): Set<string> {
     const affected = this.getAffectedNodes();
-    switch (options.scope?.type) {
+    switch (scope?.mode) {
       case 'workspace':
         return new Set(affected);
       case 'package':
-        return this.query.resolveExecutionScope(options.scope.packageName, affected);
+        return this.query.resolveExecutionScope(scope.packageName, affected);
       default:
         return new Set(affected);
     }

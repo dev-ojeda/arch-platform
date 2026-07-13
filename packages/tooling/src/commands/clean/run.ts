@@ -1,4 +1,4 @@
-// packages/tooling/src/commands/clean/clean-command.ts
+// packages/tooling/src/commands/clean/run.ts
 
 import { logger } from '../../logging/logger.js';
 import { ToolingEvents } from '../../runtime/events/tooling-event.js';
@@ -6,7 +6,7 @@ import { collectTsBuildInfoFiles } from '../../runtime/filesystem/collect-tsbuil
 import { removePaths } from '../../runtime/filesystem/remove-paths.js';
 import type { TaskResult } from '../../runtime/index.js';
 import { createStopwatch } from '../../runtime/process/create-stopwatch.js';
-import type { CleanCommandOptions } from '../command-options.js';
+import type { CleanCommandOptions } from '../common/command-options.js';
 
 import { createPathsToRemove } from './create-paths-to-remove.js';
 import { resolveCleanOptions } from './resolve-clean-options.js';
