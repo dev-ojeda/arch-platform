@@ -1,75 +1,59 @@
 // packages/testing/src/logging/test-logger.ts
 
-import type { LoggerPort } from '@arch/contracts';
+import type { LoggerOptions, LoggerPort } from '@arch/contracts';
 
 export interface TestLogEntry {
-  level: 'debug' | 'info' | 'warn' | 'error';
+  level: 'debug' | 'info' | 'warn' | 'error' | 'trace' | 'success';
 
   message: string;
 
-  meta?: Record<string, unknown>;
+  options?: LoggerOptions;
 }
 
 export class TestLogger implements LoggerPort {
   readonly logs: TestLogEntry[] = [];
+  trace(message: string, options?: LoggerOptions): void {
+    this.logs.push({
+      level: 'trace',
+      message,
+      options,
+    });
+  }
 
-  debug(
-    message: string,
-
-    meta?: Record<string, unknown>,
-  ): void {
+  debug(message: string, options?: LoggerOptions): void {
     this.logs.push({
       level: 'debug',
-
       message,
-
-      meta,
+      options,
     });
   }
-
-  info(
-    message: string,
-
-    meta?: Record<string, unknown>,
-  ): void {
+  info(message: string, options?: LoggerOptions): void {
     this.logs.push({
       level: 'info',
-
       message,
-
-      meta,
+      options,
     });
   }
-
-  warn(
-    message: string,
-
-    meta?: Record<string, unknown>,
-  ): void {
+  success(message: string, options?: LoggerOptions): void {
+    this.logs.push({
+      level: 'success',
+      message,
+      options,
+    });
+  }
+  warn(message: string, options?: LoggerOptions): void {
     this.logs.push({
       level: 'warn',
-
       message,
-
-      meta,
+      options,
     });
   }
 
-  error(
-    message: string,
-
-    meta?: Record<string, unknown>,
-  ): void {
+  error(message: string, options?: LoggerOptions): void {
     this.logs.push({
       level: 'error',
-
       message,
-
-      meta,
+      options,
     });
-  }
-
-  clear(): void {
-    this.logs.length = 0;
   }
 }

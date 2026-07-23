@@ -3,9 +3,9 @@
 import type { WriteFileOptions } from '@arch/contracts';
 import { vi } from 'vitest';
 
-import { createMemoryFilesystem } from './create-memory-filesystem.js';
+import { createMemoryFilesystem, type MemoryFilesystem } from './create-memory-filesystem.js';
 
-export function createMockFilesystem() {
+export function createMockFilesystem(): MemoryFilesystem {
   const filesystem = createMemoryFilesystem();
 
   return {

@@ -1,5 +1,5 @@
 {
-  "extends": "../../config/tsconfig/declarations.json",
+  "extends": "../../config/tsconfig/runtime.json",
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
@@ -20,7 +20,10 @@
       "path": "../contracts"
     },
     {
+      "path": "../platform-model"
+    },
+    {
       "path": "../core"
-    }
+    },
   ],
 }

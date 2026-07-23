@@ -1,7 +1,7 @@
 // packages/testing/src/runtime/create-test-context.ts
 
 import type {
-  FileSystemPort,
+  FileSystemAsyncPort,
   GenerationContext,
   GenerationDiagnostic,
   GenerationEventBus,
@@ -26,7 +26,7 @@ export interface CreateTestContextOptions<
 
   logger?: LoggerPort;
 
-  fs?: FileSystemPort;
+  fs?: FileSystemAsyncPort;
 
   stack?: TechnologyStack;
 
