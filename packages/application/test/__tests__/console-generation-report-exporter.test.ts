@@ -6,8 +6,10 @@ import { ConsoleGenerationReportExporter } from '../../src/generation/exporters/
 describe('CreateTestConsoleGenerationReportExporter', () => {
   function createLoggerMock() {
     return {
+      trace: vi.fn(),
       debug: vi.fn(),
       info: vi.fn(),
+      success: vi.fn(),
       warn: vi.fn(),
       error: vi.fn(),
     };

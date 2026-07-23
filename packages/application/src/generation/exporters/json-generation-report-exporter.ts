@@ -1,9 +1,13 @@
 // packages/application/src/generation/exporters/json-generation-report-exporter.ts
 
-import type { FileSystemPort, GenerationReport, GenerationReportExporter } from '@arch/contracts';
+import type {
+  FileSystemAsyncPort,
+  GenerationReport,
+  GenerationReportExporter,
+} from '@arch/contracts';
 
 export interface JsonGenerationReportExporterOptions {
-  fs: FileSystemPort;
+  fs: FileSystemAsyncPort;
 
   outputPath: string;
 

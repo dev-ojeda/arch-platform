@@ -8,8 +8,10 @@ import { LoggingGenerationHooks } from '../../src/generation/hooks/logging-gener
 describe('CreateTestLoggingGenerationHook', () => {
   function createLoggerMock() {
     return {
+      trace: vi.fn(),
       debug: vi.fn(),
       info: vi.fn(),
+      success: vi.fn(),
       warn: vi.fn(),
       error: vi.fn(),
     };
@@ -69,7 +71,9 @@ describe('CreateTestLoggingGenerationHook', () => {
       message: 'boom',
     });
     expect(logger.error).toHaveBeenCalledWith('[arch] generation failed', {
-      error: 'boom',
+      metadata: {
+        error: 'boom',
+      },
     });
   });
   it('logs generation error', async () => {
@@ -86,7 +90,9 @@ describe('CreateTestLoggingGenerationHook', () => {
       message: 'boom',
     });
     expect(logger.error).toHaveBeenCalledWith('[arch] generation failed', {
-      error: 'boom',
+      metadata: {
+        error: 'boom',
+      },
     });
   });
 });

@@ -1,7 +1,7 @@
 // packages/application/src/generation/runtime/generation-context-factory.ts
 
 import type {
-  FileSystemPort,
+  FileSystemAsyncPort,
   GenerationContext,
   GenerationRequest,
   LoggerPort,
@@ -11,7 +11,7 @@ import { InMemoryGenerationEventBus } from '@arch/core';
 
 export class GenerationContextFactory {
   constructor(
-    private readonly fs: FileSystemPort,
+    private readonly fs: FileSystemAsyncPort,
     private readonly logger: LoggerPort,
   ) {}
 

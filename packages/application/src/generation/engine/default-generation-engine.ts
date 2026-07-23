@@ -41,9 +41,15 @@ export class DefaultGenerationEngine<
       );
     } catch (error) {
       context.logger.error('Generation failed', {
-        name: error instanceof Error ? error.name : 'UnknownError',
+        source: {
+          component: 'DefaultGenerationEngine',
+          operation: 'async generate',
+        },
+        metadata: {
+          name: error instanceof Error ? error.name : 'UnknownError',
 
-        message: error instanceof Error ? error.message : String(error),
+          message: error instanceof Error ? error.message : String(error),
+        },
       });
 
       return await this.createResult(
