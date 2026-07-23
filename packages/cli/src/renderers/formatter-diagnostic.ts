@@ -1,8 +1,8 @@
-// packages/cli/src/renderers/render-diagnostic.ts
+// packages/cli/src/renderers/formatter-diagnostic.ts
 
-import type { Diagnostic } from '@arch/governance';
+import type { Diagnostic } from '@arch/platform-model';
 
-export function renderDiagnostic(diagnostic: Diagnostic): string {
+export function formatterDiagnostic(diagnostic: Diagnostic): string {
   const location = diagnostic.location?.file ? ` (${diagnostic.location.file})` : '';
 
   const source = diagnostic.source ? `${diagnostic.source} ` : '';

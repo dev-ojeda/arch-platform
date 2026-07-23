@@ -21,11 +21,14 @@
     "build": "tsup",
     "clean": "arch clean",
     "lint": "arch lint",
-    "typecheck": "arch typecheck"
+    "typecheck": "arch typecheck",
+    "validate": "arch validate"
   },
   "dependencies": {
     "@arch/governance": "workspace:*",
+    "@arch/platform-model": "workspace:*",
     "@arch/tooling": "workspace:*",
+    "@arch/infrastructure": "workspace:*",
     "cac": "catalog:"
   }
 }

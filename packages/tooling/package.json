@@ -27,10 +27,12 @@
     "arch": "arch build --package @arch/tooling",
     "clean": "arch clean",
     "lint": "arch lint",
-    "typecheck": "arch typecheck"
+    "typecheck": "arch typecheck",
+    "validate": "arch validate"
   },
   "dependencies": {
-    "@arch/build-core": "workspace:*"
+    "@arch/build-core": "workspace:*",
+    "@arch/infrastructure": "workspace:*"
   },
   "devDependencies": {
     "typescript": "catalog:",
