@@ -215,13 +215,29 @@ importers:
         specifier: ^4.7.9
         version: 4.7.9
 
-  packages/build-core: {}
+  packages/build-core:
+    dependencies:
+      '@arch/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@arch/infrastructure':
+        specifier: workspace:*
+        version: link:../infrastructure
+      '@arch/platform-model':
+        specifier: workspace:*
+        version: link:../platform-model
 
   packages/cli:
     dependencies:
       '@arch/governance':
         specifier: workspace:*
         version: link:../governance
+      '@arch/infrastructure':
+        specifier: workspace:*
+        version: link:../infrastructure
+      '@arch/platform-model':
+        specifier: workspace:*
+        version: link:../platform-model
       '@arch/tooling':
         specifier: workspace:*
         version: link:../tooling
@@ -259,15 +275,21 @@ importers:
       '@arch/code-analysis':
         specifier: workspace:*
         version: link:../code-analysis
+      '@arch/infrastructure':
+        specifier: workspace:*
+        version: link:../infrastructure
+      '@arch/platform-model':
+        specifier: workspace:*
+        version: link:../platform-model
 
   packages/infrastructure:
     dependencies:
       '@arch/contracts':
         specifier: workspace:*
         version: link:../contracts
-      '@arch/core':
+      '@arch/platform-model':
         specifier: workspace:*
-        version: link:../core
+        version: link:../platform-model
       '@arch/testing':
         specifier: workspace:*
         version: link:../testing
@@ -286,12 +308,18 @@ importers:
       '@arch/core':
         specifier: workspace:*
         version: link:../core
+      '@arch/platform-model':
+        specifier: workspace:*
+        version: link:../platform-model
 
   packages/tooling:
     dependencies:
       '@arch/build-core':
         specifier: workspace:*
         version: link:../build-core
+      '@arch/infrastructure':
+        specifier: workspace:*
+        version: link:../infrastructure
     devDependencies:
       execa:
         specifier: 'catalog:'
