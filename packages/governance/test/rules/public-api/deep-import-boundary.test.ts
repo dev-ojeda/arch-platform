@@ -7,45 +7,56 @@ import type { GovernanceExecutionContext } from '../../../src/types/governance-c
 
 function createDeepImportContext(): GovernanceExecutionContext {
   return {
-    workspaceRoot: '',
+    workspace: {
+      root: '/workspace',
 
-    packages: [
-      {
-        name: '@arch/application',
-
-        rootPath: '',
-
-        manifestPath: '',
-
-        manifest: {
-          name: '@arch/application',
-        },
-
-        internalDependencies: ['@arch/domain'],
+      layout: {
+        packageJsonPath: '/workspace/package.json',
+        tsconfigPath: '/workspace/tsconfig.json',
+        hasPackageManifest: true,
+        hasTsconfig: true,
       },
 
-      {
-        name: '@arch/domain',
+      packages: [
+        {
+          name: '@arch/application',
 
-        rootPath: '',
+          rootPath: '',
 
-        manifestPath: '',
+          manifestPath: '',
 
-        manifest: {
+          manifest: {
+            name: '@arch/application',
+          },
+
+          internalDependencies: ['@arch/domain'],
+          layout: undefined,
+        },
+
+        {
           name: '@arch/domain',
 
-          exports: {
-            '.': './dist/index.js',
+          rootPath: '',
+
+          manifestPath: '',
+
+          manifest: {
+            name: '@arch/domain',
+
+            exports: {
+              '.': './dist/index.js',
+            },
           },
-        },
 
-        boundaries: {
-          private: ['internal'],
-        },
+          boundaries: {
+            private: ['internal'],
+          },
 
-        internalDependencies: [],
-      },
-    ],
+          internalDependencies: [],
+          layout: undefined,
+        },
+      ],
+    },
 
     analysis: {
       packageGraph: {} as never,
@@ -88,7 +99,6 @@ function createDeepImportContext(): GovernanceExecutionContext {
     },
   };
 }
-
 describe('OnlyPublicApiRule deep imports', () => {
   it('rejects private deep imports', async () => {
     const diagnostics = await new OnlyPublicApiRule().run(createDeepImportContext());

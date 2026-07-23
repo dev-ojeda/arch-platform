@@ -1,7 +1,11 @@
+// packages\governance\test\rules\public-api\only-public-api.rule.test.ts
 import { describe, expect, it } from 'vitest';
 
 import { OnlyPublicApiRule } from '../../../src/rules/public-api/only-public-api.rule.js';
 import type { GovernanceExecutionContext } from '../../../src/types/governance-context.js';
+import { createGovernanceContext } from '../../fixtures/governance/create-governance-context.js';
+import { createWorkspaceDescriptor } from '../../fixtures/workspace/create-workspace-descriptor.js';
+import { createWorkspaceLayout } from '../../fixtures/workspace/create-workspace-layout.js';
 import { debug } from '../../utils/debug.js';
 
 function createContext(
@@ -10,9 +14,12 @@ function createContext(
   exported: boolean,
 ): GovernanceExecutionContext {
   return {
-    workspaceRoot: '',
-
-    packages: [],
+    ...createGovernanceContext({
+      workspace: createWorkspaceDescriptor({
+        layout: createWorkspaceLayout(),
+        packages: [],
+      }),
+    }),
 
     analysis: {
       packageGraph: {} as never,
@@ -27,7 +34,6 @@ function createContext(
             kind: 'function',
             sourceFile: 'source.ts',
           },
-
           {
             name: 'TargetSymbol',
             id: 'TargetSymbol',

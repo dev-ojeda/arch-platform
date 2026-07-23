@@ -1,7 +1,8 @@
 // packages/governance/src/report/governance-report.ts
 
+import type { Diagnostic } from '@arch/platform-model';
+
 import type { GovernanceRuleExecution } from '../engine/governance-rule-execution.js';
-import type { Diagnostic } from '../types/diagnostic.js';
 
 export type GovernanceStatus = 'passed' | 'failed';
 

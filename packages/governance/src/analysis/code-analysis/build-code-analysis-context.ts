@@ -3,16 +3,15 @@
 import type {
   GovernanceContext,
   GovernanceExecutionContext,
-} from '../../types/governance-context.js';
+} from '../../context/governance-context.js';
 
 import type { CodeAnalysisAdapter } from './code-analysis-adapter.js';
 
 export async function buildCodeAnalysisContext(
   context: GovernanceContext,
   adapter: CodeAnalysisAdapter,
-  tsConfigFilePath: string,
 ): Promise<GovernanceExecutionContext> {
-  const analysis = await adapter.analyze(context, tsConfigFilePath);
+  const analysis = await adapter.analyze(context);
 
   return {
     ...context,

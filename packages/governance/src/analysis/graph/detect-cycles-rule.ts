@@ -1,36 +1,32 @@
 // packages/governance/src/analysis/graph/detect-cycles-rule.ts
 
+import type { Diagnostic } from '@arch/platform-model';
+
+import type { GovernanceContext } from '../../context/governance-context.js';
 import { GovernanceRuleId } from '../../engine/governance-rule-id.js';
 import type { GovernanceRule } from '../../engine/governance-rule.js';
-import type { Diagnostic } from '../../types/diagnostic.js';
-import type { GovernanceContext } from '../../types/governance-context.js';
 
 import { buildWorkspaceGraph } from './build-workspace-graph.js';
 import { detectCycles } from './detect-cycles.js';
 
-export class DetectCyclesRule implements GovernanceRule {
+export class DetectCyclesRule implements GovernanceRule<GovernanceContext> {
   readonly id = GovernanceRuleId.DetectCycles;
   readonly name = 'detect-cycles-rule';
-
-  run(context: GovernanceContext): Promise<Diagnostic[]> {
+  run(context: GovernanceContext): Diagnostic[] {
     const graph = buildWorkspaceGraph(context);
 
-    const result = detectCycles(graph.nodes);
+    const { hasCycle, cycles } = detectCycles(graph.edges);
 
-    if (!result.hasCycle) {
-      const diagnostics: Diagnostic[] = [];
-
-      return Promise.resolve(diagnostics);
+    if (!hasCycle) {
+      return [];
     }
 
-    const diagnostics = result.cycles.map<Diagnostic>((cycle) => ({
+    return cycles.map((cycle) => ({
       code: 'CYCLE_DETECTED',
       severity: 'error',
       source: this.name,
       message: `Cycle detected: ${cycle.join(' -> ')}`,
       metadata: { cycle },
     }));
-
-    return Promise.resolve(diagnostics);
   }
 }

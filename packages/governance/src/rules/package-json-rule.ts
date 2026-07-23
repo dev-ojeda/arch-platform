@@ -1,7 +1,8 @@
 // packages/governance/src/rules/package-json-rule.ts
 
-import type { Diagnostic } from '../types/diagnostic.js';
-import type { GovernanceContext } from '../types/governance-context.js';
+import type { Diagnostic } from '@arch/platform-model';
+
+import type { GovernanceContext } from '../context/governance-context.js';
 
 export class PackageJsonRule {
   readonly name = 'package-json-rule';
@@ -9,7 +10,7 @@ export class PackageJsonRule {
   run(context: GovernanceContext): Diagnostic[] {
     const diagnostics: Diagnostic[] = [];
 
-    for (const pkg of context.packages) {
+    for (const pkg of context.workspace.packages) {
       const isEsm = pkg.manifest.type === 'module';
 
       if (!isEsm) {

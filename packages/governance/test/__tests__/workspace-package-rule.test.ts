@@ -1,59 +1,37 @@
 // packages\governance\test\__tests__\workspace-package-rule.test.ts
 
-import { mkdtemp, rm, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
-
-import { afterEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import { WorkspacePackageRule } from '../../src/workspace/workspace-package-rule.js';
+import { createGovernanceContext } from '../fixtures/governance/create-governance-context.js';
+import { createWorkspaceDescriptor } from '../fixtures/workspace/create-workspace-descriptor.js';
+import { createWorkspaceLayout } from '../fixtures/workspace/create-workspace-layout.js';
 
-describe('CreateTestWorkspacePackageRule', () => {
-  const temporaryDirectories: string[] = [];
-
-  afterEach(async () => {
-    await Promise.all(
-      temporaryDirectories.map((directory) =>
-        rm(directory, {
-          recursive: true,
-          force: true,
-        }),
-      ),
-    );
-
-    temporaryDirectories.length = 0;
-  });
+describe('WorkspacePackageRule', () => {
   it('does not report diagnostics when root package.json exists', async () => {
-    const workspaceRoot = await mkdtemp(join(tmpdir(), 'governance-workspace-'));
+    const context = createGovernanceContext();
 
-    temporaryDirectories.push(workspaceRoot);
-
-    await writeFile(join(workspaceRoot, 'package.json'), '{}', 'utf8');
-
-    const diagnostics = await new WorkspacePackageRule().run({
-      workspaceRoot,
-      packages: [],
-    });
+    const diagnostics = await new WorkspacePackageRule().run(context);
 
     expect(diagnostics).toEqual([]);
   });
+
   it('reports diagnostics when root package.json is missing', async () => {
-    const workspaceRoot = await mkdtemp(join(tmpdir(), 'governance-workspace-'));
-
-    temporaryDirectories.push(workspaceRoot);
-
-    const diagnostics = await new WorkspacePackageRule().run({
-      workspaceRoot,
-      packages: [],
+    const context = createGovernanceContext({
+      workspace: createWorkspaceDescriptor({
+        layout: createWorkspaceLayout({
+          hasPackageManifest: false,
+        }),
+      }),
     });
+
+    const diagnostics = await new WorkspacePackageRule().run(context);
 
     expect(diagnostics).toHaveLength(1);
 
     expect(diagnostics[0]).toMatchObject({
       code: 'WORKSPACE_PACKAGE_JSON_MISSING',
-
       severity: 'error',
-
       source: 'workspace-package-rule',
     });
   });

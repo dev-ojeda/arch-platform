@@ -1,44 +1,9 @@
 // packages/governance/src/engine/dependency-rules.engine.ts
 
-import type { DependencyMatrix, Layer } from '../types/dependency-layer.js';
-import type { Diagnostic } from '../types/diagnostic.js';
-import type { GovernanceContext } from '../types/governance-context.js';
+import { type DependencyMatrix, type Diagnostic, type Layer } from '@arch/platform-model';
 
-const defaultMatrix: DependencyMatrix = {
-  domain: {
-    domain: 'allow',
-    infra: 'deny',
-    app: 'allow',
-    sdk: 'allow',
-    tooling: 'allow',
-  },
-  app: {
-    domain: 'allow',
-    infra: 'allow',
-    sdk: 'allow',
-    tooling: 'allow',
-  },
-  infra: {
-    domain: 'allow',
-    infra: 'allow',
-    sdk: 'allow',
-    app: 'deny',
-    tooling: 'allow',
-  },
-  sdk: {
-    domain: 'allow',
-    infra: 'allow',
-    app: 'allow',
-    tooling: 'allow',
-  },
-  tooling: {
-    domain: 'allow',
-    infra: 'allow',
-    app: 'allow',
-    sdk: 'allow',
-    tooling: 'allow',
-  },
-};
+import type { GovernanceContext } from '../context/governance-context.js';
+import { DEFAULT_MATRIX } from '../policies/default-dependency-matrix.js';
 
 function isLayer(value: unknown): value is Layer {
   return (
@@ -50,20 +15,22 @@ function isLayer(value: unknown): value is Layer {
   );
 }
 
-function getLayerFromPackage(pkg: GovernanceContext['packages'][number]): Layer | undefined {
+function getLayerFromPackage(
+  pkg: GovernanceContext['workspace']['packages'][number],
+): Layer | undefined {
   const layer = pkg.manifest.arch?.layer;
   return isLayer(layer) ? layer : undefined;
 }
 
 export class DependencyRulesEngine {
-  constructor(private readonly matrix: DependencyMatrix = defaultMatrix) {}
+  constructor(private readonly matrix: DependencyMatrix = DEFAULT_MATRIX) {}
 
   run(context: GovernanceContext): Diagnostic[] {
     const diagnostics: Diagnostic[] = [];
 
-    const packageMap = new Map(context.packages.map((p) => [p.name, p]));
+    const packageMap = new Map(context.workspace.packages.map((p) => [p.name, p]));
 
-    for (const pkg of context.packages) {
+    for (const pkg of context.workspace.packages) {
       const fromLayer = getLayerFromPackage(pkg);
       if (!fromLayer) continue;
 
@@ -100,5 +67,21 @@ export class DependencyRulesEngine {
     }
 
     return diagnostics;
+  }
+
+  private getLayerFromPackage(
+    pkg: GovernanceContext['workspace']['packages'][number],
+  ): Layer | undefined {
+    const layer = pkg.manifest.arch?.layer;
+    return isLayer(layer) ? layer : undefined;
+  }
+  private isLayer(value: unknown): value is Layer {
+    return (
+      value === 'domain' ||
+      value === 'infra' ||
+      value === 'app' ||
+      value === 'sdk' ||
+      value === 'tooling'
+    );
   }
 }

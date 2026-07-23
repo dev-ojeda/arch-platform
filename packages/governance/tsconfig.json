@@ -18,6 +18,12 @@
   "references": [
     {
       "path": "../code-analysis"
+    },
+    {
+      "path": "../infrastructure"
+    },
+    {
+      "path": "../platform-model"
     }
   ],
 }
