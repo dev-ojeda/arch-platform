@@ -1,6 +1,6 @@
 // packages/build-core/src/executor/build-step-factory.ts
 
-import type { PackageBuildConfig } from '../package/package-config.js';
+import type { PackageBuildConfig } from '@arch/platform-model';
 
 import type { BuildStep } from './build-steps.js';
 

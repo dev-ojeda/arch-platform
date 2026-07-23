@@ -1,10 +1,8 @@
 // packages/build-core/src/graph/build-graph.ts
 
-import type { PackageRoot } from '../package/packages-root.js';
+import type { Graph, MutableGraph, WorkspacePackage } from '@arch/platform-model';
 
-import type { Graph, MutableGraph } from './dag-types.js';
-
-export function buildGraph(packages: readonly PackageRoot[]): Graph {
+export function buildGraph(packages: readonly WorkspacePackage[]): Graph {
   const graph = createGraph(packages);
 
   linkDependents(graph);
@@ -13,7 +11,7 @@ export function buildGraph(packages: readonly PackageRoot[]): Graph {
 
   return graph;
 }
-function createGraph(packages: readonly PackageRoot[]): MutableGraph {
+function createGraph(packages: readonly WorkspacePackage[]): MutableGraph {
   const graph: MutableGraph = new Map();
   const workspacePackages = new Set(packages.map((pkg) => pkg.name));
 
@@ -28,7 +26,7 @@ function createGraph(packages: readonly PackageRoot[]): MutableGraph {
     });
   }
   function resolveWorkspaceDependencies(
-    pkg: PackageRoot,
+    pkg: WorkspacePackage,
     workspacePackages: ReadonlySet<string>,
   ): string[] {
     return [...pkg.dependencies, ...pkg.buildDependencies].filter((dependency) =>

@@ -14,5 +14,16 @@
   "exclude": [
     "dist",
     "node_modules"
+  ],
+  "references": [
+    {
+      "path": "../platform-model"
+    },
+    {
+      "path": "../contracts"
+    },
+    {
+      "path": "../infrastructure"
+    },
   ]
 }

@@ -1,10 +1,7 @@
 // packages/build-core/src/application/build-application-factory.ts
 
-import { discoverWorkspacePackages } from '../discovery/discover-packages-root.js';
-import { buildGraph } from '../graph/build-graph.js';
 import type { CommandRunner } from '../runtime/command-runner.js';
-import { BuildService } from '../services/build-service.js';
-import { findWorkspaceRoot } from '../workspace/find-workspace-root.js';
+import type { BuildService } from '../services/build-service.js';
 
 import { BuildCompositionRoot } from './build-composition-root.js';
 
@@ -36,36 +33,6 @@ export class BuildApplicationFactory {
    * @returns A BuildService instance ready to execute build operations.
    */
   async create(): Promise<BuildService> {
-    const workspaceRoot = findWorkspaceRoot(this.fromDirectory);
-
-    const packages = await discoverWorkspacePackages(workspaceRoot);
-
-    const graph = buildGraph(packages);
-
-    // Domain services
-    const query = this.compositionRoot.createGraphQuery(graph);
-
-    const contractResolver = this.compositionRoot.createExecutionContractResolver(query);
-
-    // State
-    const state = this.compositionRoot.loadBuildState(workspaceRoot);
-
-    // Runtime dependencies
-    const executor = this.compositionRoot.createExecutor();
-
-    const artifactCache = this.compositionRoot.createArtifactCache(workspaceRoot);
-
-    const artifactProvider = this.compositionRoot.createArtifactProvider();
-
-    return new BuildService({
-      graph,
-      query,
-      contractResolver,
-      state,
-      executor,
-      artifactCache,
-      artifactProvider,
-      workspaceRoot,
-    });
+    return this.compositionRoot.createBuildService(this.fromDirectory);
   }
 }

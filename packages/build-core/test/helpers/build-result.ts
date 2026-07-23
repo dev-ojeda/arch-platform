@@ -8,10 +8,6 @@ export function createSkippedResult(packageName: string): BuildResult {
     execution: {
       reason: 'failed',
     },
-    cache: {
-      decision: 'miss',
-      action: 'none',
-    },
   };
 }
 export function createSuccessResult(packageName: string): BuildResult {
@@ -21,10 +17,6 @@ export function createSuccessResult(packageName: string): BuildResult {
     changeReason: 'source',
     execution: {
       reason: 'executed',
-    },
-    cache: {
-      decision: 'miss',
-      action: 'none',
     },
   };
 }

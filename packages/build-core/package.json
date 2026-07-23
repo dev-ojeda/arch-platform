@@ -29,9 +29,15 @@
     "clean": "arch clean",
     "lint": "arch lint",
     "typecheck": "arch typecheck",
+    "validate": "arch validate",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",
     "test:watch": "vitest",
     "test:clear": "vitest --clearCache"
+  },
+  "dependencies": {
+    "@arch/platform-model": "workspace:*",
+    "@arch/contracts": "workspace:*",
+    "@arch/infrastructure": "workspace:*"
   }
 }

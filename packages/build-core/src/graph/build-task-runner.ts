@@ -1,16 +1,19 @@
 // packages/build-core/src/graph/build-task-runner.ts
 
-import type { ArtifactCache } from '../artifact/artifact-cache.js';
-import type { DefaultArtifactProvider } from '../artifact/default-artifact-provider.js';
-import type { OutputValidator } from '../artifact/output-validator.js';
+import type {
+  ArtifactCache,
+  ArtifactProvider,
+  DagNode,
+  Graph,
+  OutputValidator,
+} from '@arch/platform-model';
+
 import type { BuildExecutor } from '../executor/build-executor.js';
 import type { BuildResult } from '../executor/build-result.js';
 import type { ExecutionReason } from '../executor/execution-types.js';
 import type { BuildPlan } from '../planning/build-plan.js';
 import type { BuildPlanEntry } from '../planning/plan-entry.js';
 import type { BuildStateWriter } from '../state/state-writer.js';
-
-import type { DagNode, Graph } from './dag-types.js';
 
 export class BuildTaskRunner {
   constructor(
@@ -20,7 +23,7 @@ export class BuildTaskRunner {
     private writer: BuildStateWriter,
     private artifactCache: ArtifactCache,
     private outputValidator: OutputValidator,
-    private defaultArtifactProvider: DefaultArtifactProvider,
+    private artifactProvider: ArtifactProvider,
   ) {}
 
   async run(name: string): Promise<BuildResult> {
@@ -72,7 +75,7 @@ export class BuildTaskRunner {
       return result;
     }
 
-    if (node.outputs.length > 0 && !this.outputValidator.exists(node.root, node.outputs)) {
+    if (node.outputs.length > 0 && !(await this.outputValidator.exists(node.root, node.outputs))) {
       throw new Error(
         [
           'Build completed but declared outputs are missing.',
@@ -82,7 +85,7 @@ export class BuildTaskRunner {
       );
     }
 
-    const artifact = this.defaultArtifactProvider.create(node.name, entry.hash);
+    const artifact = this.artifactProvider.create(node.name, entry.hash);
 
     await this.artifactCache.save(artifact, node.root, node.outputs);
 
@@ -92,7 +95,7 @@ export class BuildTaskRunner {
   }
 
   private async restore(node: DagNode, entry: BuildPlanEntry): Promise<BuildResult> {
-    const artifact = this.defaultArtifactProvider.create(node.name, entry.hash);
+    const artifact = this.artifactProvider.create(node.name, entry.hash);
     const restored = await this.artifactCache.restore(artifact, node.root);
 
     if (!restored) {

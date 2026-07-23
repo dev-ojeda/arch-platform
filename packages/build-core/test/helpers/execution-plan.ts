@@ -14,12 +14,9 @@ export function createNode(
 ): ExecutionNode {
   return {
     name,
-
     dependencies: options?.dependencies ?? [],
     dependents: options?.dependents ?? [],
-
-    buildAction: async () => {},
-
+    buildAction: 'execute',
     contract: {
       id: name,
 
