@@ -1,22 +1,23 @@
 // packages\infrastructure\src\rendering\template-loader.ts
-import { join } from 'node:path';
 
-import type { FileSystemPort } from '@arch/contracts';
-import { InvalidGeneratorDefinitionError } from '@arch/core';
+import type { FileSystemAsyncPort } from '@arch/contracts';
+
+import { EmptyTemplateError } from '../errors/template-not-found.error.js';
+import { joinPath } from '../filesystem/index.js';
 
 export async function loadTemplate(
-  fs: FileSystemPort,
+  fs: FileSystemAsyncPort,
 
   templateDir: string,
 
   templateName: string,
 ): Promise<string> {
-  const templatePath = join(templateDir, templateName);
+  const templatePath = joinPath(templateDir, templateName);
 
   const template = await fs.read(templatePath);
 
   if (!template.trim()) {
-    throw new InvalidGeneratorDefinitionError(`Template is empty: ${templatePath}`);
+    throw new EmptyTemplateError(`Template is empty: ${templatePath}`);
   }
 
   return template;

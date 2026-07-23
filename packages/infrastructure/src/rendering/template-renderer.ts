@@ -1,7 +1,7 @@
 // packages/infrastructure/src/rendering/template-renderer.ts
 
 import type {
-  FileSystemPort,
+  FileSystemAsyncPort,
   RenderedFile,
   RenderTemplateInput,
   TemplateRendererPort,
@@ -13,7 +13,7 @@ import { loadTemplate } from './template-loader.js';
 
 export class TemplateRenderer implements TemplateRendererPort {
   constructor(
-    private readonly fs: FileSystemPort,
+    private readonly fs: FileSystemAsyncPort,
     private readonly templateRoot: string,
   ) {}
 

@@ -3,18 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "sideEffects": false,
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
+      "import": "./dist/index.js"
     }
   },
   "arch": {
     "build": {
-      "builder": "tsc"
+      "builder": "tsc",
+      "entry": "./src/index.ts",
+      "validateExports": true
     }
   },
   "files": [
@@ -25,6 +27,7 @@
     "arch": "arch build --package @arch/infrastructure",
     "clean": "arch clean",
     "typecheck": "arch typecheck",
+    "validate": "arch validate",
     "lint": "arch lint",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",
@@ -32,8 +35,8 @@
     "test:clear": "vitest --clearCache"
   },
   "dependencies": {
+    "@arch/platform-model": "workspace:*",
     "@arch/contracts": "workspace:*",
-    "@arch/core": "workspace:*",
     "@arch/testing": "workspace:*"
   },
   "devDependencies": {
