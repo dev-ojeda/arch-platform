@@ -27,8 +27,7 @@
     "arch": "arch build --package @arch/testing",
     "clean": "arch clean",
     "typecheck": "arch typecheck",
-    "lint": "arch lint",
-    "validate": "arch validate"
+    "lint": "arch lint"
   },
   "dependencies": {
     "@arch/contracts": "workspace:*",

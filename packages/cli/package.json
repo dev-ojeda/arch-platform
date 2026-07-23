@@ -21,8 +21,7 @@
     "build": "tsup",
     "clean": "arch clean",
     "lint": "arch lint",
-    "typecheck": "arch typecheck",
-    "validate": "arch validate"
+    "typecheck": "arch typecheck"
   },
   "dependencies": {
     "@arch/governance": "workspace:*",

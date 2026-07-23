@@ -27,7 +27,6 @@
     "arch": "arch build --package @arch/infrastructure",
     "clean": "arch clean",
     "typecheck": "arch typecheck",
-    "validate": "arch validate",
     "lint": "arch lint",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",

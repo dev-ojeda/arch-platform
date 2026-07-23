@@ -19,7 +19,6 @@
     "arch": "arch build --package @arch/contracts",
     "clean": "arch clean",
     "typecheck": "arch typecheck",
-    "lint": "arch lint",
-    "validate": "arch validate"
+    "lint": "arch lint"
   }
 }
