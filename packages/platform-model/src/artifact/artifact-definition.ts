@@ -1,4 +1,4 @@
-// packages/platform-model/src/artifacts/artifact-definition.ts
+// packages/platform-model/src/artifact/artifact-definition.ts
 
 import type { ArtifactId, CapabilityId, ConventionId } from '../shared/identifier.js';
 import type { Metadata } from '../shared/metadata.js';

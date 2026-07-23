@@ -1,4 +1,4 @@
-// packages/platform-model/src/artifacts/artifact-kind.ts
+// packages/platform-model/src/artifact/artifact-kind.ts
 
 export type ArtifactKind =
   | 'controller'

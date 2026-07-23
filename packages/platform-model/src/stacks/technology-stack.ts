@@ -1,6 +1,6 @@
 // packages/platform-model/src/stacks/technology-stack.ts
 
-import type { ArtifactDefinition } from '../artifacts/artifact-definition.js';
+import type { ArtifactDefinition } from '../artifact/artifact-definition.js';
 import type { CapabilityDefinition } from '../capabilities/capability-definition.js';
 import type { ConventionDefinition } from '../conventions/convention-definition.js';
 import type { PatternDefinition } from '../patterns/pattern-definition.js';
