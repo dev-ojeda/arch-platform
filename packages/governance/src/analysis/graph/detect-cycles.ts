@@ -1,51 +1,51 @@
 // packages/governance/src/analysis/graph/detect-cycles.ts
 
-import type { CycleDetectionResult } from '../../types/cycle-detection-result.js';
+import type { CycleDetectionResult } from '@arch/platform-model';
 
-export function detectCycles(
-  graph: Map<
-    string,
-    {
-      dependencies: readonly string[];
-    }
-  >,
-): CycleDetectionResult {
+export function detectCycles(edges: ReadonlyMap<string, readonly string[]>): CycleDetectionResult {
   const visited = new Set<string>();
   const stack = new Set<string>();
-  const path: string[] = [];
+  const currentPath: string[] = [];
 
   const cycles: string[][] = [];
 
-  function dfs(node: string) {
+  function dfs(node: string): void {
     if (stack.has(node)) {
-      const index = path.indexOf(node);
-      cycles.push([...path.slice(index), node]);
+      const index = currentPath.indexOf(node);
+      cycles.push([...currentPath.slice(index), node]);
       return;
     }
 
-    if (visited.has(node)) return;
+    if (visited.has(node)) {
+      return;
+    }
 
     visited.add(node);
     stack.add(node);
-    path.push(node);
+    currentPath.push(node);
 
-    const deps = graph.get(node)?.dependencies ?? [];
-    for (const dep of deps) {
-      if (graph.has(dep)) {
-        dfs(dep);
+    const dependencies = edges.get(node) ?? [];
+
+    for (const dependency of dependencies) {
+      if (edges.has(dependency)) {
+        dfs(dependency);
       }
     }
 
-    path.pop();
+    currentPath.pop();
     stack.delete(node);
   }
 
-  for (const node of graph.keys()) {
-    if (!visited.has(node)) dfs(node);
+  for (const node of edges.keys()) {
+    if (!visited.has(node)) {
+      dfs(node);
+    }
   }
+  const cycleCount = cycles.length;
 
   return {
+    hasCycle: cycleCount > 0,
+    cycleCount,
     cycles,
-    hasCycle: cycles.length > 0,
   };
 }

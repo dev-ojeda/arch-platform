@@ -1,7 +1,6 @@
 // packages/build-core/src/state/state-types.ts
 
-import type { HashResult } from '../hash/hash-result.js';
-import { HASH_SCHEMA_VERSION } from '../hash/hash-version.js';
+import { HASH_SCHEMA_VERSION, type HashResult } from '@arch/platform-model';
 
 export interface BuildStateEntry {
   schemaVersion: number;

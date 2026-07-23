@@ -1,6 +1,6 @@
 // packages/governance/src/engine/governance-rule-execution.ts
 
-import type { DiagnosticSeverity } from '../types/diagnostic.js';
+import type { DiagnosticSeverity } from '@arch/platform-model';
 
 import type { GovernanceRuleId } from './governance-rule-id.js';
 

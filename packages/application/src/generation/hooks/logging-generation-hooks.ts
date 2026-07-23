@@ -42,14 +42,18 @@ export class LoggingGenerationHooks<
   }
 
   onError(error: unknown, context: GenerationContext<TVariables>): Promise<void> {
+    const message = error instanceof Error ? error.message : errorMessage(error);
+
     this.reportDiagnostic(context, {
       level: 'error',
-      message: error instanceof Error ? error.message : errorMessage(error),
+      message,
       timestamp: 0,
     });
 
     context.logger.error('[arch] generation failed', {
-      error: error instanceof Error ? error.message : errorMessage(error),
+      metadata: {
+        error: message,
+      },
     });
 
     return Promise.resolve();

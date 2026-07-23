@@ -1,29 +1,16 @@
 // packages/governance/src/analysis/graph/build-workspace-graph.ts
 
-import type { GovernanceContext } from '../../types/governance-context.js';
+import type { PackageDescriptor, WorkspaceGraph } from '@arch/platform-model';
 
-export function buildWorkspaceGraph(context: GovernanceContext) {
-  const nodes = new Map<
-    string,
-    {
-      name: string;
-      rootPath: string;
-      dependencies: readonly string[];
-    }
-  >();
+import type { GovernanceContext } from '../../context/governance-context.js';
 
-  for (const pkg of context.packages) {
-    nodes.set(pkg.name, {
-      name: pkg.name,
-      rootPath: pkg.rootPath,
-      dependencies: pkg.internalDependencies,
-    });
-  }
-
+export function buildWorkspaceGraph(context: GovernanceContext): WorkspaceGraph {
+  const nodes = new Map<string, PackageDescriptor>();
   const edges = new Map<string, readonly string[]>();
 
-  for (const [name, node] of nodes) {
-    edges.set(name, node.dependencies);
+  for (const pkg of context.workspace.packages) {
+    nodes.set(pkg.name, pkg);
+    edges.set(pkg.name, pkg.internalDependencies);
   }
 
   return {

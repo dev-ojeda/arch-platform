@@ -1,8 +1,8 @@
 // packages/build-core/src/cache/cache-evaluator.ts
 
-import type { OutputValidator } from '../artifact/output-validator.js';
-import type { HashResult } from '../hash/hash-result.js';
-import { HASH_SCHEMA_VERSION } from '../hash/hash-version.js';
+import type { HashResult, OutputValidator } from '@arch/platform-model';
+import { HASH_SCHEMA_VERSION } from '@arch/platform-model';
+
 import { LOG_EVENTS } from '../logging/log-events.js';
 import { logger } from '../logging/logger.js';
 import type { BuildState } from '../state/state-types.js';
@@ -16,13 +16,13 @@ export class CacheEvaluator {
     private outputValidator: OutputValidator,
   ) {}
 
-  evaluate(
+  async evaluate(
     packageName: string,
     root: string,
     outputs: readonly string[],
     dependencies: readonly string[],
     current: HashResult,
-  ): CacheEvaluation {
+  ): Promise<CacheEvaluation> {
     logger.trace(LOG_EVENTS.CACHE_EVALUATE, {
       metadata: {
         packageName,
@@ -57,7 +57,7 @@ export class CacheEvaluator {
       return this.stale(packageName, 'dependency');
     }
 
-    const dependencyMissing = this.hasMissingDependencyOutputs(dependencies, root);
+    const dependencyMissing = await this.hasMissingDependencyOutputs(dependencies, root);
 
     if (dependencyMissing) {
       return {
@@ -66,7 +66,7 @@ export class CacheEvaluator {
       };
     }
 
-    if (!this.outputValidator.exists(root, outputs)) {
+    if (!(await this.outputValidator.exists(root, outputs))) {
       return {
         decision: 'invalid',
         changeReason: 'missing-output',
@@ -92,7 +92,10 @@ export class CacheEvaluator {
       changeReason: reason,
     };
   }
-  private hasMissingDependencyOutputs(dependencies: readonly string[], root: string): boolean {
+  private async hasMissingDependencyOutputs(
+    dependencies: readonly string[],
+    root: string,
+  ): Promise<boolean> {
     for (const dependency of dependencies) {
       const entry = this.state.get(dependency);
 
@@ -100,7 +103,7 @@ export class CacheEvaluator {
         return true;
       }
 
-      if (!this.outputValidator.exists(root, entry.outputs)) {
+      if (!(await this.outputValidator.exists(root, entry.outputs))) {
         return true;
       }
     }

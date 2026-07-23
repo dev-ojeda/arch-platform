@@ -1,9 +1,11 @@
 // packages\governance\src\engine\governance-engine.ts
 
+import type { Diagnostic, DiagnosticSeverity } from '@arch/platform-model';
+
+import type { GovernanceExecutionContext } from '../context/governance-context.js';
 import { createStopwatch } from '../helpers/create-stopwatch.js';
+import { getErrorMessage } from '../helpers/error-message.js';
 import type { RuleExecutionResult } from '../rules/execution-result-rule.js';
-import type { Diagnostic, DiagnosticSeverity } from '../types/diagnostic.js';
-import type { GovernanceExecutionContext } from '../types/governance-context.js';
 
 import type { GovernanceEngineResult } from './governance-engine-result.js';
 import type { GovernanceRuleExecution } from './governance-rule-execution.js';
@@ -40,7 +42,7 @@ export class GovernanceEngine {
 
         severity: execution.error ? 'error' : this.getSeverity(execution.diagnostics),
 
-        error: this.getErrorMessage(execution.error),
+        error: getErrorMessage(execution.error),
       });
     }
 
@@ -84,25 +86,9 @@ export class GovernanceEngine {
       code: 'RULE_EXECUTION_FAILURE',
       severity: 'error',
       source: execution.rule.name,
-      message: this.getErrorMessage(execution.error),
+      message: getErrorMessage(execution.error),
       hint: `Review implementation of governance rule "${execution.rule.name}".`,
     };
-  }
-
-  private getErrorMessage(error: unknown): string {
-    if (error instanceof Error) {
-      return error.message;
-    }
-
-    if (typeof error === 'string') {
-      return error;
-    }
-
-    try {
-      return JSON.stringify(error);
-    } catch {
-      return 'Unknown error';
-    }
   }
 
   private getSeverity(diagnostics: Diagnostic[]): DiagnosticSeverity {

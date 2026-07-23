@@ -1,7 +1,7 @@
 import type { GenerationContext, TemplateVariables } from '@arch/contracts';
 
 import { createTestEventBus } from '../events/create-test-event-bus.js';
-import { createMemoryFilesystem } from '../filesystem/create-memory-filesystem.js';
+import { createMockFilesystem } from '../filesystem/create-mock-filesystem.js';
 import { createTestLogger } from '../logging/create-test-logger.js';
 
 function createDefaultGenerationContext<
@@ -14,7 +14,7 @@ function createDefaultGenerationContext<
 
     eventBus: createTestEventBus(),
 
-    fs: createMemoryFilesystem(),
+    fs: createMockFilesystem(),
 
     variables: {} as TVariables,
 

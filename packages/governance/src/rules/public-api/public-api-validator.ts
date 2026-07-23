@@ -1,6 +1,6 @@
 // packages/governance/src/rules/public-api/public-api-validator.ts
 
-import type { ResolvedPackage } from '../../types/governance-context.js';
+import type { PackageDescriptor } from '@arch/platform-model';
 
 import { ExportMapReader } from './export-map-reader.js';
 import { PrivatePathDetector } from './private-path-detector.js';
@@ -10,7 +10,11 @@ export class PublicApiValidator {
 
   private readonly privatePaths = new PrivatePathDetector();
 
-  validateImport(importer: ResolvedPackage, target: ResolvedPackage, importPath: string): boolean {
+  validateImport(
+    importer: PackageDescriptor,
+    target: PackageDescriptor,
+    importPath: string,
+  ): boolean {
     if (importer.name === target.name) {
       return true;
     }

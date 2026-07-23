@@ -16,7 +16,9 @@
   ],
   "arch": {
     "build": {
-      "builder": "tsc"
+      "builder": "tsc",
+      "entry": "./src/index.ts",
+      "validateExports": true
     }
   },
   "scripts": {

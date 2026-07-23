@@ -1,7 +1,7 @@
 // packages/contracts/src/generation/generation-context.ts
 import type { GenerationDiagnostic } from '../diagnostics/generation-diagnostic.js';
 import type { GenerationEventBus } from '../events/generation-event-bus.js';
-import type { FileSystemPort } from '../filesystem/filesystem.port.js';
+import type { FileSystemAsyncPort } from '../filesystem/filesystem-async-port.js';
 import type { GeneratedFile } from '../generation/generated-file.js';
 import type { GeneratorDefinition } from '../generators/generator-definition.js';
 import type { LoggerPort } from '../logging/logger.port.js';
@@ -32,7 +32,7 @@ export interface GenerationContext<TVariables extends TemplateVariables = Templa
    * Infrastructure
    */
 
-  readonly fs: FileSystemPort;
+  readonly fs: FileSystemAsyncPort;
 
   /*
    * Generator

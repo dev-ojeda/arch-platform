@@ -1,15 +1,14 @@
 // packages\build-core\src\hash\dag-hasher.ts
 
-import { joinPath } from '../fs/path-utils.js';
-import type { DagNode } from '../graph/dag-types.js';
+import type {
+  ConfigHashService,
+  DirectoryHashService,
+  HashService,
+  PathService,
+} from '@arch/contracts';
+import type { DagNode, HashContext, HashInput, HashResult } from '@arch/platform-model';
+import { HASH_SCHEMA_VERSION } from '@arch/platform-model';
 
-import { hashConfig } from './filesystem/hash-config.js';
-import { hashDirectory } from './filesystem/hash-directory.js';
-import type { HashContext } from './hash-context.js';
-import type { HashInput } from './hash-input.js';
-import type { HashResult } from './hash-result.js';
-import { createHash, createObjectHash } from './hash-utils.js';
-import { HASH_SCHEMA_VERSION } from './hash-version.js';
 import type { HashValidator } from './validator/hash-validator.js';
 
 function stableJoin(values: readonly string[]): string {
@@ -17,13 +16,22 @@ function stableJoin(values: readonly string[]): string {
 }
 
 export class DagHasher {
-  constructor(private readonly validator?: HashValidator) {}
+  constructor(
+    private readonly directoryHashService: DirectoryHashService,
+    private readonly configHashService: ConfigHashService,
+    private readonly hashService: HashService,
+    private readonly pathService: PathService,
+    private readonly validator?: HashValidator,
+  ) {}
 
   hash(node: DagNode, context: HashContext): HashResult {
-    const sourceHash = hashDirectory(joinPath(node.root, 'src'));
-    const configHash = hashConfig(node.root);
+    const sourceHash = this.directoryHashService.hashDirectory(
+      this.pathService.join(node.root, 'src'),
+    );
 
-    const depsHash = createHash(stableJoin(context.dependencyHashes));
+    const configHash = this.configHashService.hashConfig(node.root);
+
+    const depsHash = this.hashService.hash(stableJoin(context.dependencyHashes));
 
     const hashInput: HashInput = {
       nodeName: node.name,
@@ -33,7 +41,7 @@ export class DagHasher {
       schemaVersion: HASH_SCHEMA_VERSION,
     };
 
-    const hash = createObjectHash(hashInput);
+    const hash = this.hashService.hashObject(hashInput);
 
     const result: HashResult = {
       hash,

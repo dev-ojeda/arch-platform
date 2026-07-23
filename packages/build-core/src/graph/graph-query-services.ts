@@ -1,6 +1,6 @@
 // packages/build-core/src/graph/graph-query-services.ts
 
-import type { DagNode, Graph } from './dag-types.js';
+import type { DagNode, Graph } from '@arch/platform-model';
 
 export class GraphQueryService {
   constructor(private readonly graph: Graph) {}

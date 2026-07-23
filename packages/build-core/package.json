@@ -33,5 +33,10 @@
     "coverage": "vitest run --coverage -c ./vitest.config.ts",
     "test:watch": "vitest",
     "test:clear": "vitest --clearCache"
+  },
+  "dependencies": {
+    "@arch/platform-model": "workspace:*",
+    "@arch/contracts": "workspace:*",
+    "@arch/infrastructure": "workspace:*"
   }
 }

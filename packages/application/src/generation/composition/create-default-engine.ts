@@ -1,11 +1,11 @@
 // packages/application/src/generation/composition/create-default-engine.ts
 
-import {
-  type FileSystemPort,
-  type IdGenerator,
-  type LoggerPort,
-  type PromptAdapter,
-  type TemplateRendererPort,
+import type {
+  FileSystemAsyncPort,
+  IdGenerator,
+  LoggerPort,
+  PromptAdapter,
+  TemplateRendererPort,
 } from '@arch/contracts';
 
 import { DefaultGenerationEngine } from '../engine/default-generation-engine.js';
@@ -17,7 +17,7 @@ import { createDefaultPipeline } from './create-default-pipeline.js';
 export interface GenerationEngineFactoryOptions {
   promptAdapter: PromptAdapter;
 
-  filesystem: FileSystemPort;
+  filesystem: FileSystemAsyncPort;
 
   idGenerator: IdGenerator;
 

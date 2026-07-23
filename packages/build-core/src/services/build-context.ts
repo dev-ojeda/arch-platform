@@ -1,20 +1,24 @@
 // packages/build-core/src/services/build-context.ts
 
-import type { ArtifactCache } from '../artifact/artifact-cache.js';
-import type { ArtifactProvider } from '../artifact/artifact-provider.js';
+import type { ArtifactCache, ArtifactProvider, Graph, OutputValidator } from '@arch/platform-model';
+
 import type { BuildExecutor } from '../executor/build-executor.js';
-import type { Graph } from '../graph/dag-types.js';
 import type { GraphQueryService } from '../graph/graph-query-services.js';
+import type { DagHasher } from '../hash/dag-hasher.js';
 import type { ExecutionContractResolver } from '../planning/execution-contract-resolver.js';
 import type { BuildState } from '../state/state-types.js';
+import type { BuildStateWriter } from '../state/state-writer.js';
 
 export interface BuildContext {
   graph: Graph;
   query: GraphQueryService;
+  readonly dagHasher: DagHasher;
   contractResolver: ExecutionContractResolver;
   state: BuildState;
   executor: BuildExecutor;
   artifactCache: ArtifactCache;
   artifactProvider: ArtifactProvider;
   workspaceRoot: string;
+  fsOutputvalidator: OutputValidator;
+  stateWriter: BuildStateWriter;
 }

@@ -1,18 +1,19 @@
 // packages/governance/src/rules/forbidden-dependency-rule.ts
 
+import type { Diagnostic } from '@arch/platform-model';
+
+import type { GovernanceContext } from '../context/governance-context.js';
 import { GovernanceRuleId } from '../engine/governance-rule-id.js';
 import type { GovernanceRule } from '../engine/governance-rule.js';
-import type { Diagnostic } from '../types/diagnostic.js';
-import type { GovernanceContext } from '../types/governance-context.js';
 
 export class ForbiddenDependencyRule implements GovernanceRule {
   readonly id = GovernanceRuleId.ForbiddenDependency;
   readonly name = 'forbidden-dependency-rule';
 
-  run(context: GovernanceContext): Promise<Diagnostic[]> {
+  run(context: GovernanceContext): Diagnostic[] {
     const diagnostics: Diagnostic[] = [];
 
-    for (const pkg of context.packages) {
+    for (const pkg of context.workspace.packages) {
       const forbidden = pkg.boundaries?.forbiddenDependencies ?? [];
 
       for (const dependency of pkg.internalDependencies ?? []) {
@@ -43,6 +44,6 @@ export class ForbiddenDependencyRule implements GovernanceRule {
       }
     }
 
-    return Promise.resolve(diagnostics);
+    return diagnostics;
   }
 }

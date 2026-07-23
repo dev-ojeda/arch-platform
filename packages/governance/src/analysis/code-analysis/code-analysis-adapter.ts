@@ -10,17 +10,15 @@ import {
 import type {
   GovernanceAnalysisContext,
   GovernanceContext,
-} from '../../types/governance-context.js';
+} from '../../context/governance-context.js';
 
 export class CodeAnalysisAdapter {
   constructor(
     private readonly analyzer = new SemanticDependencyAnalyzer(new PackageDependencyGraphBuilder()),
   ) {}
 
-  async analyze(
-    context: GovernanceContext,
-    tsConfigFilePath: string,
-  ): Promise<GovernanceAnalysisContext> {
+  async analyze(context: GovernanceContext): Promise<GovernanceAnalysisContext> {
+    const tsConfigFilePath = context.workspace.layout.tsconfigPath;
     const project = createTsProject({
       tsConfigFilePath,
     });

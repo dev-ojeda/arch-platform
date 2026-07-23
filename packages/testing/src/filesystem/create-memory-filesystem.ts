@@ -2,9 +2,7 @@
 
 import { posix } from 'node:path';
 
-import type { DirectoryEntry, FileSystemPort, WriteFileOptions } from '@arch/contracts';
-
-import { normalizePath } from '../utils/normalize-path.js';
+import type { DirectoryEntry, FileSystemAsyncPort, WriteFileOptions } from '@arch/contracts';
 
 type MutableMemoryFilesystemState = {
   files: Map<string, string>;
@@ -18,7 +16,7 @@ export interface MemoryFilesystemState {
   readonly directories: ReadonlySet<string>;
 }
 
-export interface MemoryFilesystem extends FileSystemPort {
+export interface MemoryFilesystem extends FileSystemAsyncPort {
   readonly state: MemoryFilesystemState;
 }
 
@@ -120,7 +118,9 @@ export function createMemoryFilesystem(): MemoryFilesystem {
         .map<DirectoryEntry>((filePath) => ({
           name: posix.basename(filePath),
           path: filePath,
+          isFile: true,
           isDirectory: false,
+          isSymbolicLink: false,
         }));
 
       const directoryEntries = Array.from(internalState.directories.values())
@@ -132,7 +132,9 @@ export function createMemoryFilesystem(): MemoryFilesystem {
         .map<DirectoryEntry>((directoryPath) => ({
           name: posix.basename(directoryPath),
           path: directoryPath,
+          isFile: false,
           isDirectory: true,
+          isSymbolicLink: true,
         }));
 
       return Promise.resolve(
@@ -140,6 +142,19 @@ export function createMemoryFilesystem(): MemoryFilesystem {
           left.path.localeCompare(right.path),
         ),
       );
+    },
+    readJson: async function <T>(filePath: string): Promise<T> {
+      return this.read(filePath).then((content: string) => safeParse<T>(content));
+    },
+    writeJson<T>(filePath: string, value: T, options?: WriteFileOptions): Promise<void> {
+      return this.write(filePath, safeStringify(value, 2), options);
+    },
+    readBuffer(filePath: string): Promise<Uint8Array> {
+      return this.read(filePath).then((content) => Buffer.from(content, 'utf8'));
+    },
+    async rename(source: string, destination: string): Promise<void> {
+      await this.copy(source, destination);
+      await this.remove(source);
     },
   };
 }
@@ -216,4 +231,60 @@ function assertPathIsNotDirectory(state: MutableMemoryFilesystemState, targetPat
   if (state.directories.has(targetPath)) {
     throw new Error(`Cannot write file over directory: ${targetPath}`);
   }
+}
+function safeStringify(value: unknown, space?: number): string {
+  const seen = new WeakSet<object>();
+
+  const replacer = (_key: string, currentValue: unknown): unknown => {
+    if (currentValue instanceof Error) {
+      return {
+        name: currentValue.name,
+        message: currentValue.message,
+        stack: currentValue.stack,
+      };
+    }
+
+    if (typeof currentValue === 'bigint') {
+      return currentValue.toString();
+    }
+
+    if (typeof currentValue === 'undefined') {
+      return '[undefined]';
+    }
+
+    if (typeof currentValue === 'symbol') {
+      return currentValue.toString();
+    }
+
+    if (currentValue instanceof Map) {
+      return Object.fromEntries(currentValue);
+    }
+
+    if (currentValue instanceof Set) {
+      return [...currentValue];
+    }
+
+    if (typeof currentValue === 'object' && currentValue !== null) {
+      if (seen.has(currentValue)) {
+        return '[Circular]';
+      }
+
+      seen.add(currentValue);
+    }
+
+    return currentValue;
+  };
+
+  try {
+    return JSON.stringify(value, replacer, space);
+  } catch {
+    return '[unserializable]';
+  }
+}
+
+function safeParse<T>(content: string): T {
+  return JSON.parse(content) as T;
+}
+function normalizePath(targetPath: string): string {
+  return posix.normalize(targetPath.replaceAll('\\', '/'));
 }

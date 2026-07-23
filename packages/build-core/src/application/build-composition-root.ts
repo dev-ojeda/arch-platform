@@ -1,20 +1,34 @@
 // packages/build-core/src/application/build-composition-root.ts
 
-import type { ArtifactCache } from '../artifact/artifact-cache.js';
-import type { ArtifactProvider } from '../artifact/artifact-provider.js';
-import { DefaultArtifactProvider } from '../artifact/default-artifact-provider.js';
-import { FilesystemArtifactCache } from '../artifact/filesystem-artifact-cache.js';
-import { FilesystemArtifactLayoutFactory } from '../artifact/filesystem-artifact-layout-factory.js';
-import { FilesystemArtifactPublisher } from '../artifact/publisher/filesystem-artifact-publisher.js';
+import {
+  ArtifactPublisherAdapter,
+  DefaultArtifactProvider,
+  discoverWorkspacePackages,
+  FilesystemArtifactCache,
+  FilesystemArtifactLayoutFactory,
+  FilesystemOutputValidator,
+  findWorkspaceRoot,
+  NodeAsyncFileSystemAdapter,
+  NodeConfigHashService,
+  NodeDirectoryHashService,
+  NodeFileHashService,
+  NodeHashService,
+  NodePathService,
+  NodeSyncFileSystemAdapter,
+} from '@arch/infrastructure';
+import type { ArtifactCache, ArtifactProvider, Graph, OutputValidator } from '@arch/platform-model';
+
 import type { BuildExecutor } from '../executor/build-executor.js';
 import { ExecutorFactory } from '../executor/executor-factory.js';
-import { joinPath } from '../fs/path-utils.js';
-import type { Graph } from '../graph/dag-types.js';
+import { buildGraph } from '../graph/build-graph.js';
 import { GraphQueryService } from '../graph/graph-query-services.js';
+import { DagHasher } from '../hash/dag-hasher.js';
 import { WorkspaceExecutionContractResolver } from '../planning/workspace-execution-contract-resolver.js';
 import type { CommandRunner } from '../runtime/command-runner.js';
+import { BuildService } from '../services/build-service.js';
 import { JsonBuildStateLoader } from '../state/json-build-state-loader.js';
 import type { BuildState } from '../state/state-types.js';
+import { BuildStateWriter } from '../state/state-writer.js';
 
 /**
  * Centralizes dependency creation for the build application.
@@ -30,8 +44,38 @@ import type { BuildState } from '../state/state-types.js';
  * This class should not contain build execution logic or business rules.
  */
 export class BuildCompositionRoot {
-  constructor(private readonly runner: CommandRunner) {}
+  private readonly fsAsync = new NodeAsyncFileSystemAdapter();
+  private readonly fsSync = new NodeSyncFileSystemAdapter();
 
+  private readonly pathService = new NodePathService();
+
+  private readonly hashService = new NodeHashService();
+  constructor(private readonly runner: CommandRunner) {}
+  async createBuildService(fromDirectory: string): Promise<BuildService> {
+    const workspaceRoot = findWorkspaceRoot(fromDirectory);
+
+    const packages = await discoverWorkspacePackages(workspaceRoot);
+
+    const graph = buildGraph(packages);
+
+    const state = this.createBuildStateLoader(workspaceRoot);
+
+    const query = this.createGraphQuery(graph);
+
+    return new BuildService({
+      graph,
+      query,
+      dagHasher: this.createDagHasher(),
+      contractResolver: this.createExecutionContractResolver(query),
+      state,
+      executor: this.createExecutor(),
+      artifactCache: this.createArtifactCache(workspaceRoot),
+      artifactProvider: this.createArtifactProvider(),
+      workspaceRoot,
+      fsOutputvalidator: this.createFileSystemOuputValidator(),
+      stateWriter: this.createStateWriter(state, workspaceRoot),
+    });
+  }
   /**
    * Creates the artifact cache implementation used during build execution.
    *
@@ -41,12 +85,13 @@ export class BuildCompositionRoot {
    */
   createArtifactCache(workspaceRoot: string): ArtifactCache {
     const layoutFactory = new FilesystemArtifactLayoutFactory(
-      joinPath(workspaceRoot, '.arch-cache', 'artifacts'),
+      this.pathService.join(workspaceRoot, '.arch-cache', 'artifacts'),
+      this.pathService,
     );
 
-    const publisher = new FilesystemArtifactPublisher();
+    const publisher = new ArtifactPublisherAdapter(this.fsAsync);
 
-    return new FilesystemArtifactCache(layoutFactory, publisher);
+    return new FilesystemArtifactCache(layoutFactory, publisher, this.fsAsync, this.pathService);
   }
 
   /**
@@ -91,12 +136,12 @@ export class BuildCompositionRoot {
    *
    * @returns The current build state snapshot.
    */
-  loadBuildState(workspaceRoot: string): BuildState {
-    const loader = new JsonBuildStateLoader();
-
-    return loader.load(workspaceRoot);
+  createBuildStateLoader(workspaceRoot: string): BuildState {
+    return new JsonBuildStateLoader(this.fsSync, this.pathService).load(workspaceRoot);
   }
-
+  createStateWriter(state: BuildState, workspaceRoot: string): BuildStateWriter {
+    return new BuildStateWriter(state, workspaceRoot, this.fsAsync, this.pathService);
+  }
   /**
    * Creates the artifact provider used to generate artifact metadata.
    *
@@ -104,5 +149,23 @@ export class BuildCompositionRoot {
    */
   createArtifactProvider(): ArtifactProvider {
     return new DefaultArtifactProvider();
+  }
+
+  createFileSystemOuputValidator(): OutputValidator {
+    return new FilesystemOutputValidator(this.fsAsync, this.pathService);
+  }
+  createDagHasher(): DagHasher {
+    const fileHashService = new NodeFileHashService(this.hashService);
+
+    const directoryHashService = new NodeDirectoryHashService(fileHashService);
+
+    const configHashService = new NodeConfigHashService(this.hashService);
+
+    return new DagHasher(
+      directoryHashService,
+      configHashService,
+      this.hashService,
+      this.pathService,
+    );
   }
 }

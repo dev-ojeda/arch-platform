@@ -1,5 +1,5 @@
 // packages/contracts/src/generation/generation-request.ts
-import type { FileSystemPort } from '../filesystem/filesystem.port.js';
+import type { FileSystemAsyncPort } from '../filesystem/filesystem-async-port.js';
 import type { GeneratorDefinition } from '../generators/generator-definition.js';
 import type { LoggerPort } from '../logging/logger.port.js';
 import type { NamedVariables } from '../variables/named-variables.js';
@@ -11,7 +11,7 @@ export interface GenerationRequest<TVariables extends NamedVariables = NamedVari
 
   variables?: Partial<TVariables>;
 
-  fs?: FileSystemPort;
+  fs?: FileSystemAsyncPort;
 
   logger?: LoggerPort;
 

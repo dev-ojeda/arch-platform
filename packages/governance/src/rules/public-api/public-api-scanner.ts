@@ -1,10 +1,8 @@
 // packages/governance/src/rules/public-api/public-api-scanner.ts
 
-import type { Diagnostic } from '../../types/diagnostic.js';
-import type {
-  GovernanceExecutionContext,
-  ResolvedPackage,
-} from '../../types/governance-context.js';
+import type { Diagnostic, PackageDescriptor } from '@arch/platform-model';
+
+import type { GovernanceExecutionContext } from '../../context/governance-context.js';
 
 import { ExportMapReader } from './export-map-reader.js';
 import { PrivatePathDetector } from './private-path-detector.js';
@@ -113,7 +111,7 @@ export class PublicApiScanner {
   private findPackage(
     context: GovernanceExecutionContext,
     name: string,
-  ): ResolvedPackage | undefined {
-    return context.packages.find((pkg) => pkg.name === name);
+  ): PackageDescriptor | undefined {
+    return context.workspace.packages.find((pkg) => pkg.name === name);
   }
 }

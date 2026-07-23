@@ -1,19 +1,24 @@
 // packages/build-core/src/state/json-build-state-loader.ts
 
-import { pathExistsSync, readJsonFileSync } from '../fs/fs-sync.js';
-import { getStatePath } from '../fs/path-utils.js';
-import type { HashResult } from '../hash/hash-result.js';
+import type { FileSystemSyncPort, PathService } from '@arch/contracts';
+import type { HashResult } from '@arch/platform-model';
+
 import { logger } from '../logging/logger.js';
 import { isRecord } from '../serialization/type-guards.js';
 
 import type { BuildStateLoader } from './build-state-loader.js';
+import { getBuildStatePath } from './state-paths.js';
 import type { BuildState, BuildStateEntry } from './state-types.js';
 
 export class JsonBuildStateLoader implements BuildStateLoader {
+  constructor(
+    private readonly filesystem: FileSystemSyncPort,
+    private readonly pathService: PathService,
+  ) {}
   load(workspaceRoot: string): BuildState {
-    const statePath = getStatePath(workspaceRoot);
+    const statePath = getBuildStatePath(workspaceRoot, this.pathService);
 
-    if (!pathExistsSync(statePath)) {
+    if (!this.filesystem.exists(statePath)) {
       logger.trace('state.file.missing', {
         metadata: {
           statePath,
@@ -23,7 +28,7 @@ export class JsonBuildStateLoader implements BuildStateLoader {
       return new Map();
     }
 
-    const parsed = readJsonFileSync(statePath);
+    const parsed = this.filesystem.read(statePath);
 
     if (!isRecord(parsed)) {
       logger.warn('state.invalid.root', {

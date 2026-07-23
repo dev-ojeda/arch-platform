@@ -3,38 +3,26 @@
 import { describe, expect, it } from 'vitest';
 
 import { DetectCyclesRule } from '../../src/analysis/graph/detect-cycles-rule.js';
-import type { GovernanceContext } from '../../src/types/governance-context.js';
+import { createGovernanceContext } from '../fixtures/governance/create-governance-context.js';
+import { createPackageDescriptor } from '../fixtures/workspace/create-package-descriptor.js';
+import { createWorkspaceDescriptor } from '../fixtures/workspace/create-workspace-descriptor.js';
 
 describe('DetectCyclesRule', () => {
   it('returns no diagnostics when no cycles exist', async () => {
-    const context: GovernanceContext = {
-      workspaceRoot: '/workspace',
-
-      packages: [
-        {
-          name: '@arch/a',
-          rootPath: '/workspace/packages/a',
-          manifestPath: '/workspace/packages/a/package.json',
-
-          manifest: {
+    const context = createGovernanceContext({
+      workspace: createWorkspaceDescriptor({
+        packages: [
+          createPackageDescriptor({
             name: '@arch/a',
-          },
-
-          internalDependencies: ['@arch/b'],
-        },
-        {
-          name: '@arch/b',
-          rootPath: '/workspace/packages/b',
-          manifestPath: '/workspace/packages/b/package.json',
-
-          manifest: {
+            internalDependencies: ['@arch/b'],
+          }),
+          createPackageDescriptor({
             name: '@arch/b',
-          },
-
-          internalDependencies: [],
-        },
-      ],
-    };
+            internalDependencies: [],
+          }),
+        ],
+      }),
+    });
 
     const diagnostics = await new DetectCyclesRule().run(context);
 
@@ -42,42 +30,29 @@ describe('DetectCyclesRule', () => {
   });
 
   it('reports detected cycles', async () => {
-    const context: GovernanceContext = {
-      workspaceRoot: '/workspace',
-
-      packages: [
-        {
-          name: '@arch/a',
-          rootPath: '/workspace/packages/a',
-          manifestPath: '/workspace/packages/a/package.json',
-
-          manifest: {
+    const context = createGovernanceContext({
+      workspace: createWorkspaceDescriptor({
+        packages: [
+          createPackageDescriptor({
             name: '@arch/a',
-          },
-
-          internalDependencies: ['@arch/b'],
-        },
-        {
-          name: '@arch/b',
-          rootPath: '/workspace/packages/b',
-          manifestPath: '/workspace/packages/b/package.json',
-
-          manifest: {
+            internalDependencies: ['@arch/b'],
+          }),
+          createPackageDescriptor({
             name: '@arch/b',
-          },
-
-          internalDependencies: ['@arch/a'],
-        },
-      ],
-    };
+            internalDependencies: ['@arch/a'],
+          }),
+        ],
+      }),
+    });
 
     const diagnostics = await new DetectCyclesRule().run(context);
 
     expect(diagnostics).toHaveLength(1);
-    expect(diagnostics[0]?.source).toBe('detect-cycles-rule');
+
     expect(diagnostics[0]).toMatchObject({
       code: 'CYCLE_DETECTED',
       severity: 'error',
+      source: 'detect-cycles-rule',
     });
 
     expect(diagnostics[0]?.metadata).toEqual({

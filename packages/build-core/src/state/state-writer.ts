@@ -1,11 +1,12 @@
 // packages/build-core/src/state/state-writer.ts
 
-import type { DagNode } from '../graph/dag-types.js';
-import type { HashResult } from '../hash/hash-result.js';
-import { HASH_SCHEMA_VERSION } from '../hash/hash-version.js';
+import type { FileSystemAsyncPort, PathService } from '@arch/contracts';
+import { HASH_SCHEMA_VERSION, type DagNode, type HashResult } from '@arch/platform-model';
+
+import { safeStringify } from '../serialization/safe-stringify.js';
 
 import { StateChangeSet } from './state-change-set.js';
-import { persistBuildState } from './state-paths.js';
+import { getBuildStatePath } from './state-paths.js';
 import type { BuildState } from './state-types.js';
 
 export class BuildStateWriter {
@@ -14,8 +15,16 @@ export class BuildStateWriter {
   constructor(
     private readonly state: BuildState,
     private readonly workspaceRoot: string,
+    private readonly filesystem: FileSystemAsyncPort,
+    private readonly pathService: PathService,
   ) {}
+  async write(): Promise<void> {
+    const statePath = getBuildStatePath(this.workspaceRoot, this.pathService);
 
+    await this.filesystem.createDirectory(this.pathService.dirname(statePath));
+
+    await this.filesystem.write(statePath, safeStringify(this.state, 2));
+  }
   commit(node: DagNode, hash: HashResult): void {
     const exists = this.state.has(node.name);
 
@@ -45,9 +54,5 @@ export class BuildStateWriter {
 
   getChanges(): StateChangeSet {
     return this.changes;
-  }
-
-  async persist(): Promise<void> {
-    await persistBuildState(this.workspaceRoot, this.state);
   }
 }

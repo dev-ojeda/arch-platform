@@ -3,16 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     }
   },
   "arch": {
     "build": {
-      "builder": "tsc-declaration"
+      "builder": "tsc",
+      "entry": "./src/index.ts",
+      "validateExports": true
     }
   },
   "files": [
@@ -27,6 +31,7 @@
   },
   "dependencies": {
     "@arch/contracts": "workspace:*",
+    "@arch/platform-model": "workspace:*",
     "@arch/core": "workspace:*"
   }
 }

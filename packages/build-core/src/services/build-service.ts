@@ -1,10 +1,8 @@
 // packages/build-core/src/services/build-service.ts
 
-import { FilesystemOutputValidator } from '../artifact/filesystem-output-validator.js';
 import { CacheEvaluator } from '../cache/cache-evaluator.js';
 import type { BuildResult } from '../executor/build-result.js';
 import { BuildTaskRunner } from '../graph/build-task-runner.js';
-import { DagHasher } from '../hash/dag-hasher.js';
 import { HashGraphBuilder } from '../hash/hash-graph.js';
 import { LOG_EVENTS } from '../logging/log-events.js';
 import { logger } from '../logging/logger.js';
@@ -13,7 +11,6 @@ import { ExecutionDagCompiler } from '../planning/execution-dag-compiler.js';
 import { ScopeResolver } from '../planning/scope-resolver.js';
 import { createExecutionContext } from '../runtime/execution/execution-context.js';
 import { ExecutionPlanScheduler } from '../runtime/execution/execution-plan-scheduler.js';
-import { BuildStateWriter } from '../state/state-writer.js';
 
 import type { BuildContext } from './build-context.js';
 import type { BuildOptions } from './build-options.js';
@@ -41,27 +38,28 @@ export class BuildService {
     const {
       graph,
       query,
+      dagHasher,
       contractResolver,
       state,
       executor,
       artifactCache,
       artifactProvider,
-      workspaceRoot,
+      fsOutputvalidator,
+      stateWriter,
     } = this.context;
 
     // -------------------------
     // 1. HASH
     // -------------------------
-    const hashes = new HashGraphBuilder(graph, new DagHasher()).build();
+    const hashes = new HashGraphBuilder(graph, dagHasher).build();
 
     // -------------------------
     // 2. CACHE
     // -------------------------
-    const outputValidator = new FilesystemOutputValidator();
-    const cache = new CacheEvaluator(state, outputValidator);
+    const cache = new CacheEvaluator(state, fsOutputvalidator);
 
     const planner = new ChangePlanner(cache);
-    const buildPlan = planner.createPlan(graph, hashes);
+    const buildPlan = await planner.createPlan(graph, hashes);
 
     // -------------------------
     // 3. SCOPE (SIN ENGINE)
@@ -83,15 +81,14 @@ export class BuildService {
     // -------------------------
     // 5. RUNTIME
     // -------------------------
-    const writer = new BuildStateWriter(state, workspaceRoot);
 
     const runner = new BuildTaskRunner(
       graph,
       executor,
       buildPlan,
-      writer,
+      stateWriter,
       artifactCache,
-      outputValidator,
+      fsOutputvalidator,
       artifactProvider,
     );
 
@@ -106,16 +103,16 @@ export class BuildService {
     const successful = results.every((r) => r.status !== 'failed');
 
     if (successful) {
-      writer.prune(new Set(graph.keys()));
+      stateWriter.prune(new Set(graph.keys()));
 
-      const changes = writer.getChanges();
+      const changes = stateWriter.getChanges();
 
       if (!changes.isEmpty) {
         logger.info(LOG_EVENTS.STATE_CHANGED, {
           metadata: changes.summary(),
         });
 
-        await writer.persist();
+        await stateWriter.write();
       }
     }
 

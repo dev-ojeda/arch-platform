@@ -3,24 +3,27 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
   "arch": {
     "build": {
-      "builder": "tsc-declaration"
+      "builder": "tsc",
+      "entry": "./src/index.ts",
+      "validateExports": true
     }
   },
   "files": [
     "dist"
   ],
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts"
-    }
-  },
   "scripts": {
-    "build": "pnpm build:dts",
-    "build:dts": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json",
     "arch": "arch build --package @arch/platform-model",
     "clean": "arch clean",
     "typecheck": "arch typecheck",

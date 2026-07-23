@@ -1,9 +1,8 @@
 // packages/build-core/src/hash/hash-graph.ts
 
-import type { Graph } from '../graph/dag-types.js';
+import type { Graph, HashResult } from '@arch/platform-model';
 
 import type { DagHasher } from './dag-hasher.js';
-import type { HashResult } from './hash-result.js';
 
 export class HashGraphBuilder {
   constructor(

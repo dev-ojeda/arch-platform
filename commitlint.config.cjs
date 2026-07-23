@@ -53,7 +53,7 @@ module.exports = {
         'code-analysis',
         'build-core',
         'repo',
-
+        'testing',
         'application/engine',
         'application/runtime',
         'application/pipeline',

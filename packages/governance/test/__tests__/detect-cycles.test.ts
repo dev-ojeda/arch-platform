@@ -6,24 +6,9 @@ import { detectCycles } from '../../src/analysis/graph/detect-cycles.js';
 describe('detectCycles', () => {
   it('returns no cycles for an acyclic graph', () => {
     const graph = new Map([
-      [
-        '@arch/a',
-        {
-          dependencies: ['@arch/b'],
-        },
-      ],
-      [
-        '@arch/b',
-        {
-          dependencies: ['@arch/c'],
-        },
-      ],
-      [
-        '@arch/c',
-        {
-          dependencies: [],
-        },
-      ],
+      ['@arch/a', ['@arch/b']],
+      ['@arch/b', ['@arch/c']],
+      ['@arch/c', []],
     ]);
 
     const result = detectCycles(graph);
@@ -34,24 +19,9 @@ describe('detectCycles', () => {
 
   it('detects a simple cycle', () => {
     const graph = new Map([
-      [
-        '@arch/a',
-        {
-          dependencies: ['@arch/b'],
-        },
-      ],
-      [
-        '@arch/b',
-        {
-          dependencies: ['@arch/c'],
-        },
-      ],
-      [
-        '@arch/c',
-        {
-          dependencies: ['@arch/a'],
-        },
-      ],
+      ['@arch/a', ['@arch/b']],
+      ['@arch/b', ['@arch/c']],
+      ['@arch/c', ['@arch/a']],
     ]);
 
     const result = detectCycles(graph);
@@ -64,14 +34,7 @@ describe('detectCycles', () => {
   });
 
   it('ignores dependencies that are not present in the graph', () => {
-    const graph = new Map([
-      [
-        '@arch/a',
-        {
-          dependencies: ['@arch/external'],
-        },
-      ],
-    ]);
+    const graph = new Map([['@arch/a', []]]);
 
     const result = detectCycles(graph);
 

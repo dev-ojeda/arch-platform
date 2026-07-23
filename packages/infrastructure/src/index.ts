@@ -1,3 +1,63 @@
-export * from './filesystem/index.js';
-export * from './rendering/index.js';
-export * from './templates/index.js';
+export {
+  ArtifactPublisherAdapter,
+  DefaultArtifactProvider,
+  FilesystemArtifactCache,
+  FilesystemArtifactLayout,
+  FilesystemArtifactLayoutFactory,
+  FilesystemOutputValidator,
+} from './artifact/index.js';
+export {
+  collectTsBuildInfoFiles,
+  copyPath,
+  dirName,
+  distPath,
+  ensureDirAsync,
+  ensureDirSync,
+  fileSizeSync,
+  getStatePath,
+  isDirectory,
+  isFile,
+  joinPath,
+  NodeAsyncFileSystemAdapter,
+  NodePathService,
+  NodeSyncFileSystemAdapter,
+  packagePath,
+  pathExists,
+  pathExistsSync,
+  readBuffer,
+  readBufferSync,
+  readDirectoryEntries,
+  readDirectoryEntriesSync,
+  readNormalizedTextFileSync,
+  readTextFile,
+  readTextFileSync,
+  relativePath,
+  removePath,
+  removePaths,
+  removePathSync,
+  removePathWithRetry,
+  renamePath,
+  resolvePath,
+  srcPath,
+  statePath,
+  testPath,
+  writeTextFile,
+} from './filesystem/index.js';
+export {
+  NodeConfigHashService,
+  NodeDirectoryHashService,
+  NodeFileHashService,
+  NodeHashService,
+} from './hashing/index.js';
+export { PackageDescriptorFactory } from './package/index.js';
+export { isRecord, safeParse, safeStringify } from './serialization/index.js';
+export { renderTemplate } from './templates/index.js';
+export {
+  discoverWorkspacePackages,
+  findPackageRoots,
+  findWorkspaceRoot,
+  isPackageJson,
+  NodeWorkspaceProvider,
+  readPackageJson,
+  resolvePackageOutputs,
+} from './workspace/index.js';

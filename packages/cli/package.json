@@ -25,7 +25,9 @@
   },
   "dependencies": {
     "@arch/governance": "workspace:*",
+    "@arch/platform-model": "workspace:*",
     "@arch/tooling": "workspace:*",
+    "@arch/infrastructure": "workspace:*",
     "cac": "catalog:"
   }
 }

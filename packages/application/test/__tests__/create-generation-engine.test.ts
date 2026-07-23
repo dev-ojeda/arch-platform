@@ -17,8 +17,10 @@ describe('createGenerationEngine', () => {
       },
 
       logger: {
+        trace: () => {},
         debug: () => {},
         info: () => {},
+        success: () => {},
         warn: () => {},
         error: () => {},
       },

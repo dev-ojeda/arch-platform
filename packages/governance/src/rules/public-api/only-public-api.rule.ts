@@ -1,13 +1,14 @@
 // packages/governance/src/rules/public-api/only-public-api.rule.ts
 
+import type { Diagnostic } from '@arch/platform-model';
+
+import type { GovernanceExecutionContext } from '../../context/governance-context.js';
 import { GovernanceRuleId } from '../../engine/governance-rule-id.js';
 import type { GovernanceRule } from '../../engine/governance-rule.js';
-import type { Diagnostic } from '../../types/diagnostic.js';
-import type { GovernanceExecutionContext } from '../../types/governance-context.js';
 
 import { PublicApiScanner } from './public-api-scanner.js';
 
-export class OnlyPublicApiRule implements GovernanceRule {
+export class OnlyPublicApiRule implements GovernanceRule<GovernanceExecutionContext> {
   readonly id = GovernanceRuleId.OnlyPublicApi;
   readonly name = 'only-public-api';
 

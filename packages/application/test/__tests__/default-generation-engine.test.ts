@@ -99,9 +99,15 @@ describe('DefaultGenerationEngine', () => {
     expect(logger.logs).toContainEqual({
       level: 'error',
       message: 'Generation failed',
-      meta: {
-        name: 'Error',
-        message: 'boom',
+      options: {
+        source: {
+          component: 'DefaultGenerationEngine',
+          operation: 'async generate',
+        },
+        metadata: {
+          name: 'Error',
+          message: 'boom',
+        },
       },
     });
 
@@ -158,9 +164,15 @@ describe('DefaultGenerationEngine', () => {
     expect(logger.logs).toContainEqual({
       level: 'error',
       message: 'Generation failed',
-      meta: {
-        name: 'UnknownError',
-        message: 'boom',
+      options: {
+        source: {
+          component: 'DefaultGenerationEngine',
+          operation: 'async generate',
+        },
+        metadata: {
+          name: 'UnknownError',
+          message: 'boom',
+        },
       },
     });
   });

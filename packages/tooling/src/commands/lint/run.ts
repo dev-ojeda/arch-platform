@@ -1,11 +1,10 @@
 // packages/tooling/src/commands/lint/run.ts
 
-// packages/tooling/src/commands/lint-command/lint-command.ts
+import { pathExistsSync } from '@arch/infrastructure';
 
 import { logger } from '../../logging/logger.js';
 import { ToolingEvents } from '../../runtime/events/tooling-event.js';
 import type { ExecuteCommandResult } from '../../runtime/execution/execute-command-result.js';
-import { pathExists } from '../../runtime/filesystem/path-exists.js';
 import { executeProcess } from '../../runtime/process/execute-process.js';
 import type { LintCommandOptions } from '../common/command-options.js';
 import { createSkippedCommandResult } from '../common/create-skipped-command-result.js';
@@ -15,7 +14,7 @@ import { createLintArguments } from './create-lint-arguments.js';
 const DEFAULT_LINT_TARGETS = ['src', 'test', 'testing'] as const;
 
 function resolveLintTargets(targets: readonly string[]): readonly string[] {
-  return targets.filter(pathExists);
+  return targets.filter(pathExistsSync);
 }
 
 function validateLintTargets(lintTargets: readonly string[]): ExecuteCommandResult | undefined {

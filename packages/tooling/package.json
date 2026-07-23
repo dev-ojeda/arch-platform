@@ -30,7 +30,8 @@
     "typecheck": "arch typecheck"
   },
   "dependencies": {
-    "@arch/build-core": "workspace:*"
+    "@arch/build-core": "workspace:*",
+    "@arch/infrastructure": "workspace:*"
   },
   "devDependencies": {
     "typescript": "catalog:",

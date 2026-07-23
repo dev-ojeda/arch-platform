@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 import { GovernanceEngine } from '../../src/engine/governance-engine.js';
 import type { GovernanceRule } from '../../src/engine/governance-rule.js';
 import type { Diagnostic } from '../../src/types/diagnostic.js';
-import type { GovernanceExecutionContext } from '../../src/types/governance-context.js';
+import { createGovernanceExecutionContext } from '../fixtures/governance/create-governance-execution-context.js';
 import { TestRuleId } from '../helpers/test-rule-id.js';
 
 describe('GovernanceEngine', () => {
@@ -31,19 +31,7 @@ describe('GovernanceEngine', () => {
       throw new Error(message);
     },
   });
-  const context: GovernanceExecutionContext = {
-    workspaceRoot: '/workspace',
-
-    packages: [],
-
-    analysis: {
-      packageGraph: {} as never,
-      symbolGraph: {
-        nodes: [],
-        edges: [],
-      },
-    },
-  };
+  const context = createGovernanceExecutionContext();
   it('returns successful result when no rules are registered', async () => {
     const result = await new GovernanceEngine([]).run(context);
     expect(result.success).toBe(true);

@@ -1,6 +1,6 @@
 // packages/tooling/src/commands/clean/create-paths-to-remove.ts
 
-import { join } from 'path';
+import { joinPath } from '@arch/infrastructure';
 
 import type { CleanCommandOptions } from '../common/command-options.js';
 
@@ -11,15 +11,15 @@ export function createPathsToRemove(
   const paths: string[] = [];
 
   if (options.removeDist) {
-    paths.push(join(cwd, 'dist'));
+    paths.push(joinPath(cwd, 'dist'));
   }
 
   if (options.removeCoverage) {
-    paths.push(join(cwd, 'coverage'));
+    paths.push(joinPath(cwd, 'coverage'));
   }
 
   if (options.removeTurbo) {
-    paths.push(join(cwd, '.turbo'));
+    paths.push(joinPath(cwd, '.turbo'));
   }
 
   return paths;

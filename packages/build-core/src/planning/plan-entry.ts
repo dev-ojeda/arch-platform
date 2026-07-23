@@ -1,5 +1,6 @@
+import type { HashResult } from '@arch/platform-model';
+
 import type { CacheDecision, ChangeReason } from '../cache/cache-types.js';
-import type { HashResult } from '../hash/hash-result.js';
 
 export type BuildAction = 'execute' | 'restore' | 'skip';
 

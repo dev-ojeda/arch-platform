@@ -14,7 +14,9 @@
   },
   "arch": {
     "build": {
-      "builder": "tsc"
+      "builder": "tsc",
+      "entry": "./src/index.ts",
+      "validateExports": true
     }
   },
   "files": [
@@ -33,6 +35,8 @@
     "test:clear": "vitest --clearCache"
   },
   "dependencies": {
-    "@arch/code-analysis": "workspace:*"
+    "@arch/code-analysis": "workspace:*",
+    "@arch/platform-model": "workspace:*",
+    "@arch/infrastructure": "workspace:*"
   }
 }
