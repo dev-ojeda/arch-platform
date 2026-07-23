@@ -1,7 +1,6 @@
 {
   "name": "@arch/contracts",
   "version": "0.1.0",
-  "private": true,
   "type": "module",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -20,6 +19,7 @@
     "arch": "arch build --package @arch/contracts",
     "clean": "arch clean",
     "typecheck": "arch typecheck",
-    "lint": "arch lint"
+    "lint": "arch lint",
+    "validate": "arch validate"
   }
 }

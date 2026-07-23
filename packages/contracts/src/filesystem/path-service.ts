@@ -1,4 +1,4 @@
-// packages/contracts/src/runtime/runtime-path-service.ts
+// packages/contracts/src/filesystem/path-service.ts
 
 export interface PathService {
   join(...segments: string[]): string;
