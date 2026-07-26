@@ -1,7 +1,8 @@
 // packages/testing/src/filesystem/filesystem-sync-port.contract.ts
 
-import type { FileSystemSyncPort } from '@arch/contracts';
 import { describe, expect, it } from 'vitest';
+
+import type { FileSystemSyncPort } from '@arch/contracts';
 
 export function runFileSystemSyncPortContract(createFileSystem: () => FileSystemSyncPort): void {
   describe('FileSystemSyncPort contract', () => {

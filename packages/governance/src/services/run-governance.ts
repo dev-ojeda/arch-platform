@@ -2,11 +2,11 @@
 
 import type { Diagnostic, WorkspaceProvider } from '@arch/platform-model';
 
-import { createGovernanceRules } from '../composition/governance-rules.js';
+import { GovernanceCompositionRoot } from '../composition/governance-composition-root.js';
 import { buildGovernanceContext } from '../context/build-governance-context.js';
 import { buildGovernanceExecutionContext } from '../context/build-governance-execution-context.js';
+
 import type { GovernanceScope } from '../context/governance-scope.js';
-import { GovernanceEngine } from '../engine/governance-engine.js';
 
 export async function runGovernance(
   scope: GovernanceScope,
@@ -14,11 +14,11 @@ export async function runGovernance(
 ): Promise<Diagnostic[]> {
   const workspace = await workspaceProvider.discover(scope.root);
 
-  const governanceContext = buildGovernanceContext(workspace);
+  const governanceContext = buildGovernanceContext(scope, workspace);
 
-  const executionContext = await buildGovernanceExecutionContext(governanceContext);
+  const executionContext = buildGovernanceExecutionContext(governanceContext);
 
-  const engine = new GovernanceEngine(createGovernanceRules());
+  const engine = new GovernanceCompositionRoot().createEngine();
 
   const result = await engine.run(executionContext);
 

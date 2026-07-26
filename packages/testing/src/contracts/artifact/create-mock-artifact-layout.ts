@@ -1,7 +1,8 @@
 // packages/testing/src/contracts/artifact/create-mock-artifact-layout.ts
 
-import type { ArtifactLayout } from '@arch/platform-model';
 import { vi } from 'vitest';
+
+import type { ArtifactLayout } from '@arch/platform-model';
 
 export function createMockArtifactLayout(
   root = '/cache/artifact',

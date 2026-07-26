@@ -2,14 +2,15 @@
 
 import type { Diagnostic, DiagnosticSeverity } from '@arch/platform-model';
 
-import type { GovernanceExecutionContext } from '../context/governance-context.js';
 import { createStopwatch } from '../helpers/create-stopwatch.js';
 import { getErrorMessage } from '../helpers/error-message.js';
-import type { RuleExecutionResult } from '../rules/execution-result-rule.js';
+
 
 import type { GovernanceEngineResult } from './governance-engine-result.js';
 import type { GovernanceRuleExecution } from './governance-rule-execution.js';
 import type { GovernanceRule } from './governance-rule.js';
+import type { GovernanceExecutionContext } from '../context/governance-context.js';
+import type { RuleExecutionResult } from '../rules/execution-result-rule.js';
 
 export class GovernanceEngine {
   constructor(private readonly rules: readonly GovernanceRule[]) {}
@@ -20,7 +21,13 @@ export class GovernanceEngine {
     const diagnostics: Diagnostic[] = [];
     const executions: GovernanceRuleExecution[] = [];
 
-    const results = await Promise.all(this.rules.map((rule) => this.executeRule(rule, context)));
+    const applicableRules = this.rules.filter(
+      (rule) => !rule.supports || rule.supports(context.scope),
+    );
+
+    const results = await Promise.all(
+      applicableRules.map((rule) => this.executeRule(rule, context)),
+    );
 
     for (const execution of results) {
       if (execution.error) {
@@ -53,12 +60,11 @@ export class GovernanceEngine {
 
       durationMs: stopwatch.milliseconds(),
 
-      evaluatedRules: this.rules.length,
+      evaluatedRules: applicableRules.length,
 
       executions,
     };
   }
-
   private async executeRule(
     rule: GovernanceRule,
     context: GovernanceExecutionContext,

@@ -5,8 +5,8 @@ import { CodeAnalysisAdapter } from '../analysis/code-analysis/code-analysis-ada
 
 import type { GovernanceContext, GovernanceExecutionContext } from './governance-context.js';
 
-export async function buildGovernanceExecutionContext(
+export function buildGovernanceExecutionContext(
   context: GovernanceContext,
-): Promise<GovernanceExecutionContext> {
+): GovernanceExecutionContext {
   return buildCodeAnalysisContext(context, new CodeAnalysisAdapter());
 }

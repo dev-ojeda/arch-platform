@@ -2,6 +2,7 @@
 
 import { formatBytes } from '../../utils/format-bytes.js';
 import { formatDuration } from '../../utils/format-duration.js';
+
 import type {
   ExecutionMetadata,
   ExecutionMetadataOptions,

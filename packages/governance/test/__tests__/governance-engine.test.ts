@@ -2,11 +2,13 @@
 
 import { describe, expect, it } from 'vitest';
 
+import type { Diagnostic } from '@arch/platform-model';
+
 import { GovernanceEngine } from '../../src/engine/governance-engine.js';
-import type { GovernanceRule } from '../../src/engine/governance-rule.js';
-import type { Diagnostic } from '../../src/types/diagnostic.js';
 import { createGovernanceExecutionContext } from '../fixtures/governance/create-governance-execution-context.js';
 import { TestRuleId } from '../helpers/test-rule-id.js';
+
+import type { GovernanceRule } from '../../src/engine/governance-rule.js';
 
 describe('GovernanceEngine', () => {
   const warningDiagnostic: Diagnostic = {

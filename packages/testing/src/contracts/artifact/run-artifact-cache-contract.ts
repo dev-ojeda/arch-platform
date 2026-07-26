@@ -1,11 +1,12 @@
 // packages/testing/src/contracts/artifact/run-artifact-cache-contract.ts
+import { describe, expect, it, type Mocked } from 'vitest';
+
 import type {
   Artifact,
   ArtifactCache,
   ArtifactLayout,
   ArtifactPublisher,
 } from '@arch/platform-model';
-import { describe, expect, it, type Mocked } from 'vitest';
 
 import type { ContractFixtureFactory } from '../contract-fixture-factory.js';
 

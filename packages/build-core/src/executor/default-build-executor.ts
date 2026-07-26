@@ -3,12 +3,13 @@
 import type { DagNode } from '@arch/platform-model';
 
 import { logger } from '../logging/logger.js';
-import type { BuildPlanEntry } from '../planning/plan-entry.js';
+
+import { createBuildSteps } from './build-step-factory.js';
 
 import type { BuildExecutionContext } from './build-execution-context.js';
 import type { BuildExecutor } from './build-executor.js';
 import type { BuildResult } from './build-result.js';
-import { createBuildSteps } from './build-step-factory.js';
+import type { BuildPlanEntry } from '../planning/plan-entry.js';
 
 /**
  * Executes the build steps associated with a package.

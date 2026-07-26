@@ -3,54 +3,23 @@
 import { describe, expect, it } from 'vitest';
 
 import { DependencyDirectionRule } from '../../../src/architecture/rules/dependency-direction.rule.js';
-import type { SymbolGraph } from '../../../src/symbol-graph/symbol-graph-types.js';
+import { createImport } from '../../fixtures/create-import-fixture.js';
+import { createNode } from '../../fixtures/create-node-fixture.js';
+import { createSymbolGraph } from '../../fixtures/create-symbol-graph-fixture.js';
 
 describe('DependencyDirectionRule', () => {
   it('should allow dependencies that follow the layer direction', () => {
-    const graph: SymbolGraph = {
+    const graph = createSymbolGraph({
       nodes: [
-        {
-          id: 'api-controller',
-          name: 'ApiController',
-          kind: 'class',
-          sourceFile: 'api.ts',
-          package: '@arch/api',
-          exported: true,
-        },
-        {
-          id: 'application-service',
-          name: 'ApplicationService',
-          kind: 'class',
-          sourceFile: 'application.ts',
-          package: '@arch/application',
-          exported: true,
-        },
-        {
-          id: 'domain-service',
-          name: 'DomainService',
-          kind: 'class',
-          sourceFile: 'domain.ts',
-          package: '@arch/domain',
-          exported: true,
-        },
+        createNode('api-controller', '@arch/api'),
+        createNode('application-service', '@arch/application'),
+        createNode('domain-service', '@arch/domain'),
       ],
-
       edges: [
-        {
-          from: 'api-controller',
-          to: 'application-service',
-          type: 'import',
-          kind: 'import',
-        },
-        {
-          from: 'application-service',
-          to: 'domain-service',
-          type: 'import',
-          kind: 'import',
-        },
+        createImport('api-controller', 'application-service'),
+        createImport('application-service', 'domain-service'),
       ],
-    };
-
+    });
     const rule = new DependencyDirectionRule({
       layers: ['@arch/api', '@arch/application', '@arch/domain'],
     });
@@ -62,35 +31,13 @@ describe('DependencyDirectionRule', () => {
   });
 
   it('should reject dependencies that violate the layer direction', () => {
-    const graph: SymbolGraph = {
+    const graph = createSymbolGraph({
       nodes: [
-        {
-          id: 'domain-service',
-          name: 'DomainService',
-          kind: 'class',
-          sourceFile: 'domain.ts',
-          package: '@arch/domain',
-          exported: true,
-        },
-        {
-          id: 'application-service',
-          name: 'ApplicationService',
-          kind: 'class',
-          sourceFile: 'application.ts',
-          package: '@arch/application',
-          exported: true,
-        },
+        createNode('domain-service', '@arch/domain'),
+        createNode('application-service', '@arch/application'),
       ],
-
-      edges: [
-        {
-          from: 'domain-service',
-          to: 'application-service',
-          type: 'import',
-          kind: 'import',
-        },
-      ],
-    };
+      edges: [createImport('domain-service', 'application-service')],
+    });
 
     const rule = new DependencyDirectionRule({
       layers: ['@arch/api', '@arch/application', '@arch/domain'],
@@ -99,7 +46,6 @@ describe('DependencyDirectionRule', () => {
     const result = rule.validate(graph);
 
     expect(result.passed).toBe(false);
-
     expect(result.violations).toHaveLength(1);
 
     expect(result.violations[0]).toMatchObject({

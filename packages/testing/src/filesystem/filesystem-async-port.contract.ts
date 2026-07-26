@@ -1,7 +1,8 @@
 // packages/testing/src/filesystem/filesystem-async-port-contract.ts
 
-import type { FileSystemAsyncPort } from '@arch/contracts';
 import { describe, expect, it } from 'vitest';
+
+import type { FileSystemAsyncPort } from '@arch/contracts';
 
 export function runFileSystemAsyncPortContract(
   createFileSystem: () => Promise<FileSystemAsyncPort>,

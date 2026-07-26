@@ -1,7 +1,8 @@
 // packages\application\test\__tests__\in-memory-generator-registry.test.ts
 
-import { createTestGenerator } from '@arch/testing';
 import { describe, expect, it } from 'vitest';
+
+import { createTestGenerator } from '@arch/testing';
 
 import { InMemoryGeneratorRegistry } from '../../src/generation/registry/in-memory-generator-registry.js';
 

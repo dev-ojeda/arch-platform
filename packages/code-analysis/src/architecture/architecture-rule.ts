@@ -1,8 +1,7 @@
 // packages/code-analysis/src/architecture/architecture-rule.ts
 
-import type { SymbolGraph } from '../symbol-graph/symbol-graph-types.js';
-
 import type { ArchitectureRuleResult } from './architecture-rule-result.js';
+import type { SymbolGraph } from '../symbols/graph/symbol-graph-types.js';
 
 export interface ArchitectureRule {
   id: string;

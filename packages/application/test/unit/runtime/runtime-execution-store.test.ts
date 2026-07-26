@@ -3,7 +3,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
 import { RuntimeEventTypes } from '../../../src/runtime/execution/events/runtime-event-types.js';
-import type { ExecutionState } from '../../../src/runtime/execution/runtime-execution-status.js';
 import { RuntimeExecutionStore } from '../../../src/runtime/execution/runtime-execution-store.js';
 import {
   createPipelineCompletedEvent,
@@ -13,6 +12,8 @@ import {
   createStepFailedEvent,
   createStepStartedEvent,
 } from '../../fixtures/runtime/create-test-runtime-events.js';
+
+import type { ExecutionState } from '../../../src/runtime/execution/runtime-execution-status.js';
 
 describe('CreateTestRuntimeExecutionSotore', () => {
   it('creates execution when pipeline starts', () => {

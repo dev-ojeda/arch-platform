@@ -2,8 +2,10 @@
 
 import type { Diagnostic } from '@arch/platform-model';
 
-import type { GovernanceContext } from '../context/governance-context.js';
 import { GovernanceRuleId } from '../engine/governance-rule-id.js';
+
+import type { GovernanceContext } from '../context/governance-context.js';
+import type { GovernanceScope } from '../context/governance-scope.js';
 import type { GovernanceRule } from '../engine/governance-rule.js';
 
 export class WorkspacePackageRule implements GovernanceRule {
@@ -32,5 +34,8 @@ export class WorkspacePackageRule implements GovernanceRule {
     }
 
     return diagnostics;
+  }
+  supports(scope: GovernanceScope): boolean {
+    return scope.kind === 'workspace';
   }
 }

@@ -1,9 +1,11 @@
 // packages/testing/src/contracts/artifact/run-artifact-provider-contract.ts
 
-import type { ArtifactProvider } from '@arch/platform-model';
 import { expect, it } from 'vitest';
 
+import type { ArtifactProvider } from '@arch/platform-model';
+
 import { createTestHashResult } from '../../hash/create-test-hash-result.js';
+
 import type { ContractFixtureFactory } from '../contract-fixture-factory.js';
 
 export interface ArtifactProviderContractContext {

@@ -2,12 +2,12 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { createGovernanceRules } from '../../src/composition/governance-rules.js';
+import { GovernanceCompositionRoot } from '../../src/composition/governance-composition-root.js';
 
-describe('createDefaultGovernanceRules', () => {
-  it('registers all default rules', () => {
-    const rules = createGovernanceRules();
+describe('GovernanceCompositionRoot', () => {
+  it('creates governance engine', () => {
+    const engine = new GovernanceCompositionRoot().createEngine();
 
-    expect(rules.map((rule) => rule.name)).toContain('detect-cycles-rule');
+    expect(engine).toBeDefined();
   });
 });

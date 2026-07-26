@@ -1,8 +1,0 @@
-// packages/code-analysis/src/symbol-dependencies/index.ts
-
-export * from './package-dependency-graph-builder.js';
-export * from './package-dependency-graph.js';
-export * from './package-dependency.js';
-export * from './semantic-dependency-analyzer.js';
-export * from './semantic-dependency-scanner.js';
-export * from './symbol-dependency.js';

@@ -16,12 +16,13 @@ import {
   writeTextFileSync,
 } from '../io/fs-sync.js';
 import { DEFAULT_FILE_SYSTEM_OPTIONS } from '../options/default-filesystem-option.js';
-import type { FileSystemAdapterOptions } from '../options/filesystem-options.js';
 import { normalizeDirectoryEntry } from '../paths/canonicalize-directory-entry.js';
 import { NodePathService } from '../paths/node-path-service.js';
 import { shouldWriteFile } from '../policies/resolve-write-policy.js';
 
 import { BaseFileSystemAdapter } from './base-filesystem-adapter.js';
+
+import type { FileSystemAdapterOptions } from '../options/filesystem-options.js';
 
 export class NodeSyncFileSystemAdapter extends BaseFileSystemAdapter implements FileSystemSyncPort {
   constructor(options: FileSystemAdapterOptions = DEFAULT_FILE_SYSTEM_OPTIONS) {

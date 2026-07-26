@@ -1,12 +1,14 @@
 // packages\application\test\__tests__\generate-project.use-case.test.ts
 
-import type { GenerationResult } from '@arch/contracts';
-import { createTestGenerator } from '@arch/testing';
 import { describe, expect, it, vi } from 'vitest';
 
-import type { GenerationEngine } from '../../src/generation/engine/generation-engine.js';
+import type { GenerationResult } from '@arch/contracts';
+import { createTestGenerator } from '@arch/testing';
+
 import { InMemoryGeneratorRegistry } from '../../src/generation/registry/in-memory-generator-registry.js';
 import { GenerateProjectUseCase } from '../../src/use-cases/generate-project/generate-project.use-case.js';
+
+import type { GenerationEngine } from '../../src/generation/engine/generation-engine.js';
 
 describe('GenerateProjectUseCase', () => {
   it('delegates generation to engine', async () => {

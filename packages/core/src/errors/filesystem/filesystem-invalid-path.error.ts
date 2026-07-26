@@ -1,9 +1,10 @@
 // packages/core/src/errors/filesystem/filesystem-invalid-path.error.ts
 
-import type { ErrorOptions } from '../base/base-error.js';
 import { FILESYSTEM_ERROR_CODES } from '../codes/filesystem.codes.js';
 
 import { FilesystemError } from './filesystem-error.js';
+
+import type { ErrorOptions } from '../base/base-error.js';
 
 export interface InvalidPathMetadata {
   path: string;

@@ -1,7 +1,6 @@
 // packages/build-core/src/services/build-service.ts
 
 import { CacheEvaluator } from '../cache/cache-evaluator.js';
-import type { BuildResult } from '../executor/build-result.js';
 import { BuildTaskRunner } from '../graph/build-task-runner.js';
 import { HashGraphBuilder } from '../hash/hash-graph.js';
 import { LOG_EVENTS } from '../logging/log-events.js';
@@ -15,6 +14,7 @@ import { ExecutionPlanScheduler } from '../runtime/execution/execution-plan-sche
 import type { BuildContext } from './build-context.js';
 import type { BuildOptions } from './build-options.js';
 import type { BuildServiceSummary } from './build-service-summary.js';
+import type { BuildResult } from '../executor/build-result.js';
 /**
  * Application service responsible for orchestrating the build pipeline.
  *

@@ -1,10 +1,10 @@
 // packages/build-core/src/planning/scope-resolver.ts
 
+import type { BuildPlan } from './build-plan.js';
+import type { BuildScope } from './build-scope.js';
 import type { CacheDecision } from '../cache/cache-types.js';
 import type { GraphQueryService } from '../graph/graph-query-services.js';
 
-import type { BuildPlan } from './build-plan.js';
-import type { BuildScope } from './build-scope.js';
 
 export class ScopeResolver {
   constructor(

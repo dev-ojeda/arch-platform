@@ -1,9 +1,10 @@
 // packages/code-analysis/src/symbols/references/import-symbol-reference-scanner.ts
 
-import type { Project } from 'ts-morph';
 
-import type { SymbolEdge } from '../../symbol-graph/symbol-edge-types.js';
-import { resolveSymbolId } from '../../symbol-graph/symbol-id-resolver.js';
+import { resolveSymbolId } from '../symbol-id-resolver.js';
+
+import type { SymbolEdge } from '../model/symbol-edge-types.js';
+import type { Project } from 'ts-morph';
 
 export function scanImportSymbolReferences(project: Project): readonly SymbolEdge[] {
   const edges: SymbolEdge[] = [];
@@ -18,8 +19,6 @@ export function scanImportSymbolReferences(project: Project): readonly SymbolEdg
     }));
 
     for (const declaration of imports) {
-      const importPath = declaration.getModuleSpecifierValue();
-
       for (const namedImport of declaration.getNamedImports()) {
         const symbol = namedImport.getSymbol();
 
@@ -40,10 +39,6 @@ export function scanImportSymbolReferences(project: Project): readonly SymbolEdg
             to,
 
             type: 'import',
-
-            kind: 'import',
-
-            importPath,
           });
         }
       }

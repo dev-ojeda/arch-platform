@@ -1,5 +1,6 @@
-import type { WorkspacePackage } from '@arch/platform-model';
 import { describe, expect, it } from 'vitest';
+
+import type { WorkspacePackage } from '@arch/platform-model';
 
 import { buildGraph } from '../../../src/graph/build-graph.js';
 

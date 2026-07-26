@@ -1,10 +1,4 @@
 // packages/code-analysis/src/index.ts
-export * from './architecture/index.js';
-export * from './graph/index.js';
-export * from './impact/index.js';
-export * from './imports/index.js';
-export * from './project/index.js';
-export * from './symbol-dependencies/index.js';
-export * from './symbol-graph/index.js';
-export * from './symbols/index.js';
-export * from './typescript/index.js';
+export { buildAnalysisContext } from './analysis/index.js';
+export type { AnalysisContext } from './analysis/index.js';
+export { createTsProject } from './project/index.js';

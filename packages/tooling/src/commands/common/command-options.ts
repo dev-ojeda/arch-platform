@@ -7,6 +7,9 @@ export interface CommandOptions {
 }
 
 export interface LintCommandOptions extends CommandOptions {
+  readonly fix?: boolean;
+  readonly cache?: boolean;
+  readonly quiet?: boolean;
   readonly targets?: readonly string[];
   readonly extensions?: readonly string[];
   readonly maxWarnings?: number;

@@ -1,7 +1,8 @@
 // packages/testing/src/filesystem/create-mock-filesystem.ts
 
-import type { WriteFileOptions } from '@arch/contracts';
 import { vi } from 'vitest';
+
+import type { WriteFileOptions } from '@arch/contracts';
 
 import { createMemoryFilesystem, type MemoryFilesystem } from './create-memory-filesystem.js';
 
