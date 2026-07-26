@@ -1,7 +1,8 @@
 import { Project } from 'ts-morph';
 import { describe, expect, it } from 'vitest';
 
-import { buildSymbolGraph } from '../../src/symbol-graph/build-symbol-graph.js';
+import { DefaultPackageResolver } from '../../src/package/resolvers/default-package-resolver.js';
+import { buildSymbolGraph } from '../../src/symbols/graph/build-symbol-graph.js';
 
 describe('symbol relationship graph', () => {
   it('should create property type relationships', () => {
@@ -26,8 +27,9 @@ describe('symbol relationship graph', () => {
       }
       `,
     );
+    const packageResolver = new DefaultPackageResolver();
 
-    const graph = buildSymbolGraph(project);
+    const graph = buildSymbolGraph(project, packageResolver);
 
     const userNode = graph.nodes.find((node) => node.name === 'UserService');
 
@@ -37,7 +39,7 @@ describe('symbol relationship graph', () => {
 
     expect(edges.length).toBeGreaterThan(0);
 
-    expect(edges.some((edge) => edge.kind === 'property-type')).toBe(true);
+    expect(edges.some((edge) => edge.type === 'property-type')).toBe(true);
 
     expect(edges.some((edge) => edge.to.includes('User'))).toBe(true);
   });

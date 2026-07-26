@@ -6,8 +6,9 @@ import type { HashResult } from '@arch/platform-model';
 import { logger } from '../logging/logger.js';
 import { isRecord } from '../serialization/type-guards.js';
 
-import type { BuildStateLoader } from './build-state-loader.js';
 import { getBuildStatePath } from './state-paths.js';
+
+import type { BuildStateLoader } from './build-state-loader.js';
 import type { BuildState, BuildStateEntry } from './state-types.js';
 
 export class JsonBuildStateLoader implements BuildStateLoader {
@@ -28,7 +29,7 @@ export class JsonBuildStateLoader implements BuildStateLoader {
       return new Map();
     }
 
-    const parsed = this.filesystem.read(statePath);
+    const parsed = this.filesystem.readJson(statePath);
 
     if (!isRecord(parsed)) {
       logger.warn('state.invalid.root', {

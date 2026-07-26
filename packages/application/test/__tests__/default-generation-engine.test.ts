@@ -1,12 +1,13 @@
 // packages/application/test/__tests__/default-generation-engine.test.ts
 
+import { describe, expect, it, vi } from 'vitest';
+
 import type {
   GenerationContext,
   GenerationReportExporter,
   GenerationRequest,
 } from '@arch/contracts';
 import { createTestGenerator, TestLogger } from '@arch/testing';
-import { describe, expect, it, vi } from 'vitest';
 
 import { DefaultGenerationEngine } from '../../src/generation/engine/default-generation-engine.js';
 

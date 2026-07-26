@@ -1,7 +1,8 @@
 // packages/testing/src/contracts/artifact/run-artifact-publisher-contract.ts
 
-import type { ArtifactLayout, ArtifactManifest, ArtifactPublisher } from '@arch/platform-model';
 import { describe, expect, it } from 'vitest';
+
+import type { ArtifactLayout, ArtifactManifest, ArtifactPublisher } from '@arch/platform-model';
 
 import type { ContractFixtureFactory } from '../contract-fixture-factory.js';
 

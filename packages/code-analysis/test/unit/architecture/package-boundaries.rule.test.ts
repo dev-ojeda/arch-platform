@@ -3,40 +3,19 @@
 import { describe, expect, it } from 'vitest';
 
 import { PackageBoundariesRule } from '../../../src/architecture/rules/package-boundaries.rule.js';
-import type { SymbolGraph } from '../../../src/symbol-graph/symbol-graph-types.js';
+import { createImport } from '../../fixtures/create-import-fixture.js';
+import { createNode } from '../../fixtures/create-node-fixture.js';
+import { createSymbolGraph } from '../../fixtures/create-symbol-graph-fixture.js';
 
 describe('PackageBoundariesRule', () => {
   it('should allow valid package dependency', () => {
-    const graph: SymbolGraph = {
+    const graph = createSymbolGraph({
       nodes: [
-        {
-          id: 'api-controller',
-          name: 'ApiController',
-          kind: 'class',
-          sourceFile: 'api.ts',
-          package: '@arch/api',
-          exported: true,
-        },
-        {
-          id: 'app-service',
-          name: 'ApplicationService',
-          kind: 'class',
-          sourceFile: 'service.ts',
-          package: '@arch/application',
-          exported: true,
-        },
+        createNode('api-controller', '@arch/api'),
+        createNode('app-service', '@arch/application'),
       ],
-
-      edges: [
-        {
-          from: 'api-controller',
-          to: 'app-service',
-          type: 'import',
-          kind: 'import',
-        },
-      ],
-    };
-
+      edges: [createImport('api-controller', 'app-service')],
+    });
     const rule = new PackageBoundariesRule({
       '@arch/api': ['@arch/application'],
     });
@@ -49,35 +28,13 @@ describe('PackageBoundariesRule', () => {
   });
 
   it('should reject forbidden package dependency', () => {
-    const graph: SymbolGraph = {
+    const graph = createSymbolGraph({
       nodes: [
-        {
-          id: 'domain-model',
-          name: 'DomainModel',
-          kind: 'class',
-          sourceFile: 'domain.ts',
-          package: '@arch/domain',
-          exported: true,
-        },
-        {
-          id: 'infra-db',
-          name: 'DatabaseAdapter',
-          kind: 'class',
-          sourceFile: 'db.ts',
-          package: '@arch/infrastructure',
-          exported: true,
-        },
+        createNode('domain-model', '@arch/domain'),
+        createNode('infra-db', '@arch/infrastructure'),
       ],
-
-      edges: [
-        {
-          from: 'domain-model',
-          to: 'infra-db',
-          type: 'import',
-          kind: 'import',
-        },
-      ],
-    };
+      edges: [createImport('domain-model', 'infra-db')],
+    });
 
     const rule = new PackageBoundariesRule({
       '@arch/domain': [],
@@ -86,11 +43,9 @@ describe('PackageBoundariesRule', () => {
     const result = rule.validate(graph);
 
     expect(result.passed).toBe(false);
-
     expect(result.violations).toHaveLength(1);
 
     expect(result.violations[0].fromPackage).toBe('@arch/domain');
-
     expect(result.violations[0].toPackage).toBe('@arch/infrastructure');
   });
 });

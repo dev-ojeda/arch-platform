@@ -1,5 +1,7 @@
 // packages/application/test/__tests__/mvc-generation.e2e.test.ts
 
+import { describe, expect, it } from 'vitest';
+
 import type {
   GenerationContext,
   RenderedFile,
@@ -7,7 +9,6 @@ import type {
   TemplateRendererPort,
 } from '@arch/contracts';
 import { createTestGenerator, createTestPipelineContext } from '@arch/testing';
-import { describe, expect, it } from 'vitest';
 
 import { GeneratorValidationError } from '../../src/generation/errors/generator-validation-error.js';
 import { RenderFilesStep } from '../../src/generation/steps/render-files.step.js';

@@ -2,9 +2,10 @@
 
 import type { Diagnostic, MaybePromise } from '@arch/platform-model';
 
-import type { GovernanceContext } from '../context/governance-context.js';
-
 import type { GovernanceRuleId } from './governance-rule-id.js';
+import type { GovernanceContext } from '../context/governance-context.js';
+import type { GovernanceScope } from '../context/governance-scope.js';
+
 
 /**
  * A governance rule that validates some aspect of a workspace.
@@ -14,11 +15,9 @@ import type { GovernanceRuleId } from './governance-rule-id.js';
  */
 export interface GovernanceRule<TContext extends GovernanceContext = GovernanceContext> {
   readonly id: GovernanceRuleId;
-
   readonly name: string;
 
-  /**
-   * Executes the rule.
-   */
+  supports?(scope: GovernanceScope): boolean;
+
   run(context: TContext): MaybePromise<Diagnostic[]>;
 }

@@ -9,11 +9,14 @@ import type {
 
 import { pathExists, readTextFile } from '../filesystem/io/fs-async.js';
 import { distPath, joinPath, srcPath, testPath } from '../filesystem/io/path-utils.js';
+import { NodePathService } from '../filesystem/paths/node-path-service.js';
 import { LOG_EVENTS } from '../logging/log-events.js';
 import { loggerFactory } from '../logging/logger.js';
 import { safeParse } from '../serialization/safe-stringify.js';
 
 export class PackageDescriptorFactory {
+  private readonly pathService = new NodePathService();
+
   logger = loggerFactory.createLogger({
     component: 'PackageDescriptorFactory',
   });
@@ -38,7 +41,8 @@ export class PackageDescriptorFactory {
   }
 
   private async readPackageManifest(path: string): Promise<PackageManifest> {
-    const manifest = await readTextFile(safeParse(path));
+    const content = await readTextFile(path);
+    const manifest = safeParse<PackageManifest>(content);
 
     if (!this.isPackageManifest(manifest)) {
       this.logger.error(LOG_EVENTS.INVALID_PACKAGE_MANIFEST, {
@@ -94,11 +98,15 @@ export class PackageDescriptorFactory {
   }
 
   private async resolveLayout(root: string): Promise<PackageLayout> {
-    const [hasSourceDirectory, hasTestsDirectory, hasDistributionDirectory] = await Promise.all([
-      pathExists(srcPath(root)),
-      pathExists(testPath(root)),
-      pathExists(distPath(root)),
-    ]);
+    const tsconfig = this.pathService.join(root, 'tsconfig.json');
+
+    const [hasSourceDirectory, hasTestsDirectory, hasDistributionDirectory, hasTsconfig] =
+      await Promise.all([
+        pathExists(srcPath(root)),
+        pathExists(testPath(root)),
+        pathExists(distPath(root)),
+        pathExists(tsconfig),
+      ]);
 
     return {
       sourceDirectory: srcPath(root),
@@ -109,6 +117,9 @@ export class PackageDescriptorFactory {
 
       distributionDirectory: distPath(root),
       hasDistributionDirectory,
+
+      tsconfigPath: tsconfig,
+      hasTsconfig,
     };
   }
 

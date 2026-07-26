@@ -2,11 +2,12 @@
 
 import { describe, expect, it } from 'vitest';
 
-import type { BuildResult } from '../../../src/executor/build-result.js';
 import { createSuccessResult } from '../../helpers/build-result.js';
 import { createBuildTaskRunner } from '../../helpers/build-task-runner.js';
 import { createDeferred } from '../../helpers/create-deferred.js';
 import { createNode, createPlan, createScheduler } from '../../helpers/execution-plan.js';
+
+import type { BuildResult } from '../../../src/executor/build-result.js';
 
 describe('ExecutionPlanScheduler', () => {
   it('should execute a node without dependencies and mark it as success', async () => {

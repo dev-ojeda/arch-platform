@@ -1,7 +1,8 @@
 // packages/tooling/src/runtime/process/process-runner.ts
 
-import type { CommandRunner } from '@arch/build-core';
 import { execa } from 'execa';
+
+import type { CommandRunner } from '@arch/build-core';
 
 import { logger } from '../../logging/logger.js';
 

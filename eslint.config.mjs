@@ -1,132 +1,28 @@
 // eslint.config.mjs
 
 import eslint from '@eslint/js';
-import importPlugin from 'eslint-plugin-import';
+import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
-/**
- * -----------------------------------------------------------------------------
- * Paths
- * -----------------------------------------------------------------------------
- */
+import { ESLINT_PLUGINS } from './config/eslint/base.mjs';
+import { CONFIG_TS_FILES, SOURCE_FILES } from './config/eslint/constants.mjs';
+import { IGNORES } from './config/eslint/global.mjs';
+import { TEST_FILES, TEST_LANGUAGE_OPTIONS } from './config/eslint/presets/test.mjs';
+import {
+  COMMONJS_FILES,
+  COMMONJS_LANGUAGE_OPTIONS,
+  TOOLING_FILES,
+  TOOLING_LANGUAGE_OPTIONS,
+} from './config/eslint/presets/tooling.mjs';
+import {
+  ARCHITECTURE_RULES,
+  ARCHITECTURE_RULES_NO_COMMONJS,
+  ARCHITECTURE_RULES_NO_REQUIRED,
+} from './config/eslint/rules/architecture.mjs';
+import { COMMON_IMPORT_RULES, createImportSettings } from './config/eslint/rules/imports.mjs';
+import { COMMON_TS_RULES, TYPESCRIPT_LANGUAGE_OPTIONS } from './config/eslint/rules/typescript.mjs';
 
-const IGNORES = [
-  '**/dist/**',
-  '**/bin/**',
-  '**/coverage/**',
-  '**/.turbo/**',
-  '**/node_modules/**',
-  '**/.pnpm/**',
-  '**/.cache/**',
-  '**/*.d.ts',
-];
-
-const TOOLING_FILES = [
-  '**/vitest.config.ts',
-  '**/eslint.config.mjs',
-  '**/*.config.{js,cjs,mjs,ts}',
-  '**/commitlint.config.cjs',
-  '**/.dependency-cruiser.cjs',
-];
-
-const TEST_FILES = ['**/*.test.ts', '**/*.spec.ts', '**/test/**/*.ts', '**/__tests__/**/*.ts'];
-const CONFIG_TS_FILES = ['config/**/*.ts'];
-const SOURCE_FILES = ['packages/**/*.ts', 'packages/**/*.tsx', 'apps/**/*.ts', 'apps/**/*.tsx'];
-
-/**
- * -----------------------------------------------------------------------------
- * Import Governance
- * -----------------------------------------------------------------------------
- */
-
-const RESTRICTED_IMPORTS = {
-  patterns: ['@arch/*/src/**', '@arch/*/dist/**', '@arch/**/src/**', '@arch/**/dist/**'],
-
-  paths: [
-    {
-      name: 'node:path',
-      importNames: ['default'],
-      message: 'Use "import * as path from node:path" o imports nombrados.',
-    },
-    {
-      name: 'node:fs/promises',
-      importNames: ['default'],
-      message: 'Use imports nombrados (readFile, stat, mkdir, readdir...).',
-    },
-    {
-      name: 'node:fs',
-      importNames: ['default'],
-      message: 'Use imports nombrados o namespace import.',
-    },
-  ],
-};
-/**
- * -----------------------------------------------------------------------------
- * Common Rules
- * -----------------------------------------------------------------------------
- */
-
-const COMMON_IMPORT_RULES = {
-  'import/extensions': [
-    'error',
-    'ignorePackages',
-    {
-      js: 'always',
-      mjs: 'always',
-      ts: 'never',
-      tsx: 'never',
-      json: 'always',
-    },
-  ],
-
-  'import/no-self-import': 'error',
-
-  'import/no-duplicates': 'error',
-
-  'import/no-unresolved': [
-    'error',
-    {
-      commonjs: false,
-      amd: false,
-    },
-  ],
-
-  'import/first': 'error',
-
-  'import/newline-after-import': 'error',
-
-  'import/order': [
-    'error',
-    {
-      groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
-
-      pathGroups: [
-        {
-          pattern: '@arch/**',
-          group: 'internal',
-          position: 'before',
-        },
-      ],
-
-      alphabetize: {
-        order: 'asc',
-        caseInsensitive: true,
-      },
-
-      'newlines-between': 'always',
-    },
-  ],
-
-  'no-restricted-imports': ['error', RESTRICTED_IMPORTS],
-};
-
-/**
- * -----------------------------------------------------------------------------
- * Export
- * -----------------------------------------------------------------------------
- */
-
-export default tseslint.config(
+export default defineConfig(
   /**
    * Global ignores
    */
@@ -151,40 +47,15 @@ export default tseslint.config(
   {
     files: CONFIG_TS_FILES,
 
-    languageOptions: {
-      parser: tseslint.parser,
+    languageOptions: TYPESCRIPT_LANGUAGE_OPTIONS,
 
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
+    plugins: ESLINT_PLUGINS,
 
-    plugins: {
-      import: importPlugin,
-    },
-
-    settings: {
-      'import/parsers': {
-        '@typescript-eslint/parser': ['.ts'],
-      },
-
-      'import/resolver': {
-        typescript: {
-          project: ['./config/tsconfig.json'],
-        },
-      },
-    },
+    settings: createImportSettings('./config/tsconfig.json'),
 
     rules: {
       ...COMMON_IMPORT_RULES,
-
-      '@typescript-eslint/consistent-type-imports': [
-        'error',
-        {
-          prefer: 'type-imports',
-        },
-      ],
+      ...COMMON_TS_RULES,
     },
   },
   /**
@@ -195,57 +66,16 @@ export default tseslint.config(
   {
     files: SOURCE_FILES,
 
-    languageOptions: {
-      parser: tseslint.parser,
+    languageOptions: TYPESCRIPT_LANGUAGE_OPTIONS,
 
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
+    plugins: ESLINT_PLUGINS,
 
-    plugins: {
-      import: importPlugin,
-    },
-
-    settings: {
-      'import/parsers': {
-        '@typescript-eslint/parser': ['.ts'],
-      },
-
-      'import/resolver': {
-        typescript: {
-          project: ['./tsconfig.json'],
-        },
-
-        node: {
-          extensions: ['.js', '.ts'],
-        },
-      },
-    },
+    settings: createImportSettings('./tsconfig.json'),
 
     rules: {
       ...COMMON_IMPORT_RULES,
-
-      '@typescript-eslint/consistent-type-imports': [
-        'error',
-        {
-          prefer: 'type-imports',
-        },
-      ],
-
-      '@typescript-eslint/no-unused-vars': [
-        'error',
-        {
-          argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_',
-        },
-      ],
-
-      /**
-       * Architecture governance
-       */
-      'import/no-commonjs': 'error',
+      ...COMMON_TS_RULES,
+      ...ARCHITECTURE_RULES,
     },
   },
 
@@ -255,35 +85,14 @@ export default tseslint.config(
    * -----------------------------------------------------------------------------
    */
   {
-    files: [
-      '**/*.cjs',
-      '**/*.config.cjs',
-      '**/commitlint.config.cjs',
-      '**/.dependency-cruiser.cjs',
-    ],
+    files: COMMONJS_FILES,
 
     extends: [tseslint.configs.disableTypeChecked],
 
-    languageOptions: {
-      sourceType: 'commonjs',
-
-      globals: {
-        module: 'readonly',
-        require: 'readonly',
-
-        __dirname: 'readonly',
-        __filename: 'readonly',
-      },
-
-      parserOptions: {
-        projectService: false,
-      },
-    },
+    languageOptions: COMMONJS_LANGUAGE_OPTIONS,
 
     rules: {
-      '@typescript-eslint/no-require-imports': 'off',
-
-      'import/no-commonjs': 'off',
+      ...ARCHITECTURE_RULES_NO_REQUIRED,
     },
   },
 
@@ -297,29 +106,14 @@ export default tseslint.config(
 
     extends: [tseslint.configs.disableTypeChecked],
 
-    plugins: {
-      import: importPlugin,
-    },
+    plugins: ESLINT_PLUGINS,
 
-    languageOptions: {
-      globals: {
-        describe: 'readonly',
-        it: 'readonly',
-        test: 'readonly',
-
-        expect: 'readonly',
-
-        beforeEach: 'readonly',
-        afterEach: 'readonly',
-
-        vi: 'readonly',
-      },
-    },
+    languageOptions: TEST_LANGUAGE_OPTIONS,
 
     rules: {
       ...COMMON_IMPORT_RULES,
-
-      'import/no-commonjs': 'off',
+      ...COMMON_TS_RULES,
+      ...ARCHITECTURE_RULES_NO_COMMONJS,
     },
   },
 
@@ -333,20 +127,14 @@ export default tseslint.config(
 
     extends: [tseslint.configs.disableTypeChecked],
 
-    plugins: {
-      import: importPlugin,
-    },
+    plugins: ESLINT_PLUGINS,
 
-    languageOptions: {
-      parserOptions: {
-        projectService: false,
-      },
-    },
+    languageOptions: TOOLING_LANGUAGE_OPTIONS,
 
     rules: {
       ...COMMON_IMPORT_RULES,
-
-      'import/no-commonjs': 'off',
+      ...COMMON_TS_RULES,
+      ...ARCHITECTURE_RULES_NO_COMMONJS,
     },
   },
 );

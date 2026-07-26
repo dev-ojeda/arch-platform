@@ -3,7 +3,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { ImpactAnalyzer } from '../../../src/impact/impact-analyzer.js';
-import { SymbolDependencyGraph } from '../../../src/symbol-dependencies/symbol-dependency-graph.js';
+import { SymbolDependencyGraph } from '../../../src/symbols/model/symbol-dependency-graph.js';
 
 describe('ImpactAnalyzer', () => {
   it('should detect dependent symbols', () => {
@@ -32,7 +32,6 @@ describe('ImpactAnalyzer', () => {
           from: 'controller',
           to: 'service',
           type: 'call',
-          kind: 'call',
         },
       ],
     });

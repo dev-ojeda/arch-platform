@@ -1,9 +1,10 @@
 // packages/core/src/errors/registry/generator-not-found.error.ts
 
-import type { ErrorOptions } from '../base/base-error.js';
 import { REGISTRY_ERROR_CODES } from '../codes/registry.codes.js';
 
 import { RegistryError } from './registry-errors.js';
+
+import type { ErrorOptions } from '../base/base-error.js';
 
 export interface GeneratorNotFoundMetadata {
   generatorId: string;

@@ -2,9 +2,11 @@
 
 import type { Diagnostic } from '@arch/platform-model';
 
-import type { GovernanceContext } from '../context/governance-context.js';
 import { DependencyRulesEngine } from '../engine/dependency-rules.engine.js';
 import { GovernanceRuleId } from '../engine/governance-rule-id.js';
+
+import type { GovernanceContext } from '../context/governance-context.js';
+import type { GovernanceScope } from '../context/governance-scope.js';
 import type { GovernanceRule } from '../engine/governance-rule.js';
 
 export class DependencyLayerRule implements GovernanceRule {
@@ -14,5 +16,8 @@ export class DependencyLayerRule implements GovernanceRule {
 
   run(context: GovernanceContext): Diagnostic[] {
     return this.engine.run(context);
+  }
+  supports(scope: GovernanceScope): boolean {
+    return scope.kind === 'workspace';
   }
 }

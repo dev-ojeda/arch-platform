@@ -1,5 +1,7 @@
 // packages/application/test/__tests__/render-files.step.test.ts
 
+import { describe, expect, it } from 'vitest';
+
 import type {
   RenderTemplateInput,
   RenderedFile,
@@ -7,7 +9,6 @@ import type {
   TemplateRendererPort,
 } from '@arch/contracts';
 import { createTestPipelineContext } from '@arch/testing';
-import { describe, expect, it } from 'vitest';
 
 import { RenderFilesStep } from '../../src/generation/steps/render-files.step.js';
 import { createResolvedTemplateVariables } from '../createResolvedTemplateVariables.js';

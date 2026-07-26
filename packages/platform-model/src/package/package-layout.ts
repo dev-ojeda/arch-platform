@@ -9,4 +9,7 @@ export interface PackageLayout {
 
   readonly distributionDirectory: string;
   readonly hasDistributionDirectory: boolean;
+
+  readonly tsconfigPath: string;
+  readonly hasTsconfig: boolean;
 }

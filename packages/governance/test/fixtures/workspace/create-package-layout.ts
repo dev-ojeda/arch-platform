@@ -8,6 +8,8 @@ export function createPackageLayout(overrides: Partial<PackageLayout> = {}): Pac
     hasTestsDirectory: true,
     distributionDirectory: '/workspace/packages/example/dist',
     hasDistributionDirectory: true,
+    tsconfigPath: '/workspace/packages/example/tsconfig.json',
+    hasTsconfig: true,
     ...overrides,
   };
 }

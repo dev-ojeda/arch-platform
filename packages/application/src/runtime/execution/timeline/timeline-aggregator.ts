@@ -1,21 +1,22 @@
 // packages/application/src/runtime/execution/timeline/timeline-aggregator.ts
 
+import { RuntimeEventTypes } from '../events/runtime-event-types.js';
+import { ExecutionStatus } from '../status/execution-status.js';
+
+import type { ExecutionTimeline } from './execution-timeline.js';
 import type {
   PipelineCompletedEvent,
   PipelineFailedEvent,
   PipelineStartedEvent,
 } from '../events/pipeline-events.js';
 import type { RuntimeEventListener } from '../events/runtime-event-listener.js';
-import { RuntimeEventTypes } from '../events/runtime-event-types.js';
 import type { RuntimeEvent } from '../events/runtime-event.js';
 import type {
   StepCompletedEvent,
   StepFailedEvent,
   StepStartedEvent,
 } from '../events/step-events.js';
-import { ExecutionStatus } from '../status/execution-status.js';
 
-import type { ExecutionTimeline } from './execution-timeline.js';
 
 interface MutableExecutionTimelineStep {
   stepId: string;

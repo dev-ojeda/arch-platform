@@ -2,11 +2,12 @@
 
 import type { Graph, HashResult } from '@arch/platform-model';
 
+import { BuildPlan } from './build-plan.js';
+
+import type { BuildAction } from './plan-entry.js';
 import type { CacheEvaluator } from '../cache/cache-evaluator.js';
 import type { CacheDecision } from '../cache/cache-types.js';
 
-import { BuildPlan } from './build-plan.js';
-import type { BuildAction } from './plan-entry.js';
 
 export class ChangePlanner {
   constructor(private evaluator: CacheEvaluator) {}

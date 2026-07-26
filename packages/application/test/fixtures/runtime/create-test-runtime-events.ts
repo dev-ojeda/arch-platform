@@ -1,11 +1,12 @@
 // packages/application/test/fixtures/runtime/create-test-runtime-events.ts
 
+import { RuntimeEventTypes } from '../../../src/runtime/execution/events/runtime-event-types.js';
+
 import type {
   PipelineCompletedEvent,
   PipelineFailedEvent,
   PipelineStartedEvent,
 } from '../../../src/runtime/execution/events/pipeline-events.js';
-import { RuntimeEventTypes } from '../../../src/runtime/execution/events/runtime-event-types.js';
 import type {
   StepCompletedEvent,
   StepFailedEvent,

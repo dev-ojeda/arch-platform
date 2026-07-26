@@ -1,7 +1,8 @@
 // packages/application/src/generation/templates/resolve-template-output-path.ts
 
-import type { NamedVariables } from '@arch/contracts';
 import Handlebars from 'handlebars';
+
+import type { NamedVariables } from '@arch/contracts';
 
 export function resolveTemplateOutputPath(
   output: string,

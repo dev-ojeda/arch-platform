@@ -1,10 +1,9 @@
-// code-analysis/src/project/ts-project-factory.ts
+// packages/code-analysis/src/project/ts-project-factory.ts
 
 import { Project } from 'ts-morph';
 
-export interface TsProjectOptions {
-  tsConfigFilePath: string;
-}
+import type { TsProjectOptions } from './ts-project-options.js';
+
 export function createTsProject(options: TsProjectOptions): Project {
   return new Project({
     tsConfigFilePath: options.tsConfigFilePath,

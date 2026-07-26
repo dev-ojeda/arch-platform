@@ -1,5 +1,7 @@
 // packages/testing/src/prompts/create-mock-prompt-adapter.ts
 
+import { vi } from 'vitest';
+
 import type {
   BooleanField,
   NamedVariables,
@@ -8,7 +10,6 @@ import type {
   SelectOption,
   StringField,
 } from '@arch/contracts';
-import { vi } from 'vitest';
 
 import { createTestPromptAdapter } from './create-test-prompt-adapter.js';
 

@@ -1,8 +1,8 @@
 // packages/application/src/runtime/execution/timeline/execution-timeline.ts
 
+import type { ExecutionTimelineStep } from './execution-timeline-step.js';
 import type { ExecutionStatus } from '../status/execution-status.js';
 
-import type { ExecutionTimelineStep } from './execution-timeline-step.js';
 
 export interface ExecutionTimeline {
   readonly executionId: string;

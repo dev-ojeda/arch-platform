@@ -1,117 +1,117 @@
-// packages/governance/src/rules/public-api/public-api-scanner.ts
+// // packages/governance/src/rules/public-api/public-api-scanner.ts
 
-import type { Diagnostic, PackageDescriptor } from '@arch/platform-model';
+// import type { Diagnostic, PackageDescriptor } from '@arch/platform-model';
 
-import type { GovernanceExecutionContext } from '../../context/governance-context.js';
+// import type { GovernanceExecutionContext } from '../../context/governance-context.js';
+// import { ExportMapReader } from './export-map-reader.js';
+// import { PrivatePathDetector } from './private-path-detector.js';
 
-import { ExportMapReader } from './export-map-reader.js';
-import { PrivatePathDetector } from './private-path-detector.js';
+// export class PublicApiScanner {
+//   constructor(
+//     private readonly privatePathDetector = new PrivatePathDetector(),
+//     private readonly exportMapReader = new ExportMapReader(),
+//   ) {}
 
-export class PublicApiScanner {
-  private readonly privatePathDetector = new PrivatePathDetector();
+//   async scan(context: GovernanceExecutionContext): Promise<Diagnostic[]> {
+//     const diagnostics: Diagnostic[] = [];
 
-  private readonly exportMapReader = new ExportMapReader();
+//     const graph = context.analysis.symbolGraph;
 
-  async scan(context: GovernanceExecutionContext): Promise<Diagnostic[]> {
-    const diagnostics: Diagnostic[] = [];
+//     const symbols = new Map(graph.nodes.map((node) => [node.id, node]));
 
-    const graph = context.analysis.symbolGraph;
+//     for (const edge of graph.edges) {
+//       if (edge.type !== 'import') {
+//         continue;
+//       }
 
-    const symbols = new Map(graph.nodes.map((node) => [node.id, node]));
+//       const source = symbols.get(edge.from);
 
-    for (const edge of graph.edges) {
-      if (edge.type !== 'import') {
-        continue;
-      }
+//       const target = symbols.get(edge.to);
 
-      const source = symbols.get(edge.from);
+//       if (!source || !target) {
+//         continue;
+//       }
 
-      const target = symbols.get(edge.to);
+//       if (source.package === target.package) {
+//         continue;
+//       }
 
-      if (!source || !target) {
-        continue;
-      }
+//       const targetPackage = this.findPackage(context, target.package);
 
-      if (source.package === target.package) {
-        continue;
-      }
+//       if (targetPackage && edge.importPath) {
+//         if (
+//           this.privatePathDetector.isPrivate(edge.importPath, targetPackage.boundaries?.private)
+//         ) {
+//           diagnostics.push({
+//             code: 'ARCH_PRIVATE_API_ACCESS',
 
-      const targetPackage = this.findPackage(context, target.package);
+//             severity: 'error',
 
-      if (targetPackage && edge.importPath) {
-        if (
-          this.privatePathDetector.isPrivate(edge.importPath, targetPackage.boundaries?.private)
-        ) {
-          diagnostics.push({
-            code: 'ARCH_PRIVATE_API_ACCESS',
+//             source: 'governance',
 
-            severity: 'error',
+//             message: `Package ${source.package} imports private path ${edge.importPath}`,
 
-            source: 'governance',
+//             hint: 'Use the public package API',
 
-            message: `Package ${source.package} imports private path ${edge.importPath}`,
+//             metadata: {
+//               rule: 'OnlyPublicApiRule',
 
-            hint: 'Use the public package API',
+//               importer: source.package,
 
-            metadata: {
-              rule: 'OnlyPublicApiRule',
+//               imported: target.package,
 
-              importer: source.package,
+//               importPath: edge.importPath,
+//             },
+//           });
 
-              imported: target.package,
+//           continue;
+//         }
 
-              importPath: edge.importPath,
-            },
-          });
+//         if (
+//           !this.exportMapReader.isExported(
+//             targetPackage.name,
+//             edge.importPath,
+//             targetPackage.manifest,
+//           )
+//         ) {
+//           diagnostics.push({
+//             code: 'ARCH_EXPORT_BOUNDARY_VIOLATION',
 
-          continue;
-        }
+//             severity: 'error',
 
-        if (
-          !this.exportMapReader.isExported(
-            targetPackage.name,
-            edge.importPath,
-            targetPackage.manifest,
-          )
-        ) {
-          diagnostics.push({
-            code: 'ARCH_EXPORT_BOUNDARY_VIOLATION',
+//             source: 'governance',
 
-            severity: 'error',
+//             message: `Import ${edge.importPath} is not part of ${target.package} public exports`,
 
-            source: 'governance',
+//             hint: 'Expose the module through package exports',
+//           });
 
-            message: `Import ${edge.importPath} is not part of ${target.package} public exports`,
+//           continue;
+//         }
+//       }
 
-            hint: 'Expose the module through package exports',
-          });
+//       if (!target.exported) {
+//         diagnostics.push({
+//           code: 'ARCH_ONLY_PUBLIC_API',
 
-          continue;
-        }
-      }
+//           severity: 'error',
 
-      if (!target.exported) {
-        diagnostics.push({
-          code: 'ARCH_ONLY_PUBLIC_API',
+//           source: 'governance',
 
-          severity: 'error',
+//           message: `Package ${source.package} imports non-public symbol ${target.name} from ${target.package}`,
 
-          source: 'governance',
+//           hint: `Expose ${target.name} through the public package API`,
+//         });
+//       }
+//     }
 
-          message: `Package ${source.package} imports non-public symbol ${target.name} from ${target.package}`,
+//     return Promise.resolve(diagnostics);
+//   }
 
-          hint: `Expose ${target.name} through the public package API`,
-        });
-      }
-    }
-
-    return Promise.resolve(diagnostics);
-  }
-
-  private findPackage(
-    context: GovernanceExecutionContext,
-    name: string,
-  ): PackageDescriptor | undefined {
-    return context.workspace.packages.find((pkg) => pkg.name === name);
-  }
-}
+//   private findPackage(
+//     context: GovernanceExecutionContext,
+//     name: string,
+//   ): PackageDescriptor | undefined {
+//     return context.workspace.packages.find((pkg) => pkg.name === name);
+//   }
+// }

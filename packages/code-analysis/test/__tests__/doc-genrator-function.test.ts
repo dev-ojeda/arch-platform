@@ -1,9 +1,9 @@
 import { Project } from 'ts-morph';
 import { describe, expect, it } from 'vitest';
 
-import { scanFunctions } from '../../src/symbols/function-scanner.js';
-import { scanClasses } from '../../src/symbols/scan-classes.js';
-import { scanInterfaces } from '../../src/symbols/scan-interfaces.js';
+import { scanFunctions } from '../../src/symbols/scanners/function-scanner.js';
+import { scanClasses } from '../../src/symbols/scanners/scan-classes.js';
+import { scanInterfaces } from '../../src/symbols/scanners/scan-interfaces.js';
 
 describe('CreateTestDocGenerator', () => {
   const project = new Project({

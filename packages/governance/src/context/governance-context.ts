@@ -1,18 +1,17 @@
 // packages/governance/src/context/governance-context.ts
 
-import type { PackageDependencyGraph, SymbolGraph } from '@arch/code-analysis';
+// packages/governance/src/context/governance-context.ts
+
+import type { AnalysisContext } from '@arch/code-analysis';
 import type { WorkspaceDescriptor } from '@arch/platform-model';
+
+import type { GovernanceScope } from './governance-scope.js';
 
 export interface GovernanceContext {
   readonly workspace: WorkspaceDescriptor;
-}
-
-export interface GovernanceAnalysisContext {
-  readonly symbolGraph: SymbolGraph;
-
-  readonly packageGraph: PackageDependencyGraph;
+  readonly scope: GovernanceScope;
 }
 
 export interface GovernanceExecutionContext extends GovernanceContext {
-  readonly analysis: GovernanceAnalysisContext;
+  readonly analysis: AnalysisContext;
 }

@@ -1,8 +1,9 @@
 // packages\application\test\unit\timeline\timeline-aggregator.test.ts
 
+import { describe, expect, it } from 'vitest';
+
 import type { GenerationPipelineStep } from '@arch/contracts';
 import { createTestContext, createTestIdGenerator, createTestStep } from '@arch/testing';
-import { describe, expect, it } from 'vitest';
 
 import { GenerationPipeline } from '../../../src/generation/pipeline/generation-pipeline.js';
 import { createRuntime } from '../../../src/runtime/runtime-bootstrap.js';

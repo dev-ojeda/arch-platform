@@ -18,17 +18,18 @@ import {
 } from '@arch/infrastructure';
 import type { ArtifactCache, ArtifactProvider, Graph, OutputValidator } from '@arch/platform-model';
 
-import type { BuildExecutor } from '../executor/build-executor.js';
 import { ExecutorFactory } from '../executor/executor-factory.js';
 import { buildGraph } from '../graph/build-graph.js';
 import { GraphQueryService } from '../graph/graph-query-services.js';
 import { DagHasher } from '../hash/dag-hasher.js';
 import { WorkspaceExecutionContractResolver } from '../planning/workspace-execution-contract-resolver.js';
-import type { CommandRunner } from '../runtime/command-runner.js';
 import { BuildService } from '../services/build-service.js';
 import { JsonBuildStateLoader } from '../state/json-build-state-loader.js';
-import type { BuildState } from '../state/state-types.js';
 import { BuildStateWriter } from '../state/state-writer.js';
+
+import type { BuildExecutor } from '../executor/build-executor.js';
+import type { CommandRunner } from '../runtime/command-runner.js';
+import type { BuildState } from '../state/state-types.js';
 
 /**
  * Centralizes dependency creation for the build application.
@@ -89,7 +90,7 @@ export class BuildCompositionRoot {
       this.pathService,
     );
 
-    const publisher = new ArtifactPublisherAdapter(this.fsAsync);
+    const publisher = new ArtifactPublisherAdapter(this.fsAsync, this.pathService);
 
     return new FilesystemArtifactCache(layoutFactory, publisher, this.fsAsync, this.pathService);
   }

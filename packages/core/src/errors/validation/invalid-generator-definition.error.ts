@@ -1,9 +1,10 @@
 // packages/core/src/errors/validation/invalid-generator-definition.error.ts
 
-import type { ErrorOptions } from '../base/base-error.js';
 import { VALIDATION_ERROR_CODES } from '../codes/validation.codes.js';
 
 import { ValidationError } from './validation-errors.js';
+
+import type { ErrorOptions } from '../base/base-error.js';
 
 export interface InvalidGeneratorDefinitionMetadata {
   generatorId: string;

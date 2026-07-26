@@ -1,7 +1,8 @@
 // packages\application\test\__tests__\create-generation-engine.test.ts
 
-import { createMockFilesystem, createMockPromptAdapter } from '@arch/testing';
 import { describe, expect, it } from 'vitest';
+
+import { createMockFilesystem, createMockPromptAdapter } from '@arch/testing';
 
 import { createGenerationEngine } from '../../src/generation/composition/create-default-engine.js';
 

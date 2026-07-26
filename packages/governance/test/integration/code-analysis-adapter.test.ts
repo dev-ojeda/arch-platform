@@ -3,8 +3,9 @@
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import type { WorkspaceDescriptor } from '@arch/platform-model';
 import { describe, expect, it } from 'vitest';
+
+import type { WorkspaceDescriptor } from '@arch/platform-model';
 
 import { buildGovernanceContext } from '../../src/context/build-governance-context.js';
 import { buildGovernanceExecutionContext } from '../../src/context/build-governance-execution-context.js';
@@ -14,7 +15,7 @@ describe('CodeAnalysisAdapter', () => {
     new URL('../fixtures/code-analysis-workspace', import.meta.url),
   );
 
-  it('builds symbol and package analysis context', async () => {
+  it('builds symbol and package analysis context', () => {
     const workspaceRoot = resolve(fixturePath);
 
     const workspace: WorkspaceDescriptor = {
@@ -30,16 +31,20 @@ describe('CodeAnalysisAdapter', () => {
       packages: [],
     };
 
-    const context = buildGovernanceContext(workspace);
+    const scope: GovernanceScope = {
+      kind: 'workspace',
+      root: workspaceRoot,
+    };
 
-    const result = await buildGovernanceExecutionContext(context);
+    const context = buildGovernanceContext(scope, workspace);
+
+    const result = buildGovernanceExecutionContext(context);
 
     expect(result.workspace.root).toBe(workspaceRoot);
+    expect(result.scope.kind).toBe('workspace');
 
     expect(result.analysis).toBeDefined();
-
     expect(result.analysis.symbolGraph.nodes.length).toBeGreaterThan(0);
-
     expect(result.analysis.packageGraph).toBeDefined();
   });
 });

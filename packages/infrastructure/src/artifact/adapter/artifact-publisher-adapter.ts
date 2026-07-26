@@ -1,6 +1,6 @@
 // packages/infrastructure/src/artifact/adapter/artifact-publisher-adapter.ts
 
-import type { FileSystemAsyncPort } from '@arch/contracts';
+import type { FileSystemAsyncPort, PathService } from '@arch/contracts';
 import {
   type ArtifactLayout,
   type ArtifactManifest,
@@ -14,7 +14,10 @@ export class ArtifactPublisherAdapter implements ArtifactPublisher {
   logger = loggerFactory.createLogger({
     component: 'ArtifactPublisherAdapter',
   });
-  constructor(private readonly filesystem: FileSystemAsyncPort) {}
+  constructor(
+    private readonly filesystem: FileSystemAsyncPort,
+    private readonly pathService: PathService,
+  ) {}
   async publish(root: string, manifest: ArtifactManifest, layout: ArtifactLayout): Promise<void> {
     let published = false;
     const temp = layout.temporary('tmp');
@@ -33,7 +36,15 @@ export class ArtifactPublisherAdapter implements ArtifactPublisher {
       await this.filesystem.createDirectory(temp.root);
 
       for (const output of manifest.outputs) {
-        await this.filesystem.copy(root, temp.output(output));
+        this.logger.trace('artifact.publish.output', {
+          metadata: {
+            source: this.pathService.join(root, output),
+            output,
+            destination: temp.output(output),
+          },
+        });
+
+        await this.filesystem.copy(this.pathService.join(root, output), temp.output(output));
       }
 
       await this.filesystem.writeJson(temp.manifest(), this.serializeArtifactManifest(manifest));

@@ -4,12 +4,13 @@ import { pathExistsSync } from '@arch/infrastructure';
 
 import { logger } from '../../logging/logger.js';
 import { ToolingEvents } from '../../runtime/events/tooling-event.js';
-import type { ExecuteCommandResult } from '../../runtime/execution/execute-command-result.js';
 import { executeProcess } from '../../runtime/process/execute-process.js';
-import type { LintCommandOptions } from '../common/command-options.js';
 import { createSkippedCommandResult } from '../common/create-skipped-command-result.js';
 
 import { createLintArguments } from './create-lint-arguments.js';
+
+import type { ExecuteCommandResult } from '../../runtime/execution/execute-command-result.js';
+import type { LintCommandOptions } from '../common/command-options.js';
 
 const DEFAULT_LINT_TARGETS = ['src', 'test', 'testing'] as const;
 

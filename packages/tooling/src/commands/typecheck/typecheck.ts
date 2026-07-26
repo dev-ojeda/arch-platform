@@ -2,9 +2,11 @@
 
 import { ToolingEvents } from '../../runtime/events/tooling-event.js';
 import { runTask } from '../../runtime/task/run-task.js';
-import type { TypecheckCommandOptions } from '../common/command-options.js';
 
 import { runTypecheckCommand } from './run.js';
+
+import type { TypecheckCommandOptions } from '../common/command-options.js';
+
 
 export async function typecheckCommand(options: TypecheckCommandOptions = {}): Promise<number> {
   return runTask({

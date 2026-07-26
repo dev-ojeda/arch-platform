@@ -7,6 +7,7 @@ export type GovernanceScope =
   | {
       kind: 'package';
       root: string;
+      packageName: string;
     }
   | {
       kind: 'changed';

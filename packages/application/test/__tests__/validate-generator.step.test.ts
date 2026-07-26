@@ -1,6 +1,7 @@
 // packages\application\test\__tests__\validate-generator.step.test.ts
-import type { GenerationContext } from '@arch/contracts';
 import { describe, expect, it } from 'vitest';
+
+import type { GenerationContext } from '@arch/contracts';
 
 import { ValidateGeneratorStep } from '../../src/generation/steps/validate-generator.step.js';
 

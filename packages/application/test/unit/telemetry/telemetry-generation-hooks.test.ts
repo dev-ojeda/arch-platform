@@ -1,7 +1,8 @@
 // packages\application\test\unit\telemetry\telemetry-generation-hooks.test.ts
 
-import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts';
 import { describe, expect, it, vi } from 'vitest';
+
+import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts';
 
 import { TelemetryGenerationHooks } from '../../../src/index.js';
 

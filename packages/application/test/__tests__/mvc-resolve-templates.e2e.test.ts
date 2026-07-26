@@ -1,9 +1,10 @@
 // packages\application\test\__tests__\mvc-resolve-templates.e2e.test.ts
 
+import { describe, expect, it } from 'vitest';
+
 import type { MvcVariables } from '@arch/generator-mvc';
 import { mvcGenerator } from '@arch/generator-mvc';
 import { createTestPipelineContext } from '@arch/testing';
-import { describe, expect, it } from 'vitest';
 
 import { ResolveTemplatesStep } from '../../src/generation/steps/resolve-templates.step.js';
 import { deriveTemplateVariables } from '../../src/generation/variables/derive-template-variables.js';

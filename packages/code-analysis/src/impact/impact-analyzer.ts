@@ -1,8 +1,7 @@
 // packages/code-analysis/src/impact/impact-analyzer.ts
 
-import type { SymbolDependencyGraph } from '../symbol-dependencies/symbol-dependency-graph.js';
-
 import type { ImpactResult } from './impact-result.js';
+import type { SymbolDependencyGraph } from '../symbols/model/symbol-dependency-graph.js';
 
 export class ImpactAnalyzer {
   constructor(private readonly dependencyGraph: SymbolDependencyGraph) {}

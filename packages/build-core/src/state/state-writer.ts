@@ -7,6 +7,7 @@ import { safeStringify } from '../serialization/safe-stringify.js';
 
 import { StateChangeSet } from './state-change-set.js';
 import { getBuildStatePath } from './state-paths.js';
+
 import type { BuildState } from './state-types.js';
 
 export class BuildStateWriter {
