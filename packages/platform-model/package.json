@@ -15,7 +15,9 @@
   "arch": {
     "build": {
       "builder": "tsc",
-      "entry": "./src/index.ts",
+      "outputs": [
+        "dist"
+      ],
       "validateExports": true
     }
   },
@@ -27,6 +29,7 @@
     "arch": "arch build --package @arch/platform-model",
     "clean": "arch clean",
     "typecheck": "arch typecheck",
-    "lint": "arch lint"
+    "lint": "arch lint",
+    "validate": "arch validate --package @arch/platform-model"
   }
 }

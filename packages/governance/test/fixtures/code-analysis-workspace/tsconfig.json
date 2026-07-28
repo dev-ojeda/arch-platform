@@ -5,7 +5,5 @@
     "moduleResolution": "Node",
     "strict": true
   },
-  "include": [
-    "src/**/*.ts"
-  ]
+  "include": ["src/**/*.ts"]
 }

@@ -8,11 +8,9 @@ import { logger } from '../../logging/logger.js';
 import { ToolingEvents } from '../../runtime/events/tooling-event.js';
 import { processRunner } from '../../runtime/process/process-runner.js';
 import { runTask } from '../../runtime/task/run-task.js';
-
-import { createBuildScope } from './build-scope.js';
-
 import type { BuildCommandOptions } from '../common/command-options.js';
 
+import { createBuildScope } from './build-scope.js';
 
 export async function buildCommand(options: BuildCommandOptions): Promise<number> {
   return runTask({

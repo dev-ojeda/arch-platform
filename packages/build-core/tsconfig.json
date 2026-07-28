@@ -8,13 +8,8 @@
     "declarationMap": true,
     "tsBuildInfoFile": "./.turbo/build-core.tsbuildinfo"
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "dist",
-    "node_modules"
-  ],
+  "include": ["src/**/*.ts"],
+  "exclude": ["dist", "node_modules"],
   "references": [
     {
       "path": "../platform-model"
@@ -24,6 +19,6 @@
     },
     {
       "path": "../infrastructure"
-    },
+    }
   ]
 }

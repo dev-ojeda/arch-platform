@@ -2,9 +2,8 @@
 
 import { type DependencyMatrix, type Diagnostic, type Layer } from '@arch/platform-model';
 
-import { DEFAULT_MATRIX } from '../policies/default-dependency-matrix.js';
-
 import type { GovernanceContext } from '../context/governance-context.js';
+import { DEFAULT_MATRIX } from '../policies/default-dependency-matrix.js';
 
 function isLayer(value: unknown): value is Layer {
   return (

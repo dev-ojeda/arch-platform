@@ -5,5 +5,5 @@ export interface BuildStep {
 
   command: string;
 
-  args: string[];
+  args: readonly string[];
 }

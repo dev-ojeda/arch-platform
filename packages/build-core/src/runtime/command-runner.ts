@@ -5,6 +5,6 @@ import type { CommandResult } from './command-result.js';
 
 export type CommandRunner = (
   command: string,
-  args: string[],
+  args: readonly string[],
   options: CommandOptions,
 ) => Promise<CommandResult>;

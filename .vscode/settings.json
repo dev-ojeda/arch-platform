@@ -14,7 +14,8 @@
   "editor.snippetSuggestions": "top",
   "editor.inlineSuggest.enabled": true,
   "editor.codeActionsOnSave": {
-    "source.organizeImports": "explicit"
+    "source.fixAll.eslint": "always",
+    "source.organizeImports": "always"
   },
   // -----------------------------------------------------------------------------
   // WORKBENCH
@@ -101,6 +102,15 @@
   "javascript.updateImportsOnFileMove.enabled": "always",
   "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
   // -----------------------------------------------------------------------------
+  // ESLINT
+  // --
+  "eslint.validate": ["javascript", "typescript", "typescriptreact"],
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  // -----------------------------------------------------------------------------
   // TERMINAL / POWERSHELL
   // -----------------------------------------------------------------------------
   "terminal.integrated.defaultProfile.windows": "PowerShell",
@@ -111,10 +121,7 @@
       "icon": "terminal-powershell"
     },
     "Command Prompt": {
-      "path": [
-        "${env:windir}\\Sysnative\\cmd.exe",
-        "${env:windir}\\System32\\cmd.exe"
-      ],
+      "path": ["${env:windir}\\Sysnative\\cmd.exe", "${env:windir}\\System32\\cmd.exe"],
       "args": [],
       "icon": "terminal-cmd",
       "overrideName": true
@@ -184,26 +191,12 @@
   // -----------------------------------------------------------------------------
   // TODO TREE
   // -----------------------------------------------------------------------------
-  "todo-tree.general.tags": [
-    "todo",
-    "fix",
-    "hack",
-    "perf",
-    "deprecated"
-  ],
+  "todo-tree.general.tags": ["todo", "fix", "hack", "perf", "deprecated"],
   // -----------------------------------------------------------------------------
   // AUTO PATH HEADER
   // -----------------------------------------------------------------------------
-  "autoPathHeader.ignoredDirectories": [
-    "temp",
-    "**/node_modules",
-    "dist/*"
-  ],
-  "autoPathHeader.allowedOnlyDirectories": [
-    "src",
-    "**/utils",
-    "src/**/*.ts"
-  ],
+  "autoPathHeader.ignoredDirectories": ["temp", "**/node_modules", "dist/*"],
+  "autoPathHeader.allowedOnlyDirectories": ["src", "**/utils", "src/**/*.ts"],
   // -----------------------------------------------------------------------------
   // FOLDER TEMPLATES
   // -----------------------------------------------------------------------------

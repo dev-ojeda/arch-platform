@@ -3,7 +3,6 @@
 import { defineConfig } from 'tsup';
 
 import { createBaseConfig } from './base.js';
-
 import type { ConfigOverrides } from './types.js';
 
 export function createLibraryConfig(overrides: ConfigOverrides = {}) {

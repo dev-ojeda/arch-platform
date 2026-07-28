@@ -7,4 +7,5 @@ export const IGNORES = [
   '**/.pnpm/**',
   '**/.cache/**',
   '**/*.d.ts',
+  'apps/**',
 ];

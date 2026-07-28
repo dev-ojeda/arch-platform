@@ -1,9 +1,9 @@
 // packages/contracts/src/runtime/runtime-context.ts
 
+import type { NamedVariables } from '../variables/named-variables.js';
 
 import type { RuntimeDiagnostic } from './runtime-diagnostic.js';
 import type { RuntimeMetadata } from './runtime-metadata.js';
-import type { NamedVariables } from '../variables/named-variables.js';
 
 export interface RuntimeContext<TValues extends NamedVariables = NamedVariables> {
   readonly generatorId: string;

@@ -1,11 +1,12 @@
 // packages/build-core/src/executor/build-executor.ts
 
 // packages/build-core/src/executor/build-executor.ts
+
 import type { DagNode } from '@arch/platform-model';
 
-import type { BuildResult } from './build-result.js';
 import type { BuildPlanEntry } from '../planning/plan-entry.js';
 
+import type { BuildResult } from './build-result.js';
 
 /**
  * Contract for executing package build operations.

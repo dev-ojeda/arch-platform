@@ -7,7 +7,6 @@ import { checkPaths } from '../checks/check-paths.js';
 import { checkPnpm } from '../checks/check-pnpm.js';
 import { checkTsConfig } from '../checks/check-tsconfig.js';
 import { checkWorkspace } from '../checks/check-workspace.js';
-
 import type { DoctorCheck } from '../checks/doctor-check.js';
 
 const checks: DoctorCheck[] = [

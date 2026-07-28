@@ -1,12 +1,12 @@
 // packages/code-analysis/src/symbols/graph/build-symbol-graph.ts
 
+import type { Project } from 'ts-morph';
 
+import type { PackageResolver } from '../../package/resolvers/package-resolver.js';
 import { scanSymbolReferences } from '../references/symbol-reference-scanner.js';
 import { scanSymbols } from '../scanners/scan-symbols.js';
 
 import type { SymbolGraph } from './symbol-graph-types.js';
-import type { PackageResolver } from '../../package/resolvers/package-resolver.js';
-import type { Project } from 'ts-morph';
 
 export function buildSymbolGraph(project: Project, packageResolver: PackageResolver): SymbolGraph {
   const definitions = scanSymbols(project);

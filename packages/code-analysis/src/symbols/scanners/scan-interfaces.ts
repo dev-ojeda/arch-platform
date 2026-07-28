@@ -1,8 +1,8 @@
 // packages/code-analysis/src/symbols/scanners/scan-interfaces.ts
 
-import type { InterfaceMetadata } from './interface-metadata.js';
 import type { Project } from 'ts-morph';
 
+import type { InterfaceMetadata } from './interface-metadata.js';
 
 export function scanInterfaces(project: Project): readonly InterfaceMetadata[] {
   const interfaces: InterfaceMetadata[] = [];

@@ -1,7 +1,8 @@
 // packages/code-analysis/src/symbols/model/symbol-dependency-graph.ts
 
-import type { SymbolEdge } from './symbol-edge-types.js';
 import type { SymbolGraph } from '../graph/symbol-graph-types.js';
+
+import type { SymbolEdge } from './symbol-edge-types.js';
 
 export class SymbolDependencyGraph {
   constructor(private readonly graph: SymbolGraph) {}

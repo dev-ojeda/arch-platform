@@ -4,14 +4,12 @@ import { collectTsBuildInfoFiles, removePaths } from '@arch/infrastructure';
 
 import { logger } from '../../logging/logger.js';
 import { ToolingEvents } from '../../runtime/events/tooling-event.js';
+import type { TaskResult } from '../../runtime/index.js';
 import { createStopwatch } from '../../runtime/process/create-stopwatch.js';
-
+import type { CleanCommandOptions } from '../common/command-options.js';
 
 import { createPathsToRemove } from './create-paths-to-remove.js';
 import { resolveCleanOptions } from './resolve-clean-options.js';
-
-import type { TaskResult } from '../../runtime/index.js';
-import type { CleanCommandOptions } from '../common/command-options.js';
 
 export async function runCleanCommand(options: CleanCommandOptions = {}): Promise<TaskResult> {
   const stopwatch = createStopwatch();

@@ -5,4 +5,5 @@ export const LOG_EVENTS = {
   INVALID_PACKAGE_MANIFEST: 'node.workspace.provider.invalid.package.manifest',
   NODE_WORKSPACE_PROVIDER_BOUNDARIES_LOAD_FAILED: 'node.workspace.provider.boundaries.load.fail',
   FILESYSTEM_IO_FS_ASYNC_FAILED: 'filesystem.io.fs.async.failed',
+  DISCOVER_WORKSPACE_PACKAGE: 'workspace.discover.package',
 } as const;

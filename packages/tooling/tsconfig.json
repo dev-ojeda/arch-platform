@@ -8,13 +8,8 @@
     "declarationMap": true,
     "tsBuildInfoFile": "./.turbo/tooling.tsbuildinfo"
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "dist",
-    "node_modules"
-  ],
+  "include": ["src/**/*.ts"],
+  "exclude": ["dist", "node_modules"],
   "references": [
     {
       "path": "../build-core"

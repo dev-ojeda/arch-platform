@@ -1,8 +1,8 @@
 // packages/build-core/src/executor/build-result.ts
 
-import type { ExecutionReason } from './execution-types.js';
 import type { ChangeReason } from '../cache/cache-types.js';
 
+import type { ExecutionReason } from './execution-types.js';
 
 export type BuildResult = {
   package: string;

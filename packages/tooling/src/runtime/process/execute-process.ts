@@ -6,16 +6,14 @@ import { logger } from '../../logging/logger.js';
 import { normalizeOutput } from '../../serialization/normalize-output.js';
 import { formatCommand } from '../../utils/format-command.js';
 import { RuntimeEvents } from '../events/runtime-event.js';
-
+import type { ExecuteCommandOptions } from '../execution/execute-command-option.js';
+import type { ExecuteCommandResult } from '../execution/execute-command-result.js';
+import type { ExecutionMetadata } from '../execution/execution-metadata.js';
 
 import { createExecaOptions } from './create-execa-options.js';
 import { createProcessMetadata } from './create-process-metadata.js';
 import { createProcessResult } from './create-process-result.js';
 import { createStopwatch } from './create-stopwatch.js';
-
-import type { ExecuteCommandOptions } from '../execution/execute-command-option.js';
-import type { ExecuteCommandResult } from '../execution/execute-command-result.js';
-import type { ExecutionMetadata } from '../execution/execution-metadata.js';
 
 function logCommandStarted(
   commandContext: {

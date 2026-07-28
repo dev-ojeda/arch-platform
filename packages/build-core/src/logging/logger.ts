@@ -3,18 +3,32 @@
 import { safeStringify } from '../serialization/safe-stringify.js';
 
 import { LOG_LEVELS } from './log-levels.js';
-import { sanitizeMetadata } from './sanitize-metadata.js';
-import { TRACE_ENABLED } from './trace-config.js';
-
 import type { LogLevel, LogMetadata, LogOptions } from './log-types.js';
+import { sanitizeMetadata } from './sanitize-metadata.js';
+import {
+  TRACE_CACHE_ENABLED,
+  TRACE_ENABLED,
+  TRACE_HASH_ENABLED,
+  type TraceCategory,
+} from './trace-config.js';
 
 const ARCH_PREFIX = '[arch]';
 
-function write(level: LogLevel, message: string, options: LogOptions = {}): void {
-  if (level === 'trace' && !TRACE_ENABLED) {
-    return;
+function isTraceEnabled(category?: TraceCategory): boolean {
+  if (TRACE_ENABLED) {
+    return true;
   }
 
+  switch (category) {
+    case 'cache':
+      return TRACE_CACHE_ENABLED;
+    case 'hash':
+      return TRACE_HASH_ENABLED;
+    default:
+      return false;
+  }
+}
+function write(level: LogLevel, message: string, options: LogOptions = {}): void {
   const { prefix = true, metadata } = options;
 
   const timestamp = new Date().toISOString();
@@ -33,7 +47,11 @@ function write(level: LogLevel, message: string, options: LogOptions = {}): void
 }
 
 export const logger = {
-  trace(message: string, options?: LogOptions): void {
+  trace(message: string, options: LogOptions & { category?: TraceCategory } = {}): void {
+    if (!isTraceEnabled(options.category)) {
+      return;
+    }
+
     write('trace', message, options);
   },
 

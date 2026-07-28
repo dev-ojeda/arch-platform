@@ -1,6 +1,5 @@
-import { createWorkspaceDescriptor } from '../workspace/create-workspace-descriptor.js';
-
 import type { GovernanceExecutionContext } from '../../../src/context/governance-context.js';
+import { createWorkspaceDescriptor } from '../workspace/create-workspace-descriptor.js';
 
 export function createGovernanceExecutionContext(
   overrides: Partial<GovernanceExecutionContext> = {},

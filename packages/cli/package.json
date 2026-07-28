@@ -10,7 +10,10 @@
   ],
   "arch": {
     "build": {
-      "builder": "tsup"
+      "builder": "tsup",
+      "outputs": [
+        "dist"
+      ]
     }
   },
   "bin": {
@@ -21,7 +24,8 @@
     "build": "tsup",
     "clean": "arch clean",
     "lint": "arch lint",
-    "typecheck": "arch typecheck"
+    "typecheck": "arch typecheck",
+    "validate": "arch validate --package @arch/cli"
   },
   "dependencies": {
     "@arch/governance": "workspace:*",

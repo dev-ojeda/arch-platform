@@ -1,7 +1,7 @@
 // packages/application/src/runtime/execution/runtime-execution-store.ts
 
 import { RuntimeEventTypes } from '../../runtime/execution/events/runtime-event-types.js';
-
+import type { RuntimeEvent } from '../../runtime/execution/events/runtime-event.js';
 
 import type {
   PipelineCompletedEvent,
@@ -14,7 +14,6 @@ import type {
   StepStartedEvent,
 } from './events/step-events.js';
 import type { ExecutionListener, ExecutionState } from './runtime-execution-status.js';
-import type { RuntimeEvent } from '../../runtime/execution/events/runtime-event.js';
 
 export class RuntimeExecutionStore {
   private executions = new Map<string, ExecutionState>();

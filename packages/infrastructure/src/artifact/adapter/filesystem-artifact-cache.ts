@@ -1,6 +1,7 @@
 // packages/infrastructure/src/artifact/adapter/filesystem-artifact-cache.ts
 
 import type { FileSystemAsyncPort, PathService } from '@arch/contracts';
+import { ARTIFACT_SCHEMA_VERSION } from '@arch/platform-model';
 import type {
   Artifact,
   ArtifactCache,
@@ -8,7 +9,6 @@ import type {
   ArtifactManifest,
   ArtifactPublisher,
 } from '@arch/platform-model';
-import { ARTIFACT_SCHEMA_VERSION } from '@arch/platform-model';
 
 import { loggerFactory } from '../../logging/logger.js';
 

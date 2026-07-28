@@ -1,8 +1,8 @@
 // packages/code-analysis/src/symbols/scanners/scan-classes.ts
 
-import type { ClassMetadata } from './class-metadata.js';
 import type { Project } from 'ts-morph';
 
+import type { ClassMetadata } from './class-metadata.js';
 
 export function scanClasses(project: Project): readonly ClassMetadata[] {
   const classes: ClassMetadata[] = [];

@@ -2,17 +2,17 @@
 
 import { cwd } from 'node:process';
 
+import type { CAC } from 'cac';
+
 import { runGovernance, type GovernanceScope } from '@arch/governance';
 
-
 import { createGovernanceDependencies } from '../composition/governance-composition.js';
-import { renderDiagnostics } from '../renderers/render-diagnostics.js';
-
 import type { ValidateCliOptions } from '../contracts/validate-cli-options.js';
-import type { CAC } from 'cac';
+import { renderGovernanceResult } from '../renderers/render-diagnostics.js';
 
 export async function runValidateCommand(options: ValidateCliOptions): Promise<number> {
   const { workspaceProvider } = createGovernanceDependencies();
+
   const scope: GovernanceScope = options.package
     ? {
         kind: 'package',
@@ -23,11 +23,12 @@ export async function runValidateCommand(options: ValidateCliOptions): Promise<n
         kind: 'workspace',
         root: cwd(),
       };
-  const diagnostics = await runGovernance(scope, workspaceProvider);
 
-  renderDiagnostics(diagnostics, scope);
+  const result = await runGovernance(scope, workspaceProvider);
 
-  return diagnostics.some((diagnostic) => diagnostic.severity === 'error') ? 1 : 0;
+  renderGovernanceResult(result, scope);
+
+  return result.success ? 0 : 1;
 }
 
 export function registerValidateCommand(cli: CAC): void {

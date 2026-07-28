@@ -6,8 +6,10 @@ import type {
   HashService,
   PathService,
 } from '@arch/contracts';
-import type { DagNode, HashContext, HashInput, HashResult } from '@arch/platform-model';
 import { HASH_SCHEMA_VERSION } from '@arch/platform-model';
+import type { DagNode, HashContext, HashInput, HashResult } from '@arch/platform-model';
+
+import { logger } from '../logging/logger.js';
 
 import type { HashValidator } from './validator/hash-validator.js';
 
@@ -55,7 +57,13 @@ export class DagHasher {
       input: hashInput,
       result,
     });
-
+    logger.trace('build.hash.calculated', {
+      category: 'hash',
+      metadata: {
+        packageName: node.name,
+        hash: result.hash,
+      },
+    });
     return result;
   }
 }

@@ -1,12 +1,12 @@
 // packages/code-analysis/src/symbols/scanners/scan-symbols.ts
 
+import type { Project } from 'ts-morph';
+
+import type { SymbolDefinition } from '../model/symbol-types.js';
 
 import { scanFunctions } from './function-scanner.js';
 import { scanClasses } from './scan-classes.js';
 import { scanInterfaces } from './scan-interfaces.js';
-
-import type { SymbolDefinition } from '../model/symbol-types.js';
-import type { Project } from 'ts-morph';
 
 export function scanSymbols(project: Project): readonly SymbolDefinition[] {
   const symbols: SymbolDefinition[] = [];

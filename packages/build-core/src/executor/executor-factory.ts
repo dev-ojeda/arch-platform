@@ -1,10 +1,9 @@
 // packages/build-core/src/executor/executor-factory.ts
 
-import { DefaultBuildExecutor } from './default-build-executor.js';
-
-import type { BuildExecutor } from './build-executor.js';
 import type { CommandRunner } from '../runtime/command-runner.js';
 
+import type { BuildExecutor } from './build-executor.js';
+import { DefaultBuildExecutor } from './default-build-executor.js';
 
 /**
  * Factory responsible for creating the build executor.

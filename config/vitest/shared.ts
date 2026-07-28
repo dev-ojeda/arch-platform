@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitest/config';
 
 import { VITEST_SETUP_FILE } from '../paths/index.js';
+
 import { workspaceAliases } from './aliases.js';
 
 export const sharedVitestConfig = defineConfig({

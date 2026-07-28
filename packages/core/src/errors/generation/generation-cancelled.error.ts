@@ -2,11 +2,10 @@
 
 import type { GenerationCancellationReason } from '@arch/contracts';
 
+import type { ErrorOptions } from '../base/base-error.js';
 import { GENERATION_ERROR_CODES } from '../codes/generation.codes.js';
 
 import { GenerationError } from './generation-errors.js';
-
-import type { ErrorOptions } from '../base/base-error.js';
 
 export interface GenerationCancelledMetadata {
   reason: GenerationCancellationReason;

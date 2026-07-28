@@ -4,14 +4,13 @@ import { pathExistsSync } from '@arch/infrastructure';
 
 import { logger } from '../../logging/logger.js';
 import { ToolingEvents } from '../../runtime/events/tooling-event.js';
+import type { ExecuteCommandResult } from '../../runtime/execution/execute-command-result.js';
 import { executeProcess } from '../../runtime/process/execute-process.js';
+import type { TypecheckCommandOptions } from '../common/command-options.js';
 import { createSkippedCommandResult } from '../common/create-skipped-command-result.js';
 import { FileConfigNames } from '../config/config-file-name.js';
 
 import { createTypecheckArguments } from './create-typecheck-arguments.js';
-
-import type { ExecuteCommandResult } from '../../runtime/execution/execute-command-result.js';
-import type { TypecheckCommandOptions } from '../common/command-options.js';
 
 export async function runTypecheckCommand(
   options: TypecheckCommandOptions = {},

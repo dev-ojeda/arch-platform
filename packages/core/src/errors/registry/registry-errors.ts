@@ -1,7 +1,6 @@
 // packages/core/src/errors/registry/registry-errors.ts
 
 import { BaseError, type ErrorOptions } from '../base/base-error.js';
-
 import type { RegistryErrorCode } from '../codes/registry.codes.js';
 
 export abstract class RegistryError<TMetadata = unknown> extends BaseError<TMetadata> {

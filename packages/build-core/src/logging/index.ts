@@ -7,4 +7,5 @@ export { logger } from './logger.js';
 export { sanitizeEnv } from './sanitize-env.js';
 export { sanitizeMetadata } from './sanitize-metadata.js';
 export { SECRET_KEY_PATTERN } from './secret-pattern.js';
-export { TRACE_ENABLED } from './trace-config.js';
+export { TRACE_CACHE_ENABLED, TRACE_ENABLED, TRACE_HASH_ENABLED } from './trace-config.js';
+export type { TraceCategory } from './trace-config.js';

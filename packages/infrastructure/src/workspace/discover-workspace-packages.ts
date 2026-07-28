@@ -17,20 +17,17 @@ export async function discoverWorkspacePackages(
 
   return roots.map((root) => {
     const pkg = readPackageJson(joinPath(root, 'package.json'));
-
-    return {
+    const results: WorkspacePackage = {
       name: pkg.name,
       root,
-
       dependencies: Object.keys(pkg.dependencies ?? {}).sort(),
-
       buildDependencies: Object.keys(pkg.devDependencies ?? {})
         .filter((dep) => dep.startsWith('@arch/'))
         .sort(),
-
       outputs: resolvePackageOutputs(pkg),
-
       build: pkg.arch?.build,
     };
+
+    return results;
   });
 }

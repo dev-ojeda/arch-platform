@@ -17,7 +17,9 @@
   "arch": {
     "build": {
       "builder": "tsc",
-      "entry": "./src/index.ts",
+      "outputs": [
+        "dist"
+      ],
       "validateExports": true
     }
   },
@@ -26,7 +28,8 @@
     "arch": "arch build --package @arch/generator-mvc",
     "clean": "arch clean",
     "lint": "arch lint",
-    "typecheck": "arch typecheck"
+    "typecheck": "arch typecheck",
+    "validate": "arch validate --package @arch/generator-mvc"
   },
   "dependencies": {
     "@arch/contracts": "workspace:*"

@@ -32,7 +32,7 @@ export const COMMON_IMPORT_RULES = {
   'import/order': [
     'error',
     {
-      groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'type'],
+      groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
 
       pathGroups: [
         {
@@ -52,23 +52,26 @@ export const COMMON_IMPORT_RULES = {
       },
 
       'newlines-between': 'always',
+
+      sortTypesGroup: false,
     },
   ],
+
   'no-restricted-imports': ['error', RESTRICTED_IMPORTS],
 };
 
 const IMPORT_PARSERS = {
   'import/parsers': {
-    '@typescript-eslint/parser': ['.ts'],
+    '@typescript-eslint/parser': ['.ts', '.tsx'],
   },
 };
 
 const IMPORT_SETTINGS = {
-  IMPORT_PARSERS,
+  ...IMPORT_PARSERS,
 
   'import/resolver': {
     typescript: {
-      project: ['./tsconfig.json'],
+      project: ['./config/tsconfig/eslint.json'],
     },
 
     node: {
@@ -77,23 +80,23 @@ const IMPORT_SETTINGS = {
   },
 };
 
-const IMPORT_SETTINGS_NO_NODE = {
-  IMPORT_PARSERS,
+const CONFIG_IMPORT_SETTINGS = {
+  ...IMPORT_PARSERS,
 
   'import/resolver': {
     typescript: {
-      project: ['./config/tsconfig.json'],
+      project: ['./config/tsconfig/eslint.json'],
+    },
+
+    node: {
+      extensions: ['.js', '.ts'],
     },
   },
 };
 
-export function createImportSettings(project = '') {
-  switch (project) {
-    case './tsconfig.json':
-      return IMPORT_SETTINGS;
-    case './config/tsconfig.json':
-      return IMPORT_SETTINGS_NO_NODE;
-    default:
-      break;
-  }
+export function createImportSettings() {
+  return IMPORT_SETTINGS;
+}
+export function createConfigImportSettings() {
+  return CONFIG_IMPORT_SETTINGS;
 }

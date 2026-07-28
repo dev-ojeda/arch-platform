@@ -2,13 +2,13 @@
 
 // packages/code-analysis/src/module/build-module.ts
 
+import type { SourceFile } from 'ts-morph';
 
+import type { PackageResolver } from '../package/resolvers/package-resolver.js';
 
 import type { ModuleDeclaration } from './model/module-declaration.js';
 import type { ModuleKind } from './model/module-kind.js';
 import type { ModuleReference } from './model/module-reference.js';
-import type { PackageResolver } from '../package/resolvers/package-resolver.js';
-import type { SourceFile } from 'ts-morph';
 
 export function buildModuleImports(
   sourceFile: SourceFile,

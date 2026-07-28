@@ -1,12 +1,11 @@
 // packages/code-analysis/src/symbols/references/symbol-reference-scanner.ts
 
+import type { Project } from 'ts-morph';
 
+import type { SymbolEdge } from '../model/symbol-edge-types.js';
 import { resolveSymbolId } from '../symbol-id-resolver.js';
 
 import { scanImportSymbolReferences } from './import-symbol-reference-scanner.js';
-
-import type { SymbolEdge } from '../model/symbol-edge-types.js';
-import type { Project } from 'ts-morph';
 
 export function scanSymbolReferences(project: Project): readonly SymbolEdge[] {
   const edges: SymbolEdge[] = [];
