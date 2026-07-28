@@ -1,13 +1,12 @@
 // packages/cli/src/commands/build.command.ts
 import process from 'node:process';
 
-import { buildCommand } from '@arch/tooling';
-
-import { logger } from '../ui/logger.js';
-
-import type { BuildCliOptions } from '../contracts/build-cli-options.js';
 import type { CAC } from 'cac';
 
+import { buildCommand } from '@arch/tooling';
+
+import type { BuildCliOptions } from '../contracts/build-cli-options.js';
+import { logger } from '../ui/logger.js';
 
 export function registerBuildCommand(cli: CAC): void {
   cli

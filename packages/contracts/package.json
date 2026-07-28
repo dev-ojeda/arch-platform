@@ -10,7 +10,10 @@
   },
   "arch": {
     "build": {
-      "builder": "tsc-declaration"
+      "builder": "tsc-declaration",
+      "outputs": [
+        "dist"
+      ]
     }
   },
   "scripts": {
@@ -19,6 +22,7 @@
     "arch": "arch build --package @arch/contracts",
     "clean": "arch clean",
     "typecheck": "arch typecheck",
-    "lint": "arch lint"
+    "lint": "arch lint",
+    "validate": "arch validate --package @arch/contracts"
   }
 }

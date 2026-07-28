@@ -3,6 +3,11 @@
 import type { PackageJson } from '@arch/platform-model';
 
 export function resolvePackageOutputs(pkg: PackageJson): string[] {
+  if (pkg.arch?.build?.outputs?.length) {
+    return [...pkg.arch.build.outputs];
+  }
+
+  // Compatibilidad con el formato antiguo
   if (pkg.outputs?.length) {
     return [...pkg.outputs];
   }

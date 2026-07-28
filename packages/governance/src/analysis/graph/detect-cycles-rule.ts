@@ -2,14 +2,13 @@
 
 import type { Diagnostic } from '@arch/platform-model';
 
+import type { GovernanceContext } from '../../context/governance-context.js';
+import type { GovernanceScope } from '../../context/governance-scope.js';
 import { GovernanceRuleId } from '../../engine/governance-rule-id.js';
+import type { GovernanceRule } from '../../engine/governance-rule.js';
 
 import { buildWorkspaceGraph } from './build-workspace-graph.js';
 import { detectCycles } from './detect-cycles.js';
-
-import type { GovernanceContext } from '../../context/governance-context.js';
-import type { GovernanceScope } from '../../context/governance-scope.js';
-import type { GovernanceRule } from '../../engine/governance-rule.js';
 
 export class DetectCyclesRule implements GovernanceRule<GovernanceContext> {
   readonly id = GovernanceRuleId.DetectCycles;

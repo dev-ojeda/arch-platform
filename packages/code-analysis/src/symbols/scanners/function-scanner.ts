@@ -1,8 +1,8 @@
 // packages/code-analysis/src/symbols/scanners/function-scanner.ts
 
-import type { FunctionMetadata } from './function-metadata.js';
 import type { Project } from 'ts-morph';
 
+import type { FunctionMetadata } from './function-metadata.js';
 
 export function scanFunctions(project: Project): readonly FunctionMetadata[] {
   const functions: FunctionMetadata[] = [];

@@ -4,6 +4,7 @@ import type { WorkspacePackage } from '@arch/platform-model';
 
 import { buildGraph } from '../../../src/graph/build-graph.js';
 
+// test
 describe('buildGraph', () => {
   it('should include runtime dependencies', () => {
     const packages: WorkspacePackage[] = [

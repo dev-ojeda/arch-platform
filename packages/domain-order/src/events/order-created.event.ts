@@ -1,7 +1,7 @@
 // packages/domain-order/src/events/order-created.event.ts
-import type { DomainEvent } from './domain-event.js';
 import type { Order } from '../models/order.js';
 
+import type { DomainEvent } from './domain-event.js';
 
 export interface OrderCreatedPayload {
   order: Order;

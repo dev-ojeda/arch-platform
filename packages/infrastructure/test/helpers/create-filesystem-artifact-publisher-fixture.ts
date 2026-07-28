@@ -1,10 +1,10 @@
-import type { ArtifactPublisherContractContext } from '@arch/testing';
 import {
   createMockArtifactLayout,
   createMockArtifactPublisher,
   createTestArtifactManifest,
   createTestFilesystemRoot,
 } from '@arch/testing';
+import type { ArtifactPublisherContractContext } from '@arch/testing';
 
 export function createFilesystemArtifactPublisherFixture(): ArtifactPublisherContractContext {
   const root = createTestFilesystemRoot();

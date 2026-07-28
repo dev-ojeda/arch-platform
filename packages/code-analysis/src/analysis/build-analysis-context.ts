@@ -1,5 +1,6 @@
 // packages/code-analysis/src/analysis/build-analysis-context.ts
 
+import type { Project } from 'ts-morph';
 
 import { DefaultExportedSymbolIndexBuilder } from '../exports/default-exported-symbol-index-builder.js';
 import { PackageDependencyAnalyzer } from '../package/dependency/package-dependency-analyzer.js';
@@ -8,7 +9,6 @@ import { DefaultPackageResolver } from '../package/resolvers/default-package-res
 import { buildSymbolGraph } from '../symbols/graph/build-symbol-graph.js';
 
 import type { AnalysisContext } from './analysis-context.js';
-import type { Project } from 'ts-morph';
 
 export function buildAnalysisContext(project: Project): AnalysisContext {
   const packageResolver = new DefaultPackageResolver();

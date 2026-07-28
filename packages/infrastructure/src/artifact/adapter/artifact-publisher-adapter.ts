@@ -7,13 +7,9 @@ import {
   type ArtifactPublisher,
 } from '@arch/platform-model';
 
-import { loggerFactory } from '../../logging/logger.js';
 import { safeStringify } from '../../serialization/safe-stringify.js';
 
 export class ArtifactPublisherAdapter implements ArtifactPublisher {
-  logger = loggerFactory.createLogger({
-    component: 'ArtifactPublisherAdapter',
-  });
   constructor(
     private readonly filesystem: FileSystemAsyncPort,
     private readonly pathService: PathService,
@@ -21,29 +17,13 @@ export class ArtifactPublisherAdapter implements ArtifactPublisher {
   async publish(root: string, manifest: ArtifactManifest, layout: ArtifactLayout): Promise<void> {
     let published = false;
     const temp = layout.temporary('tmp');
-    this.logger.trace('artifact.publish.start', {
-      metadata: {
-        method: 'async publish',
-        package: manifest.artifact.packageName,
-        artifact: manifest.artifact.id,
-        destination: layout.root,
-        temp: temp.root,
-      },
-    });
+
     try {
       await this.filesystem.remove(temp.root);
 
       await this.filesystem.createDirectory(temp.root);
 
       for (const output of manifest.outputs) {
-        this.logger.trace('artifact.publish.output', {
-          metadata: {
-            source: this.pathService.join(root, output),
-            output,
-            destination: temp.output(output),
-          },
-        });
-
         await this.filesystem.copy(this.pathService.join(root, output), temp.output(output));
       }
 
@@ -52,11 +32,7 @@ export class ArtifactPublisherAdapter implements ArtifactPublisher {
       await this.filesystem.remove(layout.root);
 
       await this.filesystem.rename(temp.root, layout.root);
-      this.logger.trace('artifact.publish.completed', {
-        metadata: {
-          package: manifest.artifact.packageName,
-        },
-      });
+
       published = true;
     } finally {
       if (!published) {

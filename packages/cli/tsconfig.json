@@ -6,9 +6,7 @@
     "composite": true,
     "tsBuildInfoFile": "./.turbo/cli.tsbuildinfo"
   },
-  "include": [
-    "src/**/*.ts"
-  ],
+  "include": ["src/**/*.ts"],
   "references": [
     {
       "path": "../governance"
@@ -23,8 +21,5 @@
       "path": "../tooling"
     }
   ],
-  "exclude": [
-    "dist",
-    "node_modules"
-  ]
+  "exclude": ["dist", "node_modules"]
 }

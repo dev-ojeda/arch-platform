@@ -1,10 +1,5 @@
 export const CONFIG_TS_FILES = ['config/**/*.ts'];
-export const SOURCE_FILES = [
-  'packages/**/*.ts',
-  'packages/**/*.tsx',
-  'apps/**/*.ts',
-  'apps/**/*.tsx',
-];
+export const SOURCE_FILES = ['packages/**/*.ts', 'packages/**/*.tsx'];
 
 /**
  * -----------------------------------------------------------------------------

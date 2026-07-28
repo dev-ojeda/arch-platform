@@ -1,9 +1,10 @@
 // packages/cli/src/commands/lint.command.ts
 
+import type { CAC } from 'cac';
+
 import { lintCommand } from '@arch/tooling';
 
 import type { LintCliOptions } from '../contracts/lint-cli-options.js';
-import type { CAC } from 'cac';
 
 export function registerLintCommand(cli: CAC): void {
   cli

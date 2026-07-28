@@ -8,13 +8,8 @@
     "declarationMap": true,
     "tsBuildInfoFile": "./.turbo/governance.tsbuildinfo"
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "dist",
-    "node_modules"
-  ],
+  "include": ["src/**/*.ts"],
+  "exclude": ["dist", "node_modules"],
   "references": [
     {
       "path": "../code-analysis"
@@ -25,5 +20,5 @@
     {
       "path": "../platform-model"
     }
-  ],
+  ]
 }

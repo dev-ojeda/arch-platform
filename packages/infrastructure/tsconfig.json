@@ -8,9 +8,7 @@
     "declarationMap": true,
     "tsBuildInfoFile": "./.turbo/infrastructure.tsbuildinfo"
   },
-  "include": [
-    "src/**/*.ts"
-  ],
+  "include": ["src/**/*.ts"],
   "references": [
     {
       "path": "../contracts"
@@ -22,8 +20,5 @@
       "path": "../testing"
     }
   ],
-  "exclude": [
-    "dist",
-    "node_modules"
-  ]
+  "exclude": ["dist", "node_modules"]
 }

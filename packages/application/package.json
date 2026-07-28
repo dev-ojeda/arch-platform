@@ -15,7 +15,9 @@
   "arch": {
     "build": {
       "builder": "tsc",
-      "entry": "./src/index.ts",
+      "outputs": [
+        "dist"
+      ],
       "validateExports": true
     }
   },
@@ -29,6 +31,7 @@
     "clean": "arch clean",
     "lint": "arch lint",
     "typecheck": "arch typecheck",
+    "validate": "arch validate --package @arch/application",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",
     "test:watch": "vitest",

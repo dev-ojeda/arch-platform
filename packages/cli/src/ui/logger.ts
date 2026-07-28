@@ -3,7 +3,6 @@
 import { safeStringify } from './safe-stringify.js';
 import { sanitizeMetadata } from './sanitize-metadata.js';
 import { LOG_LEVELS } from './type-variable.js';
-
 import type { LogLevel } from './type-variable.js';
 
 interface LogMetadata {

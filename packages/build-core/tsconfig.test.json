@@ -4,10 +4,7 @@
     "rootDir": ".",
     "outDir": "./dist-test"
   },
-  "include": [
-    "src/**/*.ts",
-    "test/**/*.ts"
-  ],
+  "include": ["src/**/*.ts", "test/**/*.ts"],
   "references": [
     {
       "path": "./tsconfig.json"

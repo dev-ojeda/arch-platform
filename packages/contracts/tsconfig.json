@@ -8,11 +8,6 @@
     "declarationMap": true,
     "tsBuildInfoFile": "./.turbo/contracts.tsbuildinfo"
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "dist",
-    "node_modules"
-  ]
+  "include": ["src/**/*.ts"],
+  "exclude": ["dist", "node_modules"]
 }

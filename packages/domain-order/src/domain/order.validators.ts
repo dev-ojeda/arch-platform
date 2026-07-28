@@ -1,8 +1,7 @@
 // packages/domain-order/src/domain/order.validators.ts
 
-import { InvalidOrderError } from '../errors/invalid-order.error.js';
-
 import type { CreateOrderInput } from '../contracts/order-service.contract.js';
+import { InvalidOrderError } from '../errors/invalid-order.error.js';
 
 export function validateCreateOrderInput(input: CreateOrderInput): void {
   if (!input.customerId?.trim()) {

@@ -6,9 +6,8 @@ import type { HashResult } from '@arch/platform-model';
 import { logger } from '../logging/logger.js';
 import { isRecord } from '../serialization/type-guards.js';
 
-import { getBuildStatePath } from './state-paths.js';
-
 import type { BuildStateLoader } from './build-state-loader.js';
+import { getBuildStatePath } from './state-paths.js';
 import type { BuildState, BuildStateEntry } from './state-types.js';
 
 export class JsonBuildStateLoader implements BuildStateLoader {

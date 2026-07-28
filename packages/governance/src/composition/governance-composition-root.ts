@@ -2,12 +2,11 @@
 
 import { DetectCyclesRule } from '../analysis/graph/detect-cycles-rule.js';
 import { GovernanceEngine } from '../engine/governance-engine.js';
+import type { GovernanceRule } from '../engine/governance-rule.js';
 import { DependencyLayerRule } from '../rules/dependency-layer-rule.js';
 import { ForbiddenDependencyRule } from '../rules/forbidden-dependency-rule.js';
 import { ValidatePackageStructureRule } from '../rules/validate-package-structure.rule.js';
 import { WorkspacePackageRule } from '../workspace/workspace-package-rule.js';
-
-import type { GovernanceRule } from '../engine/governance-rule.js';
 
 export class GovernanceCompositionRoot {
   createEngine(additionalRules: readonly GovernanceRule[] = []): GovernanceEngine {

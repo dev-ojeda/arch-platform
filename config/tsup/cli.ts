@@ -1,7 +1,6 @@
 import { defineConfig } from 'tsup';
 
 import { createBaseConfig } from './base.js';
-
 import type { ConfigOverrides } from './types.js';
 
 export function createCliConfig(overrides: ConfigOverrides = {}) {

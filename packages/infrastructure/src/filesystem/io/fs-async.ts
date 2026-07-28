@@ -89,12 +89,19 @@ export async function ensureDirAsync(targetPath: string): Promise<void> {
 export function renamePath(source: string, destination: string): Promise<void> {
   return retryFsOperation(() => rename(source, destination));
 }
-export function copyPath(
+export async function copyPath(
   source: string,
   destination: string,
   options: CopyPathAsyncOptions = {},
 ): Promise<void> {
-  return retryFsOperation(() => cp(source, destination, options));
+  const info = await stat(source);
+
+  return retryFsOperation(() =>
+    cp(source, destination, {
+      recursive: info.isDirectory(),
+      ...options,
+    }),
+  );
 }
 export async function normalizePathPermissions(targetPath: string): Promise<void> {
   try {

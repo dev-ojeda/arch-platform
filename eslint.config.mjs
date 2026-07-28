@@ -1,7 +1,6 @@
 // eslint.config.mjs
 
 import eslint from '@eslint/js';
-import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
 import { ESLINT_PLUGINS } from './config/eslint/base.mjs';
@@ -17,12 +16,15 @@ import {
 import {
   ARCHITECTURE_RULES,
   ARCHITECTURE_RULES_NO_COMMONJS,
-  ARCHITECTURE_RULES_NO_REQUIRED,
 } from './config/eslint/rules/architecture.mjs';
-import { COMMON_IMPORT_RULES, createImportSettings } from './config/eslint/rules/imports.mjs';
+import {
+  COMMON_IMPORT_RULES,
+  createConfigImportSettings,
+  createImportSettings,
+} from './config/eslint/rules/imports.mjs';
 import { COMMON_TS_RULES, TYPESCRIPT_LANGUAGE_OPTIONS } from './config/eslint/rules/typescript.mjs';
 
-export default defineConfig(
+export default tseslint.config(
   /**
    * Global ignores
    */
@@ -34,10 +36,6 @@ export default defineConfig(
    * ESLint base
    */
   eslint.configs.recommended,
-
-  /**
-   * TypeScript recommended
-   */
   ...tseslint.configs.recommendedTypeChecked,
   /**
    * -----------------------------------------------------------------------------
@@ -47,11 +45,17 @@ export default defineConfig(
   {
     files: CONFIG_TS_FILES,
 
-    languageOptions: TYPESCRIPT_LANGUAGE_OPTIONS,
+    extends: [tseslint.configs.disableTypeChecked],
 
     plugins: ESLINT_PLUGINS,
 
-    settings: createImportSettings('./config/tsconfig.json'),
+    languageOptions: {
+      parserOptions: {
+        projectService: false,
+      },
+    },
+
+    settings: createConfigImportSettings(),
 
     rules: {
       ...COMMON_IMPORT_RULES,
@@ -65,12 +69,11 @@ export default defineConfig(
    */
   {
     files: SOURCE_FILES,
-
     languageOptions: TYPESCRIPT_LANGUAGE_OPTIONS,
 
     plugins: ESLINT_PLUGINS,
 
-    settings: createImportSettings('./tsconfig.json'),
+    settings: createImportSettings(),
 
     rules: {
       ...COMMON_IMPORT_RULES,
@@ -89,10 +92,13 @@ export default defineConfig(
 
     extends: [tseslint.configs.disableTypeChecked],
 
+    plugins: ESLINT_PLUGINS,
+
     languageOptions: COMMONJS_LANGUAGE_OPTIONS,
 
     rules: {
-      ...ARCHITECTURE_RULES_NO_REQUIRED,
+      ...COMMON_IMPORT_RULES,
+      ...ARCHITECTURE_RULES_NO_COMMONJS,
     },
   },
 
@@ -131,9 +137,10 @@ export default defineConfig(
 
     languageOptions: TOOLING_LANGUAGE_OPTIONS,
 
+    settings: createImportSettings(),
+
     rules: {
       ...COMMON_IMPORT_RULES,
-      ...COMMON_TS_RULES,
       ...ARCHITECTURE_RULES_NO_COMMONJS,
     },
   },

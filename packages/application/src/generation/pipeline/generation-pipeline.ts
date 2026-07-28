@@ -2,22 +2,21 @@
 
 import type { GenerationContext, GenerationPipelineStep, TemplateVariables } from '@arch/contracts';
 
-import { RuntimeEventTypes } from '../../runtime/execution/events/runtime-event-types.js';
-import { measureStepExecution } from '../telemetry/measure-step-execution.js';
-
-import type { GenerationPipelineOptions } from './generation-pipeline-options.js';
 import type {
   PipelineCompletedEvent,
   PipelineFailedEvent,
   PipelineStartedEvent,
 } from '../../runtime/execution/events/pipeline-events.js';
+import { RuntimeEventTypes } from '../../runtime/execution/events/runtime-event-types.js';
 import type { RuntimeEvent } from '../../runtime/execution/events/runtime-event.js';
 import type {
   StepCompletedEvent,
   StepFailedEvent,
   StepStartedEvent,
 } from '../../runtime/execution/events/step-events.js';
+import { measureStepExecution } from '../telemetry/measure-step-execution.js';
 
+import type { GenerationPipelineOptions } from './generation-pipeline-options.js';
 
 export class GenerationPipeline<TVariables extends TemplateVariables = TemplateVariables> {
   constructor(private readonly options: GenerationPipelineOptions<TVariables>) {}

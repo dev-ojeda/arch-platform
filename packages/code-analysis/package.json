@@ -8,7 +8,9 @@
   "arch": {
     "build": {
       "builder": "tsc",
-      "entry": "./src/index.ts",
+      "outputs": [
+        "dist"
+      ],
       "validateExports": true
     }
   },
@@ -29,6 +31,7 @@
     "arch": "arch build --package @arch/code-analysis",
     "clean": "arch clean",
     "typecheck": "arch typecheck",
+    "validate": "arch validate --package @arch/code-analysis",
     "lint": "arch lint",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",

@@ -1,7 +1,8 @@
 // packages/code-analysis/src/package/dependency/package-dependency-graph-builder.ts
 
-import type { PackageDependencyGraph } from './package-dependency-graph.js';
 import type { SymbolGraph } from '../../symbols/graph/symbol-graph-types.js';
+
+import type { PackageDependencyGraph } from './package-dependency-graph.js';
 
 export class PackageDependencyGraphBuilder {
   build(graph: SymbolGraph): PackageDependencyGraph {

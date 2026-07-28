@@ -1,7 +1,6 @@
+import type { LogMetadata } from './log-types.js';
 import { sanitizeEnv } from './sanitize-env.js';
 import { SECRET_KEY_PATTERN } from './secret-pattern.js';
-
-import type { LogMetadata } from './log-types.js';
 
 export function sanitizeMetadata(metadata?: LogMetadata): LogMetadata | undefined {
   if (!metadata) {

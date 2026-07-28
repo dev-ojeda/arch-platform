@@ -1,14 +1,11 @@
 export const TOOLING_FILES = [
-  '**/vitest.config.ts',
-  '**/eslint.config.mjs',
-  '**/*.config.{js,cjs,mjs,ts}',
-  '**/commitlint.config.cjs',
-  '**/.dependency-cruiser.cjs',
+  '**/*.config.{js,mjs,ts}',
+  '**/eslint/**/*.mjs',
+  '**/config/**/*.mjs',
 ];
 
 export const COMMONJS_FILES = [
   '**/*.cjs',
-  '**/*.config.cjs',
   '**/commitlint.config.cjs',
   '**/.dependency-cruiser.cjs',
 ];
@@ -18,15 +15,17 @@ export const TOOLING_LANGUAGE_OPTIONS = {
   },
 };
 export const COMMONJS_LANGUAGE_OPTIONS = {
+  ...TOOLING_LANGUAGE_OPTIONS,
+
   sourceType: 'commonjs',
 
   globals: {
+    ...(TOOLING_LANGUAGE_OPTIONS.globals ?? {}),
+    console: 'readonly',
+    process: 'readonly',
     module: 'readonly',
     require: 'readonly',
-
     __dirname: 'readonly',
     __filename: 'readonly',
   },
-
-  TOOLING_LANGUAGE_OPTIONS,
 };

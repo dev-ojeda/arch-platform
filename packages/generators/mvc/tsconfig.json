@@ -8,16 +8,11 @@
     "declarationMap": true,
     "tsBuildInfoFile": "./.turbo/generator-mvc.tsbuildinfo"
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "dist",
-    "node_modules"
-  ],
+  "include": ["src/**/*.ts"],
+  "exclude": ["dist", "node_modules"],
   "references": [
     {
       "path": "../../contracts"
     }
-  ],
+  ]
 }

@@ -1,12 +1,11 @@
 // packages/code-analysis/src/exports/default-exported-symbol-index-builder.ts
 
+import type { Project } from 'ts-morph';
 
 import { DefaultExportedSymbolIndex } from './default-exported-symbol-index.js';
-
 import type { ExportedSymbolIndexBuilder } from './exported-symbol-index-builder.js';
 import type { ExportedSymbolIndex } from './exported-symbol-index.js';
 import type { ExportedSymbol } from './exported-symbol.js';
-import type { Project } from 'ts-morph';
 
 export class DefaultExportedSymbolIndexBuilder implements ExportedSymbolIndexBuilder {
   build(_project: Project): ExportedSymbolIndex {

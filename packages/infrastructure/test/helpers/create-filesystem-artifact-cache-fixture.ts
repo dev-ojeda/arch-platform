@@ -1,5 +1,4 @@
 // packages\infrastructure\test\helpers\create-filesystem-artifact-cache-fixture.ts
-import type { ArtifactCacheContractContext } from '@arch/testing';
 import {
   createMockArtifactLayout,
   createMockArtifactLayoutFactory,
@@ -8,6 +7,7 @@ import {
   createTestArtifact,
   createTestPathService,
 } from '@arch/testing';
+import type { ArtifactCacheContractContext } from '@arch/testing';
 
 import { FilesystemArtifactCache } from '../../src/artifact/adapter/filesystem-artifact-cache.js';
 
