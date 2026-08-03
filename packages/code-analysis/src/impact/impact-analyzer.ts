@@ -1,11 +1,11 @@
 // packages/code-analysis/src/impact/impact-analyzer.ts
 
-import type { SymbolDependencyGraph } from '../symbols/model/symbol-dependency-graph.js';
+import type { SymbolGraphQuery } from '../graph/symbol-graph-query.js';
 
 import type { ImpactResult } from './impact-result.js';
 
 export class ImpactAnalyzer {
-  constructor(private readonly dependencyGraph: SymbolDependencyGraph) {}
+  constructor(private readonly symbolGraphQuery: SymbolGraphQuery) {}
 
   analyze(
     symbolId: string,
@@ -25,14 +25,10 @@ export class ImpactAnalyzer {
 
     return {
       symbolId,
-
-      affectedSymbols: [...affectedSymbols],
-
-      affectedPackages: [...affectedPackages],
-
-      affectedFiles: [...affectedFiles],
-
-      depth: this.calculateDepth(visited),
+      affectedSymbols: Array.from(affectedSymbols),
+      affectedPackages: Array.from(affectedPackages),
+      affectedFiles: Array.from(affectedFiles),
+      depth: this.calculateImpactSize(visited),
     };
   }
 
@@ -45,30 +41,30 @@ export class ImpactAnalyzer {
     packages: Set<string>,
     files: Set<string>,
   ): void {
-    if (visited.has(symbolId) || depth >= maxDepth) {
+    if (visited.has(symbolId) || depth > maxDepth) {
       return;
     }
 
     visited.add(symbolId);
 
-    const dependents = this.dependencyGraph.getDependents(symbolId);
+    const incomingEdges = this.symbolGraphQuery.getIncomingEdges(symbolId);
 
-    for (const edge of dependents) {
-      const node = this.dependencyGraph.getNode(edge.from);
+    for (const edge of incomingEdges) {
+      const dependent = this.symbolGraphQuery.getNode(edge.from);
 
-      if (!node) {
+      if (!dependent) {
         continue;
       }
 
-      symbols.add(node.id);
-      packages.add(node.package);
-      files.add(node.sourceFile);
+      symbols.add(dependent.id);
+      packages.add(dependent.package);
+      files.add(dependent.sourceFile);
 
-      this.traverse(node.id, depth + 1, maxDepth, visited, symbols, packages, files);
+      this.traverse(dependent.id, depth + 1, maxDepth, visited, symbols, packages, files);
     }
   }
 
-  private calculateDepth(visited: Set<string>): number {
+  private calculateImpactSize(visited: Set<string>): number {
     return visited.size;
   }
 }

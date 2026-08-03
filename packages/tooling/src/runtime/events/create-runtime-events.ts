@@ -1,6 +1,6 @@
 // packages/tooling/src/runtime/events/create-runtime-events.ts
 
-// runtime/events/create-runtime-events.ts
+import { createBaseTaskEvents } from '../task/task-events.js';
 
 export interface RuntimeTaskEvents {
   readonly started: string;
@@ -11,9 +11,7 @@ export interface RuntimeTaskEvents {
 
 export function createRuntimeEvents(task: string): RuntimeTaskEvents {
   return {
-    started: `${task}.started`,
-    completed: `${task}.completed`,
-    failed: `${task}.failed`,
+    ...createBaseTaskEvents(task),
     crashed: `${task}.crashed`,
   };
 }

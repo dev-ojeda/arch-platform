@@ -1,4 +1,5 @@
 import type { GovernanceExecutionContext } from '../../../src/context/governance-context.js';
+import { createAnalysisContext } from '../code-analysis/create-analysis-context.js';
 import { createWorkspaceDescriptor } from '../workspace/create-workspace-descriptor.js';
 
 export function createGovernanceExecutionContext(
@@ -8,17 +9,14 @@ export function createGovernanceExecutionContext(
     workspace: createWorkspaceDescriptor({
       packages: [],
     }),
+
     scope: {
       kind: 'workspace',
       root: '/workspace',
     },
-    analysis: {
-      packageGraph: {} as never,
-      symbolGraph: {
-        nodes: [],
-        edges: [],
-      },
-    },
+
+    analysis: createAnalysisContext(),
+
     ...overrides,
   };
 }

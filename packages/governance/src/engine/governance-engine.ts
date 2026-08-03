@@ -5,20 +5,20 @@ import type { Diagnostic, DiagnosticSeverity } from '@arch/platform-model';
 import type { GovernanceExecutionContext } from '../context/governance-context.js';
 import { createStopwatch } from '../helpers/create-stopwatch.js';
 import { getErrorMessage } from '../helpers/error-message.js';
+import type { GovernanceResult } from '../public/governance-result.js';
 import type { RuleExecutionResult } from '../rules/execution-result-rule.js';
 
-import type { GovernanceEngineResult } from './governance-engine-result.js';
-import type { GovernanceRuleExecution } from './governance-rule-execution.js';
+import type { GovernanceRuleResult } from './governance-rule-result.js';
 import type { GovernanceRule } from './governance-rule.js';
 
 export class GovernanceEngine {
   constructor(private readonly rules: readonly GovernanceRule[]) {}
 
-  async run(context: GovernanceExecutionContext): Promise<GovernanceEngineResult> {
+  async run(context: GovernanceExecutionContext): Promise<GovernanceResult> {
     const stopwatch = createStopwatch();
 
     const diagnostics: Diagnostic[] = [];
-    const executions: GovernanceRuleExecution[] = [];
+    const executions: GovernanceRuleResult[] = [];
 
     const applicableRules = this.rules.filter(
       (rule) => !rule.supports || rule.supports(context.scope),
@@ -44,7 +44,7 @@ export class GovernanceEngine {
 
         durationMs: execution.durationMs,
 
-        diagnostics: execution.diagnostics.length,
+        diagnosticCount: execution.diagnostics.length,
 
         severity: execution.error ? 'error' : this.getSeverity(execution.diagnostics),
 
@@ -62,6 +62,8 @@ export class GovernanceEngine {
       evaluatedRules: applicableRules.length,
 
       executions,
+
+      scope: context.scope,
     };
   }
   private async executeRule(

@@ -2,4 +2,3 @@
 
 export { DagHasher } from './dag-hasher.js';
 export { HashGraphBuilder } from './hash-graph.js';
-export { HashConsistencyError, HashValidator } from './validator/index.js';

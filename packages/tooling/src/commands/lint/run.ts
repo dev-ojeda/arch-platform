@@ -3,9 +3,10 @@
 import { pathExistsSync } from '@arch/infrastructure';
 
 import { logger } from '../../logging/logger.js';
-import { ToolingEvents } from '../../runtime/events/tooling-event.js';
-import type { ExecuteCommandResult } from '../../runtime/execution/execute-command-result.js';
+import { ToolingTasks } from '../../runtime/events/tooling-task-events.js';
 import { executeProcess } from '../../runtime/process/execute-process.js';
+import { createProcessTaskResult } from '../../runtime/task/create-process-task-result.js';
+import type { TaskProcessResult } from '../../runtime/task/task-process-result.js';
 import type { LintCommandOptions } from '../common/command-options.js';
 import { createSkippedCommandResult } from '../common/create-skipped-command-result.js';
 
@@ -17,23 +18,21 @@ function resolveLintTargets(targets: readonly string[]): readonly string[] {
   return targets.filter(pathExistsSync);
 }
 
-function validateLintTargets(lintTargets: readonly string[]): ExecuteCommandResult | undefined {
+function validateLintTargets(lintTargets: readonly string[]): TaskProcessResult | undefined {
   if (lintTargets.length === 0) {
-    logger.warn(ToolingEvents.lint.skipped, {
+    logger.warn(ToolingTasks.lint.events.skipped, {
       metadata: {
         reason: 'no-lint-targets',
       },
     });
 
-    return createSkippedCommandResult(ToolingEvents.lint.skipped);
+    return createSkippedCommandResult();
   }
 
   return undefined;
 }
 
-export async function runLintCommand(
-  options: LintCommandOptions = {},
-): Promise<ExecuteCommandResult> {
+export async function runLintCommand(options: LintCommandOptions = {}): Promise<TaskProcessResult> {
   const { args = [], targets = DEFAULT_LINT_TARGETS, maxWarnings = 0 } = options;
 
   const lintTargets = resolveLintTargets(targets);
@@ -43,6 +42,9 @@ export async function runLintCommand(
   if (skippedResult) {
     return skippedResult;
   }
-
-  return executeProcess('eslint', createLintArguments(lintTargets, maxWarnings, args));
+  const result = await executeProcess(
+    'eslint',
+    createLintArguments(lintTargets, maxWarnings, args),
+  );
+  return createProcessTaskResult(result);
 }

@@ -24,7 +24,7 @@ import { buildGraph } from '../graph/build-graph.js';
 import { GraphQueryService } from '../graph/graph-query-services.js';
 import { DagHasher } from '../hash/dag-hasher.js';
 import { WorkspaceExecutionContractResolver } from '../planning/workspace-execution-contract-resolver.js';
-import type { CommandRunner } from '../runtime/command-runner.js';
+import type { CommandRunner } from '../public/command-runner.js';
 import { BuildService } from '../services/build-service.js';
 import { JsonBuildStateLoader } from '../state/json-build-state-loader.js';
 import type { BuildState } from '../state/state-types.js';

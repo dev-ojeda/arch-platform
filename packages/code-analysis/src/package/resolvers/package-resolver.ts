@@ -3,5 +3,5 @@
 export interface PackageResolver {
   resolveFromFile(filePath: string): string | undefined;
 
-  resolveFromModuleSpecifier(moduleSpecifier: string): string | undefined;
+  resolveFromModuleSpecifier(moduleSpecifier?: string): string | undefined;
 }

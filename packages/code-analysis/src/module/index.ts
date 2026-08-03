@@ -1,4 +1,4 @@
 // packages/code-analysis/src/module/index.ts
 
-export { buildModuleExports, buildModuleImports } from './build-module.js';
-export type { ModuleKind, ModuleReference } from './model/index.js';
+export { buildModuleAnalysis } from './build-module-analysis.js';
+export type { ModuleDescriptor } from './model/index.js';

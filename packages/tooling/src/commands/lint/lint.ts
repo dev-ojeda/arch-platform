@@ -1,6 +1,6 @@
 // packages/tooling/src/commands/lint/lint.ts
 
-import { ToolingEvents } from '../../runtime/events/tooling-event.js';
+import { ToolingTasks } from '../../runtime/events/tooling-task-events.js';
 import { runTask } from '../../runtime/task/run-task.js';
 import type { LintCommandOptions } from '../common/command-options.js';
 
@@ -8,7 +8,7 @@ import { runLintCommand } from './run.js';
 
 export async function lintCommand(options: LintCommandOptions = {}): Promise<number> {
   return runTask({
-    events: ToolingEvents.lint,
+    task: ToolingTasks.lint,
     action: () => runLintCommand(options),
   });
 }

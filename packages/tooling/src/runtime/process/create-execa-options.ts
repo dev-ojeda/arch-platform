@@ -1,13 +1,11 @@
 // packages/tooling/src/runtime/process/create-execa-options.ts
 import type { Options } from 'execa';
 
-import {
-  DEFAULT_EXECUTION_OPTIONS,
-  type ExecuteCommandOptions,
-} from '../execution/execute-command-option.js';
+import type { ExecuteProcessOptions } from '../execution/execute-process-option.js';
+import { DEFAULT_PROCESS_OPTIONS } from '../execution/execute-process-option.js';
 
-export function createExecaOptions(options: ExecuteCommandOptions): Options {
-  const defaults = DEFAULT_EXECUTION_OPTIONS;
+export function createExecaOptions(options: ExecuteProcessOptions): Options {
+  const defaults = DEFAULT_PROCESS_OPTIONS;
 
   return {
     cwd: options.cwd,

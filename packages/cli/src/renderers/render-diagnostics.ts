@@ -1,6 +1,6 @@
 // packages/cli/src/renderers/render-diagnostics.ts
 
-import type { GovernanceEngineResult, GovernanceScope } from '@arch/governance';
+import type { GovernanceResult } from '@arch/governance';
 import type { Diagnostic } from '@arch/platform-model';
 
 import { logger } from '../ui/logger.js';
@@ -23,22 +23,19 @@ function renderDiagnostics(diagnostics: readonly Diagnostic[]): void {
     }
   }
 }
-export function renderGovernanceResult(
-  result: GovernanceEngineResult,
-  scope: GovernanceScope,
-): void {
+export function renderGovernanceResult(result: GovernanceResult): void {
   if (result.diagnostics.length === 0) {
-    logger.info(getSuccessMessage(scope));
+    logger.info(formatSuccess(result));
   } else {
     renderDiagnostics(result.diagnostics);
   }
 
   logger.info(`Rules evaluated: ${result.executions.length} (${result.durationMs}ms)`);
 }
-function getSuccessMessage(scope: GovernanceScope): string {
-  switch (scope.kind) {
+function formatSuccess(result: GovernanceResult): string {
+  switch (result.scope.kind) {
     case 'package':
-      return `✓ package validation passed: ${scope.packageName}`;
+      return `✓ package validation passed: ${result.scope.packageName}`;
 
     case 'workspace':
       return '✓ workspace validation passed';

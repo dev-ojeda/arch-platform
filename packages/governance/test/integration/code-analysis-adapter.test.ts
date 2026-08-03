@@ -7,15 +7,17 @@ import { describe, expect, it } from 'vitest';
 
 import type { WorkspaceDescriptor } from '@arch/platform-model';
 
+import { CodeAnalysisAdapter } from '../../src/analysis/code-analysis/code-analysis-adapter.js';
+import { createGovernanceAnalysisContext } from '../../src/analysis/code-analysis/create-governance-analysis-context.js';
 import { buildGovernanceContext } from '../../src/context/build-governance-context.js';
-import { buildGovernanceExecutionContext } from '../../src/context/build-governance-execution-context.js';
+import type { GovernanceScope } from '../../src/public/governance-scope.js';
 
 describe('CodeAnalysisAdapter', () => {
   const fixturePath = fileURLToPath(
-    new URL('../fixtures/code-analysis-workspace', import.meta.url),
+    new URL('../fixtures/workspaces/code-analysis', import.meta.url),
   );
 
-  it('builds symbol and package analysis context', () => {
+  it('builds symbol and package analysis context', async () => {
     const workspaceRoot = resolve(fixturePath);
 
     const workspace: WorkspaceDescriptor = {
@@ -36,15 +38,23 @@ describe('CodeAnalysisAdapter', () => {
       root: workspaceRoot,
     };
 
-    const context = buildGovernanceContext(scope, workspace);
+    const context = buildGovernanceContext(
+      {
+        workspaceRoot: scope.root,
+      },
+      workspace,
+    );
 
-    const result = buildGovernanceExecutionContext(context);
+    const executionContext = await createGovernanceAnalysisContext(
+      context,
+      new CodeAnalysisAdapter(),
+    );
 
-    expect(result.workspace.root).toBe(workspaceRoot);
-    expect(result.scope.kind).toBe('workspace');
+    expect(executionContext.workspace.root).toBe(workspaceRoot);
+    expect(executionContext.scope.kind).toBe('workspace');
 
-    expect(result.analysis).toBeDefined();
-    expect(result.analysis.symbolGraph.nodes.length).toBeGreaterThan(0);
-    expect(result.analysis.packageGraph).toBeDefined();
+    expect(executionContext.analysis).toBeDefined();
+    expect(executionContext.analysis.symbolGraph.nodes.length).toBeGreaterThan(0);
+    expect(executionContext.analysis.packageGraph).toBeDefined();
   });
 });

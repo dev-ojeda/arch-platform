@@ -1,6 +1,8 @@
 {
   "name": "arch-platform",
   "version": "0.1.0",
+  "private": true,
+  "type": "module",
   "devDependencies": {
     "@changesets/cli": "catalog:",
     "@commitlint/cli": "catalog:",
@@ -37,7 +39,6 @@
     "packages/*"
   ],
   "packageManager": "pnpm@10.33.3",
-  "private": true,
   "scripts": {
     "arch": "arch",
     "doctor": "arch doctor",

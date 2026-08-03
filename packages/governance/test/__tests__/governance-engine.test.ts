@@ -57,8 +57,10 @@ describe('GovernanceEngine', () => {
 
     expect(result.executions[0]).toMatchObject({
       rule: TestRuleId.TestSuccess,
+      name: TestRuleId.TestSuccess,
       success: true,
-      diagnostics: 1,
+      diagnosticCount: 1,
+      severity: 'warning',
     });
   });
 

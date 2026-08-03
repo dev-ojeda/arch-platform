@@ -1,0 +1,59 @@
+import { describe, expect, it } from 'vitest';
+
+import { DefaultExportedSymbolIndexBuilder } from '../../../src/api-surface/default-exported-symbol-index-builder.js';
+import { createProject } from '../ts-morph/create-project-fixture.js';
+
+describe('DefaultExportedSymbolIndexBuilder', () => {
+  it('detects exported symbols', () => {
+    const project = createProject();
+
+    project.createSourceFile(
+      '/packages/contracts/src/index.ts',
+      `
+        export interface GenerationEvent {}
+      `,
+    );
+
+    const index = new DefaultExportedSymbolIndexBuilder().build(project);
+
+    const symbolId = '/packages/contracts/src/index.ts#GenerationEvent';
+
+    expect(index.has(symbolId)).toBe(true);
+
+    expect(index.get(symbolId)).toEqual({
+      symbolId,
+      sourcePath: '/packages/contracts/src/index.ts',
+      exportPath: '/packages/contracts/src/index.ts',
+    });
+  });
+
+  it('detects barrel exports', () => {
+    const project = createProject();
+
+    project.createSourceFile(
+      '/packages/contracts/src/events/generation-event.ts',
+      `
+        export interface GenerationEvent {}
+      `,
+    );
+
+    project.createSourceFile(
+      '/packages/contracts/src/index.ts',
+      `
+        export type {
+          GenerationEvent,
+        } from './events/generation-event.js';
+      `,
+    );
+    const index = new DefaultExportedSymbolIndexBuilder().build(project);
+    const symbolId = '/packages/contracts/src/events/generation-event.ts#GenerationEvent';
+
+    expect(index.has(symbolId)).toBe(true);
+
+    expect(index.get(symbolId)).toEqual({
+      symbolId: '/packages/contracts/src/events/generation-event.ts#GenerationEvent',
+      sourcePath: '/packages/contracts/src/events/generation-event.ts',
+      exportPath: '/packages/contracts/src/index.ts',
+    });
+  });
+});

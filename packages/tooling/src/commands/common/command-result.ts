@@ -1,11 +1,11 @@
 // packages/tooling/src/commands/common/command-result.ts
 
-import type { ExecuteCommandResult } from '../../runtime/execution/execute-command-result.js';
+import type { ExecuteProcessResult } from '../../runtime/execution/execute-process-result.js';
 
 export interface CommandResult {
-  readonly bundle: ExecuteCommandResult;
+  readonly bundle: ExecuteProcessResult;
 
-  readonly declarations: ExecuteCommandResult;
+  readonly declarations: ExecuteProcessResult;
 
   readonly durationMs: number;
 

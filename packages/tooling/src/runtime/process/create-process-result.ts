@@ -1,22 +1,12 @@
 // packages/tooling/src/runtime/process/create-process-result.ts
 
-import type { ExecuteCommandResultOptions } from '../execution/execute-command-option.js';
-import type { ExecuteCommandResult } from '../execution/execute-command-result.js';
+import type {
+  ExecuteProcessResult,
+  ExecuteProcessResultInput,
+} from '../execution/execute-process-result.js';
 
-export function createProcessResult(options: ExecuteCommandResultOptions): ExecuteCommandResult {
-  const {
-    command,
-    commandLine,
-    args,
-    cwd,
-    exitCode = 1,
-    stdout,
-    stderr,
-    durationMs,
-    signal,
-  } = options;
-
-  const failed = exitCode !== 0;
+export function createProcessResult(options: ExecuteProcessResultInput): ExecuteProcessResult {
+  const { command, commandLine, args, cwd, exitCode = 1, durationMs, signal } = options;
 
   return {
     command,
@@ -24,10 +14,7 @@ export function createProcessResult(options: ExecuteCommandResultOptions): Execu
     args,
     cwd,
     exitCode,
-    stdout,
-    stderr,
     durationMs,
     signal,
-    failed,
   };
 }

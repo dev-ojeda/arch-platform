@@ -4,29 +4,18 @@ import { cwd } from 'node:process';
 
 import type { CAC } from 'cac';
 
-import { runGovernance, type GovernanceScope } from '@arch/governance';
+import { runGovernance } from '@arch/governance';
 
-import { createGovernanceDependencies } from '../composition/governance-composition.js';
 import type { ValidateCliOptions } from '../contracts/validate-cli-options.js';
 import { renderGovernanceResult } from '../renderers/render-diagnostics.js';
 
 export async function runValidateCommand(options: ValidateCliOptions): Promise<number> {
-  const { workspaceProvider } = createGovernanceDependencies();
+  const result = await runGovernance({
+    workspaceRoot: cwd(),
+    packageName: options.package,
+  });
 
-  const scope: GovernanceScope = options.package
-    ? {
-        kind: 'package',
-        root: cwd(),
-        packageName: options.package,
-      }
-    : {
-        kind: 'workspace',
-        root: cwd(),
-      };
-
-  const result = await runGovernance(scope, workspaceProvider);
-
-  renderGovernanceResult(result, scope);
+  renderGovernanceResult(result);
 
   return result.success ? 0 : 1;
 }
