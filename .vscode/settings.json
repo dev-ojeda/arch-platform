@@ -99,6 +99,8 @@
   },
   "typescript.preferences.preferTypeOnlyAutoImports": true,
   "typescript.preferences.importModuleSpecifierEnding": "js",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.tsserver.useSyntaxServer": "never",
   "javascript.updateImportsOnFileMove.enabled": "always",
   "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
   // -----------------------------------------------------------------------------
