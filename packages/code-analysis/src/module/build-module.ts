@@ -18,6 +18,7 @@ export function buildModuleImports(
     moduleSpecifier: declaration.moduleSpecifier,
     kind: resolveKind(declaration.moduleSpecifier),
     packageName: packageResolver.resolveFromModuleSpecifier(declaration.moduleSpecifier),
+    targetFile: declaration.resolvedFile,
   }));
 }
 

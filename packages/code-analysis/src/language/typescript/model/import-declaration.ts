@@ -5,5 +5,7 @@ import type { ImportedSymbol } from '../scanners/symbols/model/imported-symbol.j
 export interface ImportDeclaration {
   readonly moduleSpecifier: string;
 
+  readonly resolvedFile?: string;
+
   readonly symbols: readonly ImportedSymbol[];
 }

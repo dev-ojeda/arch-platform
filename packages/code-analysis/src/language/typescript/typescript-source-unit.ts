@@ -32,6 +32,8 @@ export class TypeScriptSourceUnit implements SourceUnit {
     return this.sourceFile.getImportDeclarations().map((declaration) => ({
       moduleSpecifier: declaration.getModuleSpecifierValue(),
 
+      resolvedFile: declaration.getModuleSpecifierSourceFile()?.getFilePath(),
+
       symbols: declaration.getNamedImports().map(
         (item): ImportedSymbol => ({
           name: item.getName(),
