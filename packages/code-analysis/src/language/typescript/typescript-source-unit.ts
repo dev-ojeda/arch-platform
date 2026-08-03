@@ -10,6 +10,7 @@ import type {
 } from 'ts-morph';
 
 import type { ExportKind } from '../../api-surface/model/export-kind.js';
+import type { ExportedSymbol } from '../../api-surface/model/exported-symbol.js';
 
 import type { ClassDeclaration } from './model/class-declaration.js';
 import type { ExportedDeclaration } from './model/export-declaration.js';
@@ -47,23 +48,33 @@ export class TypeScriptSourceUnit implements SourceUnit {
   }
 
   getExports(): readonly ExportedDeclaration[] {
-    return this.sourceFile.getExportDeclarations().map((declaration) => ({
-      moduleSpecifier: declaration.getModuleSpecifierValue() ?? undefined,
+    return this.sourceFile.getExportDeclarations().map((declaration) => {
+      const kind = this.resolveExportKind(declaration);
 
-      kind: this.resolveExportKind(declaration),
+      const moduleSpecifier = declaration.getModuleSpecifierValue() ?? undefined;
 
-      symbols: declaration.getNamedExports().map((item) => {
-        const name = item.getAliasNode()?.getText() ?? item.getName();
+      return {
+        kind,
 
-        return {
-          id: createSymbolId(this.path, name),
+        moduleSpecifier,
 
-          exportedName: item.getName(),
+        symbols: declaration.getNamedExports().map((item): ExportedSymbol => {
+          const name = item.getAliasNode()?.getText() ?? item.getName();
 
-          localName: name,
-        };
-      }),
-    }));
+          return {
+            id: createSymbolId(this.path, name),
+
+            exportedName: item.getName(),
+
+            localName: name,
+
+            exportKind: kind,
+
+            moduleSpecifier,
+          };
+        }),
+      };
+    });
   }
   getClasses(): readonly ClassDeclaration[] {
     return this.sourceFile.getClasses().map((declaration) => ({

@@ -5,7 +5,11 @@ export function createExportedSymbolIndex(
 ): ExportedSymbolIndex {
   return {
     has: () => false,
+
     get: () => undefined,
+
+    getAll: () => [],
+
     ...overrides,
   };
 }

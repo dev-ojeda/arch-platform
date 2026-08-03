@@ -32,8 +32,20 @@ describe('TypeScriptSourceUnit.getExports', () => {
     `);
 
     const exports = unit.getExports();
+
     expect(exports).toHaveLength(1);
-    expect(exports[0].kind).toBe('named');
+
+    expect(exports[0]).toMatchObject({
+      kind: 'named',
+      moduleSpecifier: './foo.js',
+    });
+
+    expect(exports[0].symbols).toHaveLength(1);
+
+    expect(exports[0].symbols[0]).toMatchObject({
+      exportedName: 'Foo',
+      localName: 'Foo',
+    });
   });
 
   it('returns star exports', () => {
