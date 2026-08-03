@@ -15,7 +15,6 @@ describe('ImpactAnalyzer', () => {
           kind: 'class',
           sourceFile: 'service.ts',
           package: '@arch/domain',
-          exported: true,
         },
         {
           id: 'controller',
@@ -23,7 +22,6 @@ describe('ImpactAnalyzer', () => {
           kind: 'class',
           sourceFile: 'controller.ts',
           package: '@arch/api',
-          exported: true,
         },
       ],
 

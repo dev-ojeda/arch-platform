@@ -3,10 +3,13 @@
 import type {
   PropertySignature,
   SourceFile,
+  ExportDeclaration as TsExportDeclaration,
   MethodDeclaration as TsMethodDeclaration,
   PropertyDeclaration as TsPropertyDeclaration,
   Type,
 } from 'ts-morph';
+
+import type { ExportKind } from '../../api-surface/model/export-kind.js';
 
 import type { ClassDeclaration } from './model/class-declaration.js';
 import type { ExportedDeclaration } from './model/export-declaration.js';
@@ -17,7 +20,7 @@ import type { MethodDeclaration } from './model/method-declaration.js';
 import type { ParameterDeclaration } from './model/parameter-declaration.js';
 import type { PropertyDeclaration } from './model/property-declaration.js';
 import type { TypeDeclaration } from './model/type-declaration.js';
-import type { ImportedSymbol } from './scanners/symbols/index.js';
+import type { ImportedSymbol } from './scanners/symbols/model/imported-symbol.js';
 import type { SourceUnit } from './source/source-unit.js';
 import { createSymbolId, resolveSymbolId } from './typescript-source-symbol.js';
 
@@ -32,6 +35,8 @@ export class TypeScriptSourceUnit implements SourceUnit {
     return this.sourceFile.getImportDeclarations().map((declaration) => ({
       moduleSpecifier: declaration.getModuleSpecifierValue(),
 
+      resolvedFile: declaration.getModuleSpecifierSourceFile()?.getFilePath(),
+
       symbols: declaration.getNamedImports().map(
         (item): ImportedSymbol => ({
           name: item.getName(),
@@ -45,14 +50,21 @@ export class TypeScriptSourceUnit implements SourceUnit {
     return this.sourceFile.getExportDeclarations().map((declaration) => ({
       moduleSpecifier: declaration.getModuleSpecifierValue() ?? undefined,
 
-      symbols: declaration.getNamedExports().map((item) => ({
-        exportedName: item.getName(),
-        localName: item.getAliasNode()?.getText() ?? item.getName(),
-        symbolId: resolveSymbolId(item.getNameNode().getSymbol()),
-      })),
+      kind: this.resolveExportKind(declaration),
+
+      symbols: declaration.getNamedExports().map((item) => {
+        const name = item.getAliasNode()?.getText() ?? item.getName();
+
+        return {
+          id: createSymbolId(this.path, name),
+
+          exportedName: item.getName(),
+
+          localName: name,
+        };
+      }),
     }));
   }
-
   getClasses(): readonly ClassDeclaration[] {
     return this.sourceFile.getClasses().map((declaration) => ({
       symbolId: createSymbolId(this.path, declaration.getName() ?? '<anonymous>'),
@@ -118,5 +130,19 @@ export class TypeScriptSourceUnit implements SourceUnit {
       displayName: type.getText(),
       symbolId: resolveSymbolId(type.getSymbol()),
     };
+  }
+
+  private resolveExportKind(declaration: TsExportDeclaration): ExportKind {
+    if (declaration.isNamespaceExport()) {
+      return 'star';
+    }
+
+    const namedExports = declaration.getNamedExports();
+
+    if (namedExports.length === 1 && namedExports[0]?.getName() === 'default') {
+      return 'default';
+    }
+
+    return 'named';
   }
 }

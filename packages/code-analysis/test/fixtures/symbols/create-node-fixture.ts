@@ -13,7 +13,6 @@ export function createNode(
     kind: 'class',
     sourceFile: `${id}.ts`,
     package: packageName,
-    exported: true,
     ...overrides,
   };
 }

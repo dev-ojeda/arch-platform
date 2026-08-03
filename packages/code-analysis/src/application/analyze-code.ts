@@ -1,7 +1,7 @@
 // packages/code-analysis/src/application/analyze-code.ts
 
 import { DefaultExportedSymbolIndexBuilder } from '../api-surface/default-exported-symbol-index-builder.js';
-import { SymbolGraphBuilder } from '../graph/symbol-graph-buikder.js';
+import { SymbolGraphBuilder } from '../graph/symbol-graph-builder.js';
 import { createReferenceAnalyzer } from '../language/create-reference-analyzer.js';
 import { createSymbolScanner } from '../language/create-symbol-scanner.js';
 import { createTypeScriptLanguage } from '../language/create-typescript-language.js';
@@ -27,7 +27,7 @@ export function analyzeCode(request: AnalysisRequest): AnalysisContext {
     symbolScanner,
     referenceAnalyzer,
     packageResolver,
-  ).build(exportedSymbols);
+  ).build();
   const dependencyAnalyzer = new PackageDependencyAnalyzer(new PackageDependencyGraphBuilder());
 
   return {
