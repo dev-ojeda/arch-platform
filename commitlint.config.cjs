@@ -58,7 +58,8 @@ module.exports = {
         'application/runtime',
         'application/pipeline',
         'application/testing',
-
+        'vscode',
+        'deps',
         'contracts/generation',
         'contracts/runtime',
 
