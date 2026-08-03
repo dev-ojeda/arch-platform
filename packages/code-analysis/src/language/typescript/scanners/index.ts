@@ -8,4 +8,4 @@ export {
   InterfaceSymbolScanner,
   SymbolScanner,
 } from './symbols/index.js';
-export type { SymbolMetadataScanner } from './symbols/index.js';
+export type { ImportedSymbol, SymbolMetadataScanner } from './symbols/index.js';

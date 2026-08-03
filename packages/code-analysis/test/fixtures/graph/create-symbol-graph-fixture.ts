@@ -3,7 +3,7 @@ import type { SymbolGraph } from '../../../src/graph/symbol-graph-types.js';
 import { createReferenceAnalyzer } from '../../../src/language/create-reference-analyzer.js';
 import { createSymbolScanner } from '../../../src/language/create-symbol-scanner.js';
 import { DefaultPackageResolver } from '../../../src/package/resolvers/default-package-resolver.js';
-import { createSourceReader } from '../lenguage/create-source-reader-fixture.js';
+import { createSourceReader } from '../language/create-source-reader-fixture.js';
 
 export function createSymbolGraphFixture(code: string): SymbolGraph {
   const sourceReader = createSourceReader(code);
