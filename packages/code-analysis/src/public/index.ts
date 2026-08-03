@@ -3,4 +3,4 @@
 export type { AnalysisContext } from './analysis-context.js';
 export type { AnalysisRequest } from './analysis-request.js';
 export { analyzeCode } from './analyze-code.js';
-export type { ExportedSymbolIndex } from './exported-symbols.js';
+export type { ExportedSymbol, ExportedSymbolIndex } from './exported-symbols.js';

@@ -47,11 +47,17 @@ export class TypeScriptSourceUnit implements SourceUnit {
     return this.sourceFile.getExportDeclarations().map((declaration) => ({
       moduleSpecifier: declaration.getModuleSpecifierValue() ?? undefined,
 
-      symbols: declaration.getNamedExports().map((item) => ({
-        exportedName: item.getName(),
-        localName: item.getAliasNode()?.getText() ?? item.getName(),
-        symbolId: resolveSymbolId(item.getNameNode().getSymbol()),
-      })),
+      symbols: declaration.getNamedExports().map((item) => {
+        const name = item.getAliasNode()?.getText() ?? item.getName();
+
+        return {
+          id: createSymbolId(this.path, name),
+
+          exportedName: item.getName(),
+
+          localName: name,
+        };
+      }),
     }));
   }
 

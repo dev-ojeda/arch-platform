@@ -6,7 +6,6 @@ import type { SymbolEdge } from './model/symbol-edge.js';
 
 export interface SymbolNode extends SymbolDefinition {
   readonly package: string;
-  readonly exported?: boolean;
 }
 
 export interface SymbolGraph {
