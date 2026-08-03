@@ -1,11 +1,11 @@
 // packages/governance/src/report/governance-report-builder.ts
 
-import type { GovernanceEngineResult } from '../engine/governance-engine-result.js';
+import type { GovernanceResult } from '../public/governance-result.js';
 
 import type { GovernanceReport } from './governance-report.js';
 
 export class GovernanceReportBuilder {
-  build(result: GovernanceEngineResult): GovernanceReport {
+  build(result: GovernanceResult): GovernanceReport {
     return {
       status: result.success ? 'passed' : 'failed',
 

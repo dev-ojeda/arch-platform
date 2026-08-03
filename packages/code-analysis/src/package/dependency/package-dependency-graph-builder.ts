@@ -1,6 +1,6 @@
 // packages/code-analysis/src/package/dependency/package-dependency-graph-builder.ts
 
-import type { SymbolGraph } from '../../symbols/graph/symbol-graph-types.js';
+import type { SymbolGraph } from '../../graph/symbol-graph-types.js';
 
 import type { PackageDependencyGraph } from './package-dependency-graph.js';
 
@@ -42,10 +42,10 @@ export class PackageDependencyGraphBuilder {
     }
 
     return {
-      dependencies: [...dependencies.values()].map((dependency) => ({
+      dependencies: Array.from(dependencies.values()).map((dependency) => ({
         fromPackage: dependency.fromPackage,
         toPackage: dependency.toPackage,
-        symbols: [...dependency.symbols].sort(),
+        symbols: Array.from(dependency.symbols).sort(),
       })),
     };
   }

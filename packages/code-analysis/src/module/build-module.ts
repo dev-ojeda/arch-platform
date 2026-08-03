@@ -1,55 +1,57 @@
 // packages/code-analysis/src/module/build-module.ts
 
-// packages/code-analysis/src/module/build-module.ts
-
-import type { SourceFile } from 'ts-morph';
-
+import type { ExportedDeclaration } from '../language/typescript/model/export-declaration.js';
+import type { SourceUnit } from '../language/typescript/source/source-unit.js';
 import type { PackageResolver } from '../package/resolvers/package-resolver.js';
 
-import type { ModuleDeclaration } from './model/module-declaration.js';
+import type { ModuleDescriptor } from './model/module-descriptor.js';
+import type { ModuleExport } from './model/module-export.js';
 import type { ModuleKind } from './model/module-kind.js';
 import type { ModuleReference } from './model/module-reference.js';
 
 export function buildModuleImports(
-  sourceFile: SourceFile,
+  source: SourceUnit,
   packageResolver: PackageResolver,
 ): readonly ModuleReference[] {
-  return buildReferences(sourceFile, sourceFile.getImportDeclarations(), packageResolver);
+  return source.getImports().map((declaration) => ({
+    sourceFile: source.path,
+    moduleSpecifier: declaration.moduleSpecifier,
+    kind: resolveKind(declaration.moduleSpecifier),
+    packageName: packageResolver.resolveFromModuleSpecifier(declaration.moduleSpecifier),
+  }));
 }
 
 export function buildModuleExports(
-  sourceFile: SourceFile,
+  source: SourceUnit,
   packageResolver: PackageResolver,
-): readonly ModuleReference[] {
-  return buildReferences(sourceFile, sourceFile.getExportDeclarations(), packageResolver);
+): readonly ModuleExport[] {
+  return source
+    .getExports()
+    .flatMap((declaration) => buildModuleExport(source, declaration, packageResolver));
 }
 
-function buildReferences(
-  sourceFile: SourceFile,
-  declarations: readonly ModuleDeclaration[],
+function buildModuleExport(
+  source: SourceUnit,
+  declaration: ExportedDeclaration,
   packageResolver: PackageResolver,
-): readonly ModuleReference[] {
-  const filePath = sourceFile.getFilePath();
+): readonly ModuleExport[] {
+  const moduleSpecifier = declaration.moduleSpecifier ?? '';
 
-  return declarations.flatMap((declaration) => {
-    const moduleSpecifier = declaration.getModuleSpecifierValue();
-
-    if (!moduleSpecifier) {
-      return [];
-    }
-
-    return [
-      {
-        sourceFile: filePath,
-        moduleSpecifier,
-        kind: resolveKind(moduleSpecifier),
-        packageName: packageResolver.resolveFromModuleSpecifier(moduleSpecifier),
-      },
-    ];
-  });
+  return declaration.symbols.map((symbol) => ({
+    sourceFile: source.path,
+    moduleSpecifier,
+    exportedName: symbol.exportedName,
+    localName: symbol.localName,
+    kind: resolveKind(moduleSpecifier),
+    packageName: packageResolver.resolveFromModuleSpecifier(moduleSpecifier),
+  }));
 }
 
-function resolveKind(moduleSpecifier: string): ModuleKind {
+function resolveKind(moduleSpecifier?: string): ModuleKind {
+  if (!moduleSpecifier) {
+    return 'unknown';
+  }
+
   if (moduleSpecifier.startsWith('.')) {
     return 'relative';
   }
@@ -59,4 +61,14 @@ function resolveKind(moduleSpecifier: string): ModuleKind {
   }
 
   return 'external';
+}
+export function buildModuleDescriptor(
+  source: SourceUnit,
+  packageResolver: PackageResolver,
+): ModuleDescriptor {
+  return {
+    filePath: source.path,
+    imports: buildModuleImports(source, packageResolver),
+    exports: buildModuleExports(source, packageResolver),
+  };
 }

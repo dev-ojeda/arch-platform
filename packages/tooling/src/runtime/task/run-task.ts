@@ -2,27 +2,35 @@
 
 import { logger } from '../../logging/logger.js';
 
-import type { RunTaskOptions, TaskResult } from './run-task-options.js';
+import type { RunTaskOptions } from './run-task-options.js';
+import type { TaskResult } from './task-result.js';
 
 /**
- * Executes a tooling command with lifecycle tracking and error handling.
+ * Executes a tooling task with lifecycle tracking and error handling.
  *
  * Responsibilities:
- * - Execute the command action.
+ * - Execute the task action.
  * - Capture unexpected failures.
  * - Emit tooling lifecycle events.
- * - Return a process-compatible exit code.
+ * - Return a CLI-compatible exit code.
  */
 export async function runTask<TResult extends TaskResult>(
   options: RunTaskOptions<TResult>,
 ): Promise<number> {
   try {
     const result = await options.action();
-    const exitCode = result.exitCode;
+    switch (result.status) {
+      case 'completed':
+        return 0;
 
-    return exitCode;
+      case 'skipped':
+        return 0;
+
+      case 'failed':
+        return 1;
+    }
   } catch (error) {
-    logger.error(options.events.failed, {
+    logger.error(options.task.events.failed, {
       metadata: {
         error:
           error instanceof Error

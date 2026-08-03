@@ -2,7 +2,7 @@
 
 import type { Diagnostic } from '@arch/platform-model';
 
-import type { GovernanceRuleExecution } from '../engine/governance-rule-execution.js';
+import type { GovernanceRuleResult } from '../engine/governance-rule-result.js';
 
 export type GovernanceStatus = 'passed' | 'failed';
 
@@ -23,7 +23,7 @@ export interface GovernanceReport {
 
   readonly diagnostics: readonly Diagnostic[];
 
-  readonly executions: readonly GovernanceRuleExecution[];
+  readonly executions: readonly GovernanceRuleResult[];
 
   readonly durationMs: number;
 

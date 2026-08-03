@@ -1,6 +1,6 @@
 // packages/build-core/src/services/build-options.ts
 
-import type { BuildScope } from '../planning/build-scope.js';
+import type { BuildScope } from '../public/build-scope.js';
 
 export type DependencyMode = 'required' | 'none' | 'only';
 export type ExecutionMode = 'normal' | 'force';

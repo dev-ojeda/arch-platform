@@ -1,6 +1,5 @@
 // packages/build-core/src/planning/index.ts
 
-export type { BuildScope } from './build-scope.js';
 export { ChangePlanner } from './change-planner.js';
 export type { ExecutionContractResolver } from './execution-contract-resolver.js';
 export { ExecutionDagCompiler } from './execution-dag-compiler.js';

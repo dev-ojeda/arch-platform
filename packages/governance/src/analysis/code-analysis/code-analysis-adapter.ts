@@ -1,7 +1,7 @@
-// code-analysis-adapter.ts
+// packages\governance\src\analysis\code-analysis\code-analysis-adapter.ts
 
-import { buildAnalysisContext, createTsProject } from '@arch/code-analysis';
 import type { AnalysisContext } from '@arch/code-analysis';
+import { analyzeCode } from '@arch/code-analysis';
 
 import type { GovernanceContext } from '../../context/governance-context.js';
 
@@ -13,10 +13,8 @@ export class CodeAnalysisAdapter implements AnalysisAdapter {
   constructor(private readonly resolver: TsConfigResolver = new DefaultTsConfigResolver()) {}
 
   analyze(context: GovernanceContext): AnalysisContext {
-    const project = createTsProject({
+    return analyzeCode({
       tsConfigFilePath: this.resolver.resolve(context),
     });
-
-    return buildAnalysisContext(project);
   }
 }

@@ -2,12 +2,12 @@
 
 import { describe, expect, it } from 'vitest';
 
+import { SymbolGraphQuery } from '../../../src/graph/symbol-graph-query.js';
 import { ImpactAnalyzer } from '../../../src/impact/impact-analyzer.js';
-import { SymbolDependencyGraph } from '../../../src/symbols/model/symbol-dependency-graph.js';
 
 describe('ImpactAnalyzer', () => {
   it('should detect dependent symbols', () => {
-    const graph = new SymbolDependencyGraph({
+    const graph = new SymbolGraphQuery({
       nodes: [
         {
           id: 'service',

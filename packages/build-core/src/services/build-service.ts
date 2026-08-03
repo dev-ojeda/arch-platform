@@ -9,12 +9,12 @@ import { logger } from '../logging/logger.js';
 import { ChangePlanner } from '../planning/change-planner.js';
 import { ExecutionDagCompiler } from '../planning/execution-dag-compiler.js';
 import { ScopeResolver } from '../planning/scope-resolver.js';
+import type { BuildServiceSummary } from '../public/build-service-summary.js';
 import { createExecutionContext } from '../runtime/execution/execution-context.js';
 import { ExecutionPlanScheduler } from '../runtime/execution/execution-plan-scheduler.js';
 
 import type { BuildContext } from './build-context.js';
 import type { BuildOptions } from './build-options.js';
-import type { BuildServiceSummary } from './build-service-summary.js';
 /**
  * Application service responsible for orchestrating the build pipeline.
  *
@@ -65,12 +65,7 @@ export class BuildService {
     // 3. SCOPE (SIN ENGINE)
     // -------------------------
     const scope = new ScopeResolver(buildPlan, query).resolve(options.scope);
-    logger.info('build.scope', {
-      metadata: {
-        scope: [...scope],
-        size: [scope.size],
-      },
-    });
+
     if (scope.size === 0) {
       return this.summarize([]);
     }
@@ -83,11 +78,7 @@ export class BuildService {
       plan: buildPlan,
       scope,
     });
-    logger.info('execution-plan', {
-      metadata: {
-        nodes: [...executionPlan.nodes.keys()],
-      },
-    });
+
     // -------------------------
     // 5. RUNTIME
     // -------------------------
@@ -106,15 +97,7 @@ export class BuildService {
     const ctx = createExecutionContext(executionPlan);
 
     const results = await scheduler.run(executionPlan, ctx);
-    logger.info('results', {
-      metadata: {
-        results: results.map((r) => ({
-          package: r.package,
-          status: r.status,
-          reason: r.execution.reason,
-        })),
-      },
-    });
+
     // -------------------------
     // 6. STATE PERSISTENCE
     // -------------------------

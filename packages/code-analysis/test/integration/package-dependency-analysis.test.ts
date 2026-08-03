@@ -1,56 +1,26 @@
 // packages\code-analysis\test\integration\semantic-dependency-analyzer.test.ts
 
-import { Project } from 'ts-morph';
 import { describe, expect, it } from 'vitest';
 
 import { PackageDependencyAnalyzer } from '../../src/package/dependency/package-dependency-analyzer.js';
 import { PackageDependencyGraphBuilder } from '../../src/package/dependency/package-dependency-graph-builder.js';
-import { DefaultPackageResolver } from '../../src/package/resolvers/default-package-resolver.js';
+import { createSymbolGraph } from '../fixtures/graph/create-empty-symbol-graph.js';
+import { createImport } from '../fixtures/symbols/create-import-fixture.js';
+import { createNode } from '../fixtures/symbols/create-node-fixture.js';
 
-describe('semantic dependency analyzer', () => {
+describe('PackageDependencyAnalyzer', () => {
   it('detects package symbol consumption', () => {
-    const project = new Project({
-      useInMemoryFileSystem: true,
-      compilerOptions: {
-        baseUrl: '/',
-        paths: {
-          '@arch/contracts': ['/packages/contracts/src/index.ts'],
-        },
-      },
+    const symbolGraph = createSymbolGraph({
+      nodes: [
+        createNode('service', '@arch/application'),
+        createNode('BuildResult', '@arch/contracts'),
+      ],
+      edges: [createImport('service', 'BuildResult')],
     });
 
-    project.createSourceFile(
-      '/packages/contracts/src/result.ts',
-      `
-      export interface BuildResult {}
-      `,
-    );
+    const analyzer = new PackageDependencyAnalyzer(new PackageDependencyGraphBuilder());
 
-    project.createSourceFile(
-      '/packages/contracts/src/index.ts',
-      `
-      export type { BuildResult } from './result';
-      `,
-    );
-
-    project.createSourceFile(
-      '/packages/application/src/service.ts',
-      `
-      import type { BuildResult } from "@arch/contracts";
-
-      export class Service {
-        run(): BuildResult {
-          throw new Error();
-        }
-      }
-      `,
-    );
-
-    const analyzer = new PackageDependencyAnalyzer(
-      new PackageDependencyGraphBuilder(),
-      new DefaultPackageResolver(),
-    );
-    const result = analyzer.analyze(project);
+    const result = analyzer.analyze(symbolGraph);
 
     expect(result.dependencies).toContainEqual({
       fromPackage: '@arch/application',

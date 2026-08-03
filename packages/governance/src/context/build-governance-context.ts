@@ -2,15 +2,17 @@
 
 import type { WorkspaceDescriptor } from '@arch/platform-model';
 
+import type { GovernanceOptions } from '../public/governance-options.js';
+
 import type { GovernanceContext } from './governance-context.js';
-import type { GovernanceScope } from './governance-scope.js';
+import { resolveGovernanceScope } from './resolve-governance-scope.js';
 
 export function buildGovernanceContext(
-  scope: GovernanceScope,
+  options: GovernanceOptions,
   workspace: WorkspaceDescriptor,
 ): GovernanceContext {
   return {
     workspace,
-    scope,
+    scope: resolveGovernanceScope(options),
   };
 }

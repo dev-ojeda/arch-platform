@@ -1,6 +1,6 @@
 // packages/build-core/src/executor/executor-factory.ts
 
-import type { CommandRunner } from '../runtime/command-runner.js';
+import type { CommandRunner } from '../public/command-runner.js';
 
 import type { BuildExecutor } from './build-executor.js';
 import { DefaultBuildExecutor } from './default-build-executor.js';

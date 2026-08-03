@@ -3,7 +3,7 @@
 import type { Diagnostic, MaybePromise } from '@arch/platform-model';
 
 import type { GovernanceContext } from '../context/governance-context.js';
-import type { GovernanceScope } from '../context/governance-scope.js';
+import type { GovernanceScope } from '../public/governance-scope.js';
 
 import type { GovernanceRuleId } from './governance-rule-id.js';
 
