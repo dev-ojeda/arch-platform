@@ -1,29 +1,21 @@
 {
   "name": "@arch/platform-model",
   "version": "0.1.0",
-  "private": true,
   "type": "module",
-  "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
+      "types": "./dist/index.d.ts"
     }
   },
   "arch": {
     "build": {
-      "builder": "tsc",
+      "builder": "tsc-declaration",
       "outputs": [
         "dist"
-      ],
-      "validateExports": true
+      ]
     }
   },
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "arch": "arch build --package @arch/platform-model",

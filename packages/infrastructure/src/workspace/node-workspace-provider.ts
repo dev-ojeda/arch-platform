@@ -58,19 +58,25 @@ export class NodeWorkspaceProvider implements WorkspaceProvider {
   }
 
   private async resolveWorkspaceLayout(root: string): Promise<WorkspaceLayout> {
-    const packageJsonPath = joinPath(root, 'package.json');
-    const tsconfigPath = joinPath(root, 'tsconfig.json');
+    const packageJsonPath = this.pathService.join(root, 'package.json');
+    const tsconfigPath = this.pathService.join(root, 'tsconfig.json');
 
-    const [hasPackageManifest, hasTsconfig] = await Promise.all([
+    const configDirectory = this.pathService.join(root, 'config');
+    const archManifestPath = this.pathService.join(configDirectory, 'arch.manifest.json');
+
+    const [hasPackageManifest, hasTsconfig, hasArchManifest] = await Promise.all([
       pathExists(packageJsonPath),
       pathExists(tsconfigPath),
+      pathExists(archManifestPath),
     ]);
 
     return {
       packageJsonPath,
       tsconfigPath,
+      archManifestPath,
       hasPackageManifest,
       hasTsconfig,
+      hasArchManifest,
     };
   }
 

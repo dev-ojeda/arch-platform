@@ -6,7 +6,7 @@ import { pathExistsSync, readNormalizedTextFileSync } from '../filesystem/io/fs-
 import { joinPath } from '../filesystem/io/path-utils.js';
 import { safeStringify } from '../serialization/safe-stringify.js';
 
-import type { NodeHashService } from './node-hash-service.js';
+import { NodeHashService } from './node-hash-service.js';
 
 const CONFIG_FILES = ['package.json', 'tsconfig.json', 'tsconfig.build.json', 'tsup.config.ts'];
 

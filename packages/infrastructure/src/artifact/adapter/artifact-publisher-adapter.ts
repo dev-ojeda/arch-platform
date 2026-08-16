@@ -1,11 +1,7 @@
 // packages/infrastructure/src/artifact/adapter/artifact-publisher-adapter.ts
 
 import type { FileSystemAsyncPort, PathService } from '@arch/contracts';
-import {
-  type ArtifactLayout,
-  type ArtifactManifest,
-  type ArtifactPublisher,
-} from '@arch/platform-model';
+import type { ArtifactLayout, ArtifactManifest, ArtifactPublisher } from '@arch/platform-model';
 
 import { safeStringify } from '../../serialization/safe-stringify.js';
 
