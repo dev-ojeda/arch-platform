@@ -1,3 +1,5 @@
+// packages\governance\test\fixtures\code-analysis\create-exported-symbol-index.ts
+
 import type { ExportedSymbolIndex } from '@arch/code-analysis';
 
 export function createExportedSymbolIndex(
@@ -10,6 +12,9 @@ export function createExportedSymbolIndex(
 
     getAll: () => [],
 
+    findPublicExport: () => [],
+
+    isPublicExport: () => false,
     ...overrides,
   };
 }

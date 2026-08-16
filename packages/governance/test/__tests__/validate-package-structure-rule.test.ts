@@ -2,7 +2,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { ValidatePackageStructureRule } from '../../src/rules/validate-package-structure.rule.js';
+import { ValidatePackageStructureRule } from '../../src/rules/package-structure/validate-package-structure.rule.js';
 import { createGovernanceContext } from '../fixtures/governance/create-governance-context.js';
 import { createPackageDescriptor } from '../fixtures/workspace/create-package-descriptor.js';
 import { createPackageLayout } from '../fixtures/workspace/create-package-layout.js';

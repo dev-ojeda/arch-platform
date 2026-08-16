@@ -1,11 +1,11 @@
-// packages/governance/test/fixtures/workspaces/code-analysis/src/user.controller.ts
+// packages/governance/test/fixtures/workspaces/type-only-import/package-a/src/user.controller.ts
 
-import type { UserService } from './user.service.js';
+import { type OrderStatus } from './model/index.js';
+import { type UserService } from './user.service.js';
 
 export class UserController {
-  constructor(private readonly service: UserService) {}
-
-  get(id: string) {
-    return this.service.findUser(id);
-  }
+  constructor(
+    private readonly service: UserService,
+    private readonly order: OrderStatus,
+  ) {}
 }

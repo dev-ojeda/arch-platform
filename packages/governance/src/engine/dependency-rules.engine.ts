@@ -1,26 +1,9 @@
 // packages/governance/src/engine/dependency-rules.engine.ts
 
-import { type DependencyMatrix, type Diagnostic, type Layer } from '@arch/platform-model';
+import type { DependencyMatrix, Diagnostic, Layer } from '@arch/platform-model';
 
 import type { GovernanceContext } from '../context/governance-context.js';
 import { DEFAULT_MATRIX } from '../policies/default-dependency-matrix.js';
-
-function isLayer(value: unknown): value is Layer {
-  return (
-    value === 'domain' ||
-    value === 'infra' ||
-    value === 'app' ||
-    value === 'sdk' ||
-    value === 'tooling'
-  );
-}
-
-function getLayerFromPackage(
-  pkg: GovernanceContext['workspace']['packages'][number],
-): Layer | undefined {
-  const layer = pkg.manifest.arch?.layer;
-  return isLayer(layer) ? layer : undefined;
-}
 
 export class DependencyRulesEngine {
   constructor(private readonly matrix: DependencyMatrix = DEFAULT_MATRIX) {}
@@ -30,8 +13,8 @@ export class DependencyRulesEngine {
 
     const packageMap = new Map(context.workspace.packages.map((p) => [p.name, p]));
 
-    for (const pkg of context.workspace.packages) {
-      const fromLayer = getLayerFromPackage(pkg);
+    for (const pkg of context.packages.scoped(context.scope)) {
+      const fromLayer = this.getLayerFromPackage(pkg);
       if (!fromLayer) continue;
 
       const deps = pkg.internalDependencies ?? [];
@@ -40,7 +23,7 @@ export class DependencyRulesEngine {
         const depPkg = packageMap.get(depName);
         if (!depPkg) continue;
 
-        const toLayer = getLayerFromPackage(depPkg);
+        const toLayer = this.getLayerFromPackage(depPkg);
         if (!toLayer) continue;
 
         const rule = this.matrix[fromLayer]?.[toLayer] ?? 'allow';
@@ -73,7 +56,7 @@ export class DependencyRulesEngine {
     pkg: GovernanceContext['workspace']['packages'][number],
   ): Layer | undefined {
     const layer = pkg.manifest.arch?.layer;
-    return isLayer(layer) ? layer : undefined;
+    return this.isLayer(layer) ? layer : undefined;
   }
   private isLayer(value: unknown): value is Layer {
     return (

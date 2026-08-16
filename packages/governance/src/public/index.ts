@@ -1,4 +1,4 @@
-// packages/governance/src/public/index.ts
+// src/public/index.ts
 
 export type { GovernanceOptions } from './governance-options.js';
 export type { GovernanceResult } from './governance-result.js';

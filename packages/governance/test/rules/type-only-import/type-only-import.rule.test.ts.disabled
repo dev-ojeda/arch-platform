@@ -1,0 +1,74 @@
+// packages\governance\test\rules\type-only-import\type-only-import.rule.test.ts
+
+import { describe, expect, it } from 'vitest';
+
+import { TypeOnlyImportSemanticScanner } from '../../../src/analysis/semantics/scanners/type-only-import-semantic-scanner.js';
+import { TypeOnlyImportRule } from '../../../src/rules/type-only-import-rule.js';
+import { createAnalysisContext } from '../../fixtures/code-analysis/create-analysis-context.js';
+import { createGovernanceExecutionContext } from '../../fixtures/governance/create-governance-execution-context.js';
+import { createSymbolGraph } from '../../fixtures/graph/create-empty-symbol-graph.js';
+import { createImport } from '../../fixtures/graph/create-import-fixture.js';
+import { createNode } from '../../fixtures/graph/create-node-fixture.js';
+import { createPackageDescriptor } from '../../fixtures/workspace/create-package-descriptor.js';
+import { createWorkspaceDescriptor } from '../../fixtures/workspace/create-workspace-descriptor.js';
+import { createWorkspaceLayout } from '../../fixtures/workspace/create-workspace-layout.js';
+
+describe('TypeOnlyImportRule', () => {
+  it('detects type-only imports of runtime symbols through index.ts', async () => {
+    const context = createGovernanceExecutionContext({
+      workspace: createWorkspaceDescriptor({
+        layout: createWorkspaceLayout({
+          hasArchManifest: false,
+          hasPackageManifest: false,
+          hasTsconfig: false,
+        }),
+        packages: [
+          createPackageDescriptor({ name: '@fixture/package-a' }),
+          createPackageDescriptor({ name: '@fixture/package-b' }),
+        ],
+      }),
+      analyses: [
+        {
+          packageName: '@fixture/package-a',
+          analysis: createAnalysisContext({
+            symbolGraph: createSymbolGraph({
+              nodes: [
+                createNode('UserController', '@fixture/package-a', {
+                  id: 'UserController',
+                  name: 'UserController',
+                  kind: 'class',
+                  sourceFile: 'UserController.ts',
+                  package: '@fixture/package-a',
+                }),
+                createNode('UserService', '@fixture/package-b', {
+                  id: 'UserService',
+                  name: 'UserService',
+                  kind: 'class',
+                  sourceFile: 'UserService.ts',
+                  package: '@fixture/package-b',
+                }),
+              ],
+              edges: [
+                createImport('UserController', 'UserService', {
+                  metadata: {
+                    isTypeOnly: true,
+                    kind: 'class',
+                    moduleSpecifier: '@fixture/package-b',
+                  },
+                }),
+              ],
+            }),
+          }),
+        },
+      ],
+    });
+    const rule = new TypeOnlyImportRule([new TypeOnlyImportSemanticScanner()]);
+    const diagnostics = rule.run(context);
+    expect(diagnostics).toHaveLength(1);
+
+    expect(diagnostics[0]).toMatchObject({
+      code: 'ARCH_INVALID_TYPE_ONLY_IMPORT',
+      message: expect.stringContaining('UserService'),
+    });
+  });
+});
