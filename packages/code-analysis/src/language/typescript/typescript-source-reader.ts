@@ -8,7 +8,14 @@ import { TypeScriptSourceUnit } from './typescript-source-unit.js';
 
 export class TypeScriptSourceReader implements SourceReader {
   constructor(private readonly project: Project) {}
+
   getSources(): readonly SourceUnit[] {
-    return this.project.getSourceFiles().map((file) => new TypeScriptSourceUnit(file));
+    const program = this.project.getProgram().compilerObject;
+
+    return program
+      .getRootFileNames()
+      .map((filePath) => this.project.getSourceFile(filePath))
+      .filter((file): file is NonNullable<typeof file> => file !== undefined)
+      .map((file) => new TypeScriptSourceUnit(file));
   }
 }

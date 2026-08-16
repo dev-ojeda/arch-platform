@@ -2,8 +2,8 @@
 
 import type { SourceReader } from '../../source/source-reader.js';
 
-import type { SymbolMetadataScanner } from './model/symbol-metadata-scanner.js';
-import type { SymbolDefinition } from './model/symbol-types.js';
+import type { SymbolMetadataScanner } from './symbol-metadata-scanner.js';
+import type { SymbolDefinition } from './symbol-types.js';
 
 export class SymbolScanner {
   constructor(

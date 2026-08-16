@@ -1,8 +1,9 @@
 // packages/build-core/src/state/state-writer.ts
 
 import type { FileSystemAsyncPort, PathService } from '@arch/contracts';
-import { HASH_SCHEMA_VERSION, type DagNode, type HashResult } from '@arch/platform-model';
+import type { DagNode, HashResult } from '@arch/platform-model';
 
+import { HASH_SCHEMA_VERSION } from '../hash/hash-schema-version.js';
 import { safeStringify } from '../serialization/safe-stringify.js';
 
 import { StateChangeSet } from './state-change-set.js';

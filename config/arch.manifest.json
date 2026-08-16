@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "workspace": {
+    "name": "arch-platform"
+  },
+  "packages": [
+    {
+      "name": "@arch/application",
+      "path": "packages/application"
+    },
+    {
+      "name": "@arch/build-core",
+      "path": "packages/build-core"
+    },
+    {
+      "name": "@arch/cli",
+      "path": "packages/cli"
+    },
+    {
+      "name": "@arch/code-analysis",
+      "path": "packages/code-analysis"
+    },
+    {
+      "name": "@arch/contracts",
+      "path": "packages/contracts"
+    },
+    {
+      "name": "@arch/core",
+      "path": "packages/core"
+    },
+    {
+      "name": "@arch/domain-order",
+      "path": "packages/domain-order"
+    },
+    {
+      "name": "@arch/generator-mvc",
+      "path": "packages/generator-mvc"
+    },
+    {
+      "name": "@arch/governance",
+      "path": "packages/governance"
+    },
+    {
+      "name": "@arch/infrastructure",
+      "path": "packages/infrastructure"
+    },
+    {
+      "name": "@arch/platform-model",
+      "path": "packages/platform-model"
+    },
+    {
+      "name": "@arch/testing",
+      "path": "packages/testing"
+    },
+    {
+      "name": "@arch/tooling",
+      "path": "packages/tooling"
+    }
+  ]
+}

@@ -5,10 +5,13 @@ import type { SourceReader } from '../../../src/language/typescript/source/sourc
 import { createProject } from '../ts-morph/create-project-fixture.js';
 import { createSourceFile } from '../ts-morph/create-source-file-fixture.js';
 
-export function createSourceReader(code: string): SourceReader {
+export function createSourceReader(
+  code: string,
+  path = '/packages/app/src/service.ts',
+): SourceReader {
   const project = createProject();
 
-  createSourceFile(project, code);
+  createSourceFile(project, code, path);
 
   return createTypeScriptLanguage(project);
 }

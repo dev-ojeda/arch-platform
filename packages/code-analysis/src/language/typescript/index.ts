@@ -1,7 +1,21 @@
 // packages/code-analysis/src/language/typescript/index.ts
-
-export { SymbolScanner } from './scanners/index.js';
 export {
+  ClassSymbolScanner,
+  EnumSymbolScanner,
+  FunctionSymbolScanner,
+  InterfaceSymbolScanner,
+  ReferenceAnalyzer,
+  SymbolScanner,
+  VariableSymbolScanner,
+} from './scanners/index.js';
+export type {
+  ImportedSymbol,
+  ReferenceScanner,
+  SymbolDefinition,
+  SymbolMetadataScanner,
+} from './scanners/index.js';
+export {
+  ExportReferenceScanner,
   ImportReferenceScanner,
   ParameterTypeReferenceScanner,
   PropertyTypeReferenceScanner,

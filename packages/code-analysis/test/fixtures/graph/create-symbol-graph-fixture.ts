@@ -1,5 +1,7 @@
+// packages\code-analysis\test\fixtures\graph\create-symbol-graph-fixture.ts
+import type { SymbolGraph } from '@arch/code-analysis';
+
 import { SymbolGraphBuilder } from '../../../src/graph/symbol-graph-builder.js';
-import type { SymbolGraph } from '../../../src/graph/symbol-graph-types.js';
 import { createReferenceAnalyzer } from '../../../src/language/create-reference-analyzer.js';
 import { createSymbolScanner } from '../../../src/language/create-symbol-scanner.js';
 import { DefaultPackageResolver } from '../../../src/package/resolvers/default-package-resolver.js';

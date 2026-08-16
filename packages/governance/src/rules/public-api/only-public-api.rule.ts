@@ -3,17 +3,17 @@
 import type { Diagnostic } from '@arch/platform-model';
 
 import type { GovernanceExecutionContext } from '../../context/governance-context.js';
-import { GovernanceRuleId } from '../../engine/governance-rule-id.js';
+import { GOVERNANCE_RULE_ID } from '../../engine/governance-rule-id.js';
 import type { GovernanceRule } from '../../engine/governance-rule.js';
 import type { GovernanceScope } from '../../public/governance-scope.js';
 
-import type { PublicApiScanner } from './public-api-scanner.js';
+import { PublicApiScanner } from './public-api-scanner.js';
 
 export class OnlyPublicApiRule implements GovernanceRule<GovernanceExecutionContext> {
-  readonly id = GovernanceRuleId.OnlyPublicApi;
+  readonly id = GOVERNANCE_RULE_ID.OnlyPublicApi;
   readonly name = 'only-public-api';
 
-  constructor(private readonly scanner: PublicApiScanner) {}
+  constructor(private readonly scanner = new PublicApiScanner()) {}
 
   run(context: GovernanceExecutionContext): Diagnostic[] {
     return this.scanner.scan(context);

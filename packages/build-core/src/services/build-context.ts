@@ -3,11 +3,11 @@
 import type { ArtifactCache, ArtifactProvider, Graph, OutputValidator } from '@arch/platform-model';
 
 import type { BuildExecutor } from '../executor/build-executor.js';
-import type { GraphQueryService } from '../graph/graph-query-services.js';
-import type { DagHasher } from '../hash/dag-hasher.js';
+import { GraphQueryService } from '../graph/graph-query-services.js';
+import { DagHasher } from '../hash/dag-hasher.js';
 import type { ExecutionContractResolver } from '../planning/execution-contract-resolver.js';
 import type { BuildState } from '../state/state-types.js';
-import type { BuildStateWriter } from '../state/state-writer.js';
+import { BuildStateWriter } from '../state/state-writer.js';
 
 export interface BuildContext {
   graph: Graph;

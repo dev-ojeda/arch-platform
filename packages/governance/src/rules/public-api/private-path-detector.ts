@@ -1,7 +1,15 @@
 // packages/governance/src/rules/public-api/private-path-detector.ts
 
+import { InternalSourceDetector } from './internal-source-detector.js';
+
 export class PrivatePathDetector {
-  isPrivate(importedPath: string, boundaries?: string[]): boolean {
-    return boundaries?.some((boundary) => importedPath.includes(`/${boundary}/`)) ?? false;
+  constructor(private readonly sourceDetector = new InternalSourceDetector()) {}
+
+  isPrivate(moduleSpecifier: string, privatePaths?: readonly string[]): boolean {
+    if (privatePaths?.includes(moduleSpecifier)) {
+      return true;
+    }
+
+    return this.sourceDetector.isInternalSource(moduleSpecifier);
   }
 }

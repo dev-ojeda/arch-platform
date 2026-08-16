@@ -13,7 +13,7 @@ import type {
   StepFailedEvent,
   StepStartedEvent,
 } from '../events/step-events.js';
-import { ExecutionStatus } from '../status/execution-status.js';
+import { EXECUTION_STATUS, type ExecutionStatus } from '../status/execution-status.js';
 
 import type { ExecutionTimeline } from './execution-timeline.js';
 
@@ -108,7 +108,7 @@ export class TimelineAggregator implements RuntimeEventListener {
 
       pipelineId: event.pipelineId,
 
-      status: ExecutionStatus.Pending,
+      status: EXECUTION_STATUS.Pending,
 
       steps: [],
     };
@@ -122,7 +122,7 @@ export class TimelineAggregator implements RuntimeEventListener {
     timeline: MutableExecutionTimeline,
     event: PipelineStartedEvent,
   ): void {
-    timeline.status = ExecutionStatus.Running;
+    timeline.status = EXECUTION_STATUS.Running;
 
     timeline.startedAt = event.timestamp;
   }
@@ -131,7 +131,7 @@ export class TimelineAggregator implements RuntimeEventListener {
     timeline: MutableExecutionTimeline,
     event: PipelineCompletedEvent,
   ): void {
-    timeline.status = ExecutionStatus.Success;
+    timeline.status = EXECUTION_STATUS.Success;
 
     timeline.finishedAt = event.timestamp;
 
@@ -139,7 +139,7 @@ export class TimelineAggregator implements RuntimeEventListener {
   }
 
   private markPipelineFailed(timeline: MutableExecutionTimeline, event: PipelineFailedEvent): void {
-    timeline.status = ExecutionStatus.Failed;
+    timeline.status = EXECUTION_STATUS.Failed;
 
     timeline.finishedAt = event.timestamp;
 
@@ -160,7 +160,7 @@ export class TimelineAggregator implements RuntimeEventListener {
 
       stepName: event.stepName,
 
-      status: ExecutionStatus.Running,
+      status: EXECUTION_STATUS.Running,
 
       startedAt: event.timestamp,
     });
@@ -173,7 +173,7 @@ export class TimelineAggregator implements RuntimeEventListener {
       return;
     }
 
-    step.status = ExecutionStatus.Success;
+    step.status = EXECUTION_STATUS.Success;
 
     step.finishedAt = event.timestamp;
 
@@ -187,7 +187,7 @@ export class TimelineAggregator implements RuntimeEventListener {
       return;
     }
 
-    step.status = ExecutionStatus.Failed;
+    step.status = EXECUTION_STATUS.Failed;
 
     step.finishedAt = event.timestamp;
 

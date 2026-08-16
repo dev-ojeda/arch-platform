@@ -2,7 +2,7 @@
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { ExecutionStatus } from '../../src/runtime/execution/status/execution-status.js';
+import { EXECUTION_STATUS } from '../../src/runtime/execution/status/execution-status.js';
 import { TimelineConsoleRenderer } from '../../src/runtime/execution/timeline/timeline-console-renderer.js';
 
 describe('TimelineConsoleRenderer', () => {
@@ -20,7 +20,7 @@ describe('TimelineConsoleRenderer', () => {
 
       pipelineId: 'generation-pipeline',
 
-      status: ExecutionStatus.Success,
+      status: EXECUTION_STATUS.Success,
 
       startedAt: 0,
 
@@ -34,7 +34,7 @@ describe('TimelineConsoleRenderer', () => {
 
           stepName: 'load-config',
 
-          status: ExecutionStatus.Success,
+          status: EXECUTION_STATUS.Success,
 
           durationMs: 20,
         },
@@ -44,7 +44,7 @@ describe('TimelineConsoleRenderer', () => {
 
           stepName: 'compile',
 
-          status: ExecutionStatus.Failed,
+          status: EXECUTION_STATUS.Failed,
 
           durationMs: 80,
         },

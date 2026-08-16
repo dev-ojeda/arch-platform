@@ -11,9 +11,9 @@ import type {
 import type { BuildExecutor } from '../executor/build-executor.js';
 import type { BuildResult } from '../executor/build-result.js';
 import type { ExecutionReason } from '../executor/execution-types.js';
-import type { BuildPlan } from '../planning/build-plan.js';
+import { BuildPlan } from '../planning/build-plan.js';
 import type { BuildPlanEntry } from '../planning/plan-entry.js';
-import type { BuildStateWriter } from '../state/state-writer.js';
+import { BuildStateWriter } from '../state/state-writer.js';
 
 export class BuildTaskRunner {
   constructor(

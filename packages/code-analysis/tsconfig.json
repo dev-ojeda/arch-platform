@@ -8,6 +8,10 @@
     "declarationMap": true,
     "tsBuildInfoFile": "./.turbo/code-analysis.tsbuildinfo"
   },
-  "include": ["src/**/*.ts"],
+  "include": [
+    "src/**/*.ts",
+    "src/public/analyze-code.disabled",
+    "src/public/exported-symbols.disabled"
+  ],
   "exclude": ["dist", "node_modules"]
 }

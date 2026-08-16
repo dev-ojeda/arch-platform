@@ -10,8 +10,6 @@
   },
   "include": [
     "tsconfig.ts",
-    "vitest.setup.ts",
-    "vitest.shared.ts",
     "vitest.config.ts",
     "packages/**/*.ts",
     "scripts/**/*.ts",

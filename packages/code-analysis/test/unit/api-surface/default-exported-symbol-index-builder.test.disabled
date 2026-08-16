@@ -1,0 +1,39 @@
+import { describe, expect, it } from 'vitest';
+
+import { createExportedSymbolIndexFixture } from '../../fixtures/api-surface/create-exported-symbol-index-fixture.js';
+import { createSourceReader } from '../../fixtures/language/create-source-reader-fixture.js';
+
+describe('DefaultExportedSymbolIndexBuilder', () => {
+  it('keeps export metadata for named exports', () => {
+    const sourceReader = createSourceReader(`
+      export { Foo } from './foo.js';
+    `);
+
+    const index = createExportedSymbolIndexFixture(sourceReader);
+
+    const exported = index.get('/packages/app/src/service.ts#Foo');
+
+    expect(exported).toMatchObject({
+      exportedName: 'Foo',
+      localName: 'Foo',
+      exportKind: 'named',
+      moduleSpecifier: './foo.js',
+    });
+  });
+
+  it('keeps export metadata for default exports', () => {
+    const sourceReader = createSourceReader(`
+      export { default } from './report.js';
+    `);
+    const index = createExportedSymbolIndexFixture(sourceReader);
+
+    const exported = index.get('/packages/app/src/service.ts#default');
+
+    expect(exported).toMatchObject({
+      exportedName: 'default',
+      localName: 'default',
+      exportKind: 'default',
+      moduleSpecifier: './report.js',
+    });
+  });
+});

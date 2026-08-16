@@ -1,18 +1,35 @@
 // packages/cli/src/renderers/formatter-diagnostic.ts
 
-import type { Diagnostic } from '@arch/platform-model';
+import type { DiagnosticCli } from './diagnostic-cli.js';
 
-export function formatterDiagnostic(diagnostic: Diagnostic): string {
-  const location = diagnostic.location?.file ? ` (${diagnostic.location.file})` : '';
+export function formatterDiagnostic(diagnostic: DiagnosticCli): string {
+  const file = diagnostic.location?.file;
+  const location = file ? terminalLink(file, toFileUrl(file)) : undefined;
+  const lines = [`✖ ${diagnostic.code}`, `  `, ` ${location}`, `  ${diagnostic.message}`];
 
-  const source = diagnostic.source ? `${diagnostic.source} ` : '';
+  if (diagnostic.hint) {
+    lines.push(`  Hint: ${diagnostic.hint}`);
+  }
 
-  const hint = diagnostic.hint ? `\n  Hint: ${diagnostic.hint}` : '';
+  return lines.join('\n');
+}
+function terminalLink(label: string, target: string): string {
+  return `\u001B]8;;${target}\u001B\\${label}\u001B]8;;\u001B\\`;
+}
+export function toFileUrl(filePath: string): string {
+  const normalized = filePath.replace(/\\/g, '/');
 
-  return (
-    `[${diagnostic.severity.toUpperCase()}] ` +
-    `${source}${diagnostic.code}${location} - ` +
-    `${diagnostic.message}` +
-    hint
-  );
+  if (normalized.startsWith('vscode:///')) {
+    return normalized;
+  }
+
+  if (/^[A-Za-z]:\//.test(normalized)) {
+    return `vscode:///${encodeURI(normalized)}`;
+  }
+
+  if (normalized.startsWith('/')) {
+    return `vscode://${encodeURI(normalized)}`;
+  }
+
+  return `vscode://${encodeURI(normalized)}`;
 }

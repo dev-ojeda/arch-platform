@@ -1,33 +1,68 @@
 import { defineConfig } from 'vitest/config';
 
-import { VITEST_SETUP_FILE } from '../paths/index.js';
+import { packageSource, PLATFORM_PACKAGES } from './base.js';
 
-import { workspaceAliases } from './aliases.js';
-
-export const sharedVitestConfig = defineConfig({
-  resolve: {
-    alias: workspaceAliases,
+export const workspaceAliases = PLATFORM_PACKAGES.flatMap((pkg) => [
+  {
+    find: new RegExp(`^@arch/${pkg}$`),
+    replacement: packageSource(pkg),
   },
+  {
+    find: new RegExp(`^@arch/${pkg}/(.*)$`),
+    replacement: `${packageSource(pkg)}/$1`,
+  },
+]);
 
-  test: {
-    environment: 'node',
-
-    globals: true,
-
-    isolate: true,
-
-    pool: 'forks',
-
-    passWithNoTests: true,
-
-    setupFiles: [VITEST_SETUP_FILE],
-
-    sequence: {
-      concurrent: false,
+export function createVitestConfig(name: string) {
+  return defineConfig({
+    resolve: {
+      alias: workspaceAliases,
     },
 
-    typecheck: {
-      tsconfig: './tsconfig.test.json',
+    test: {
+      name,
+      environment: 'node',
+      globals: true,
+      isolate: true,
+      pool: 'forks',
+      passWithNoTests: true,
+
+      sequence: {
+        concurrent: false,
+      },
+
+      typecheck: {
+        tsconfig: './tsconfig.test.json',
+      },
+
+      coverage: {
+        provider: 'v8',
+        reporter: ['text', 'html'],
+
+        thresholds: {
+          autoUpdate: false,
+          lines: 40,
+          statements: 40,
+          branches: 25,
+          functions: 25,
+        },
+
+        include: ['src/**/*.ts'],
+
+        exclude: [
+          '**/*.d.ts',
+          '**/index.ts',
+          '**/test/**',
+          '**/__tests__/**',
+          '**/contracts/**',
+          '**/types/**',
+          '**/*types.ts',
+          '**/interfaces/**',
+          '**/dto/**',
+          '**/*input.ts',
+          '**/*output.ts',
+        ],
+      },
     },
-  },
-});
+  });
+}

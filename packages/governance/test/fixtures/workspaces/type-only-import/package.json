@@ -1,0 +1,9 @@
+{
+  "name": "type-only-import-fixture",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "package-a",
+    "package-b"
+  ]
+}

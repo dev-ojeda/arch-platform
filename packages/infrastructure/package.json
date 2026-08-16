@@ -8,8 +8,8 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./dist/public/index.d.ts",
+      "import": "./dist/public/index.js"
     }
   },
   "arch": {
@@ -40,8 +40,5 @@
     "@arch/platform-model": "workspace:*",
     "@arch/contracts": "workspace:*",
     "@arch/testing": "workspace:*"
-  },
-  "devDependencies": {
-    "handlebars": "^4.7.9"
   }
 }

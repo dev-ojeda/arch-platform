@@ -32,9 +32,12 @@ module.exports = {
       'always',
       [
         'application',
+        'artifact',
+        'config',
         'contracts',
         'core',
         'cli',
+        'platform',
         'generators',
         'governance',
         'infrastructure',

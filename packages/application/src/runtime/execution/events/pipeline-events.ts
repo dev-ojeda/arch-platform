@@ -1,7 +1,7 @@
 // packages/application/src/runtime/execution/events/pipeline-events.ts
 
 import type { BaseRuntimeEvent } from './base-runtime-event.js';
-import type { RuntimeEventTypes } from './runtime-event-types.js';
+import { RuntimeEventTypes } from './runtime-event-types.js';
 
 export type PipelineEvent = PipelineStartedEvent | PipelineCompletedEvent | PipelineFailedEvent;
 

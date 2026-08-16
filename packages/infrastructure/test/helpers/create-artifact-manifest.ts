@@ -1,6 +1,7 @@
 // packages\infrastructure\test\helpers\create-artifact-manifest.ts
-import { ARTIFACT_SCHEMA_VERSION } from '@arch/platform-model';
 import type { Artifact, ArtifactManifest } from '@arch/platform-model';
+
+import { ARTIFACT_SCHEMA_VERSION } from '../../src/artifact/artifact-schema-version.js';
 
 export function createArtifactManifest(options?: {
   artifact?: Partial<Artifact>;

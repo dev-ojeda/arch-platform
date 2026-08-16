@@ -25,7 +25,7 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts"
+      "types": "./dist/public/index.d.ts"
     }
   },
   "scripts": {

@@ -1,4 +1,4 @@
-// packages\code-analysis\test\integration\semantic-dependency-analyzer.test.ts
+// packages\code-analysis\test\integration\package-dependency-analysis.test.ts
 
 import { describe, expect, it } from 'vitest';
 

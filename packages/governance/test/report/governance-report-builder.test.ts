@@ -14,6 +14,10 @@ describe('GovernanceReportBuilder', () => {
       durationMs: 10,
       evaluatedRules: 0,
       executions: [],
+      scope: {
+        kind: 'workspace',
+        root: '',
+      },
     });
 
     expect(report.status).toBe('passed');
@@ -41,6 +45,10 @@ describe('GovernanceReportBuilder', () => {
       durationMs: 20,
       evaluatedRules: 1,
       executions: [],
+      scope: {
+        kind: 'workspace',
+        root: '',
+      },
     });
 
     expect(report.status).toBe('failed');
@@ -68,6 +76,10 @@ describe('GovernanceReportBuilder', () => {
       durationMs: 5,
       evaluatedRules: 2,
       executions: [],
+      scope: {
+        kind: 'workspace',
+        root: '',
+      },
     });
 
     expect(report.summary).toEqual({

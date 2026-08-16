@@ -9,10 +9,17 @@ export function joinPath(...segments: string[]): string {
 export function packagePath(root: string, ...segments: string[]): string {
   return join(root, ...segments);
 }
-
+function configContentPath(root: string, ...segments: string[]): string {
+  return join(root, ...segments);
+}
 export function getStatePath(workspaceRoot: string): string {
   return statePath(workspaceRoot);
 }
+
+export function configPath(root: string): string {
+  return configContentPath(root, 'config');
+}
+
 export function srcPath(root: string): string {
   return packagePath(root, 'src');
 }

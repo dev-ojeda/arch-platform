@@ -35,6 +35,7 @@ export {
 } from './fs-sync.js';
 export {
   baseName,
+  configPath,
   dirName,
   distPath,
   getStatePath,

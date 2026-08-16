@@ -1,6 +1,13 @@
 // packages/platform-model/src/index.ts
-export type { DependencyMatrix, Layer } from './architecture/index.js';
-export { ARTIFACT_SCHEMA_VERSION } from './artifact/index.js';
+export type {
+  ArchitectureDescriptor,
+  ArchitectureLayout,
+  ArchitectureManifest,
+  ArchitecturePackage,
+  ArchitectureProvider,
+  DependencyMatrix,
+  Layer,
+} from './architecture/index.js';
 export type {
   Artifact,
   ArtifactLayout,
@@ -15,7 +22,6 @@ export type {
   MutableDagNode,
   MutableGraph,
 } from './graph/index.js';
-export { HASH_SCHEMA_VERSION } from './hashing/index.js';
 export type { HashContext, HashInput, HashResult, HashValidation } from './hashing/index.js';
 export type {
   PackageBoundaries,
@@ -39,6 +45,6 @@ export type {
   WorkspaceGraph,
   WorkspaceLayout,
   WorkspacePackage,
+  WorkspacePaths,
   WorkspaceProvider,
 } from './workspace/index.js';
-// test

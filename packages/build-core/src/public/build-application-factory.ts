@@ -1,7 +1,7 @@
 // packages/build-core/src/public/build-application-factory.ts
 
 import { BuildCompositionRoot } from '../application/build-composition-root.js';
-import type { BuildService } from '../services/build-service.js';
+import { BuildService } from '../services/build-service.js';
 
 import type { CommandRunner } from './command-runner.js';
 

@@ -8,8 +8,20 @@ export class ExportMapReader {
       return importPath === packageName;
     }
 
-    const exportKey = importPath === packageName ? '.' : importPath.replace(`${packageName}`, '.');
+    const exportKey = this.toExportKey(packageName, importPath);
 
     return Object.keys(manifest.exports).some((key) => key === exportKey);
+  }
+
+  private toExportKey(packageName: string, importPath: string): string {
+    if (importPath === packageName) {
+      return '.';
+    }
+
+    if (!importPath.startsWith(`${packageName}/`)) {
+      return importPath;
+    }
+
+    return `.${importPath.slice(packageName.length)}`;
   }
 }

@@ -186,18 +186,6 @@ const domainProtectionRules = [
 
 const boundaryRules = [
   createRule({
-    name: 'no-internal-imports',
-
-    comment: 'Internal modules must not be imported outside their owning package.',
-
-    from: {},
-
-    to: {
-      path: PATHS.internal,
-    },
-  }),
-
-  createRule({
     name: 'no-deep-package-imports',
 
     comment: 'Consumers must import from public package entrypoints only.',

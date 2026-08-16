@@ -6,11 +6,11 @@ import type { TsConfigResolver } from './tsconfig-resolver.js';
 
 export class DefaultTsConfigResolver implements TsConfigResolver {
   resolve(context: GovernanceContext): string {
-    const { scope, workspace } = context;
+    const { scope, workspace, packages } = context;
 
     switch (scope.kind) {
       case 'package': {
-        const pkg = workspace.packages.find((p) => p.name === scope.packageName);
+        const pkg = packages.get(scope.packageName);
 
         if (pkg?.layout.hasTsconfig) {
           return pkg.layout.tsconfigPath;

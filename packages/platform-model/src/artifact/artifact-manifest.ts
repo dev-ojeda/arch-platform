@@ -15,5 +15,3 @@ export interface ArtifactManifest {
 
   readonly schemaVersion: number;
 }
-
-export const ARTIFACT_SCHEMA_VERSION = 1;

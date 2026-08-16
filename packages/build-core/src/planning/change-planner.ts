@@ -2,7 +2,7 @@
 
 import type { Graph, HashResult } from '@arch/platform-model';
 
-import type { CacheEvaluator } from '../cache/cache-evaluator.js';
+import { CacheEvaluator } from '../cache/cache-evaluator.js';
 import type { CacheDecision } from '../cache/cache-types.js';
 
 import { BuildPlan } from './build-plan.js';

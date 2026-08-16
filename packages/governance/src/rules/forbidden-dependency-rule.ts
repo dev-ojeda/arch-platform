@@ -3,18 +3,18 @@
 import type { Diagnostic } from '@arch/platform-model';
 
 import type { GovernanceContext } from '../context/governance-context.js';
-import { GovernanceRuleId } from '../engine/governance-rule-id.js';
+import { GOVERNANCE_RULE_ID } from '../engine/governance-rule-id.js';
 import type { GovernanceRule } from '../engine/governance-rule.js';
 import type { GovernanceScope } from '../public/governance-scope.js';
 
 export class ForbiddenDependencyRule implements GovernanceRule {
-  readonly id = GovernanceRuleId.ForbiddenDependency;
+  readonly id = GOVERNANCE_RULE_ID.ForbiddenDependency;
   readonly name = 'forbidden-dependency-rule';
 
   run(context: GovernanceContext): Diagnostic[] {
     const diagnostics: Diagnostic[] = [];
 
-    for (const pkg of context.workspace.packages) {
+    for (const pkg of context.packages.scoped(context.scope)) {
       const forbidden = pkg.boundaries?.forbiddenDependencies ?? [];
 
       for (const dependency of pkg.internalDependencies ?? []) {

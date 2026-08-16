@@ -2,7 +2,7 @@
 
 import type { SourceUnit } from '../../source/source-unit.js';
 
-import type { SymbolDefinition } from './model/symbol-types.js';
+import type { SymbolDefinition } from './symbol-types.js';
 
 export class InterfaceSymbolScanner {
   scan(source: SourceUnit): readonly SymbolDefinition[] {

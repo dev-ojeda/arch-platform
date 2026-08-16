@@ -1,6 +1,6 @@
 // packages/code-analysis/src/package/dependency/package-dependency-graph-builder.ts
 
-import type { SymbolGraph } from '../../graph/symbol-graph-types.js';
+import type { SymbolGraph } from '../../public/symbol-graph.js';
 
 import type { PackageDependencyGraph } from './package-dependency-graph.js';
 
@@ -19,14 +19,15 @@ export class PackageDependencyGraphBuilder {
 
     for (const edge of graph.edges) {
       const fromNode = nodesById.get(edge.from);
-
-      if (!fromNode) continue;
-
       const toNode = nodesById.get(edge.to);
 
-      if (!toNode) continue;
+      if (!fromNode || !toNode) {
+        continue;
+      }
 
-      if (fromNode.package === toNode.package) continue;
+      if (fromNode.package === toNode.package) {
+        continue;
+      }
 
       const key = `${fromNode.package}->${toNode.package}`;
 
