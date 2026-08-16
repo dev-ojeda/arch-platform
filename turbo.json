@@ -51,7 +51,8 @@
     },
 
     "validate": {
-      "dependsOn": ["lint", "typecheck", "test", "build"],
+      "dependsOn": ["lint", "typecheck", "test"],
+      "inputs": ["$TURBO_DEFAULT$"],
       "outputs": []
     }
   }

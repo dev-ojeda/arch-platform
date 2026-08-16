@@ -1,8 +1,22 @@
-// config/paths/packages.ts
-
 import { resolve } from 'node:path';
 
-import { PACKAGES_ROOT } from './workspace.js';
+/**
+ * Workspace root.
+ */
+export const WORKSPACE_ROOT = resolve(import.meta.dirname, '../..');
+
+/**
+ * Top-level directories.
+ */
+export const CONFIG_ROOT = resolve(WORKSPACE_ROOT, 'config');
+
+export const PACKAGES_ROOT = resolve(WORKSPACE_ROOT, 'packages');
+
+export const ESLINT_ROOT = resolve(CONFIG_ROOT, 'eslint');
+
+export const TSUP_ROOT = resolve(CONFIG_ROOT, 'tsup');
+
+export const TSCONFIG_ROOT = resolve(CONFIG_ROOT, 'tsconfig');
 
 export const PLATFORM_PACKAGES = [
   'application',
@@ -33,18 +47,4 @@ export function packageRoot(name: PlatformPackage): string {
  */
 export function packageSource(name: PlatformPackage): string {
   return resolve(packageRoot(name), 'src');
-}
-
-/**
- * Test directory.
- */
-export function packageTests(name: PlatformPackage): string {
-  return resolve(packageRoot(name), 'test');
-}
-
-/**
- * Distribution directory.
- */
-export function packageDist(name: PlatformPackage): string {
-  return resolve(packageRoot(name), 'dist');
 }
