@@ -1,9 +1,9 @@
 // packages/build-core/src/planning/scope-resolver.ts
 
-import type { GraphQueryService } from '../graph/graph-query-services.js';
+import { GraphQueryService } from '../graph/graph-query-services.js';
 import type { BuildScope } from '../public/build-scope.js';
 
-import type { BuildPlan } from './build-plan.js';
+import { BuildPlan } from './build-plan.js';
 
 export class ScopeResolver {
   constructor(

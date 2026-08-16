@@ -1,6 +1,6 @@
 // packages/build-core/src/planning/workspace-execution-contract-resolver.ts
 
-import type { GraphQueryService } from '../graph/graph-query-services.js';
+import { GraphQueryService } from '../graph/graph-query-services.js';
 import type { ExecutionContract } from '../runtime/execution/execution-contract.js';
 
 export class WorkspaceExecutionContractResolver {

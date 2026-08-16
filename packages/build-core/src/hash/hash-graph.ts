@@ -2,7 +2,7 @@
 
 import type { Graph, HashResult } from '@arch/platform-model';
 
-import type { DagHasher } from './dag-hasher.js';
+import { DagHasher } from './dag-hasher.js';
 
 export class HashGraphBuilder {
   constructor(

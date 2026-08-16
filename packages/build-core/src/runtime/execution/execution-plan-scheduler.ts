@@ -1,11 +1,12 @@
 // packages/build-core/src/runtime/execution/execution-plan-scheduler.ts
 
 import type { BuildResult } from '../../executor/build-result.js';
-import type { BuildTaskRunner } from '../../graph/build-task-runner.js';
+import { BuildTaskRunner } from '../../graph/build-task-runner.js';
 import { logger } from '../../logging/logger.js';
 import type { ExecutionNode, ExecutionPlan } from '../../planning/execution-dag.js';
 
-import { updateExecutionState, type ExecutionContext } from './execution-context.js';
+import type { ExecutionContext } from './execution-context.js';
+import { updateExecutionState } from './execution-context.js';
 
 export class ExecutionPlanScheduler {
   constructor(

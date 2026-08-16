@@ -6,12 +6,12 @@ import type {
   HashService,
   PathService,
 } from '@arch/contracts';
-import { HASH_SCHEMA_VERSION } from '@arch/platform-model';
 import type { DagNode, HashContext, HashInput, HashResult } from '@arch/platform-model';
 
 import { logger } from '../logging/logger.js';
 
-import type { HashValidator } from './validator/hash-validator.js';
+import { HASH_SCHEMA_VERSION } from './hash-schema-version.js';
+import { HashValidator } from './validator/hash-validator.js';
 
 function stableJoin(values: readonly string[]): string {
   return [...values].sort().join('|');

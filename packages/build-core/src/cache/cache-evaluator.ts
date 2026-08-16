@@ -1,8 +1,8 @@
 // packages/build-core/src/cache/cache-evaluator.ts
 
-import { HASH_SCHEMA_VERSION } from '@arch/platform-model';
 import type { HashResult, OutputValidator } from '@arch/platform-model';
 
+import { HASH_SCHEMA_VERSION } from '../hash/hash-schema-version.js';
 import { logger } from '../logging/logger.js';
 import type { BuildState } from '../state/state-types.js';
 
