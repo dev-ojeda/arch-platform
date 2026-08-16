@@ -1,25 +1,3 @@
-import { defineConfig, mergeConfig } from 'vitest/config';
+import { createVitestConfig } from '../../config/vitest/index.js';
 
-import { sharedCoverage, sharedVitestConfig } from '../../config/vitest/index.js';
-
-export default mergeConfig(
-  sharedVitestConfig,
-  defineConfig({
-    test: {
-      name: 'core',
-
-      coverage: {
-        ...sharedCoverage,
-
-        thresholds: {
-          ...sharedCoverage.thresholds,
-
-          lines: 40,
-          statements: 40,
-          branches: 25,
-          functions: 25,
-        },
-      },
-    },
-  }),
-);
+export default createVitestConfig('core');
