@@ -14,12 +14,10 @@ describe('DefaultExportedSymbolIndexBuilder', () => {
     const exported = index.get('/packages/app/src/service.ts#Foo');
 
     expect(exported).toMatchObject({
-      kind: 'named',
+      exportedName: 'Foo',
+      localName: 'Foo',
+      exportKind: 'named',
       moduleSpecifier: './foo.js',
-      symbol: {
-        exportedName: 'Foo',
-        localName: 'Foo',
-      },
     });
   });
 
@@ -27,13 +25,14 @@ describe('DefaultExportedSymbolIndexBuilder', () => {
     const sourceReader = createSourceReader(`
       export { default } from './report.js';
     `);
-
     const index = createExportedSymbolIndexFixture(sourceReader);
 
     const exported = index.get('/packages/app/src/service.ts#default');
 
     expect(exported).toMatchObject({
-      kind: 'default',
+      exportedName: 'default',
+      localName: 'default',
+      exportKind: 'default',
       moduleSpecifier: './report.js',
     });
   });

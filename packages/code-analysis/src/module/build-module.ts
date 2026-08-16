@@ -16,9 +16,15 @@ export function buildModuleImports(
   return source.getImports().map((declaration) => ({
     sourceFile: source.path,
     moduleSpecifier: declaration.moduleSpecifier,
+    isTypeOnly: declaration.isTypeOnly,
     kind: resolveKind(declaration.moduleSpecifier),
     packageName: packageResolver.resolveFromModuleSpecifier(declaration.moduleSpecifier),
     targetFile: declaration.resolvedFile,
+    symbols: declaration.symbols.map((symbol) => ({
+      name: symbol.name,
+      symbolId: symbol.symbolId,
+      isTypeOnly: symbol.isTypeOnlyImport,
+    })),
   }));
 }
 
@@ -41,6 +47,7 @@ function buildModuleExport(
   return declaration.symbols.map((symbol) => ({
     sourceFile: source.path,
     moduleSpecifier,
+    isTypeOnly: symbol.isTypeOnlyExport,
     exportedName: symbol.exportedName,
     localName: symbol.localName,
     kind: resolveKind(moduleSpecifier),

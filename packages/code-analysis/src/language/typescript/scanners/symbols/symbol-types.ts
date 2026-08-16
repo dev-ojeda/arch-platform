@@ -1,8 +1,6 @@
-// packages/code-analysis/src/language/typescript/scanners/symbols/model/symbol-types.ts
-
 // packages/code-analysis/src/language/typescript/symbols/symbol-types.ts
 
-export type SymbolKind = 'class' | 'interface' | 'function' | 'type' | 'enum' | 'variable';
+import type { SymbolKind } from '../../../../public/symbol-kind.js';
 
 export interface SymbolDefinition {
   readonly id: string;

@@ -10,9 +10,10 @@ import type {
 } from 'ts-morph';
 
 import type { ExportKind } from '../../api-surface/model/export-kind.js';
-import type { ExportedSymbol } from '../../api-surface/model/exported-symbol.js';
+import type { ExportedSymbol } from '../../public/exported-symbol.js';
 
 import type { ClassDeclaration } from './model/class-declaration.js';
+import type { EnumDeclaration } from './model/enum-declaration.js';
 import type { ExportedDeclaration } from './model/export-declaration.js';
 import type { FunctionDeclaration } from './model/function-declaration.js';
 import type { ImportDeclaration } from './model/import-declaration.js';
@@ -21,9 +22,10 @@ import type { MethodDeclaration } from './model/method-declaration.js';
 import type { ParameterDeclaration } from './model/parameter-declaration.js';
 import type { PropertyDeclaration } from './model/property-declaration.js';
 import type { TypeDeclaration } from './model/type-declaration.js';
-import type { ImportedSymbol } from './scanners/symbols/model/imported-symbol.js';
+import type { VariableDeclaration } from './model/variable-declaration.js';
+import type { ImportedSymbol } from './scanners/symbols/imported-symbol.js';
 import type { SourceUnit } from './source/source-unit.js';
-import { createSymbolId, resolveSymbolId } from './typescript-source-symbol.js';
+import { createSymbolId, resolveSymbolId, resolveSymbolKind } from './typescript-source-symbol.js';
 
 export class TypeScriptSourceUnit implements SourceUnit {
   constructor(private readonly sourceFile: SourceFile) {}
@@ -33,52 +35,58 @@ export class TypeScriptSourceUnit implements SourceUnit {
   }
 
   getImports(): readonly ImportDeclaration[] {
-    return this.sourceFile.getImportDeclarations().map((declaration) => ({
-      moduleSpecifier: declaration.getModuleSpecifierValue(),
-
-      resolvedFile: declaration.getModuleSpecifierSourceFile()?.getFilePath(),
-
-      symbols: declaration.getNamedImports().map(
-        (item): ImportedSymbol => ({
-          name: item.getName(),
-          symbolId: resolveSymbolId(item.getNameNode().getSymbol()),
-        }),
-      ),
-    }));
-  }
-
-  getExports(): readonly ExportedDeclaration[] {
-    return this.sourceFile.getExportDeclarations().map((declaration) => {
-      const kind = this.resolveExportKind(declaration);
-
-      const moduleSpecifier = declaration.getModuleSpecifierValue() ?? undefined;
-
+    return this.sourceFile.getImportDeclarations().map((declaration) => {
+      const moduleSpecifier = declaration.getModuleSpecifierValue();
+      const resolvedFile = declaration.getModuleSpecifierSourceFile()?.getFilePath();
+      const isTypeOnly = declaration.isTypeOnly();
       return {
-        kind,
-
         moduleSpecifier,
-
-        symbols: declaration.getNamedExports().map((item): ExportedSymbol => {
-          const name = item.getAliasNode()?.getText() ?? item.getName();
-
+        resolvedFile,
+        isTypeOnly,
+        symbols: declaration.getNamedImports().map((item): ImportedSymbol => {
           return {
-            id: createSymbolId(this.path, name),
-
-            exportedName: item.getName(),
-
-            localName: name,
-
-            exportKind: kind,
-
-            moduleSpecifier,
+            name: item.getName(),
+            symbolId: resolveSymbolId(item.getNameNode().getSymbol()),
+            kind: resolveSymbolKind(item.getNameNode().getSymbol()),
+            isTypeOnlyImport: declaration.isTypeOnly() || item.isTypeOnly(),
           };
         }),
       };
     });
   }
+
+  getExports(): readonly ExportedDeclaration[] {
+    const exportedDeclarations: ExportedDeclaration[] = [];
+
+    for (const exportDeclaration of this.sourceFile.getExportDeclarations()) {
+      const moduleSpecifier = exportDeclaration.getModuleSpecifierValue() ?? undefined;
+      const resolvedFile = exportDeclaration.getModuleSpecifierSourceFile()?.getFilePath();
+      const kind = this.resolveExportKind(exportDeclaration);
+
+      const isTypeOnlyDeclaration = exportDeclaration.isTypeOnly();
+
+      const symbols =
+        kind === 'star'
+          ? this.resolveStarExportSymbols(exportDeclaration)
+          : this.resolveNamedExportSymbols(exportDeclaration);
+
+      exportedDeclarations.push({
+        kind,
+        moduleSpecifier,
+        resolvedFile,
+        isTypeOnlyDeclaration,
+        symbols,
+      });
+    }
+
+    return exportedDeclarations;
+  }
   getClasses(): readonly ClassDeclaration[] {
     return this.sourceFile.getClasses().map((declaration) => ({
-      symbolId: createSymbolId(this.path, declaration.getName() ?? '<anonymous>'),
+      symbolId: createSymbolId(
+        declaration.getSourceFile().getFilePath(),
+        declaration.getName() ?? '<anonymous>',
+      ),
 
       name: declaration.getName() ?? '<anonymous>',
 
@@ -90,7 +98,10 @@ export class TypeScriptSourceUnit implements SourceUnit {
 
   getFunctions(): readonly FunctionDeclaration[] {
     return this.sourceFile.getFunctions().map((declaration) => ({
-      symbolId: createSymbolId(this.path, declaration.getName() ?? '<anonymous>'),
+      symbolId: createSymbolId(
+        declaration.getSourceFile().getFilePath(),
+        declaration.getName() ?? '<anonymous>',
+      ),
 
       name: declaration.getName() ?? '<anonymous>',
 
@@ -105,7 +116,7 @@ export class TypeScriptSourceUnit implements SourceUnit {
 
   getInterfaces(): readonly InterfaceDeclaration[] {
     return this.sourceFile.getInterfaces().map((declaration) => ({
-      symbolId: createSymbolId(this.sourceFile.getFilePath(), declaration.getName()),
+      symbolId: createSymbolId(declaration.getSourceFile().getFilePath(), declaration.getName()),
 
       name: declaration.getName(),
 
@@ -113,6 +124,92 @@ export class TypeScriptSourceUnit implements SourceUnit {
     }));
   }
 
+  getEnums(): readonly EnumDeclaration[] {
+    return this.sourceFile.getEnums().map((declaration) => ({
+      symbolId: createSymbolId(declaration.getSourceFile().getFilePath(), declaration.getName()),
+      name: declaration.getName(),
+    }));
+  }
+
+  getSymbolIds(): readonly string[] {
+    return [
+      ...this.getClasses().map((x) => x.symbolId),
+      ...this.getInterfaces().map((x) => x.symbolId),
+      ...this.getFunctions().map((x) => x.symbolId),
+      ...this.getEnums().map((x) => x.symbolId),
+      ...this.getVariables().map((x) => x.symbolId),
+    ];
+  }
+
+  getVariables(): readonly VariableDeclaration[] {
+    return this.sourceFile.getVariableDeclarations().map((declaration) => ({
+      symbolId: createSymbolId(declaration.getSourceFile().getFilePath(), declaration.getName()),
+
+      name: declaration.getName(),
+    }));
+  }
+  private resolveNamedExportSymbols(exportDeclaration: TsExportDeclaration): ExportedSymbol[] {
+    const symbols: ExportedSymbol[] = [];
+
+    const resolvedDeclarations = this.sourceFile.getExportedDeclarations();
+
+    for (const namedExport of exportDeclaration.getNamedExports()) {
+      const name = namedExport.getName();
+
+      const declarations = resolvedDeclarations.get(name) ?? [];
+
+      for (const declaration of declarations) {
+        const symbol = declaration.getSymbol();
+        const resolvedSymbol = symbol?.getAliasedSymbol() ?? symbol;
+
+        symbols.push({
+          id: resolveSymbolId(resolvedSymbol) ?? createSymbolId(this.path, name),
+
+          exportedName: name,
+
+          localName: namedExport.getAliasNode()?.getText() ?? name,
+
+          exportKind: this.resolveExportKind(exportDeclaration),
+
+          symbolKind: resolveSymbolKind(resolvedSymbol),
+
+          moduleSpecifier: exportDeclaration.getModuleSpecifierValue() ?? undefined,
+
+          isTypeOnlyExport: exportDeclaration.isTypeOnly() || namedExport.isTypeOnly(),
+        });
+      }
+    }
+
+    return symbols;
+  }
+  private resolveStarExportSymbols(exportDeclaration: TsExportDeclaration): ExportedSymbol[] {
+    const symbols: ExportedSymbol[] = [];
+
+    for (const [name, declarations] of this.sourceFile.getExportedDeclarations()) {
+      for (const declaration of declarations) {
+        const symbol = declaration.getSymbol();
+        const resolvedSymbol = symbol?.getAliasedSymbol() ?? symbol;
+
+        symbols.push({
+          id: resolveSymbolId(resolvedSymbol) ?? createSymbolId(this.path, name),
+
+          exportedName: name,
+
+          localName: name,
+
+          exportKind: 'star',
+
+          symbolKind: resolveSymbolKind(resolvedSymbol),
+
+          moduleSpecifier: exportDeclaration.getModuleSpecifierValue() ?? undefined,
+
+          isTypeOnlyExport: exportDeclaration.isTypeOnly(),
+        });
+      }
+    }
+
+    return symbols;
+  }
   private createMethod(method: TsMethodDeclaration): MethodDeclaration {
     return {
       name: method.getName(),
@@ -144,16 +241,27 @@ export class TypeScriptSourceUnit implements SourceUnit {
   }
 
   private resolveExportKind(declaration: TsExportDeclaration): ExportKind {
-    if (declaration.isNamespaceExport()) {
+    if (this.isStarExport(declaration)) {
       return 'star';
     }
 
-    const namedExports = declaration.getNamedExports();
+    if (declaration.isNamespaceExport()) {
+      return 'namespace';
+    }
 
-    if (namedExports.length === 1 && namedExports[0]?.getName() === 'default') {
+    const namedExports = declaration.getNamedExports();
+    if (
+      namedExports.length === 1 &&
+      namedExports[0]?.getName() === 'default' &&
+      !namedExports[0]?.getAliasNode()
+    ) {
       return 'default';
     }
 
     return 'named';
+  }
+
+  private isStarExport(declaration: TsExportDeclaration): boolean {
+    return declaration.compilerNode.exportClause === undefined;
   }
 }

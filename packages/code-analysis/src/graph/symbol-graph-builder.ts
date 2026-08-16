@@ -1,10 +1,9 @@
 // packages/code-analysis/src/graph/symbol-graph-builder.ts
 
-import type { ReferenceAnalyzer } from '../language/typescript/scanners/reference-analyzer.js';
-import type { SymbolScanner } from '../language/typescript/scanners/symbols/symbol-scanner.js';
+import { ReferenceAnalyzer } from '../language/typescript/scanners/reference-analyzer.js';
+import { SymbolScanner } from '../language/typescript/scanners/symbols/symbol-scanner.js';
 import type { PackageResolver } from '../package/resolvers/package-resolver.js';
-
-import type { SymbolGraph } from './symbol-graph-types.js';
+import type { SymbolGraph } from '../public/symbol-graph.js';
 
 export class SymbolGraphBuilder {
   constructor(

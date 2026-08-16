@@ -1,15 +1,15 @@
-// packages/code-analysis/src/language/typescript/scanners/symbols/function-symbol-scanner.ts
+// packages/code-analysis/src/language/typescript/scanners/symbols/enum-symbol-scanner.ts
 
 import type { SourceUnit } from '../../source/source-unit.js';
 
 import type { SymbolDefinition } from './symbol-types.js';
 
-export class FunctionSymbolScanner {
+export class EnumSymbolScanner {
   scan(source: SourceUnit): readonly SymbolDefinition[] {
-    return source.getFunctions().map((declaration) => ({
+    return source.getEnums().map((declaration) => ({
       id: declaration.symbolId,
       name: declaration.name,
-      kind: 'function',
+      kind: 'enum',
       sourceFile: source.path,
     }));
   }

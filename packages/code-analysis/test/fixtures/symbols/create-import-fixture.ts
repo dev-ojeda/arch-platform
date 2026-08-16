@@ -1,6 +1,6 @@
 // packages\code-analysis\test\fixtures\symbols\create-import-fixture.ts
 
-import type { SymbolEdge } from '../../../src/graph/model/symbol-edge.js';
+import type { SymbolEdge } from '../../../src/graph/symbol-edge.js';
 
 export function createImport(
   from: string,

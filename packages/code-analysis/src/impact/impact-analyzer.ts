@@ -1,6 +1,6 @@
 // packages/code-analysis/src/impact/impact-analyzer.ts
 
-import type { SymbolGraphQuery } from '../graph/symbol-graph-query.js';
+import { SymbolGraphQuery } from '../public/symbol-graph-query.js';
 
 import type { ImpactResult } from './impact-result.js';
 

@@ -2,5 +2,3 @@
 
 export type { ExportKind } from './export-kind.js';
 export type { ExportDescriptor } from './exported-descriptor.js';
-export type { ExportedSymbolInfo } from './exported-symbol-info.js';
-export type { ExportedSymbol } from './exported-symbol.js';

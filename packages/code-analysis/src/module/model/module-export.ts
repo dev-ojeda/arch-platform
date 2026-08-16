@@ -7,6 +7,8 @@ export interface ModuleExport {
 
   readonly moduleSpecifier: string;
 
+  readonly isTypeOnly: boolean;
+
   readonly exportedName?: string;
 
   readonly localName?: string;

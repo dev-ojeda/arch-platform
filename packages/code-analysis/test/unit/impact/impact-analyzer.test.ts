@@ -2,8 +2,8 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { SymbolGraphQuery } from '../../../src/graph/symbol-graph-query.js';
 import { ImpactAnalyzer } from '../../../src/impact/impact-analyzer.js';
+import { SymbolGraphQuery } from '../../../src/public/symbol-graph-query.js';
 
 describe('ImpactAnalyzer', () => {
   it('should detect dependent symbols', () => {

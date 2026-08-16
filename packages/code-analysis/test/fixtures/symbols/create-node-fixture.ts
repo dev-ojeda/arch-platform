@@ -1,6 +1,6 @@
 // packages\code-analysis\test\fixtures\symbols\create-node-fixture.ts
 
-import type { SymbolNode } from '../../../src/graph/symbol-graph-types.js';
+import type { SymbolNode } from '../../../src/graph/symbol-node.js';
 
 export function createNode(
   id: string,
