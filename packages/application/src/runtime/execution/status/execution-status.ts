@@ -1,6 +1,6 @@
 // packages/application/src/runtime/execution/status/execution-status.ts
 
-export const ExecutionStatus = {
+export const EXECUTION_STATUS = {
   Pending: 'pending',
   Running: 'running',
   Success: 'success',
@@ -9,4 +9,4 @@ export const ExecutionStatus = {
   Cancelled: 'cancelled',
 } as const;
 
-export type ExecutionStatus = (typeof ExecutionStatus)[keyof typeof ExecutionStatus];
+export type ExecutionStatus = (typeof EXECUTION_STATUS)[keyof typeof EXECUTION_STATUS];
