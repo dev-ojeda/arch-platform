@@ -2,7 +2,7 @@
 
 import type { OrderRepositoryContract } from '../contracts/order-repository.contract.js';
 import type { Order } from '../models/order.js';
-import type { OrderId } from '../value-objects/order-id.js';
+import { OrderId } from '../value-objects/order-id.js';
 
 export class InMemoryOrderRepository implements OrderRepositoryContract {
   readonly #orders = new Map<string, Order>();
