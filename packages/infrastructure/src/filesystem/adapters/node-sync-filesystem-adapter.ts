@@ -55,7 +55,7 @@ export class NodeSyncFileSystemAdapter extends BaseFileSystemAdapter implements 
       const source = this.resolvePath(sourcePath);
       const destination = this.resolvePath(destinationPath);
 
-      this.createDirectory(this.pathService.dirname(destinationPath));
+      this.createDirectory(this.pathService.dirname(destination));
 
       copyPathSync(source, destination);
     } catch (error) {
@@ -96,11 +96,13 @@ export class NodeSyncFileSystemAdapter extends BaseFileSystemAdapter implements 
   }
   write(filePath: string, content: string, options?: WriteFileOptions): void {
     const exists = this.exists(filePath);
+
     if (!shouldWriteFile(exists, options)) {
       return;
     }
+
     try {
-      this.createDirectory(this.pathService.dirname(filePath));
+      this.createDirectory(this.resolveParentDirectory(filePath));
 
       writeTextFileSync(this.resolvePath(filePath), content);
     } catch (error) {
@@ -108,6 +110,6 @@ export class NodeSyncFileSystemAdapter extends BaseFileSystemAdapter implements 
     }
   }
   writeJson<T>(filePath: string, value: T, options?: WriteFileOptions): void {
-    this.write(this.resolvePath(filePath), safeStringify(value, 2), options);
+    this.write(filePath, safeStringify(value, 2), options);
   }
 }
