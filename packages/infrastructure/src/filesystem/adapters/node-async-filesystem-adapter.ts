@@ -33,25 +33,27 @@ export class NodeAsyncFileSystemAdapter
       new NodePathService(),
     );
   }
+
   async readJson<T>(filePath: string): Promise<T> {
     return safeParse<T>(await this.read(filePath));
   }
+
   async writeJson<T>(filePath: string, value: T, options?: WriteFileOptions): Promise<void> {
     await this.write(filePath, safeStringify(value, 2), options);
   }
+
   readBuffer(filePath: string): Promise<Uint8Array> {
     return readBuffer(this.resolvePath(filePath));
   }
 
   async read(filePath: string): Promise<string> {
-    const resolvedPath = this.resolvePath(filePath);
-
     try {
-      return await readTextFile(resolvedPath);
+      return await readTextFile(this.resolvePath(filePath));
     } catch (error) {
       this.logAndThrow(error, 'read');
     }
   }
+
   async write(filePath: string, content: string, options?: WriteFileOptions): Promise<void> {
     const exists = await this.exists(filePath);
 
@@ -60,25 +62,29 @@ export class NodeAsyncFileSystemAdapter
     }
 
     try {
-      await this.createDirectory(this.resolveParentDirectory(filePath));
+      const resolvedPath = this.resolvePath(filePath);
+      const parentDirectory = this.pathService.dirname(resolvedPath);
 
-      await writeTextFile(this.resolvePath(filePath), content);
+      await ensureDirAsync(parentDirectory);
+      await writeTextFile(resolvedPath, content);
     } catch (error) {
       this.logAndThrow(error, 'write');
     }
   }
+
   async copy(sourcePath: string, destinationPath: string): Promise<void> {
     try {
       const source = this.resolvePath(sourcePath);
       const destination = this.resolvePath(destinationPath);
+      const parentDirectory = this.pathService.dirname(destination);
 
-      await this.createDirectory(this.pathService.dirname(destination));
-
+      await ensureDirAsync(parentDirectory);
       await copyPath(source, destination);
     } catch (error) {
       this.logAndThrow(error, 'copy');
     }
   }
+
   async createDirectory(path: string): Promise<void> {
     try {
       await ensureDirAsync(this.resolvePath(path));

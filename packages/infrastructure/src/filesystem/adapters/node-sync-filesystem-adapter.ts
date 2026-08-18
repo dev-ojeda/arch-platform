@@ -43,23 +43,12 @@ export class NodeSyncFileSystemAdapter extends BaseFileSystemAdapter implements 
       this.logAndThrow(error, 'createDirectory');
     }
   }
+
   remove(targetPath: string): void {
     try {
       removePathSync(this.resolvePath(targetPath));
     } catch (error) {
       this.logAndThrow(error, 'remove');
-    }
-  }
-  copy(sourcePath: string, destinationPath: string): void {
-    try {
-      const source = this.resolvePath(sourcePath);
-      const destination = this.resolvePath(destinationPath);
-
-      this.createDirectory(this.pathService.dirname(destination));
-
-      copyPathSync(source, destination);
-    } catch (error) {
-      this.logAndThrow(error, 'copy');
     }
   }
 
@@ -87,6 +76,7 @@ export class NodeSyncFileSystemAdapter extends BaseFileSystemAdapter implements 
       path: this.toVirtualPath(entry.path),
     }));
   }
+
   rename(source: string, destination: string): void {
     try {
       renamePathSync(this.resolvePath(source), this.resolvePath(destination));
@@ -94,6 +84,7 @@ export class NodeSyncFileSystemAdapter extends BaseFileSystemAdapter implements 
       this.logAndThrow(error, 'rename');
     }
   }
+
   write(filePath: string, content: string, options?: WriteFileOptions): void {
     const exists = this.exists(filePath);
 
@@ -102,13 +93,29 @@ export class NodeSyncFileSystemAdapter extends BaseFileSystemAdapter implements 
     }
 
     try {
-      this.createDirectory(this.resolveParentDirectory(filePath));
+      const resolvedPath = this.resolvePath(filePath);
+      const parentDirectory = this.pathService.dirname(resolvedPath);
 
-      writeTextFileSync(this.resolvePath(filePath), content);
+      ensureDirSync(parentDirectory);
+      writeTextFileSync(resolvedPath, content);
     } catch (error) {
       this.logAndThrow(error, 'write');
     }
   }
+
+  copy(sourcePath: string, destinationPath: string): void {
+    try {
+      const source = this.resolvePath(sourcePath);
+      const destination = this.resolvePath(destinationPath);
+      const parentDirectory = this.pathService.dirname(destination);
+
+      ensureDirSync(parentDirectory);
+      copyPathSync(source, destination);
+    } catch (error) {
+      this.logAndThrow(error, 'copy');
+    }
+  }
+
   writeJson<T>(filePath: string, value: T, options?: WriteFileOptions): void {
     this.write(filePath, safeStringify(value, 2), options);
   }
