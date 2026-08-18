@@ -1,5 +1,7 @@
 // packages/governance/src/rules/index.ts
 
+export { CrossPackageRelativeImportRule } from './cross-package-relative-import-rule.js';
+export { CrossPackageRelativeImportScanner } from './cross-package-relative-import-scanner.js';
 export type { RuleExecutionResult } from './execution-result-rule.js';
 export { ValidatePackageStructureRule } from './package-structure/index.js';
 export {

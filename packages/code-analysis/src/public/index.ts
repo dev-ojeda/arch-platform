@@ -1,5 +1,7 @@
 // packages/code-analysis/src/public/index.ts
 
+export { DefaultPackageResolver } from '../package/index.js';
+export type { PackageResolver } from '../package/index.js';
 export type { AnalysisContext } from './analysis-context.js';
 export { analyzeCode } from './analyze-code.js';
 export type { ExportedSymbolIndex } from './exported-symbol-index.js';

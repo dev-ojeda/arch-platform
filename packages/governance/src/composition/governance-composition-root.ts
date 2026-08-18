@@ -13,6 +13,8 @@ import type {
 } from '../context/governance-context.js';
 import { GovernanceEngine } from '../engine/governance-engine.js';
 import type { GovernanceRule } from '../engine/governance-rule.js';
+import { CrossPackageRelativeImportRule } from '../rules/cross-package-relative-import-rule.js';
+import { CrossPackageRelativeImportScanner } from '../rules/cross-package-relative-import-scanner.js';
 import { DependencyLayerRule } from '../rules/dependency-layer-rule.js';
 import { ForbiddenDependencyRule } from '../rules/forbidden-dependency-rule.js';
 import { ValidatePackageStructureRule } from '../rules/package-structure/validate-package-structure.rule.js';
@@ -43,11 +45,7 @@ export class GovernanceCompositionRoot {
   }
 
   private createRules(): GovernanceRule[] {
-    return [
-      ...this.createWorkspaceRules(),
-      ...this.createPackageRules(),
-      ...this.createCrossScopeRules(),
-    ];
+    return [...this.createWorkspaceRules(), ...this.createCrossScopeRules()];
   }
 
   private createWorkspaceRules(): GovernanceRule[] {
@@ -55,33 +53,18 @@ export class GovernanceCompositionRoot {
       new WorkspacePackageRule(),
       new DependencyLayerRule(),
       new DetectCyclesRule(),
-      this.createOnlyPublicApiRule(),
+      new OnlyPublicApiRule(new PublicApiScanner()),
     ];
-  }
-
-  private createPackageRules(): GovernanceRule[] {
-    return [new ValidatePackageStructureRule()];
   }
 
   private createCrossScopeRules(): GovernanceRule[] {
     return [
       new ForbiddenDependencyRule(),
-      this.createDetectPrivateBarrelRule(),
-      this.createTypeOnlyImportRule(),
-      this.createTypeOnlyExportRule(),
+      new ValidatePackageStructureRule(),
+      new TypeOnlyImportRule([new TypeOnlyImportSemanticScanner()]),
+      new TypeOnlyExportRule([new TypeOnlyExportSemanticScanner()]),
+      new DetectPrivateBarrelRule([new PrivateBarrelScanner()]),
+      new CrossPackageRelativeImportRule(new CrossPackageRelativeImportScanner()),
     ];
-  }
-
-  private createOnlyPublicApiRule(): GovernanceRule {
-    return new OnlyPublicApiRule(new PublicApiScanner());
-  }
-  private createTypeOnlyImportRule(): GovernanceRule {
-    return new TypeOnlyImportRule([new TypeOnlyImportSemanticScanner()]);
-  }
-  private createTypeOnlyExportRule(): GovernanceRule {
-    return new TypeOnlyExportRule([new TypeOnlyExportSemanticScanner()]);
-  }
-  private createDetectPrivateBarrelRule(): GovernanceRule {
-    return new DetectPrivateBarrelRule([new PrivateBarrelScanner()]);
   }
 }

@@ -234,9 +234,6 @@ importers:
       '@arch/infrastructure':
         specifier: workspace:*
         version: link:../infrastructure
-      '@arch/platform-model':
-        specifier: workspace:*
-        version: link:../platform-model
       '@arch/tooling':
         specifier: workspace:*
         version: link:../tooling
@@ -292,10 +289,6 @@ importers:
       '@arch/testing':
         specifier: workspace:*
         version: link:../testing
-    devDependencies:
-      handlebars:
-        specifier: ^4.7.9
-        version: 4.7.9
 
   packages/platform-model: {}
 

@@ -2,8 +2,10 @@
 
 import type { Diagnostic } from '@arch/platform-model';
 
+import type { ExportSurface } from './export-barrel-context.js';
+
 export interface ExportBarrelIssue extends Diagnostic {
   readonly symbolId: string;
-  readonly publicBarrel: string;
   readonly privateSource: string;
+  readonly surface: ExportSurface;
 }

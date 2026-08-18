@@ -28,8 +28,7 @@
     "arch": "arch build --package @arch/generator-mvc",
     "clean": "arch clean",
     "lint": "arch lint",
-    "typecheck": "arch typecheck",
-    "validate": "arch validate --package @arch/generator-mvc"
+    "typecheck": "arch typecheck"
   },
   "dependencies": {
     "@arch/contracts": "workspace:*"

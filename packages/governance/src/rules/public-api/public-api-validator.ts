@@ -92,6 +92,9 @@ export class PublicApiValidator {
       code: 'ARCH_EXPORT_BOUNDARY_VIOLATION',
       severity: 'error',
       source: 'governance',
+      location: {
+        file: context.sourceFile,
+      },
       message: `Import ${context.moduleSpecifier} is not part of ${context.targetPackage.name} public exports`,
       hint: 'Expose the module through package exports',
       metadata: {

@@ -185,7 +185,13 @@ export class TypeScriptSourceUnit implements SourceUnit {
   private resolveStarExportSymbols(exportDeclaration: TsExportDeclaration): ExportedSymbol[] {
     const symbols: ExportedSymbol[] = [];
 
-    for (const [name, declarations] of this.sourceFile.getExportedDeclarations()) {
+    const targetSourceFile = exportDeclaration.getModuleSpecifierSourceFile();
+
+    if (!targetSourceFile) {
+      return symbols;
+    }
+
+    for (const [name, declarations] of targetSourceFile.getExportedDeclarations()) {
       for (const declaration of declarations) {
         const symbol = declaration.getSymbol();
         const resolvedSymbol = symbol?.getAliasedSymbol() ?? symbol;

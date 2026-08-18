@@ -4,6 +4,20 @@ import type { ExportBarrelContext } from '../analysis/exports/export-barrel-cont
 import type { ExportBarrelIssue } from '../analysis/exports/export-barrel-issue.js';
 
 export function invalidPrivateBarrel(context: ExportBarrelContext): ExportBarrelIssue {
+  const { surface } = context;
+
+  const message =
+    surface.kind === 'entrypoint'
+      ? `Package entrypoint exports private symbol "${context.symbol.name}" ` +
+        `from private source ${context.symbol.sourceFile}.`
+      : `Public API exports symbol "${context.symbol.name}" ` +
+        `from private source ${context.symbol.sourceFile}.`;
+
+  const hint =
+    surface.kind === 'entrypoint'
+      ? 'Package entrypoint cannot export symbols from src/internal.'
+      : 'Public API cannot export symbols from src/internal.';
+
   return {
     code: 'ARCH_PRIVATE_BARREL_EXPORT',
     severity: 'error',
@@ -11,14 +25,13 @@ export function invalidPrivateBarrel(context: ExportBarrelContext): ExportBarrel
 
     symbolId: context.symbol.id,
 
-    publicBarrel: context.publicBarrel,
     privateSource: context.symbol.sourceFile,
 
-    message:
-      `Public API exports symbol "${context.symbol.name}" ` +
-      `from private source ${context.symbol.sourceFile}.`,
+    surface,
 
-    hint: 'Public API cannot export symbols from src/internal.',
+    message,
+
+    hint,
 
     location: {
       file: context.symbol.sourceFile,
@@ -27,7 +40,8 @@ export function invalidPrivateBarrel(context: ExportBarrelContext): ExportBarrel
     metadata: {
       symbol: context.symbol.name,
       symbolKind: context.symbol.kind,
-      publicBarrel: context.publicBarrel,
+      surfaceKind: surface.kind,
+      surfaceFile: surface.file,
       package: context.package.name,
     },
   };

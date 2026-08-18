@@ -7,11 +7,9 @@ export class ArchitectureSourceDetector {
     return normalized.endsWith('/src/public/index.ts');
   }
 
-  // isPrivateSource(path: string): boolean {
-  //   const normalized = path.replaceAll('\\', '/');
-
-  //   return normalized.includes('/src/internal/');
-  // }
+  isPackageEntrypoint(path: string): boolean {
+    return /[\\/]src[\\/]index\.ts$/.test(path);
+  }
   isPrivateSource(path: string): boolean {
     return /\/src\/internal(?:\/|$)/.test(path?.replaceAll('\\', '/') ?? '');
   }

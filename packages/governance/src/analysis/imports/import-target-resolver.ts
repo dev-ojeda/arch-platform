@@ -41,13 +41,24 @@ export function resolveTargetPackage(
   moduleSpecifier: string,
   packages: GovernancePackageQuery,
 ): PackageDescriptor | undefined {
-  // 1. Import directo del package
   const exact = packages.get(moduleSpecifier);
 
   if (exact) {
     return exact;
   }
 
-  // 2. Import de un subpath del package
   return packages.all().find((pkg) => moduleSpecifier.startsWith(`${pkg.name}/`));
+}
+
+export function resolveTargetPackageFromFile(
+  filePath: string,
+  packages: GovernancePackageQuery,
+): PackageDescriptor | undefined {
+  const normalizedFile = filePath.replace(/\\/g, '/');
+
+  return packages.all().find((pkg) => {
+    const rootPath = pkg.rootPath.replace(/\\/g, '/').replace(/\/$/, '');
+
+    return normalizedFile === rootPath || normalizedFile.startsWith(`${rootPath}/`);
+  });
 }

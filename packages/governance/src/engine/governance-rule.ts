@@ -17,7 +17,7 @@ export interface GovernanceRule<TContext extends GovernanceContext = GovernanceC
   readonly id: GovernanceRuleId;
   readonly name: string;
 
-  supports?(scope: GovernanceScope): boolean;
+  supports(scope: GovernanceScope): boolean;
 
-  run(context: TContext): MaybePromise<Diagnostic[]>;
+  run(context: TContext): Diagnostic[] | MaybePromise<Diagnostic[]>;
 }

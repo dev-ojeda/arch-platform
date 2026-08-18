@@ -20,10 +20,7 @@ export class GovernanceEngine {
     const diagnostics: Diagnostic[] = [];
     const executions: GovernanceRuleResult[] = [];
 
-    const applicableRules = this.rules.filter(
-      (rule) => !rule.supports || rule.supports(context.scope),
-    );
-
+    const applicableRules = this.rules.filter((rule) => rule.supports(context.scope));
     const results = await Promise.all(
       applicableRules.map((rule) => this.executeRule(rule, context)),
     );

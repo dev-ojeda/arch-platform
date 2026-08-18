@@ -19,6 +19,6 @@ export class TypeOnlyExportRule implements GovernanceRule<GovernanceExecutionCon
   }
 
   supports(scope: GovernanceScope): boolean {
-    return scope.kind === 'package';
+    return scope.kind === 'workspace' || scope.kind === 'package';
   }
 }

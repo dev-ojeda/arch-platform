@@ -31,8 +31,7 @@
     "arch": "arch build --package @arch/tooling",
     "clean": "arch clean",
     "lint": "arch lint",
-    "typecheck": "arch typecheck",
-    "validate": "arch validate --package @arch/tooling"
+    "typecheck": "arch typecheck"
   },
   "dependencies": {
     "@arch/build-core": "workspace:*",

@@ -14,7 +14,7 @@ import { DefaultPackageResolver } from '../package/resolvers/default-package-res
 import type { AnalysisContext } from '../public/analysis-context.js';
 
 export function analyzeCode(request: AnalysisRequest): AnalysisContext {
-  const packageResolver = new DefaultPackageResolver();
+  const packageResolver = request.packageResolver ?? new DefaultPackageResolver();
 
   const project = createTypeScriptProjectLoader({
     tsConfigFilePath: request.tsConfigFilePath,

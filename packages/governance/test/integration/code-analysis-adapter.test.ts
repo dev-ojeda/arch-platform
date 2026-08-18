@@ -5,12 +5,12 @@ import { fileURLToPath } from 'node:url';
 
 import { describe, expect, it } from 'vitest';
 
+import { CrossPackageRelativeImportScanner, type GovernanceScope } from '@arch/governance';
 import type { ArchitectureManifest, WorkspaceDescriptor } from '@arch/platform-model';
 
 import { CodeAnalysisAdapter } from '../../src/analysis/code-analysis/code-analysis-adapter.js';
 import { createGovernanceAnalysisContext } from '../../src/analysis/code-analysis/create-governance-analysis-context.js';
 import { buildGovernanceContext } from '../../src/context/build-governance-context.js';
-import type { GovernanceScope } from '../../src/public/governance-scope.js';
 import { createPackageDescriptor } from '../fixtures/workspace/create-package-descriptor.js';
 import { createPackageDescriptors } from '../fixtures/workspace/create-package-descriptors.js';
 import { createPackageLayout } from '../fixtures/workspace/create-package-layout.js';
@@ -18,7 +18,9 @@ import { createPackageLayout } from '../fixtures/workspace/create-package-layout
 const fixturePathCodeAnalysis = fileURLToPath(
   new URL('../fixtures/workspaces/code-analysis', import.meta.url),
 );
-
+const fixturePathCrossPackageRelativeImport = fileURLToPath(
+  new URL('../fixtures/workspaces/cross-package-relative-import', import.meta.url),
+);
 async function analyzeWorkspace(
   fixturePath: string,
   options: {
@@ -168,52 +170,113 @@ describe('CodeAnalysisAdapter', () => {
       }),
     );
   });
-  // it('builds cross-package import metadata', async () => {
-  //   const workspaceRoot = resolve(fixturePathTypeOnlyImport);
+  it('builds cross-package import metadata', async () => {
+    const workspaceRoot = resolve(fixturePathCrossPackageRelativeImport);
 
-  //   const executionContext = await analyzeWorkspace(fixturePathTypeOnlyImport, {
-  //     packages: createPackageDescriptors([
-  //       createPackageDescriptor({
-  //         name: '@fixture/package-a',
-  //         rootPath: `${workspaceRoot}/package-a`,
-  //         manifestPath: `${workspaceRoot}/package-a/package.json`,
-  //         manifest: {
-  //           name: '@fixture/package-a',
-  //         },
-  //         internalDependencies: ['@fixture/package-b'],
-  //         layout: createPackageLayout({
-  //           sourceDirectory: `${workspaceRoot}/package-a/src`,
-  //           hasDistributionDirectory: false,
-  //           hasTestsDirectory: false,
-  //           tsconfigPath: `${workspaceRoot}/package-a/tsconfig.json`,
-  //         }),
-  //       }),
-  //       createPackageDescriptor({
-  //         name: '@fixture/package-b',
-  //         rootPath: `${workspaceRoot}/package-b`,
-  //         manifestPath: `${workspaceRoot}/package-b/package.json`,
-  //         manifest: {
-  //           name: '@fixture/package-b',
-  //           exports: {
-  //             '.': './src/index.ts',
-  //           },
-  //         },
-  //         internalDependencies: [],
-  //         layout: createPackageLayout({
-  //           sourceDirectory: `${workspaceRoot}/package-b/src`,
-  //           hasDistributionDirectory: false,
-  //           hasTestsDirectory: false,
-  //           tsconfigPath: `${workspaceRoot}/package-b/tsconfig.json`,
-  //         }),
-  //       }),
-  //     ]),
-  //   });
-  //   debug(executionContext);
-  //   const edge = executionContext.analysis.symbolGraph.edges.find(
-  //     (edge) => edge.type === 'import' && edge.metadata?.moduleSpecifier === '@fixture/package-b',
-  //   );
-  //   debug(edge);
-  //   expect(edge).toBeDefined();
-  //   expect(edge?.metadata?.isTypeOnly).toBe(true);
-  // });
+    const executionContext = await analyzeWorkspace(fixturePathCrossPackageRelativeImport, {
+      packages: createPackageDescriptors([
+        createPackageDescriptor({
+          name: '@fixture/package-a',
+          rootPath: `${workspaceRoot}/package-a`,
+          manifestPath: `${workspaceRoot}/package-a/package.json`,
+          manifest: {
+            name: '@fixture/package-a',
+          },
+          internalDependencies: ['@fixture/package-b'],
+          layout: createPackageLayout({
+            sourceDirectory: `${workspaceRoot}/package-a/src`,
+            hasDistributionDirectory: false,
+            hasTestsDirectory: false,
+            tsconfigPath: `${workspaceRoot}/package-a/tsconfig.json`,
+          }),
+        }),
+        createPackageDescriptor({
+          name: '@fixture/package-b',
+          rootPath: `${workspaceRoot}/package-b`,
+          manifestPath: `${workspaceRoot}/package-b/package.json`,
+          manifest: {
+            name: '@fixture/package-b',
+            exports: {
+              '.': './src/index.ts',
+            },
+          },
+          internalDependencies: [],
+          layout: createPackageLayout({
+            sourceDirectory: `${workspaceRoot}/package-b/src`,
+            hasDistributionDirectory: false,
+            hasTestsDirectory: false,
+            tsconfigPath: `${workspaceRoot}/package-b/tsconfig.json`,
+          }),
+        }),
+      ]),
+    });
+    const packageA = executionContext.analyses.find(
+      (analysis) => analysis.packageName === '@fixture/package-a',
+    );
+
+    expect(packageA).toBeDefined();
+
+    const edge = packageA!.analysis.symbolGraph.edges.find(
+      (edge) =>
+        edge.type === 'import' &&
+        edge.metadata?.moduleSpecifier === '../../package-b/src/user.service.js',
+    );
+    expect(edge).toBeDefined();
+  });
+  it('detects cross-package relative imports', async () => {
+    const scanner = new CrossPackageRelativeImportScanner();
+    const workspaceRoot = resolve(fixturePathCrossPackageRelativeImport);
+
+    const executionContext = await analyzeWorkspace(fixturePathCrossPackageRelativeImport, {
+      packages: createPackageDescriptors([
+        createPackageDescriptor({
+          name: '@fixture/package-a',
+          rootPath: `${workspaceRoot}/package-a`,
+          manifestPath: `${workspaceRoot}/package-a/package.json`,
+          manifest: {
+            name: '@fixture/package-a',
+          },
+          internalDependencies: ['@fixture/package-b'],
+          layout: createPackageLayout({
+            sourceDirectory: `${workspaceRoot}/package-a/src`,
+            hasDistributionDirectory: false,
+            hasTestsDirectory: false,
+            tsconfigPath: `${workspaceRoot}/package-a/tsconfig.json`,
+          }),
+        }),
+        createPackageDescriptor({
+          name: '@fixture/package-b',
+          rootPath: `${workspaceRoot}/package-b`,
+          manifestPath: `${workspaceRoot}/package-b/package.json`,
+          manifest: {
+            name: '@fixture/package-b',
+            exports: {
+              '.': './src/index.ts',
+            },
+          },
+          internalDependencies: [],
+          layout: createPackageLayout({
+            sourceDirectory: `${workspaceRoot}/package-b/src`,
+            hasDistributionDirectory: false,
+            hasTestsDirectory: false,
+            tsconfigPath: `${workspaceRoot}/package-b/tsconfig.json`,
+          }),
+        }),
+      ]),
+    });
+    const diagnostics = scanner.scan(executionContext);
+
+    expect(diagnostics).toHaveLength(1);
+
+    expect(diagnostics).toContainEqual(
+      expect.objectContaining({
+        code: 'ARCH_CROSS_PACKAGE_RELATIVE_IMPORT',
+        metadata: expect.objectContaining({
+          importer: '@fixture/package-a',
+          imported: '@fixture/package-b',
+          importPath: '../../package-b/src/user.service.js',
+        }),
+      }),
+    );
+  });
 });

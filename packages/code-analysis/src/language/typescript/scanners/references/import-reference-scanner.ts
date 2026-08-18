@@ -13,6 +13,7 @@ export class ImportReferenceScanner implements ReferenceScanner {
         if (!symbol.symbolId) {
           continue;
         }
+
         edges.push({
           from: source.path,
           to: symbol.symbolId,
@@ -20,6 +21,7 @@ export class ImportReferenceScanner implements ReferenceScanner {
           metadata: {
             kind: symbol.kind,
             moduleSpecifier: imported.moduleSpecifier,
+            resolvedFile: imported.resolvedFile,
             isTypeOnly: imported.isTypeOnly || symbol.isTypeOnlyImport,
           },
         });

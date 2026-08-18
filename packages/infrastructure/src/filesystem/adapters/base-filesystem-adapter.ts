@@ -8,6 +8,7 @@ import { normalizeSeparators } from '../paths/canonicalize-directory-entry.js';
 
 export abstract class BaseFileSystemAdapter {
   protected readonly logger: LoggerPort;
+
   protected constructor(
     component: string,
     protected readonly root: string,
@@ -19,7 +20,8 @@ export abstract class BaseFileSystemAdapter {
   }
 
   protected resolvePath(targetPath: string): string {
-    const normalized = this.pathService.normalize(targetPath);
+    const canonical = normalizeSeparators(targetPath);
+    const normalized = this.pathService.normalize(canonical);
 
     if (this.isPhysicalPath(normalized)) {
       return normalized;
@@ -27,9 +29,7 @@ export abstract class BaseFileSystemAdapter {
 
     return this.pathService.join(this.root, normalized.replace(/^[/\\]+/, ''));
   }
-  protected resolveParentDirectory(path: string): string {
-    return this.pathService.dirname(this.resolvePath(path));
-  }
+
   protected toVirtualPath(targetPath: string): string {
     const relative = this.pathService.relative(this.root, targetPath);
 
@@ -39,6 +39,7 @@ export abstract class BaseFileSystemAdapter {
 
     return `/${normalizeSeparators(relative)}`;
   }
+
   protected logAndThrow(error: unknown, operation: string): never {
     const mapped = mapFileSystemError(error, operation);
 
@@ -52,6 +53,7 @@ export abstract class BaseFileSystemAdapter {
 
     throw mapped;
   }
+
   private isPhysicalPath(targetPath: string): boolean {
     return /^[a-zA-Z]:[\\/]/.test(targetPath) || targetPath.startsWith('\\\\');
   }

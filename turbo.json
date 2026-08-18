@@ -48,12 +48,6 @@
       "dependsOn": ["build"],
       "inputs": ["$TURBO_DEFAULT$"],
       "outputs": []
-    },
-
-    "validate": {
-      "dependsOn": ["lint", "typecheck", "test"],
-      "inputs": ["$TURBO_DEFAULT$"],
-      "outputs": []
     }
   }
 }
