@@ -14,7 +14,8 @@
       "outputs": [
         "dist"
       ]
-    }
+    },
+    "kind": "app"
   },
   "bin": {
     "arch": "./bin/arch.js"

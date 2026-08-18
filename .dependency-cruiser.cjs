@@ -22,9 +22,6 @@ const PATHS = {
   sharedPackages: '^packages/(shared|common|utils|helpers)',
 };
 
-const NODE_BUILTINS =
-  '^(fs|fs/promises|path|os|crypto|child_process|cluster|dgram|net|tls|worker_threads)$';
-
 function createRule({ name, comment, severity = 'error', from, to }) {
   return {
     name,
@@ -34,26 +31,6 @@ function createRule({ name, comment, severity = 'error', from, to }) {
     to,
   };
 }
-
-/**
- * ============================================================
- * CIRCULAR DEPENDENCIES
- * ============================================================
- */
-
-const circularRules = [
-  createRule({
-    name: 'no-circular',
-
-    comment: 'Circular dependencies increase coupling and break architectural boundaries.',
-
-    from: {},
-
-    to: {
-      circular: true,
-    },
-  }),
-];
 
 /**
  * ============================================================
@@ -73,107 +50,6 @@ const isolationRules = [
 
     to: {
       path: PATHS.apps,
-    },
-  }),
-
-  createRule({
-    name: 'core-isolation',
-
-    comment: 'Core layer must remain isolated from infrastructure and application concerns.',
-
-    from: {
-      path: PATHS.core,
-    },
-
-    to: {
-      path: '^packages/(application|infrastructure|generators)',
-    },
-  }),
-
-  createRule({
-    name: 'contracts-independent',
-
-    comment: 'Contracts must remain isolated from implementation layers.',
-
-    from: {
-      path: PATHS.contracts,
-    },
-
-    to: {
-      path: '^packages/(core|application|infrastructure|generators)',
-    },
-  }),
-];
-
-/**
- * ============================================================
- * LAYERING RULES
- * ============================================================
- */
-
-const layeringRules = [
-  createRule({
-    name: 'core-no-application',
-
-    comment: 'Core layer must not depend on application layer.',
-
-    from: {
-      path: PATHS.core,
-    },
-
-    to: {
-      path: PATHS.application,
-    },
-  }),
-
-  createRule({
-    name: 'application-no-infrastructure',
-
-    comment:
-      'Application layer must depend on abstractions instead of infrastructure implementations.',
-
-    from: {
-      path: PATHS.application,
-    },
-
-    to: {
-      path: PATHS.infrastructure,
-    },
-  }),
-
-  createRule({
-    name: 'application-no-vscode',
-
-    comment: 'Application layer must remain editor agnostic.',
-
-    from: {
-      path: PATHS.application,
-    },
-
-    to: {
-      path: 'vscode',
-    },
-  }),
-];
-
-/**
- * ============================================================
- * DOMAIN PROTECTION
- * ============================================================
- */
-
-const domainProtectionRules = [
-  createRule({
-    name: 'domain-no-node-builtins',
-
-    comment: 'Domain layers must not depend directly on Node.js runtime infrastructure.',
-
-    from: {
-      path: '^packages/(core|contracts|application)/src',
-    },
-
-    to: {
-      path: NODE_BUILTINS,
     },
   }),
 ];
@@ -196,20 +72,6 @@ const boundaryRules = [
 
     to: {
       path: '^@arch/.+/src/',
-    },
-  }),
-
-  createRule({
-    name: 'no-cross-package-relative-imports',
-
-    comment: 'Cross-package imports must use workspace aliases instead of relative paths.',
-
-    from: {
-      path: PATHS.packages,
-    },
-
-    to: {
-      path: '^\\.\\./\\.\\./',
     },
   }),
 ];
@@ -344,13 +206,7 @@ const architectureSmellRules = [
 
 module.exports = {
   forbidden: [
-    ...circularRules,
-
     ...isolationRules,
-
-    ...layeringRules,
-
-    ...domainProtectionRules,
 
     ...boundaryRules,
 

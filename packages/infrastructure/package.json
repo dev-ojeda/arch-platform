@@ -19,7 +19,8 @@
         "dist"
       ],
       "validateExports": true
-    }
+    },
+    "kind": "infra"
   },
   "files": [
     "dist"

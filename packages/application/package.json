@@ -19,7 +19,8 @@
         "dist"
       ],
       "validateExports": true
-    }
+    },
+    "kind": "app"
   },
   "files": [
     "dist"
