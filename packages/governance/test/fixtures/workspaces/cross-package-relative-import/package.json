@@ -1,0 +1,9 @@
+{
+  "name": "cross-package-relative-import",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "package-a",
+    "package-b"
+  ]
+}

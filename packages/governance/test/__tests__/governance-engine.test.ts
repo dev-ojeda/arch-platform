@@ -23,6 +23,7 @@ describe('GovernanceEngine', () => {
     id,
     name: id,
     run: async () => diagnostics,
+    supports: (_scope) => true,
   });
 
   const createFailingRule = (id: TestRuleId, message = 'boom'): GovernanceRule => ({
@@ -31,6 +32,7 @@ describe('GovernanceEngine', () => {
     run: async () => {
       throw new Error(message);
     },
+    supports: (_scope) => true,
   });
   const context = createGovernanceExecutionContext();
   it('returns successful result when no rules are registered', async () => {

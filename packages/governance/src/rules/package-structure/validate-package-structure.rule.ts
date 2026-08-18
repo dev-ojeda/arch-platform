@@ -30,6 +30,6 @@ export class ValidatePackageStructureRule implements GovernanceRule {
     return diagnostics;
   }
   supports(scope: GovernanceScope): boolean {
-    return scope.kind === 'package';
+    return scope.kind === 'workspace' || scope.kind === 'package';
   }
 }

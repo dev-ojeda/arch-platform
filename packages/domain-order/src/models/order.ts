@@ -2,7 +2,7 @@
 
 import { CustomerId, Money, OrderId } from '../value-objects/index.js';
 
-import { OrderStatus } from './order-status.js';
+import type { OrderStatus } from './order-status.js';
 
 export interface Order {
   id: OrderId;

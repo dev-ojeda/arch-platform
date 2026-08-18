@@ -26,21 +26,29 @@ export class PrivateBarrelScanner implements ExportBarrelScanner {
       const query = new SymbolGraphQuery(packageContext.analysis.symbolGraph);
 
       for (const edge of query.getExportEdges()) {
-        const publicBarrel = edge.metadata?.resolvedFile;
+        const resolvedFile = edge.metadata?.resolvedFile;
 
-        if (!publicBarrel) {
+        if (!resolvedFile) {
           continue;
         }
 
-        if (!this.architectureSourceDetector.isPublicBarrel(publicBarrel)) {
+        const surface = this.architectureSourceDetector.isPublicBarrel(resolvedFile)
+          ? {
+              kind: 'public-barrel' as const,
+              file: resolvedFile,
+            }
+          : this.architectureSourceDetector.isPackageEntrypoint(edge.from)
+            ? {
+                kind: 'entrypoint' as const,
+                file: edge.from,
+              }
+            : undefined;
+
+        if (!surface) {
           continue;
         }
 
         const privateSource = edge.to.slice(0, edge.to.lastIndexOf('#'));
-
-        if (!privateSource) {
-          continue;
-        }
 
         if (!this.architectureSourceDetector.isPrivateSource(privateSource)) {
           continue;
@@ -56,7 +64,7 @@ export class PrivateBarrelScanner implements ExportBarrelScanner {
           invalidPrivateBarrel({
             symbol,
             package: pkg,
-            publicBarrel,
+            surface,
           }),
         );
       }

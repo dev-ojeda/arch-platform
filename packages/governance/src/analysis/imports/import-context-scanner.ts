@@ -5,7 +5,11 @@ import { SymbolGraphQuery } from '@arch/code-analysis';
 import type { GovernanceExecutionContext } from '../../context/governance-context.js';
 
 import type { ImportContext } from './import-context.js';
-import { resolveExternalImportTarget, resolveTargetPackage } from './import-target-resolver.js';
+import {
+  resolveExternalImportTarget,
+  resolveTargetPackage,
+  resolveTargetPackageFromFile,
+} from './import-target-resolver.js';
 
 export class ImportContextScanner {
   scan(context: GovernanceExecutionContext): readonly ImportContext[] {
@@ -21,7 +25,10 @@ export class ImportContextScanner {
       }
 
       for (const edge of query.getImportEdges()) {
-        //Local
+        const moduleSpecifier = edge.metadata?.moduleSpecifier;
+        const resolvedFile = edge.metadata?.resolvedFile;
+
+        // 1. El símbolo existe en el análisis actual.
         const localTarget = query.getNode(edge.to);
 
         if (localTarget) {
@@ -37,23 +44,23 @@ export class ImportContextScanner {
             target: localTarget,
             sourcePackage,
             targetPackage,
-            moduleSpecifier:
-              typeof edge.metadata?.moduleSpecifier === 'string'
-                ? edge.metadata.moduleSpecifier
-                : undefined,
+            moduleSpecifier: typeof moduleSpecifier === 'string' ? moduleSpecifier : undefined,
           });
 
           continue;
         }
 
-        // external
-        const moduleSpecifier = edge.metadata?.moduleSpecifier;
+        // 2. Import que cruza package.
+        let targetPackage;
 
-        if (typeof moduleSpecifier !== 'string') {
-          continue;
+        if (typeof moduleSpecifier === 'string') {
+          targetPackage = resolveTargetPackage(moduleSpecifier, context.packages);
         }
 
-        const targetPackage = resolveTargetPackage(moduleSpecifier, context.packages);
+        // 3. Relative import que cruza package.
+        if (!targetPackage && typeof resolvedFile === 'string') {
+          targetPackage = resolveTargetPackageFromFile(resolvedFile, context.packages);
+        }
 
         if (!targetPackage) {
           continue;
@@ -71,7 +78,7 @@ export class ImportContextScanner {
           target: externalTarget,
           sourcePackage,
           targetPackage,
-          moduleSpecifier,
+          moduleSpecifier: typeof moduleSpecifier === 'string' ? moduleSpecifier : undefined,
         });
       }
     }
