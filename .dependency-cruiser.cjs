@@ -314,6 +314,11 @@ const architectureSmellRules = [
 
         '^apps/.+/src/composition/',
         '^apps/.+/src/bootstrap/',
+        '^packages/cli/bin/',
+        '/test/',
+        '/tests/',
+        '/__tests__/',
+        '/fixtures/',
       ].join('|'),
     },
 
