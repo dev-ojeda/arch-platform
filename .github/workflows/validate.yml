@@ -34,5 +34,14 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Validate
-        run: pnpm validate
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
+
+      - name: Architecture validation
+        run: pnpm arch validate
