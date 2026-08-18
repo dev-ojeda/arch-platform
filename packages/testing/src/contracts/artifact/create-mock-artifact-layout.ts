@@ -4,10 +4,7 @@ import { vi } from 'vitest';
 
 import type { ArtifactLayout } from '@arch/platform-model';
 
-export function createMockArtifactLayout(
-  root = '/cache/artifact',
-  temporaryLayout?: ArtifactLayout,
-): ArtifactLayout {
+export function createMockArtifactLayout(root = '/cache/artifact'): ArtifactLayout {
   const layout: ArtifactLayout = {
     root,
     manifest: () => `${root}/manifest.json`,
@@ -16,7 +13,9 @@ export function createMockArtifactLayout(
   };
 
   // eslint-disable-next-line @typescript-eslint/unbound-method
-  vi.mocked(layout.temporary).mockReturnValue(temporaryLayout ?? layout);
+  vi.mocked(layout.temporary).mockImplementation((suffix) =>
+    createMockArtifactLayout(`${root}.${suffix}`),
+  );
 
   return layout;
 }
