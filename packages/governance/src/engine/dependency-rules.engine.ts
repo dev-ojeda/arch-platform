@@ -12,9 +12,9 @@ export class DependencyRulesEngine {
     const diagnostics: Diagnostic[] = [];
 
     const packageMap = new Map(context.workspace.packages.map((p) => [p.name, p]));
-
     for (const pkg of context.packages.scoped(context.scope)) {
-      const fromLayer = this.getLayerFromPackage(pkg);
+      const fromLayer = this.getKindFromPackage(pkg);
+
       if (!fromLayer) continue;
 
       const deps = pkg.internalDependencies ?? [];
@@ -23,7 +23,8 @@ export class DependencyRulesEngine {
         const depPkg = packageMap.get(depName);
         if (!depPkg) continue;
 
-        const toLayer = this.getLayerFromPackage(depPkg);
+        const toLayer = this.getKindFromPackage(depPkg);
+
         if (!toLayer) continue;
 
         const rule = this.matrix[fromLayer]?.[toLayer] ?? 'allow';
@@ -52,11 +53,11 @@ export class DependencyRulesEngine {
     return diagnostics;
   }
 
-  private getLayerFromPackage(
+  private getKindFromPackage(
     pkg: GovernanceContext['workspace']['packages'][number],
   ): Layer | undefined {
-    const layer = pkg.manifest.arch?.layer;
-    return this.isLayer(layer) ? layer : undefined;
+    const kind = pkg.manifest.arch?.kind;
+    return this.isLayer(kind) ? kind : undefined;
   }
   private isLayer(value: unknown): value is Layer {
     return (

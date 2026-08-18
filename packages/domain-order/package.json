@@ -18,7 +18,8 @@
       "outputs": [
         "dist"
       ]
-    }
+    },
+    "kind": "domain"
   },
   "files": [
     "dist"

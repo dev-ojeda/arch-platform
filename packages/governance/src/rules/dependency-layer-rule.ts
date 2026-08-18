@@ -17,6 +17,6 @@ export class DependencyLayerRule implements GovernanceRule {
     return this.engine.run(context);
   }
   supports(scope: GovernanceScope): boolean {
-    return scope.kind === 'workspace';
+    return scope.kind === 'workspace' || scope.kind === 'package';
   }
 }

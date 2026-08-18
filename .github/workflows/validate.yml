@@ -45,3 +45,6 @@ jobs:
 
       - name: Architecture validation
         run: pnpm arch validate
+
+      - name: Dependency validation
+        run: pnpm cruiser

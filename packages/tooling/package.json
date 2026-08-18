@@ -16,7 +16,8 @@
         "dist"
       ],
       "validateExports": true
-    }
+    },
+    "kind": "tooling"
   },
   "exports": {
     ".": {

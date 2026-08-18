@@ -21,7 +21,8 @@
         "dist"
       ],
       "validateExports": true
-    }
+    },
+    "kind": "tooling"
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",

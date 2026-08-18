@@ -2,6 +2,8 @@
 
 export class InternalSourceDetector {
   isInternalSource(path?: string): boolean {
-    return /\/src\/internal(?:\/|$)/.test(path?.replaceAll('\\', '/') ?? '');
+    const normalized = path?.replaceAll('\\', '/') ?? '';
+
+    return /\/src\/internal(?:\/|$)/.test(normalized) || /\/internal(?:\/|$)/.test(normalized);
   }
 }

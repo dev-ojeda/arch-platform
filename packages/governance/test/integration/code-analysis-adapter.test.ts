@@ -11,6 +11,7 @@ import type { ArchitectureManifest, WorkspaceDescriptor } from '@arch/platform-m
 import { CodeAnalysisAdapter } from '../../src/analysis/code-analysis/code-analysis-adapter.js';
 import { createGovernanceAnalysisContext } from '../../src/analysis/code-analysis/create-governance-analysis-context.js';
 import { buildGovernanceContext } from '../../src/context/build-governance-context.js';
+import { createCrossPackageDescriptors } from '../fixtures/workspace/create-cross-package-descriptor.js';
 import { createPackageDescriptor } from '../fixtures/workspace/create-package-descriptor.js';
 import { createPackageDescriptors } from '../fixtures/workspace/create-package-descriptors.js';
 import { createPackageLayout } from '../fixtures/workspace/create-package-layout.js';
@@ -174,41 +175,7 @@ describe('CodeAnalysisAdapter', () => {
     const workspaceRoot = resolve(fixturePathCrossPackageRelativeImport);
 
     const executionContext = await analyzeWorkspace(fixturePathCrossPackageRelativeImport, {
-      packages: createPackageDescriptors([
-        createPackageDescriptor({
-          name: '@fixture/package-a',
-          rootPath: `${workspaceRoot}/package-a`,
-          manifestPath: `${workspaceRoot}/package-a/package.json`,
-          manifest: {
-            name: '@fixture/package-a',
-          },
-          internalDependencies: ['@fixture/package-b'],
-          layout: createPackageLayout({
-            sourceDirectory: `${workspaceRoot}/package-a/src`,
-            hasDistributionDirectory: false,
-            hasTestsDirectory: false,
-            tsconfigPath: `${workspaceRoot}/package-a/tsconfig.json`,
-          }),
-        }),
-        createPackageDescriptor({
-          name: '@fixture/package-b',
-          rootPath: `${workspaceRoot}/package-b`,
-          manifestPath: `${workspaceRoot}/package-b/package.json`,
-          manifest: {
-            name: '@fixture/package-b',
-            exports: {
-              '.': './src/index.ts',
-            },
-          },
-          internalDependencies: [],
-          layout: createPackageLayout({
-            sourceDirectory: `${workspaceRoot}/package-b/src`,
-            hasDistributionDirectory: false,
-            hasTestsDirectory: false,
-            tsconfigPath: `${workspaceRoot}/package-b/tsconfig.json`,
-          }),
-        }),
-      ]),
+      packages: createCrossPackageDescriptors(workspaceRoot),
     });
     const packageA = executionContext.analyses.find(
       (analysis) => analysis.packageName === '@fixture/package-a',
@@ -228,41 +195,7 @@ describe('CodeAnalysisAdapter', () => {
     const workspaceRoot = resolve(fixturePathCrossPackageRelativeImport);
 
     const executionContext = await analyzeWorkspace(fixturePathCrossPackageRelativeImport, {
-      packages: createPackageDescriptors([
-        createPackageDescriptor({
-          name: '@fixture/package-a',
-          rootPath: `${workspaceRoot}/package-a`,
-          manifestPath: `${workspaceRoot}/package-a/package.json`,
-          manifest: {
-            name: '@fixture/package-a',
-          },
-          internalDependencies: ['@fixture/package-b'],
-          layout: createPackageLayout({
-            sourceDirectory: `${workspaceRoot}/package-a/src`,
-            hasDistributionDirectory: false,
-            hasTestsDirectory: false,
-            tsconfigPath: `${workspaceRoot}/package-a/tsconfig.json`,
-          }),
-        }),
-        createPackageDescriptor({
-          name: '@fixture/package-b',
-          rootPath: `${workspaceRoot}/package-b`,
-          manifestPath: `${workspaceRoot}/package-b/package.json`,
-          manifest: {
-            name: '@fixture/package-b',
-            exports: {
-              '.': './src/index.ts',
-            },
-          },
-          internalDependencies: [],
-          layout: createPackageLayout({
-            sourceDirectory: `${workspaceRoot}/package-b/src`,
-            hasDistributionDirectory: false,
-            hasTestsDirectory: false,
-            tsconfigPath: `${workspaceRoot}/package-b/tsconfig.json`,
-          }),
-        }),
-      ]),
+      packages: createCrossPackageDescriptors(workspaceRoot),
     });
     const diagnostics = scanner.scan(executionContext);
 
