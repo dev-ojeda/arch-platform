@@ -60,7 +60,7 @@ export class NodeAsyncFileSystemAdapter
     }
 
     try {
-      await this.createDirectory(this.resolveParentDirectory(filePath));
+      await this.createDirectory(this.pathService.dirname(filePath));
 
       await writeTextFile(this.resolvePath(filePath), content);
     } catch (error) {
@@ -72,9 +72,7 @@ export class NodeAsyncFileSystemAdapter
       const source = this.resolvePath(sourcePath);
       const destination = this.resolvePath(destinationPath);
 
-      const parent = this.pathService.dirname(destination);
-
-      await this.createDirectory(parent);
+      await this.createDirectory(this.pathService.dirname(destinationPath));
 
       await copyPath(source, destination);
     } catch (error) {

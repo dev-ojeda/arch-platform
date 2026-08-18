@@ -54,8 +54,9 @@ export class NodeSyncFileSystemAdapter extends BaseFileSystemAdapter implements 
     try {
       const source = this.resolvePath(sourcePath);
       const destination = this.resolvePath(destinationPath);
-      const parent = this.pathService.dirname(destinationPath);
-      this.createDirectory(this.pathService.dirname(parent));
+
+      this.createDirectory(this.pathService.dirname(destinationPath));
+
       copyPathSync(source, destination);
     } catch (error) {
       this.logAndThrow(error, 'copy');
@@ -99,7 +100,7 @@ export class NodeSyncFileSystemAdapter extends BaseFileSystemAdapter implements 
       return;
     }
     try {
-      this.createDirectory(this.resolveParentDirectory(filePath));
+      this.createDirectory(this.pathService.dirname(filePath));
 
       writeTextFileSync(this.resolvePath(filePath), content);
     } catch (error) {
