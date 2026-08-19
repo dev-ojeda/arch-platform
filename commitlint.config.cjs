@@ -37,6 +37,7 @@ module.exports = {
         'contracts',
         'core',
         'cli',
+        'ci',
         'platform',
         'generators',
         'governance',
