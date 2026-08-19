@@ -11,6 +11,8 @@ export function createSkippedCommandResult(): TaskProcessResult {
       args: [],
       exitCode: 0,
       durationMs: 0,
+      stdout: '',
+      stderr: '',
     },
   };
 }

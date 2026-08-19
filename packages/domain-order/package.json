@@ -35,7 +35,6 @@
     "arch": "arch build --package @arch/domain-order",
     "clean": "arch clean",
     "typecheck": "arch typecheck",
-    "lint": "arch lint",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",
     "test:watch": "vitest",

@@ -30,7 +30,6 @@
     "build:dts": "tsc -p tsconfig.build.json --emitDeclarationOnly",
     "arch": "arch build --package @arch/build-core",
     "clean": "arch clean",
-    "lint": "arch lint",
     "typecheck": "arch typecheck",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",

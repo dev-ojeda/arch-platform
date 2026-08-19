@@ -43,7 +43,7 @@
     "arch": "arch",
     "doctor": "arch doctor",
     "build": "turbo run build",
-    "lint": "turbo run lint",
+    "lint": "arch lint",
     "typecheck": "turbo run typecheck",
     "validate": "pnpm lint && pnpm typecheck && pnpm test && pnpm arch validate",
     "bootstrap": "pnpm install && turbo run build",
