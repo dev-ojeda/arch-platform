@@ -21,7 +21,6 @@
     "build": "tsc -p tsconfig.build.json",
     "arch": "arch build --package @arch/platform-model",
     "clean": "arch clean",
-    "typecheck": "arch typecheck",
-    "lint": "arch lint"
+    "typecheck": "arch typecheck"
   }
 }

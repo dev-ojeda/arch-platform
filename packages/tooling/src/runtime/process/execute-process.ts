@@ -25,6 +25,7 @@ export async function executeProcess(
 
   const createResult = (
     exitCode: number,
+    cwd: string,
     stdout: string,
     stderr: string,
     signal?: NodeJS.Signals,
@@ -35,15 +36,17 @@ export async function executeProcess(
       exitCode,
       stdout,
       stderr,
+      cwd,
       durationMs: stopwatch.elapsed(),
       signal,
     });
+  const execaOptions = createExecaOptions(options);
 
   try {
-    const result = await execa(command, args, createExecaOptions(options));
-
+    const result = await execa(command, args, execaOptions);
     return createResult(
       result.exitCode ?? 0,
+      normalizeOutput(result.cwd),
       normalizeOutput(result.stdout),
       normalizeOutput(result.stderr),
       result.signal,
@@ -52,6 +55,7 @@ export async function executeProcess(
     if (error instanceof ExecaError) {
       return createResult(
         error.exitCode ?? 1,
+        normalizeOutput(error.cwd),
         normalizeOutput(error.stdout),
         normalizeOutput(error.stderr),
         error.signal,

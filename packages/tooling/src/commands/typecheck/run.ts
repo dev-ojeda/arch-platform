@@ -29,5 +29,14 @@ export async function runTypecheckCommand(
   }
 
   const result = await executeProcess('tsc', createTypecheckArguments(configPath, noEmit, args));
+  logger.success(ToolingTasks.typecheck.events.completed, {
+    metadata: {
+      command: result.command,
+      stderr: result.stderr,
+      stdout: result.stdout,
+      exitCode: result.exitCode,
+      durationMs: result.durationMs,
+    },
+  });
   return createProcessTaskResult(result);
 }

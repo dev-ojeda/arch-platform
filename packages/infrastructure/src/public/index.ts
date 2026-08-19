@@ -28,6 +28,7 @@ export {
   discoverWorkspacePackages,
   findWorkspaceRoot,
   NodeWorkspaceProvider,
+  resolveLintTargets,
 } from '../workspace/index.js';
 
 export { NodeArchitectureProvider } from './node-architecture-provider.js';

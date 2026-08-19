@@ -31,7 +31,6 @@
     "build:dts": "tsc -p tsconfig.build.json --emitDeclarationOnly",
     "arch": "arch build --package @arch/tooling",
     "clean": "arch clean",
-    "lint": "arch lint",
     "typecheck": "arch typecheck"
   },
   "dependencies": {

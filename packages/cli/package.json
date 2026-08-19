@@ -24,7 +24,6 @@
     "arch": "arch build --package @arch/cli",
     "build": "tsup",
     "clean": "arch clean",
-    "lint": "arch lint",
     "typecheck": "arch typecheck"
   },
   "dependencies": {
