@@ -2,8 +2,6 @@
 
 import type { WorkspaceDescriptor } from './workspace-descriptor.js';
 
-// platform-model
 export interface WorkspaceProvider {
-  discover(root: string): Promise<WorkspaceDescriptor>;
-  findRoot(fromDirectory: string): string;
+  discover(fromDirectory: string): Promise<WorkspaceDescriptor>;
 }

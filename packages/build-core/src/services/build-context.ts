@@ -19,6 +19,6 @@ export interface BuildContext {
   artifactCache: ArtifactCache;
   artifactProvider: ArtifactProvider;
   workspaceRoot: string;
-  fsOutputvalidator: OutputValidator;
+  fsOutputValidator: OutputValidator;
   stateWriter: BuildStateWriter;
 }

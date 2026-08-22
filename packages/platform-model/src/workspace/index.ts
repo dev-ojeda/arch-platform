@@ -5,4 +5,5 @@ export type { WorkspaceGraph } from './workspace-graph.js';
 export type { WorkspaceLayout } from './workspace-layout.js';
 export type { WorkspacePackage } from './workspace-package.js';
 export type { WorkspacePaths } from './workspace-paths.js';
+export type { WorkspaceProjector } from './workspace-projector.js';
 export type { WorkspaceProvider } from './workspace-provider.js';

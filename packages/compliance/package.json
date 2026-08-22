@@ -1,0 +1,38 @@
+{
+  "name": "@arch/compliance",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/public/index.d.ts",
+      "import": "./dist/public/index.js"
+    }
+  },
+  "arch": {
+    "build": {
+      "builder": "tsc",
+      "outputs": [
+        "dist"
+      ],
+      "validateExports": true
+    },
+    "kind": "tooling"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "arch": "arch build --package @arch/compliance",
+    "clean": "arch clean",
+    "typecheck": "arch typecheck",
+    "test": "vitest run -c ./vitest.config.ts",
+    "coverage": "vitest run --coverage -c ./vitest.config.ts",
+    "test:watch": "vitest",
+    "test:clear": "vitest --clearCache"
+  }
+}
