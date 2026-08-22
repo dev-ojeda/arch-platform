@@ -3,7 +3,8 @@ dist
 coverage
 .turbo
 node_modules
-
+# Package manager generated files
+pnpm-lock.yaml
 # Generated artifacts
 dependency-report.html
 dependency-graph.svg

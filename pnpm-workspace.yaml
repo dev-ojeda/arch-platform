@@ -135,7 +135,7 @@ minimumReleaseAge: 4320
 # -----------------------------------------------------------------------------
 
 # Enforce consistent Node.js runtime across the workspace.
-nodeVersion: 24.12.4
+nodeVersion: 22.19.0
 
 # -----------------------------------------------------------------------------
 # SUPPLY CHAIN / NATIVE BUILD GOVERNANCE
