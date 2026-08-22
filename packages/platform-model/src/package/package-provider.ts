@@ -3,5 +3,5 @@
 import type { PackageDescriptor } from './package-descriptor.js';
 
 export interface PackageProvider {
-  discover(root: string): Promise<readonly PackageDescriptor[]>;
+  discover(workspaceRoot: string): Promise<readonly PackageDescriptor[]>;
 }

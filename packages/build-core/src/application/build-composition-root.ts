@@ -3,11 +3,9 @@
 import {
   ArtifactPublisherAdapter,
   DefaultArtifactProvider,
-  discoverWorkspacePackages,
   FilesystemArtifactCache,
   FilesystemArtifactLayoutFactory,
   FilesystemOutputValidator,
-  findWorkspaceRoot,
   NodeAsyncFileSystemAdapter,
   NodeConfigHashService,
   NodeDirectoryHashService,
@@ -15,6 +13,8 @@ import {
   NodeHashService,
   NodePathService,
   NodeSyncFileSystemAdapter,
+  NodeWorkspaceProvider,
+  WorkspacePackageProjector,
 } from '@arch/infrastructure';
 import type { ArtifactCache, ArtifactProvider, Graph, OutputValidator } from '@arch/platform-model';
 
@@ -46,19 +46,20 @@ import { BuildStateWriter } from '../state/state-writer.js';
 export class BuildCompositionRoot {
   private readonly fsAsync = new NodeAsyncFileSystemAdapter();
   private readonly fsSync = new NodeSyncFileSystemAdapter();
-
+  private readonly workspaceProvider = new NodeWorkspaceProvider();
+  private readonly workspacePackageProjector = new WorkspacePackageProjector();
   private readonly pathService = new NodePathService();
-
   private readonly hashService = new NodeHashService();
+
   constructor(private readonly runner: CommandRunner) {}
   async createBuildService(fromDirectory: string): Promise<BuildService> {
-    const workspaceRoot = findWorkspaceRoot(fromDirectory);
+    const workspace = await this.workspaceProvider.discover(fromDirectory);
 
-    const packages = await discoverWorkspacePackages(workspaceRoot);
+    const packages = this.workspacePackageProjector.projectAll(workspace.packages);
 
     const graph = buildGraph(packages);
 
-    const state = this.createBuildStateLoader(workspaceRoot);
+    const state = this.createBuildStateLoader(workspace.root);
 
     const query = this.createGraphQuery(graph);
 
@@ -69,11 +70,11 @@ export class BuildCompositionRoot {
       contractResolver: this.createExecutionContractResolver(query),
       state,
       executor: this.createExecutor(),
-      artifactCache: this.createArtifactCache(workspaceRoot),
+      artifactCache: this.createArtifactCache(workspace.root),
       artifactProvider: this.createArtifactProvider(),
-      workspaceRoot,
-      fsOutputvalidator: this.createFileSystemOuputValidator(),
-      stateWriter: this.createStateWriter(state, workspaceRoot),
+      workspaceRoot: workspace.root,
+      fsOutputValidator: this.createFileSystemOutputValidator(),
+      stateWriter: this.createStateWriter(state, workspace.root),
     });
   }
   /**
@@ -151,7 +152,7 @@ export class BuildCompositionRoot {
     return new DefaultArtifactProvider();
   }
 
-  createFileSystemOuputValidator(): OutputValidator {
+  createFileSystemOutputValidator(): OutputValidator {
     return new FilesystemOutputValidator(this.fsAsync, this.pathService);
   }
   createDagHasher(): DagHasher {

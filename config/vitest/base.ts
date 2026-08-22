@@ -31,6 +31,7 @@ export const PLATFORM_PACKAGES = [
   'platform-model',
   'testing',
   'tooling',
+  'compliance',
 ] as const;
 
 export type PlatformPackage = (typeof PLATFORM_PACKAGES)[number];

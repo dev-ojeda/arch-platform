@@ -27,7 +27,6 @@ export type {
   PackageBoundaries,
   PackageBuildConfig,
   PackageDescriptor,
-  PackageJson,
   PackageLayout,
   PackageManifest,
   PackageMetadata,
@@ -46,5 +45,6 @@ export type {
   WorkspaceLayout,
   WorkspacePackage,
   WorkspacePaths,
+  WorkspaceProjector,
   WorkspaceProvider,
 } from './workspace/index.js';

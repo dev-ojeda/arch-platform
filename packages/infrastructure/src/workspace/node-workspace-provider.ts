@@ -1,7 +1,8 @@
 // packages/infrastructure/src/workspace/node-workspace-provider.ts
 
+import type { PathService } from '@arch/contracts';
 import type {
-  PackageDescriptor,
+  PackageProvider,
   WorkspaceDescriptor,
   WorkspaceLayout,
   WorkspaceProvider,
@@ -9,20 +10,31 @@ import type {
 
 import { pathExists } from '../filesystem/io/fs-async.js';
 import { pathExistsSync } from '../filesystem/io/fs-sync.js';
-import { joinPath } from '../filesystem/io/path-utils.js';
 import { NodePathService } from '../filesystem/paths/node-path-service.js';
-import { PackageDescriptorFactory } from '../package/package-descriptor-factory.js';
 
-import { findPackageRoots } from './find-package.js';
-import { findWorkspaceRoot } from './find-workspace-root.js';
+import { NodePackageProvider } from './node-package-provider.js';
 
 const WORKSPACE_FILE = 'pnpm-workspace.yaml';
 
 export class NodeWorkspaceProvider implements WorkspaceProvider {
-  private readonly descriptorFactory = new PackageDescriptorFactory();
-  private readonly pathService = new NodePathService();
+  constructor(
+    private readonly packageProvider: PackageProvider = new NodePackageProvider(),
+    private readonly pathService: PathService = new NodePathService(),
+  ) {}
 
-  findRoot(fromDirectory: string): string {
+  async discover(fromDirectory: string): Promise<WorkspaceDescriptor> {
+    const workspaceRoot = this.findWorkspaceRoot(fromDirectory);
+
+    const packages = await this.packageProvider.discover(workspaceRoot);
+
+    return {
+      root: workspaceRoot,
+      layout: await this.resolveWorkspaceLayout(workspaceRoot),
+      packages,
+    };
+  }
+
+  private findWorkspaceRoot(fromDirectory: string): string {
     let current = this.pathService.resolve(fromDirectory);
 
     while (true) {
@@ -40,21 +52,6 @@ export class NodeWorkspaceProvider implements WorkspaceProvider {
 
       current = parent;
     }
-  }
-  async discover(root: string): Promise<WorkspaceDescriptor> {
-    const workspaceRoot = findWorkspaceRoot(root);
-
-    const packageRoots = await findPackageRoots(joinPath(workspaceRoot, 'packages'));
-
-    const packages = await Promise.all(
-      packageRoots.map((packageRoot) => this.descriptorFactory.create(packageRoot)),
-    );
-    const resolvedPackages = this.resolveInternalDependencies(packages);
-    return {
-      root: workspaceRoot,
-      layout: await this.resolveWorkspaceLayout(workspaceRoot),
-      packages: resolvedPackages,
-    };
   }
 
   private async resolveWorkspaceLayout(root: string): Promise<WorkspaceLayout> {
@@ -78,18 +75,5 @@ export class NodeWorkspaceProvider implements WorkspaceProvider {
       hasTsconfig,
       hasArchManifest,
     };
-  }
-
-  private resolveInternalDependencies(
-    packages: readonly PackageDescriptor[],
-  ): readonly PackageDescriptor[] {
-    const packageNames = new Set(packages.map((pkg) => pkg.name));
-
-    return packages.map((pkg) => ({
-      ...pkg,
-      internalDependencies: Object.keys(pkg.manifest.dependencies ?? {})
-        .filter((dependency) => packageNames.has(dependency))
-        .sort(),
-    }));
   }
 }
