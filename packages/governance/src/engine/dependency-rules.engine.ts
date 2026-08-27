@@ -14,7 +14,6 @@ export class DependencyRulesEngine {
     const packageMap = new Map(context.workspace.packages.map((p) => [p.name, p]));
     for (const pkg of context.packages.scoped(context.scope)) {
       const fromLayer = this.getKindFromPackage(pkg);
-
       if (!fromLayer) continue;
 
       const deps = pkg.internalDependencies ?? [];

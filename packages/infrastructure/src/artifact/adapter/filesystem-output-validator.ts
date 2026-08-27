@@ -9,7 +9,7 @@ export class FilesystemOutputValidator implements OutputValidator {
     private readonly pathService: PathService,
   ) {}
 
-  async exists(root: string, outputs: string[]): Promise<boolean> {
+  async exists(root: string, outputs: readonly string[]): Promise<boolean> {
     for (const output of outputs) {
       const exists = await this.fileSystem.exists(this.pathService.join(root, output));
 

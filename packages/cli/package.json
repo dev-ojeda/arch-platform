@@ -24,6 +24,7 @@
     "arch": "arch build --package @arch/cli",
     "build": "tsup",
     "clean": "arch clean",
+    "compliance": "arch compliance --package @arch/cli",
     "typecheck": "arch typecheck"
   },
   "dependencies": {

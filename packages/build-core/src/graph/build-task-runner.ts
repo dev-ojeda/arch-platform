@@ -3,9 +3,11 @@
 import type {
   ArtifactCache,
   ArtifactProvider,
+  ArtifactState,
   DagNode,
   Graph,
   OutputValidator,
+  StateWriter,
 } from '@arch/platform-model';
 
 import type { BuildExecutor } from '../executor/build-executor.js';
@@ -13,24 +15,37 @@ import type { BuildResult } from '../executor/build-result.js';
 import type { ExecutionReason } from '../executor/execution-types.js';
 import { BuildPlan } from '../planning/build-plan.js';
 import type { BuildPlanEntry } from '../planning/plan-entry.js';
-import { BuildStateWriter } from '../state/state-writer.js';
 
 export class BuildTaskRunner {
+  private readonly artifactStates = new Map<string, ArtifactState>();
+
   constructor(
-    private graph: Graph,
-    private executor: BuildExecutor,
-    private plan: BuildPlan,
-    private writer: BuildStateWriter,
-    private artifactCache: ArtifactCache,
-    private outputValidator: OutputValidator,
-    private artifactProvider: ArtifactProvider,
+    private readonly graph: Graph,
+    private readonly executor: BuildExecutor,
+    private readonly plan: BuildPlan,
+    private readonly writer: StateWriter,
+    private readonly artifactCache: ArtifactCache,
+    private readonly outputValidator: OutputValidator,
+    private readonly artifactProvider: ArtifactProvider,
   ) {}
 
   async run(name: string): Promise<BuildResult> {
     const node = this.requireNode(name);
     const entry = this.requirePlan(name);
 
-    return this.executeBuildAction(node, entry);
+    const startedAt = Date.now();
+
+    const result = await this.executeBuildAction(node, entry);
+
+    const finishedAt = Date.now();
+
+    this.recordArtifactState(node, entry, result, startedAt, finishedAt);
+
+    return result;
+  }
+
+  getArtifactStates(): ReadonlyMap<string, ArtifactState> {
+    return this.artifactStates;
   }
 
   private requireNode(name: string): DagNode {
@@ -96,6 +111,7 @@ export class BuildTaskRunner {
 
   private async restore(node: DagNode, entry: BuildPlanEntry): Promise<BuildResult> {
     const artifact = this.artifactProvider.create(node.name, entry.hash);
+
     const restored = await this.artifactCache.restore(artifact, node.root);
 
     if (!restored) {
@@ -117,6 +133,45 @@ export class BuildTaskRunner {
 
       case 'execute':
         return this.executeAndCache(node, entry);
+    }
+  }
+
+  private recordArtifactState(
+    node: DagNode,
+    entry: BuildPlanEntry,
+    result: BuildResult,
+    startedAt: number,
+    finishedAt: number,
+  ): void {
+    const status = this.resolveArtifactStatus(result);
+
+    if (!status) {
+      return;
+    }
+
+    this.artifactStates.set(node.name, {
+      hash: entry.hash,
+      dependencies: [...node.dependencies],
+      status,
+      startedAt,
+      finishedAt,
+      schemaVersion: 1,
+    });
+  }
+
+  private resolveArtifactStatus(result: BuildResult): ArtifactState['status'] | undefined {
+    switch (result.execution.reason) {
+      case 'executed':
+        return 'built';
+
+      case 'restored':
+        return 'restored';
+
+      case 'cached':
+        return 'cached';
+
+      default:
+        return undefined;
     }
   }
 }

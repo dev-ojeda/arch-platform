@@ -6,7 +6,6 @@ import type { BuildStep } from './build-steps.js';
 
 export function createBuildSteps(config?: PackageBuildConfig): BuildStep[] {
   const builder = config?.builder ?? 'tsc';
-
   switch (builder) {
     case 'script':
       return [

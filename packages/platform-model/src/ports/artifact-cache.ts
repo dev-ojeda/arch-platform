@@ -9,6 +9,8 @@ import type { Artifact } from '../artifact/artifact.js';
  * should not depend on the underlying persistence strategy.
  */
 export interface ArtifactCache {
+  exists(artifact: Artifact): Promise<boolean>;
+
   save(artifact: Artifact, root: string, outputs: readonly string[]): Promise<void>;
 
   restore(artifact: Artifact, root: string): Promise<boolean>;

@@ -1,10 +1,12 @@
-// packages/governance/src/context/governance-package-query.ts
+// packages/governance/src/context/default-governance-package-query.ts
 
 import type { PackageDescriptor, WorkspaceDescriptor } from '@arch/platform-model';
 
 import type { GovernanceScope } from '../public/governance-scope.js';
 
-export class GovernancePackageQuery {
+import type { PackageQuery } from './package-query.js';
+
+export class DefaultGovernancePackageQuery implements PackageQuery {
   private readonly packagesByName: ReadonlyMap<string, PackageDescriptor>;
 
   constructor(workspace: WorkspaceDescriptor) {
@@ -36,5 +38,19 @@ export class GovernancePackageQuery {
     }
 
     return this.all();
+  }
+  resolveScope(scope: GovernanceScope): readonly PackageDescriptor[] {
+    const packages = this.scoped(scope);
+    const resolved = new Map<string, PackageDescriptor>();
+
+    for (const pkg of packages) {
+      resolved.set(pkg.name, pkg);
+
+      for (const dependency of pkg.internalDependencies) {
+        resolved.set(dependency, this.require(dependency));
+      }
+    }
+
+    return [...resolved.values()];
   }
 }

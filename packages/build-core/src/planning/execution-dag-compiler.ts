@@ -29,10 +29,13 @@ export class ExecutionDagCompiler {
     // ---------------------------
     for (const name of scope) {
       const entry = plan.get(name);
-      if (!entry) continue;
+
+      if (!entry) {
+        continue;
+      }
+
       const dependencies = this.resolveDependencies(name, scope);
       const contract = this.contractResolver.resolve(name);
-
       nodes.set(name, this.createNode(name, dependencies, entry, contract));
     }
 
@@ -42,7 +45,10 @@ export class ExecutionDagCompiler {
     for (const node of nodes.values()) {
       for (const dep of node.dependencies) {
         const depNode = nodes.get(dep);
-        if (!depNode) continue;
+
+        if (!depNode) {
+          continue;
+        }
 
         depNode.dependents.push(node.name);
       }
@@ -62,9 +68,11 @@ export class ExecutionDagCompiler {
       dependencies,
       dependents: [],
       buildAction: entry.buildAction,
+      changeReason: entry.changeReason,
       contract,
     };
   }
+
   private resolveDependencies(name: string, scope: Set<string>): string[] {
     return this.query.getDependencies(name).filter((dep) => scope.has(dep));
   }

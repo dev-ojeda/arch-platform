@@ -14,13 +14,15 @@
       "outputs": [
         "dist"
       ]
-    }
+    },
+    "kind": "tooling"
   },
   "scripts": {
     "build": "pnpm build:dts",
     "build:dts": "tsc -p tsconfig.build.json",
     "arch": "arch build --package @arch/contracts",
     "clean": "arch clean",
+    "compliance": "arch compliance --package @arch/contracts",
     "typecheck": "arch typecheck"
   }
 }

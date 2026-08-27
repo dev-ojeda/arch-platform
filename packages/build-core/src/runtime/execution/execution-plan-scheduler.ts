@@ -1,11 +1,12 @@
 // packages/build-core/src/runtime/execution/execution-plan-scheduler.ts
 
+import type { ChangeReason } from '../../cache/cache-types.js';
 import type { BuildResult } from '../../executor/build-result.js';
 import { BuildTaskRunner } from '../../graph/build-task-runner.js';
 import { logger } from '../../logging/logger.js';
 import type { ExecutionNode, ExecutionPlan } from '../../planning/execution-dag.js';
 
-import type { ExecutionContext } from './execution-context.js';
+import type { ExecutionContext, ExecutionTriggerReason } from './execution-context.js';
 import { updateExecutionState } from './execution-context.js';
 
 export class ExecutionPlanScheduler {
@@ -41,6 +42,8 @@ export class ExecutionPlanScheduler {
       }
 
       updateExecutionState(ctx, name, 'ready');
+
+      this.setTrigger(ctx, node);
 
       ready.push(name);
     }
@@ -158,10 +161,7 @@ export class ExecutionPlanScheduler {
 
       updateExecutionState(ctx, dependent, 'ready');
 
-      ctx.triggers.set(dependent, {
-        package: node.name,
-        reason: 'dependency-changed',
-      });
+      this.setDependencyTrigger(ctx, depNode, node);
 
       readyQueue.push(dependent);
     }
@@ -190,6 +190,53 @@ export class ExecutionPlanScheduler {
           reason: 'failed',
         },
       });
+    }
+  }
+
+  private setTrigger(ctx: ExecutionContext, node: ExecutionNode): void {
+    const reason = this.toExecutionTriggerReason(node.changeReason);
+
+    if (!reason) {
+      return;
+    }
+
+    ctx.triggers.set(node.name, {
+      package: node.name,
+      reason,
+    });
+  }
+
+  private setDependencyTrigger(
+    ctx: ExecutionContext,
+    dependent: ExecutionNode,
+    dependency: ExecutionNode,
+  ): void {
+    ctx.triggers.set(dependent.name, {
+      package: dependency.name,
+      reason: 'dependency-changed',
+    });
+  }
+  private toExecutionTriggerReason(reason: ChangeReason): ExecutionTriggerReason | undefined {
+    switch (reason) {
+      case 'source':
+        return 'source-changed';
+
+      case 'dependency':
+        return 'dependency-changed';
+
+      case 'first-build':
+        return 'first-build';
+
+      case 'cache-version':
+      case 'config':
+      case 'missing-output':
+        return 'cache-invalidated';
+
+      case 'dependency-failed':
+        return 'dependency-changed';
+
+      case 'none':
+        return undefined;
     }
   }
 }

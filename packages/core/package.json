@@ -18,7 +18,8 @@
         "dist"
       ],
       "validateExports": true
-    }
+    },
+    "kind": "tooling"
   },
   "files": [
     "dist"
@@ -27,6 +28,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "arch": "arch build --package @arch/core",
+    "compliance": "arch compliance --package @arch/core",
     "clean": "arch clean",
     "typecheck": "arch typecheck",
     "test": "vitest run -c ./vitest.config.ts",

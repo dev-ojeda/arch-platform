@@ -1,13 +1,20 @@
 // packages/build-core/src/services/build-context.ts
 
-import type { ArtifactCache, ArtifactProvider, Graph, OutputValidator } from '@arch/platform-model';
+import type {
+  ArtifactCache,
+  ArtifactProvider,
+  ArtifactStateReader,
+  ArtifactStateWriter,
+  BuildState,
+  Graph,
+  OutputValidator,
+  StateWriter,
+} from '@arch/platform-model';
 
 import type { BuildExecutor } from '../executor/build-executor.js';
 import { GraphQueryService } from '../graph/graph-query-services.js';
 import { DagHasher } from '../hash/dag-hasher.js';
 import type { ExecutionContractResolver } from '../planning/execution-contract-resolver.js';
-import type { BuildState } from '../state/state-types.js';
-import { BuildStateWriter } from '../state/state-writer.js';
 
 export interface BuildContext {
   graph: Graph;
@@ -20,5 +27,7 @@ export interface BuildContext {
   artifactProvider: ArtifactProvider;
   workspaceRoot: string;
   fsOutputValidator: OutputValidator;
-  stateWriter: BuildStateWriter;
+  stateWriter: StateWriter;
+  artifactStateReader: ArtifactStateReader;
+  artifactStateWriter: ArtifactStateWriter;
 }

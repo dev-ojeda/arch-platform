@@ -13,7 +13,17 @@ export type {
   ArtifactLayout,
   ArtifactLayoutFactory,
   ArtifactManifest,
+  ArtifactState,
+  ArtifactStateStatus,
 } from './artifact/index.js';
+export * from './compliance/index.js';
+export type {
+  ArtifactCompliance,
+  ArtifactComplianceStatus,
+  ComplianceState,
+  ComplianceStateChange,
+  ComplianceStateChanges,
+} from './compliance/index.js';
 export type { Diagnostic, DiagnosticLocation, DiagnosticSeverity } from './diagnostics/index.js';
 export type {
   CycleDetectionResult,
@@ -36,8 +46,15 @@ export type {
   ArtifactCache,
   ArtifactProvider,
   ArtifactPublisher,
+  ArtifactStateReader,
+  ArtifactStateWriter,
+  ComplianceStateReader,
+  ComplianceStateWriter,
   OutputValidator,
+  StateLoader,
+  StateWriter,
 } from './ports/index.js';
+export type { BuildState, BuildStateEntry, StateChanges } from './state/index.js';
 export type { MaybePromise } from './types/index.js';
 export type {
   WorkspaceDescriptor,

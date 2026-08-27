@@ -1,20 +1,28 @@
 // packages/build-core/src/cache/cache-evaluator.ts
 
-import type { HashResult, OutputValidator } from '@arch/platform-model';
+import type {
+  ArtifactCache,
+  ArtifactProvider,
+  BuildState,
+  HashResult,
+  OutputValidator,
+} from '@arch/platform-model';
 
+import { GraphQueryService } from '../graph/graph-query-services.js';
 import { HASH_SCHEMA_VERSION } from '../hash/hash-schema-version.js';
 import { logger } from '../logging/logger.js';
-import type { BuildState } from '../state/state-types.js';
 
 import type { CacheEvaluation } from './cache-evaluation.js';
 import type { ChangeReason } from './cache-types.js';
 
 export class CacheEvaluator {
   constructor(
-    private state: BuildState,
-    private outputValidator: OutputValidator,
+    private readonly state: BuildState,
+    private readonly outputValidator: OutputValidator,
+    private readonly query: GraphQueryService,
+    private readonly artifactCache: ArtifactCache,
+    private readonly artifactProvider: ArtifactProvider,
   ) {}
-
   async evaluate(
     packageName: string,
     root: string,
@@ -33,7 +41,9 @@ export class CacheEvaluator {
           changeReason: 'first-build',
         },
       });
+
       return {
+        packageName,
         decision: 'miss',
         changeReason: 'first-build',
       };
@@ -55,37 +65,53 @@ export class CacheEvaluator {
       return this.stale(packageName, 'dependency');
     }
 
-    const dependencyMissing = await this.hasMissingDependencyOutputs(dependencies, root);
+    // const dependencyMissing = await this.hasMissingDependencyOutputs(dependencies);
 
-    if (dependencyMissing) {
-      logger.trace('build.cache.evaluated', {
+    // if (dependencyMissing) {
+    //   logger.trace('build.cache.evaluated', {
+    //     category: 'cache',
+    //     metadata: {
+    //       packageName,
+    //       decision: 'restore',
+    //       changeReason: 'missing-output',
+    //     },
+    //   });
+
+    //   return {
+    //     packageName,
+    //     decision: 'restore',
+    //     changeReason: 'missing-output',
+    //   };
+    // }
+
+    if (!(await this.outputValidator.exists(root, outputs))) {
+      const artifact = this.artifactProvider.create(packageName, current);
+
+      const available = await this.artifactCache.exists(artifact);
+
+      logger.trace('build.cache.artifact', {
         category: 'cache',
         metadata: {
+          packageName,
+          available,
+        },
+      });
+
+      if (available) {
+        return {
           packageName,
           decision: 'restore',
           changeReason: 'missing-output',
-        },
-      });
-      return {
-        decision: 'restore',
-        changeReason: 'missing-output',
-      };
-    }
+        };
+      }
 
-    if (!(await this.outputValidator.exists(root, outputs))) {
-      logger.trace('build.cache.evaluated', {
-        category: 'cache',
-        metadata: {
-          packageName,
-          decision: 'invalid',
-          changeReason: 'missing-output',
-        },
-      });
       return {
+        packageName,
         decision: 'invalid',
         changeReason: 'missing-output',
       };
     }
+
     logger.trace('build.cache.evaluated', {
       category: 'cache',
       metadata: {
@@ -94,7 +120,9 @@ export class CacheEvaluator {
         changeReason: 'none',
       },
     });
+
     return {
+      packageName,
       decision: 'hit',
       changeReason: 'none',
     };
@@ -102,14 +130,13 @@ export class CacheEvaluator {
 
   private stale(packageName: string, reason: ChangeReason): CacheEvaluation {
     return {
+      packageName: packageName,
       decision: 'stale',
       changeReason: reason,
     };
   }
-  private async hasMissingDependencyOutputs(
-    dependencies: readonly string[],
-    root: string,
-  ): Promise<boolean> {
+
+  private async hasMissingDependencyOutputs(dependencies: readonly string[]): Promise<boolean> {
     for (const dependency of dependencies) {
       const entry = this.state.get(dependency);
 
@@ -119,23 +146,24 @@ export class CacheEvaluator {
           metadata: {
             packageName: dependency,
             reason: 'missing-state',
-            root,
           },
         });
 
         return true;
       }
 
+      const node = this.query.getNode(dependency);
+
       logger.trace('build.cache.dependency.check', {
         category: 'cache',
         metadata: {
           packageName: dependency,
-          outputs: entry.outputs,
-          root,
+          root: node.root,
+          outputs: node.outputs,
         },
       });
 
-      const exists = await this.outputValidator.exists(root, entry.outputs);
+      const exists = await this.outputValidator.exists(node.root, node.outputs);
 
       logger.trace('build.cache.dependency.result', {
         category: 'cache',

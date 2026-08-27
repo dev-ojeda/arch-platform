@@ -1,6 +1,7 @@
 // packages/governance/src/engine/governance-rule-id.ts
 
 export const GOVERNANCE_RULE_ID = {
+  GovernanceComplianceRule: 'governance-compliance-rule',
   ValidatePackageStructure: 'validate-package-structure',
   ForbiddenDependency: 'forbidden-dependency',
   DetectCycles: 'detect-cycles',

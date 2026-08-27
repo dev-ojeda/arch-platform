@@ -29,6 +29,7 @@
     "build": "tsc -p tsconfig.build.json",
     "arch": "arch build --package @arch/infrastructure",
     "clean": "arch clean",
+    "compliance": "arch compliance --package @arch/infrastructure",
     "typecheck": "arch typecheck",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",

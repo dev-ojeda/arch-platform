@@ -3,6 +3,7 @@
 import type { CacheDecision, ChangeReason } from './cache-types.js';
 
 export interface CacheEvaluation {
+  packageName: string;
   decision: CacheDecision;
   changeReason: ChangeReason;
 }
