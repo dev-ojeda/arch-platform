@@ -1,4 +1,4 @@
-// packages/compliance/src/planning/compliance-plan-entry.ts
+// packages/platform-model/src/compliance/compliance-plan-entry.ts
 
 import type { ComplianceTopic } from './compliance-topic.js';
 

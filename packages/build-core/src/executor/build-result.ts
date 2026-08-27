@@ -16,7 +16,12 @@ export type BuildResult = {
 
     triggeredBy?: {
       package: string;
-      reason: 'dependency-changed' | 'source-changed' | 'manual' | 'cache-invalidated';
+      reason:
+        | 'dependency-changed'
+        | 'source-changed'
+        | 'first-build'
+        | 'manual'
+        | 'cache-invalidated';
     };
   };
 

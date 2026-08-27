@@ -22,8 +22,7 @@ export class FilesystemArtifactCache implements ArtifactCache {
     private readonly filesystem: FileSystemAsyncPort,
     private readonly pathService: PathService,
   ) {}
-
-  async save(artifact: Artifact, root: string, outputs: string[]): Promise<void> {
+  async save(artifact: Artifact, root: string, outputs: readonly string[]): Promise<void> {
     const layout = this.layoutFactory.create(artifact);
 
     const manifest: ArtifactManifest = {
@@ -35,8 +34,16 @@ export class FilesystemArtifactCache implements ArtifactCache {
 
     await this.publisher.publish(root, manifest, layout);
   }
+
+  async exists(artifact: Artifact): Promise<boolean> {
+    const layout = this.layoutFactory.create(artifact);
+
+    return this.filesystem.exists(layout.manifest());
+  }
+
   async restore(artifact: Artifact, root: string): Promise<boolean> {
     const layout = this.layoutFactory.create(artifact);
+
     const manifest = await this.loadArtifactManifest(layout.manifest());
 
     if (!manifest) {
@@ -49,7 +56,6 @@ export class FilesystemArtifactCache implements ArtifactCache {
         const destination = this.pathService.join(root, output);
 
         await this.filesystem.remove(destination);
-
         await this.filesystem.copy(source, destination);
       }
 
@@ -66,7 +72,6 @@ export class FilesystemArtifactCache implements ArtifactCache {
       return false;
     }
   }
-
   private async loadArtifactManifest(filePath: string): Promise<ArtifactManifest | undefined> {
     if (!(await this.filesystem.exists(filePath))) {
       return undefined;

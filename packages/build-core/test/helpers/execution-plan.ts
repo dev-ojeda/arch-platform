@@ -17,6 +17,7 @@ export function createNode(
     dependencies: options?.dependencies ?? [],
     dependents: options?.dependents ?? [],
     buildAction: 'execute',
+    changeReason: 'none',
     contract: {
       id: name,
 

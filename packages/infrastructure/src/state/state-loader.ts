@@ -1,16 +1,17 @@
-// packages/build-core/src/state/json-build-state-loader.ts
+// packages/infrastructure/src/state/state-loader.ts
 
 import type { FileSystemSyncPort, PathService } from '@arch/contracts';
-import type { HashResult } from '@arch/platform-model';
+import type { BuildState, BuildStateEntry, HashResult, StateLoader } from '@arch/platform-model';
 
-import { logger } from '../logging/logger.js';
+import { loggerFactory } from '../logging/logger.js';
 import { isRecord } from '../serialization/type-guards.js';
 
-import type { BuildStateLoader } from './build-state-loader.js';
 import { getBuildStatePath } from './state-paths.js';
-import type { BuildState, BuildStateEntry } from './state-types.js';
 
-export class JsonBuildStateLoader implements BuildStateLoader {
+export class BuildStateLoader implements StateLoader {
+  logger = loggerFactory.createLogger({
+    component: 'BuildStateLoader',
+  });
   constructor(
     private readonly filesystem: FileSystemSyncPort,
     private readonly pathService: PathService,
@@ -19,7 +20,7 @@ export class JsonBuildStateLoader implements BuildStateLoader {
     const statePath = getBuildStatePath(workspaceRoot, this.pathService);
 
     if (!this.filesystem.exists(statePath)) {
-      logger.trace('state.file.missing', {
+      this.logger.trace('state.file.missing', {
         metadata: {
           statePath,
         },
@@ -31,7 +32,7 @@ export class JsonBuildStateLoader implements BuildStateLoader {
     const parsed = this.filesystem.readJson(statePath);
 
     if (!isRecord(parsed)) {
-      logger.warn('state.invalid.root', {
+      this.logger.warn('state.invalid.root', {
         metadata: {
           statePath,
         },
@@ -46,7 +47,7 @@ export class JsonBuildStateLoader implements BuildStateLoader {
 
     for (const [name, value] of entries) {
       if (!this.isBuildStateEntry(value)) {
-        logger.warn('INVALID_BUILD_STATE_ENTRY', {
+        this.logger.warn('INVALID_BUILD_STATE_ENTRY', {
           metadata: {
             packageName: name,
           },
@@ -58,7 +59,7 @@ export class JsonBuildStateLoader implements BuildStateLoader {
       state.set(name, value);
     }
 
-    logger.trace('BUILD_STATE_LOADED', {
+    this.logger.trace('BUILD_STATE_LOADED', {
       metadata: {
         packages: [...state.keys()],
       },

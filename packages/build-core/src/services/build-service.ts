@@ -1,5 +1,7 @@
 // packages/build-core/src/services/build-service.ts
 
+import type { ArtifactState } from '@arch/platform-model';
+
 import { CacheEvaluator } from '../cache/cache-evaluator.js';
 import type { BuildResult } from '../executor/build-result.js';
 import { BuildTaskRunner } from '../graph/build-task-runner.js';
@@ -10,11 +12,15 @@ import { ChangePlanner } from '../planning/change-planner.js';
 import { ExecutionDagCompiler } from '../planning/execution-dag-compiler.js';
 import { ScopeResolver } from '../planning/scope-resolver.js';
 import type { BuildServiceSummary } from '../public/build-service-summary.js';
-import { createExecutionContext } from '../runtime/execution/execution-context.js';
+import {
+  createExecutionContext,
+  type ExecutionContext,
+} from '../runtime/execution/execution-context.js';
 import { ExecutionPlanScheduler } from '../runtime/execution/execution-plan-scheduler.js';
 
 import type { BuildContext } from './build-context.js';
 import type { BuildOptions } from './build-options.js';
+
 /**
  * Application service responsible for orchestrating the build pipeline.
  *
@@ -27,9 +33,6 @@ import type { BuildOptions } from './build-options.js';
  * 5. Execution plan compilation
  * 6. Task execution
  * 7. State persistence
- *
- * The service coordinates these stages but delegates implementation details
- * to specialized components.
  */
 export class BuildService {
   constructor(private readonly context: BuildContext) {}
@@ -46,6 +49,9 @@ export class BuildService {
       artifactProvider,
       fsOutputValidator,
       stateWriter,
+      artifactStateReader,
+      artifactStateWriter,
+      workspaceRoot,
     } = this.context;
 
     // -------------------------
@@ -56,13 +62,20 @@ export class BuildService {
     // -------------------------
     // 2. CACHE
     // -------------------------
-    const cache = new CacheEvaluator(state, fsOutputValidator);
+
+    const cache = new CacheEvaluator(
+      state,
+      fsOutputValidator,
+      query,
+      artifactCache,
+      artifactProvider,
+    );
 
     const planner = new ChangePlanner(cache);
     const buildPlan = await planner.createPlan(graph, hashes);
 
     // -------------------------
-    // 3. SCOPE (SIN ENGINE)
+    // 3. SCOPE
     // -------------------------
     const scope = new ScopeResolver(buildPlan, query).resolve(options.scope);
 
@@ -73,7 +86,6 @@ export class BuildService {
     // -------------------------
     // 4. EXECUTION PLAN
     // -------------------------
-
     const executionPlan = new ExecutionDagCompiler(query, contractResolver).compile({
       plan: buildPlan,
       scope,
@@ -82,7 +94,6 @@ export class BuildService {
     // -------------------------
     // 5. RUNTIME
     // -------------------------
-
     const runner = new BuildTaskRunner(
       graph,
       executor,
@@ -94,6 +105,7 @@ export class BuildService {
     );
 
     const scheduler = new ExecutionPlanScheduler(runner, options.concurrency ?? 4);
+
     const ctx = createExecutionContext(executionPlan);
 
     const results = await scheduler.run(executionPlan, ctx);
@@ -108,18 +120,123 @@ export class BuildService {
 
       const changes = stateWriter.getChanges();
 
-      if (!changes.isEmpty) {
+      const hasChanges =
+        changes.created.size > 0 || changes.updated.size > 0 || changes.deleted.size > 0;
+
+      if (hasChanges) {
         logger.info(LOG_EVENTS.STATE_CHANGED, {
-          metadata: changes.summary(),
+          metadata: {
+            created: changes.created.size,
+            updated: changes.updated.size,
+            deleted: changes.deleted.size,
+          },
         });
 
         await stateWriter.write();
+      }
+
+      const artifactStates = this.createArtifactStates(results, ctx, graph, buildPlan);
+
+      if (artifactStates.size > 0) {
+        const persistedArtifactStates = await artifactStateReader.read(workspaceRoot);
+
+        const mergedArtifactStates = this.mergeArtifactStates(
+          persistedArtifactStates,
+          artifactStates,
+        );
+
+        await artifactStateWriter.write(workspaceRoot, mergedArtifactStates);
       }
     }
 
     return this.summarize(results);
   }
 
+  private createArtifactStates(
+    results: readonly BuildResult[],
+    ctx: ExecutionContext,
+    graph: BuildContext['graph'],
+    buildPlan: ReturnType<ChangePlanner['createPlan']> extends Promise<infer T> ? T : never,
+  ): ReadonlyMap<string, ArtifactState> {
+    const artifacts = new Map<string, ArtifactState>();
+
+    for (const result of results) {
+      if (
+        result.status === 'failed' ||
+        (result.status === 'skipped' && result.execution.reason === 'failed')
+      ) {
+        continue;
+      }
+
+      const node = graph.get(result.package);
+
+      if (!node) {
+        continue;
+      }
+
+      const entry = buildPlan.get(result.package);
+
+      if (!entry) {
+        continue;
+      }
+
+      const trace = ctx.nodes.get(result.package);
+
+      if (!trace) {
+        continue;
+      }
+
+      const status = this.resolveArtifactStatus(result);
+
+      if (!status) {
+        continue;
+      }
+
+      if (trace.startedAt === undefined || trace.finishedAt === undefined) {
+        continue;
+      }
+
+      artifacts.set(result.package, {
+        hash: entry.hash,
+        dependencies: [...node.dependencies],
+        status,
+        startedAt: trace.startedAt,
+        finishedAt: trace.finishedAt,
+        schemaVersion: 1,
+      });
+    }
+
+    return artifacts;
+  }
+
+  private resolveArtifactStatus(result: BuildResult): ArtifactState['status'] | undefined {
+    switch (result.execution.reason) {
+      case 'executed':
+        return 'built';
+
+      case 'restored':
+        return 'restored';
+
+      case 'cached':
+        return 'cached';
+
+      default:
+        return undefined;
+    }
+  }
+
+  private mergeArtifactStates(
+    persisted: ReadonlyMap<string, ArtifactState>,
+    current: ReadonlyMap<string, ArtifactState>,
+  ): ReadonlyMap<string, ArtifactState> {
+    const merged = new Map(persisted);
+
+    for (const [artifact, state] of current) {
+      merged.set(artifact, state);
+    }
+
+    return merged;
+  }
   private summarize(results: BuildResult[]): BuildServiceSummary {
     return {
       results,

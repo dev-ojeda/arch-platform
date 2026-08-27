@@ -2,9 +2,13 @@
 
 import {
   ArtifactPublisherAdapter,
+  BuildStateLoader,
+  BuildStateWriter,
   DefaultArtifactProvider,
   FilesystemArtifactCache,
   FilesystemArtifactLayoutFactory,
+  FilesystemArtifactStateReader,
+  FilesystemArtifactStateWriter,
   FilesystemOutputValidator,
   NodeAsyncFileSystemAdapter,
   NodeConfigHashService,
@@ -16,7 +20,16 @@ import {
   NodeWorkspaceProvider,
   WorkspacePackageProjector,
 } from '@arch/infrastructure';
-import type { ArtifactCache, ArtifactProvider, Graph, OutputValidator } from '@arch/platform-model';
+import type {
+  ArtifactCache,
+  ArtifactProvider,
+  ArtifactStateReader,
+  ArtifactStateWriter,
+  BuildState,
+  Graph,
+  OutputValidator,
+  StateWriter,
+} from '@arch/platform-model';
 
 import type { BuildExecutor } from '../executor/build-executor.js';
 import { ExecutorFactory } from '../executor/executor-factory.js';
@@ -26,9 +39,6 @@ import { DagHasher } from '../hash/dag-hasher.js';
 import { WorkspaceExecutionContractResolver } from '../planning/workspace-execution-contract-resolver.js';
 import type { CommandRunner } from '../public/command-runner.js';
 import { BuildService } from '../services/build-service.js';
-import { JsonBuildStateLoader } from '../state/json-build-state-loader.js';
-import type { BuildState } from '../state/state-types.js';
-import { BuildStateWriter } from '../state/state-writer.js';
 
 /**
  * Centralizes dependency creation for the build application.
@@ -60,6 +70,7 @@ export class BuildCompositionRoot {
     const graph = buildGraph(packages);
 
     const state = this.createBuildStateLoader(workspace.root);
+    const artifactStateReader = this.createArtifactStateReader();
 
     const query = this.createGraphQuery(graph);
 
@@ -75,6 +86,8 @@ export class BuildCompositionRoot {
       workspaceRoot: workspace.root,
       fsOutputValidator: this.createFileSystemOutputValidator(),
       stateWriter: this.createStateWriter(state, workspace.root),
+      artifactStateReader,
+      artifactStateWriter: this.createArtifactStateWriter(),
     });
   }
   /**
@@ -138,10 +151,22 @@ export class BuildCompositionRoot {
    * @returns The current build state snapshot.
    */
   createBuildStateLoader(workspaceRoot: string): BuildState {
-    return new JsonBuildStateLoader(this.fsSync, this.pathService).load(workspaceRoot);
+    return new BuildStateLoader(this.fsSync, this.pathService).load(workspaceRoot);
   }
-  createStateWriter(state: BuildState, workspaceRoot: string): BuildStateWriter {
+  createStateWriter(state: BuildState, workspaceRoot: string): StateWriter {
     return new BuildStateWriter(state, workspaceRoot, this.fsAsync, this.pathService);
+  }
+
+  /** * Creates the writer responsible for persisting artifact state.
+   *
+   *
+   * @returns An artifact state writer backed by the filesystem. */
+  createArtifactStateReader(): ArtifactStateReader {
+    return new FilesystemArtifactStateReader(this.fsAsync, this.pathService);
+  }
+
+  createArtifactStateWriter(): ArtifactStateWriter {
+    return new FilesystemArtifactStateWriter(this.fsAsync, this.pathService);
   }
   /**
    * Creates the artifact provider used to generate artifact metadata.

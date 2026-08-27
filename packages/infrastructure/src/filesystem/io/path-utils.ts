@@ -12,9 +12,6 @@ export function packagePath(root: string, ...segments: string[]): string {
 function configContentPath(root: string, ...segments: string[]): string {
   return join(root, ...segments);
 }
-export function getStatePath(workspaceRoot: string): string {
-  return statePath(workspaceRoot);
-}
 
 export function configPath(root: string): string {
   return configContentPath(root, 'config');
@@ -34,9 +31,6 @@ export function dirName(dirPath: string): string {
   return dirname(dirPath);
 }
 
-export function statePath(workspaceRoot: string): string {
-  return join(workspaceRoot, '.arch', 'state.json');
-}
 export function resolvePath(...segments: string[]): string {
   return resolve(...segments);
 }

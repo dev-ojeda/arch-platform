@@ -28,6 +28,7 @@
     "build": "tsc -p tsconfig.build.json",
     "arch": "arch build --package @arch/generator-mvc",
     "clean": "arch clean",
+    "compliance": "arch compliance --package @arch/generator-mvc",
     "typecheck": "arch typecheck"
   },
   "dependencies": {

@@ -2,11 +2,17 @@
 export {
   ARTIFACT_SCHEMA_VERSION,
   ArtifactPublisherAdapter,
+  ArtifactStateProvider,
   DefaultArtifactProvider,
   FilesystemArtifactCache,
   FilesystemArtifactLayoutFactory,
+  FilesystemArtifactStateReader,
+  FilesystemArtifactStateWriter,
+  FilesystemComplianceStateReader,
+  FilesystemComplianceStateWriter,
   FilesystemOutputValidator,
 } from '../artifact/index.js';
+export { ComplianceStateProvider } from '../compliance/index.js';
 export {
   collectTsBuildInfoFiles,
   NodeAsyncFileSystemAdapter,
@@ -20,10 +26,10 @@ export {
   NodeFileHashService,
   NodeHashService,
 } from '../hashing/index.js';
+export { BuildStateLoader, BuildStateWriter } from '../state/index.js';
 export {
   NodeWorkspaceProvider,
   resolveLintTargets,
   WorkspacePackageProjector,
 } from '../workspace/index.js';
-
 export { NodeArchitectureProvider } from './node-architecture-provider.js';

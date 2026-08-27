@@ -3,7 +3,7 @@
 import type { SymbolEdge, SymbolNode } from '@arch/code-analysis';
 import type { PackageDescriptor } from '@arch/platform-model';
 
-import { GovernancePackageQuery } from '../../context/governance-package-query.js';
+import type { PackageQuery } from '../../context/package-query.js';
 
 export function resolveExternalImportTarget(
   edge: SymbolEdge,
@@ -39,7 +39,7 @@ export function resolveExternalImportTarget(
 
 export function resolveTargetPackage(
   moduleSpecifier: string,
-  packages: GovernancePackageQuery,
+  packages: PackageQuery,
 ): PackageDescriptor | undefined {
   const exact = packages.get(moduleSpecifier);
 
@@ -52,7 +52,7 @@ export function resolveTargetPackage(
 
 export function resolveTargetPackageFromFile(
   filePath: string,
-  packages: GovernancePackageQuery,
+  packages: PackageQuery,
 ): PackageDescriptor | undefined {
   const normalizedFile = filePath.replace(/\\/g, '/');
 

@@ -11,7 +11,6 @@ export {
   ensureDirAsync,
   ensureDirSync,
   fileSizeSync,
-  getStatePath,
   isDirectory,
   isFile,
   joinPath,
@@ -36,7 +35,6 @@ export {
   renamePathSync,
   resolvePath,
   srcPath,
-  statePath,
   testPath,
   writeTextFile,
 } from './io/index.js';

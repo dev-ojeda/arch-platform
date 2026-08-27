@@ -1,5 +1,6 @@
 // packages/build-core/src/runtime/execution/execution-context.ts
 
+import type { BuildResult } from '../../executor/build-result.js';
 import type { ExecutionPlan } from '../../planning/execution-dag.js';
 
 export type ExecutionState =
@@ -14,6 +15,7 @@ export type ExecutionState =
 export type ExecutionTriggerReason =
   | 'dependency-changed'
   | 'source-changed'
+  | 'first-build'
   | 'manual'
   | 'cache-invalidated';
 
@@ -92,7 +94,7 @@ export function updateExecutionState(
   if (state === 'success' || state === 'failed' || state === 'cached' || state === 'skipped') {
     updated.finishedAt = now;
 
-    if (updated.startedAt) {
+    if (updated.startedAt !== undefined) {
       updated.duration = updated.finishedAt - updated.startedAt;
     }
   }
@@ -102,4 +104,25 @@ export function updateExecutionState(
   }
 
   ctx.nodes.set(name, updated);
+
+  ctx.nodeStates.set(name, state);
+}
+export function executionStateFromResult(result: BuildResult): ExecutionState {
+  if (result.status === 'failed') {
+    return 'failed';
+  }
+
+  if (result.execution.reason === 'cached') {
+    return 'cached';
+  }
+
+  if (result.execution.reason === 'restored') {
+    return 'cached';
+  }
+
+  if (result.execution.reason === 'executed') {
+    return 'success';
+  }
+
+  return 'skipped';
 }

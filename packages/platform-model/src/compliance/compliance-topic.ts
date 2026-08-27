@@ -1,2 +1,2 @@
-// packages/compliance/src/planning/compliance-topic.ts
+// packages/platform-model/src/compliance/compliance-topic.ts
 export type ComplianceTopic = 'architecture' | 'code' | 'security' | 'infrastructure';

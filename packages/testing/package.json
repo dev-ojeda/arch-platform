@@ -29,6 +29,7 @@
     "build": "tsc -p tsconfig.build.json",
     "arch": "arch build --package @arch/testing",
     "clean": "arch clean",
+    "compliance": "arch compliance --package @arch/testing",
     "typecheck": "arch typecheck"
   },
   "dependencies": {

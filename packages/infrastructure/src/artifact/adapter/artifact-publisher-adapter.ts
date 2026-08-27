@@ -3,13 +3,12 @@
 import type { FileSystemAsyncPort, PathService } from '@arch/contracts';
 import type { ArtifactLayout, ArtifactManifest, ArtifactPublisher } from '@arch/platform-model';
 
-import { safeStringify } from '../../serialization/safe-stringify.js';
-
 export class ArtifactPublisherAdapter implements ArtifactPublisher {
   constructor(
     private readonly filesystem: FileSystemAsyncPort,
     private readonly pathService: PathService,
   ) {}
+
   async publish(root: string, manifest: ArtifactManifest, layout: ArtifactLayout): Promise<void> {
     let published = false;
     const temp = layout.temporary('tmp');
@@ -23,7 +22,7 @@ export class ArtifactPublisherAdapter implements ArtifactPublisher {
         await this.filesystem.copy(this.pathService.join(root, output), temp.output(output));
       }
 
-      await this.filesystem.writeJson(temp.manifest(), this.serializeArtifactManifest(manifest));
+      await this.filesystem.writeJson<ArtifactManifest>(temp.manifest(), manifest);
 
       await this.filesystem.remove(layout.root);
 
@@ -35,9 +34,5 @@ export class ArtifactPublisherAdapter implements ArtifactPublisher {
         await this.filesystem.remove(temp.root);
       }
     }
-  }
-
-  private serializeArtifactManifest(manifest: ArtifactManifest): string {
-    return safeStringify(manifest);
   }
 }

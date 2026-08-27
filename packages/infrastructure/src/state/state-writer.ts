@@ -1,17 +1,22 @@
-// packages/build-core/src/state/state-writer.ts
+// packages/infrastructure/src/state/state-writer.ts
 
 import type { FileSystemAsyncPort, PathService } from '@arch/contracts';
-import type { DagNode, HashResult } from '@arch/platform-model';
+import type {
+  BuildState,
+  DagNode,
+  HashResult,
+  StateChanges,
+  StateWriter,
+} from '@arch/platform-model';
 
-import { HASH_SCHEMA_VERSION } from '../hash/hash-schema-version.js';
+import { HASH_SCHEMA_VERSION } from '../hashing/hash-schema-version.js';
 import { safeStringify } from '../serialization/safe-stringify.js';
 
-import { StateChangeSet } from './state-change-set.js';
+import { MutableStateChanges } from './state-changes.js';
 import { getBuildStatePath } from './state-paths.js';
-import type { BuildState } from './state-types.js';
 
-export class BuildStateWriter {
-  private readonly changes = new StateChangeSet();
+export class BuildStateWriter implements StateWriter {
+  private readonly changes = new MutableStateChanges();
 
   constructor(
     private readonly state: BuildState,
@@ -42,7 +47,6 @@ export class BuildStateWriter {
       this.changes.created.add(node.name);
     }
   }
-
   prune(activeNodes: Set<string>): void {
     for (const key of this.state.keys()) {
       if (!activeNodes.has(key)) {
@@ -53,7 +57,7 @@ export class BuildStateWriter {
     }
   }
 
-  getChanges(): StateChangeSet {
-    return this.changes;
+  getChanges(): StateChanges {
+    return this.changes.toSnapshot();
   }
 }

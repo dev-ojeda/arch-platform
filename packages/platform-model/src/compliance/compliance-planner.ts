@@ -1,4 +1,4 @@
-// packages/compliance/src/planning/compliance-planner.ts
+// packages/platform-model/src/compliance/compliance-planner.ts
 
 import type { CompliancePlan } from './compliance-plan.js';
 

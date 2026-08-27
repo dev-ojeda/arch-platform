@@ -38,7 +38,6 @@ export {
   configPath,
   dirName,
   distPath,
-  getStatePath,
   isAbsolutePath,
   joinPath,
   normalizePath,
@@ -46,6 +45,5 @@ export {
   relativePath,
   resolvePath,
   srcPath,
-  statePath,
   testPath,
 } from './path-utils.js';

@@ -6,7 +6,7 @@ import { GovernanceCompositionRoot } from '../../src/composition/governance-comp
 
 describe('GovernanceCompositionRoot', () => {
   it('creates governance engine', () => {
-    const engine = new GovernanceCompositionRoot().createEngine();
+    const engine = new GovernanceCompositionRoot().create();
 
     expect(engine).toBeDefined();
   });
