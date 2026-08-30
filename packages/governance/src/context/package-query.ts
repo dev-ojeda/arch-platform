@@ -9,5 +9,4 @@ export interface PackageQuery {
   require(name: string): PackageDescriptor;
   all(): readonly PackageDescriptor[];
   scoped(scope: GovernanceScope): readonly PackageDescriptor[];
-  resolveScope(scope: GovernanceScope): readonly PackageDescriptor[];
 }

@@ -3,7 +3,8 @@
 import { CodeAnalysisAdapter } from '../analysis/code-analysis/code-analysis-adapter.js';
 import { createGovernanceAnalysisContext } from '../analysis/code-analysis/create-governance-analysis-context.js';
 
-import type { GovernanceContext, GovernanceExecutionContext } from './governance-context.js';
+import type { GovernanceContext } from './governance-context.js';
+import type { GovernanceExecutionContext } from './governance-execution-context.js';
 
 export async function buildGovernanceExecutionContext(
   context: GovernanceContext,

@@ -2,7 +2,7 @@
 
 import type { Diagnostic } from '@arch/platform-model';
 
-import type { GovernanceExecutionContext } from '../context/governance-context.js';
+import type { GovernanceExecutionContext } from '../context/governance-execution-context.js';
 
 export interface GovernanceAnalysisRule {
   name: string;

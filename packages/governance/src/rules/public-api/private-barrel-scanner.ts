@@ -4,7 +4,7 @@ import { SymbolGraphQuery } from '@arch/code-analysis';
 
 import type { ExportBarrelIssue } from '../../analysis/exports/export-barrel-issue.js';
 import type { ExportBarrelScanner } from '../../analysis/exports/export-barrel-scanner.js';
-import type { GovernanceExecutionContext } from '../../context/governance-context.js';
+import type { GovernanceExecutionContext } from '../../context/governance-execution-context.js';
 import { invalidPrivateBarrel } from '../../diagnostics/private-export-barrel-diagnostics.js';
 import { ArchitectureSourceDetector } from '../architecture/architecture-source-detector.js';
 

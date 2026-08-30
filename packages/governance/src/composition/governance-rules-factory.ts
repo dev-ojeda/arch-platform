@@ -8,7 +8,6 @@ import { CrossPackageRelativeImportRule } from '../rules/cross-package-relative-
 import { CrossPackageRelativeImportScanner } from '../rules/cross-package-relative-import-scanner.js';
 import { DependencyLayerRule } from '../rules/dependency-layer-rule.js';
 import { ForbiddenDependencyRule } from '../rules/forbidden-dependency-rule.js';
-import { GovernanceComplianceEvaluator, GovernanceComplianceRule } from '../rules/index.js';
 import { ValidatePackageStructureRule } from '../rules/package-structure/validate-package-structure.rule.js';
 import { DetectPrivateBarrelRule } from '../rules/public-api/detect-private-barrel-rule.js';
 import { OnlyPublicApiRule } from '../rules/public-api/only-public-api.rule.js';
@@ -20,12 +19,8 @@ import { WorkspacePackageRule } from '../workspace/workspace-package-rule.js';
 
 export class GovernanceRulesFactory {
   create() {
-    const complianceEvaluator = new GovernanceComplianceEvaluator();
-
     return {
-      rules: [...this.createWorkspaceRules(), ...this.createCrossScopeRules(complianceEvaluator)],
-
-      complianceEvaluator,
+      rules: [...this.createWorkspaceRules(), ...this.createCrossScopeRules()],
     };
   }
 
@@ -38,9 +33,7 @@ export class GovernanceRulesFactory {
     ];
   }
 
-  private createCrossScopeRules(
-    complianceEvaluator: GovernanceComplianceEvaluator,
-  ): GovernanceRule[] {
+  private createCrossScopeRules(): GovernanceRule[] {
     return [
       new ForbiddenDependencyRule(),
       new ValidatePackageStructureRule(),
@@ -48,7 +41,6 @@ export class GovernanceRulesFactory {
       new TypeOnlyExportRule([new TypeOnlyExportSemanticScanner()]),
       new DetectPrivateBarrelRule([new PrivateBarrelScanner()]),
       new CrossPackageRelativeImportRule(new CrossPackageRelativeImportScanner()),
-      new GovernanceComplianceRule(complianceEvaluator),
     ];
   }
 }

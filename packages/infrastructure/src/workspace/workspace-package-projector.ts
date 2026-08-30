@@ -19,6 +19,7 @@ export class WorkspacePackageProjector implements WorkspaceProjector {
         .filter((dependency) => dependency.startsWith('@arch/'))
         .sort(),
       outputs: this.resolveOutputs(manifest),
+      artifactType: manifest.arch.artifactType,
       build: manifest.arch?.build,
     };
   }

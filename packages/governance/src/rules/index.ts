@@ -1,6 +1,6 @@
 // packages/governance/src/rules/index.ts
 
-export { GovernanceComplianceEvaluator, GovernanceComplianceRule } from './compliance/index.js';
+export { ArtifactComplianceEvaluator, ArtifactComplianceRule } from './artifact/index.js';
 export { CrossPackageRelativeImportRule } from './cross-package-relative-import-rule.js';
 export { CrossPackageRelativeImportScanner } from './cross-package-relative-import-scanner.js';
 export type { RuleExecutionResult } from './execution-result-rule.js';
