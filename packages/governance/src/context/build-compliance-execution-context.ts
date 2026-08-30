@@ -12,10 +12,15 @@ export function buildComplianceExecutionContext(
     const artifactState = context.artifactStates.get(pkg.name);
 
     const dependencies = pkg.internalDependencies.map((dependency) => {
+      const dependencyPackage = context.workspace.packages.find(
+        (candidate) => candidate.name === dependency,
+      );
+
       const dependencyState = context.artifactStates.get(dependency);
 
       return {
         artifact: dependency,
+        artifactKind: dependencyPackage?.manifest.arch?.kind,
         artifactType: dependencyState?.artifactType,
         artifactStatus: dependencyState?.status,
         complianceStatus: context.complianceStates.artifacts[dependency]?.status,
@@ -24,6 +29,7 @@ export function buildComplianceExecutionContext(
 
     return {
       artifact: pkg,
+      artifactKind: pkg.manifest.arch.kind,
       artifactType: artifactState?.artifactType,
       artifactStatus: artifactState?.status,
       artifactHash: artifactState?.hash,

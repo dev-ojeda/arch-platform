@@ -4,6 +4,7 @@ import type {
   ArtifactComplianceStatus,
   ArtifactState,
   HashResult,
+  Layer,
   WorkspaceDescriptor,
 } from '@arch/platform-model';
 
@@ -11,7 +12,7 @@ import type { ComplianceDependencyContext } from '../compliance/compliance-depen
 
 export interface ComplianceArtifactContext {
   readonly artifact: WorkspaceDescriptor['packages'][number];
-
+  readonly artifactKind: Layer | undefined;
   readonly artifactType: ArtifactState['artifactType'] | undefined;
   readonly artifactStatus: ArtifactState['status'] | undefined;
   readonly artifactHash: HashResult | undefined;
