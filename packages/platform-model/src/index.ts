@@ -14,7 +14,9 @@ export type {
   ArtifactLayoutFactory,
   ArtifactManifest,
   ArtifactState,
+  ArtifactStateReason,
   ArtifactStateStatus,
+  ArtifactType,
 } from './artifact/index.js';
 export * from './compliance/index.js';
 export type {

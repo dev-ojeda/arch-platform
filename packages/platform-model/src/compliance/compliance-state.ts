@@ -1,5 +1,7 @@
 // packages/platform-model/src/compliance/compliance-state.ts
 
+import type { HashResult } from '../hashing/hash-result.js';
+
 import type { ArtifactComplianceStatus } from './compliance-status.js';
 
 export interface ComplianceState {
@@ -10,6 +12,7 @@ export interface ComplianceState {
       string,
       {
         readonly status: ArtifactComplianceStatus;
+        readonly hash: HashResult;
       }
     >
   >;
