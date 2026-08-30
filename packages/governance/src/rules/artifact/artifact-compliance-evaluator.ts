@@ -27,7 +27,20 @@ export class ArtifactComplianceEvaluator implements ComplianceEvaluated {
       if (!artifact.artifactHash) {
         continue;
       }
+      if (
+        artifact.artifactType === 'declaration' &&
+        artifact.artifactKind === 'tooling' &&
+        artifact.complianceStatus !== 'approved'
+      ) {
+        changes.push({
+          artifact: artifact.artifact.name,
+          previous: artifact.complianceStatus,
+          current: 'approved',
+          hash: artifact.artifactHash,
+        });
 
+        continue;
+      }
       if (artifact.complianceStatus === undefined) {
         changes.push({
           artifact: artifact.artifact.name,
@@ -88,6 +101,14 @@ export class ArtifactComplianceEvaluator implements ComplianceEvaluated {
         });
       }
     }
+    console.log(
+      'ArtifactComplianceEvaluator.changes',
+      changes.map((change) => ({
+        artifact: change.artifact,
+        previous: change.previous,
+        current: change.current,
+      })),
+    );
     return {
       diagnostics,
       changes,
