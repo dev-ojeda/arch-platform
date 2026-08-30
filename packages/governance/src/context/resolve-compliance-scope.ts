@@ -7,8 +7,8 @@ export function resolveComplianceScope(options: ComplianceOptions): ComplianceSc
   if (options.packageName) {
     return {
       kind: 'package',
+      root: options.workspaceRoot,
       packageName: options.packageName,
-      root: '',
     };
   }
 

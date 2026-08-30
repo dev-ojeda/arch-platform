@@ -66,7 +66,7 @@ export class ArtifactComplianceEvaluator implements ComplianceEvaluated {
         continue;
       }
 
-      if (!this.areDependenciesCompliant(artifact.dependencies)) {
+      if (!this.areDependenciesCompliant(artifact)) {
         if (artifact.complianceStatus !== 'transition') {
           changes.push({
             artifact: artifact.artifact.name,
@@ -95,11 +95,24 @@ export class ArtifactComplianceEvaluator implements ComplianceEvaluated {
     };
   }
 
-  private areDependenciesCompliant(dependencies: readonly ComplianceDependencyContext[]): boolean {
-    return dependencies.every(
-      (dependency) =>
-        (dependency.artifactStatus === 'built' || dependency.artifactStatus === 'cached') &&
-        dependency.complianceStatus === 'approved',
+  private areDependenciesCompliant(artifact: ComplianceArtifactContext): boolean {
+    return artifact.dependencies.every((dependency) =>
+      this.isDependencyCompliant(artifact, dependency),
     );
+  }
+
+  private isDependencyCompliant(
+    artifact: ComplianceArtifactContext,
+    dependency: ComplianceDependencyContext,
+  ): boolean {
+    if (dependency.artifactStatus !== 'built' && dependency.artifactStatus !== 'cached') {
+      return false;
+    }
+
+    if (dependency.complianceStatus !== 'approved') {
+      return false;
+    }
+
+    return true;
   }
 }
