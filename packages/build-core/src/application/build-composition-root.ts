@@ -31,6 +31,8 @@ import type {
   StateWriter,
 } from '@arch/platform-model';
 
+import type { ArtifactStateBuilder } from '../artifact/artifact-state-builder.js';
+import { DefaultArtifactStateBuilder } from '../artifact/default-artifact-state-builder.js';
 import type { BuildExecutor } from '../executor/build-executor.js';
 import { ExecutorFactory } from '../executor/executor-factory.js';
 import { buildGraph } from '../graph/build-graph.js';
@@ -88,6 +90,7 @@ export class BuildCompositionRoot {
       stateWriter: this.createStateWriter(state, workspace.root),
       artifactStateReader,
       artifactStateWriter: this.createArtifactStateWriter(),
+      artifactStateBuilder: this.createArtifactStateBuilder(),
     });
   }
   /**
@@ -176,7 +179,9 @@ export class BuildCompositionRoot {
   createArtifactProvider(): ArtifactProvider {
     return new DefaultArtifactProvider();
   }
-
+  createArtifactStateBuilder(): ArtifactStateBuilder {
+    return new DefaultArtifactStateBuilder();
+  }
   createFileSystemOutputValidator(): OutputValidator {
     return new FilesystemOutputValidator(this.fsAsync, this.pathService);
   }

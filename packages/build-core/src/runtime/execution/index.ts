@@ -1,9 +1,5 @@
 // packages/build-core/src/runtime/execution/index.ts
-export {
-  createExecutionContext,
-  executionStateFromResult,
-  updateExecutionState,
-} from './execution-context.js';
+export { createExecutionContext, updateExecutionState } from './execution-context.js';
 export type {
   ExecutionContext,
   ExecutionNodeTrace,

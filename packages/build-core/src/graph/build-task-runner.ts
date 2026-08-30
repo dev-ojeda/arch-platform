@@ -3,7 +3,6 @@
 import type {
   ArtifactCache,
   ArtifactProvider,
-  ArtifactState,
   DagNode,
   Graph,
   OutputValidator,
@@ -17,8 +16,6 @@ import { BuildPlan } from '../planning/build-plan.js';
 import type { BuildPlanEntry } from '../planning/plan-entry.js';
 
 export class BuildTaskRunner {
-  private readonly artifactStates = new Map<string, ArtifactState>();
-
   constructor(
     private readonly graph: Graph,
     private readonly executor: BuildExecutor,
@@ -33,19 +30,7 @@ export class BuildTaskRunner {
     const node = this.requireNode(name);
     const entry = this.requirePlan(name);
 
-    const startedAt = Date.now();
-
-    const result = await this.executeBuildAction(node, entry);
-
-    const finishedAt = Date.now();
-
-    this.recordArtifactState(node, entry, result, startedAt, finishedAt);
-
-    return result;
-  }
-
-  getArtifactStates(): ReadonlyMap<string, ArtifactState> {
-    return this.artifactStates;
+    return this.executeBuildAction(node, entry);
   }
 
   private requireNode(name: string): DagNode {
@@ -133,45 +118,6 @@ export class BuildTaskRunner {
 
       case 'execute':
         return this.executeAndCache(node, entry);
-    }
-  }
-
-  private recordArtifactState(
-    node: DagNode,
-    entry: BuildPlanEntry,
-    result: BuildResult,
-    startedAt: number,
-    finishedAt: number,
-  ): void {
-    const status = this.resolveArtifactStatus(result);
-
-    if (!status) {
-      return;
-    }
-
-    this.artifactStates.set(node.name, {
-      hash: entry.hash,
-      dependencies: [...node.dependencies],
-      status,
-      startedAt,
-      finishedAt,
-      schemaVersion: 1,
-    });
-  }
-
-  private resolveArtifactStatus(result: BuildResult): ArtifactState['status'] | undefined {
-    switch (result.execution.reason) {
-      case 'executed':
-        return 'built';
-
-      case 'restored':
-        return 'restored';
-
-      case 'cached':
-        return 'cached';
-
-      default:
-        return undefined;
     }
   }
 }

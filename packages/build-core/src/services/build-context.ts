@@ -11,6 +11,7 @@ import type {
   StateWriter,
 } from '@arch/platform-model';
 
+import type { ArtifactStateBuilder } from '../artifact/artifact-state-builder.js';
 import type { BuildExecutor } from '../executor/build-executor.js';
 import { GraphQueryService } from '../graph/graph-query-services.js';
 import { DagHasher } from '../hash/dag-hasher.js';
@@ -30,4 +31,5 @@ export interface BuildContext {
   stateWriter: StateWriter;
   artifactStateReader: ArtifactStateReader;
   artifactStateWriter: ArtifactStateWriter;
+  artifactStateBuilder: ArtifactStateBuilder;
 }

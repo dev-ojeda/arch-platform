@@ -12,10 +12,7 @@ import { ChangePlanner } from '../planning/change-planner.js';
 import { ExecutionDagCompiler } from '../planning/execution-dag-compiler.js';
 import { ScopeResolver } from '../planning/scope-resolver.js';
 import type { BuildServiceSummary } from '../public/build-service-summary.js';
-import {
-  createExecutionContext,
-  type ExecutionContext,
-} from '../runtime/execution/execution-context.js';
+import { createExecutionContext } from '../runtime/execution/execution-context.js';
 import { ExecutionPlanScheduler } from '../runtime/execution/execution-plan-scheduler.js';
 
 import type { BuildContext } from './build-context.js';
@@ -51,6 +48,7 @@ export class BuildService {
       stateWriter,
       artifactStateReader,
       artifactStateWriter,
+      artifactStateBuilder,
       workspaceRoot,
     } = this.context;
 
@@ -135,7 +133,7 @@ export class BuildService {
         await stateWriter.write();
       }
 
-      const artifactStates = this.createArtifactStates(results, ctx, graph, buildPlan);
+      const artifactStates = artifactStateBuilder.build(graph, buildPlan, results, ctx);
 
       if (artifactStates.size > 0) {
         const persistedArtifactStates = await artifactStateReader.read(workspaceRoot);
@@ -150,79 +148,6 @@ export class BuildService {
     }
 
     return this.summarize(results);
-  }
-
-  private createArtifactStates(
-    results: readonly BuildResult[],
-    ctx: ExecutionContext,
-    graph: BuildContext['graph'],
-    buildPlan: ReturnType<ChangePlanner['createPlan']> extends Promise<infer T> ? T : never,
-  ): ReadonlyMap<string, ArtifactState> {
-    const artifacts = new Map<string, ArtifactState>();
-
-    for (const result of results) {
-      if (
-        result.status === 'failed' ||
-        (result.status === 'skipped' && result.execution.reason === 'failed')
-      ) {
-        continue;
-      }
-
-      const node = graph.get(result.package);
-
-      if (!node) {
-        continue;
-      }
-
-      const entry = buildPlan.get(result.package);
-
-      if (!entry) {
-        continue;
-      }
-
-      const trace = ctx.nodes.get(result.package);
-
-      if (!trace) {
-        continue;
-      }
-
-      const status = this.resolveArtifactStatus(result);
-
-      if (!status) {
-        continue;
-      }
-
-      if (trace.startedAt === undefined || trace.finishedAt === undefined) {
-        continue;
-      }
-
-      artifacts.set(result.package, {
-        hash: entry.hash,
-        dependencies: [...node.dependencies],
-        status,
-        startedAt: trace.startedAt,
-        finishedAt: trace.finishedAt,
-        schemaVersion: 1,
-      });
-    }
-
-    return artifacts;
-  }
-
-  private resolveArtifactStatus(result: BuildResult): ArtifactState['status'] | undefined {
-    switch (result.execution.reason) {
-      case 'executed':
-        return 'built';
-
-      case 'restored':
-        return 'restored';
-
-      case 'cached':
-        return 'cached';
-
-      default:
-        return undefined;
-    }
   }
 
   private mergeArtifactStates(
