@@ -4,15 +4,18 @@ import process from 'node:process';
 
 import type { CAC } from 'cac';
 
-import { runGovernance } from '@arch/governance';
+import { runCompliance } from '@arch/governance';
 
 import type { ComplianceCliOptions } from '../contracts/compliance-cli-options.js';
+import { renderComplianceResult } from '../renderers/render-compliance.js';
 
 export async function runComplianceCommand(options: ComplianceCliOptions): Promise<number> {
-  const result = await runGovernance({
+  const result = await runCompliance({
     workspaceRoot: process.cwd(),
     packageName: options.package,
   });
+
+  renderComplianceResult(result);
 
   return result.success ? 0 : 1;
 }

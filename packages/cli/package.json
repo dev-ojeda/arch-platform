@@ -9,6 +9,7 @@
     "bin"
   ],
   "arch": {
+    "artifactType": "runtime",
     "build": {
       "builder": "tsup",
       "outputs": [

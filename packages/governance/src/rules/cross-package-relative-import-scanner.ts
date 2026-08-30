@@ -3,7 +3,7 @@
 import type { Diagnostic } from '@arch/platform-model';
 
 import { ImportContextScanner } from '../analysis/imports/import-context-scanner.js';
-import type { GovernanceExecutionContext } from '../context/governance-context.js';
+import type { GovernanceExecutionContext } from '../context/governance-execution-context.js';
 
 export class CrossPackageRelativeImportScanner {
   constructor(private readonly imports = new ImportContextScanner()) {}

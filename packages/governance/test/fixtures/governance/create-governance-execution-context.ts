@@ -1,4 +1,4 @@
-import { DefaultGovernancePackageQuery } from '../../../src/context/default-governance-package-query.js';
+import { DefaultPackageQuery } from '../../../src/context/default-package-query.js';
 import type { GovernanceExecutionContext } from '../../../src/context/governance-context.js';
 import { createAnalysisContext } from '../code-analysis/create-analysis-context.js';
 import { createWorkspaceDescriptor } from '../workspace/create-workspace-descriptor.js';
@@ -20,7 +20,7 @@ export function createGovernanceExecutionContext(
       kind: 'workspace',
       root: workspace.root,
     },
-    packages: new DefaultGovernancePackageQuery(workspace),
+    packages: new DefaultPackageQuery(workspace),
 
     artifactStates: undefined,
     complianceStates: undefined,

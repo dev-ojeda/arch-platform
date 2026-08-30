@@ -13,6 +13,7 @@
   },
   "sideEffects": false,
   "arch": {
+    "artifactType": "runtime",
     "build": {
       "builder": "tsc",
       "outputs": [

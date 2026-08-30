@@ -22,6 +22,7 @@ export class FilesystemComplianceStateWriter implements ComplianceStateWriter {
 
   apply(change: ComplianceStateChange): void {
     const previous = this.state.artifacts[change.artifact]?.status;
+
     if (previous !== change.previous) {
       throw new Error(
         `Invalid compliance state transition for "${change.artifact}": ` +
@@ -35,6 +36,7 @@ export class FilesystemComplianceStateWriter implements ComplianceStateWriter {
         ...this.state.artifacts,
         [change.artifact]: {
           status: change.current,
+          hash: change.hash,
         },
       },
     };

@@ -9,6 +9,7 @@
     }
   },
   "arch": {
+    "artifactType": "declaration",
     "build": {
       "builder": "tsc-declaration",
       "outputs": [

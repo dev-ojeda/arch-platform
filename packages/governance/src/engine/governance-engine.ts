@@ -2,7 +2,7 @@
 
 import type { Diagnostic, DiagnosticSeverity } from '@arch/platform-model';
 
-import type { GovernanceExecutionContext } from '../context/governance-context.js';
+import type { GovernanceExecutionContext } from '../context/governance-execution-context.js';
 import { createStopwatch } from '../helpers/create-stopwatch.js';
 import { getErrorMessage } from '../helpers/error-message.js';
 import type { GovernanceResult } from '../public/governance-result.js';

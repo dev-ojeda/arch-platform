@@ -1,5 +1,3 @@
-// packages/governance/src/engine/dependency-rules.engine.ts
-
 import type { DependencyMatrix, Diagnostic, Layer } from '@arch/platform-model';
 
 import type { GovernanceContext } from '../context/governance-context.js';
@@ -11,7 +9,6 @@ export class DependencyRulesEngine {
   run(context: GovernanceContext): Diagnostic[] {
     const diagnostics: Diagnostic[] = [];
 
-    const packageMap = new Map(context.workspace.packages.map((p) => [p.name, p]));
     for (const pkg of context.packages.scoped(context.scope)) {
       const fromLayer = this.getKindFromPackage(pkg);
       if (!fromLayer) continue;
@@ -19,11 +16,10 @@ export class DependencyRulesEngine {
       const deps = pkg.internalDependencies ?? [];
 
       for (const depName of deps) {
-        const depPkg = packageMap.get(depName);
+        const depPkg = context.packages.get(depName);
         if (!depPkg) continue;
 
         const toLayer = this.getKindFromPackage(depPkg);
-
         if (!toLayer) continue;
 
         const rule = this.matrix[fromLayer]?.[toLayer] ?? 'allow';
@@ -43,7 +39,7 @@ export class DependencyRulesEngine {
               fromLayer,
               toLayer,
             },
-            hint: `Remove dependency or change architectural layer`,
+            hint: 'Remove dependency or change architectural layer',
           });
         }
       }
@@ -58,6 +54,7 @@ export class DependencyRulesEngine {
     const kind = pkg.manifest.arch?.kind;
     return this.isLayer(kind) ? kind : undefined;
   }
+
   private isLayer(value: unknown): value is Layer {
     return (
       value === 'domain' ||

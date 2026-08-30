@@ -2,7 +2,7 @@
 
 import { SymbolGraphQuery } from '@arch/code-analysis';
 
-import type { GovernanceExecutionContext } from '../../context/governance-context.js';
+import type { GovernanceExecutionContext } from '../../context/governance-execution-context.js';
 
 import type { ExportContext } from './export-context.js';
 

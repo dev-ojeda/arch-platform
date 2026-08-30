@@ -22,6 +22,7 @@ function createGraph(packages: readonly WorkspacePackage[]): MutableGraph {
       dependencies: resolveWorkspaceDependencies(pkg, workspacePackages),
       dependents: [],
       outputs: [...pkg.outputs],
+      artifactType: pkg.artifactType,
       build: pkg.build,
     });
   }

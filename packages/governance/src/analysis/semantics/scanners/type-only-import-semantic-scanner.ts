@@ -1,6 +1,6 @@
 // packages/governance/src/analysis/semantics/scanners/type-only-import-semantic-scanner.ts
 
-import type { GovernanceExecutionContext } from '../../../context/governance-context.js';
+import type { GovernanceExecutionContext } from '../../../context/governance-execution-context.js';
 import { invalidTypeOnlyImport } from '../../../diagnostics/type-only-import-diagnostics.js';
 import { ImportContextScanner } from '../../imports/import-context-scanner.js';
 import type { SemanticIssue } from '../semantic-issue.js';

@@ -20,5 +20,5 @@ export interface PackageManifest {
   devDependencies?: Record<string, string>;
   peerDependencies?: Record<string, string>;
 
-  arch?: PackageMetadata;
+  arch: PackageMetadata;
 }

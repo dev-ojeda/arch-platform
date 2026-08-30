@@ -3,7 +3,7 @@
 import type { Diagnostic } from '@arch/platform-model';
 
 import type { SemanticScanner } from '../analysis/index.js';
-import type { GovernanceExecutionContext } from '../context/governance-context.js';
+import type { GovernanceExecutionContext } from '../context/governance-execution-context.js';
 import { GOVERNANCE_RULE_ID } from '../engine/governance-rule-id.js';
 import type { GovernanceRule } from '../engine/governance-rule.js';
 import type { GovernanceScope } from '../public/governance-scope.js';
