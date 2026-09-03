@@ -3,6 +3,7 @@
 import type {
   ArtifactComplianceStatus,
   ArtifactState,
+  ComplianceEnvironment,
   HashResult,
   Layer,
   WorkspaceDescriptor,
@@ -18,7 +19,9 @@ export interface ComplianceArtifactContext {
   readonly artifactHash: HashResult | undefined;
 
   readonly complianceStatus: ArtifactComplianceStatus | undefined;
-  readonly complianceHash: HashResult | undefined;
+  readonly complianceEvaluatedHash: HashResult | undefined;
+  readonly complianceApprovedHash: HashResult | undefined;
 
+  readonly environment: ComplianceEnvironment;
   readonly dependencies: readonly ComplianceDependencyContext[];
 }

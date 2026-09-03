@@ -18,6 +18,7 @@ describe('DependencyRulesEngine', () => {
               name: '@arch/domain',
               arch: {
                 kind: 'domain',
+                artifactType: 'runtime',
               },
             },
             internalDependencies: ['@arch/infra'],
@@ -29,6 +30,7 @@ describe('DependencyRulesEngine', () => {
               name: '@arch/infra',
               arch: {
                 kind: 'infra',
+                artifactType: 'runtime',
               },
             },
           }),
@@ -65,6 +67,7 @@ describe('DependencyRulesEngine', () => {
               name: '@arch/application',
               arch: {
                 kind: 'app',
+                artifactType: 'runtime',
               },
             },
             internalDependencies: ['@arch/domain'],
@@ -76,6 +79,7 @@ describe('DependencyRulesEngine', () => {
               name: '@arch/domain',
               arch: {
                 kind: 'domain',
+                artifactType: 'runtime',
               },
             },
           }),
@@ -106,6 +110,7 @@ describe('DependencyRulesEngine', () => {
               name: '@arch/infra',
               arch: {
                 kind: 'infra',
+                artifactType: 'runtime',
               },
             },
           }),
@@ -131,6 +136,7 @@ describe('DependencyRulesEngine', () => {
               name: '@arch/domain',
               arch: {
                 kind: 'domain',
+                artifactType: 'runtime',
               },
             },
             internalDependencies: ['external-package'],
@@ -157,6 +163,7 @@ describe('DependencyRulesEngine', () => {
               name: '@arch/domain',
               arch: {
                 kind: 'domain',
+                artifactType: 'runtime',
               },
             },
             internalDependencies: ['@arch/unknown'],

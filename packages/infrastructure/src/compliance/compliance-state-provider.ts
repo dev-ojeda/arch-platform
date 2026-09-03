@@ -1,6 +1,7 @@
 // packages/infrastructure/src/compliance/compliance-state-provider.ts
 
 import type {
+  ComplianceEnvironment,
   ComplianceState,
   ComplianceStateReader,
   ComplianceStateWriter,
@@ -19,12 +20,17 @@ export class ComplianceStateProvider {
     );
   }
 
-  createWriter(workspaceRoot: string, state: ComplianceState): ComplianceStateWriter {
+  createWriter(
+    workspaceRoot: string,
+    state: ComplianceState,
+    environment: ComplianceEnvironment,
+  ): ComplianceStateWriter {
     return new FilesystemComplianceStateWriter(
       state,
       new NodeAsyncFileSystemAdapter(),
       new NodePathService(),
       workspaceRoot,
+      environment,
     );
   }
 }

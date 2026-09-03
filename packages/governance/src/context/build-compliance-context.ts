@@ -18,13 +18,20 @@ export async function buildComplianceContext(
   complianceStatesReader: ComplianceStateReader,
 ): Promise<ComplianceContext> {
   const scope = resolveComplianceScope(options);
+
+  if (!options.environment) {
+    throw new Error('Compliance environment is required.');
+  }
+
   const artifactStates = await artifactStatesReader.read(scope.root);
-  const complianceStates = await complianceStatesReader.read(scope.root);
+
+  const complianceStates = await complianceStatesReader.read(scope.root, options.environment);
 
   return {
     workspace,
-    scope: scope,
+    scope,
     artifactStates,
     complianceStates,
+    environment: options.environment,
   };
 }

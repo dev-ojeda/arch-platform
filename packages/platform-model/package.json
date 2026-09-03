@@ -21,7 +21,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "arch": "arch build --package @arch/platform-model",
-    "compliance": "arch compliance --package @arch/platform-model",
+    "compliance": "arch compliance --package @arch/platform-model --env dev",
     "clean": "arch clean",
     "typecheck": "arch typecheck"
   }

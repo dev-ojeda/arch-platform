@@ -1,23 +1,32 @@
 // packages/governance/src/rules/artifact/artifact-compliance-evaluator.ts
 
-import type { ComplianceStateChange, Diagnostic } from '@arch/platform-model';
+import type {
+  ComplianceEnvironment,
+  ComplianceStateChange,
+  Diagnostic,
+} from '@arch/platform-model';
 
 import type { ComplianceDependencyContext } from '../../compliance/compliance-dependencies-context.js';
 import type { ComplianceEvaluated } from '../../compliance/compliance-evaluated.js';
-import type { ComplianceEvaluation } from '../../compliance/compliance-evaluation.js';
+import type { ComplianceRuleEvaluation } from '../../compliance/compliance-rule-evaluation.js';
 import type { ComplianceArtifactContext } from '../../context/compliance-artifact-context.js';
 import type { ComplianceExecutionContext } from '../../context/compliance-execution-context.js';
+import { dependencyNotCompliant } from '../../diagnostics/artifact-compliance-diagnostics.js';
 
 export class ArtifactComplianceEvaluator implements ComplianceEvaluated {
-  evaluate(context: ComplianceExecutionContext): ComplianceEvaluation {
-    return this.verifyArtifactComplianceStatus(context.artifacts);
+  evaluate(context: ComplianceExecutionContext): ComplianceRuleEvaluation {
+    return this.verifyArtifactComplianceStatus(context.artifacts, context.environment);
   }
-
   private verifyArtifactComplianceStatus(
     artifacts: readonly ComplianceArtifactContext[],
-  ): ComplianceEvaluation {
+    environment: ComplianceEnvironment | undefined,
+  ): ComplianceRuleEvaluation {
     const diagnostics: Diagnostic[] = [];
     const changes: ComplianceStateChange[] = [];
+
+    if (!environment) {
+      throw new Error('Compliance environment is required.');
+    }
 
     for (const artifact of artifacts) {
       if (!artifact.artifactStatus) {
@@ -27,105 +36,85 @@ export class ArtifactComplianceEvaluator implements ComplianceEvaluated {
       if (!artifact.artifactHash) {
         continue;
       }
-      if (
-        artifact.artifactType === 'declaration' &&
-        artifact.artifactKind === 'tooling' &&
-        artifact.complianceStatus !== 'approved'
-      ) {
-        changes.push({
-          artifact: artifact.artifact.name,
-          previous: artifact.complianceStatus,
-          current: 'approved',
-          hash: artifact.artifactHash,
-        });
+
+      const dependency = this.findNonCompliantDependency(artifact);
+
+      if (dependency) {
+        diagnostics.push(dependencyNotCompliant(artifact, dependency));
+
+        if (artifact.complianceStatus !== 'transition') {
+          changes.push({
+            environment,
+            artifact: artifact.artifact.name,
+            previousStatus: artifact.complianceStatus,
+            nextStatus: 'transition',
+            evaluatedHash: artifact.artifactHash,
+          });
+        }
 
         continue;
       }
+
       if (artifact.complianceStatus === undefined) {
         changes.push({
+          environment,
           artifact: artifact.artifact.name,
-          previous: undefined,
-          current: 'transition',
-          hash: artifact.artifactHash,
-        });
-
-        continue;
-      }
-
-      if (!artifact.complianceHash) {
-        changes.push({
-          artifact: artifact.artifact.name,
-          previous: artifact.complianceStatus,
-          current: 'transition',
-          hash: artifact.artifactHash,
+          previousStatus: undefined,
+          nextStatus: 'transition',
+          evaluatedHash: artifact.artifactHash,
         });
 
         continue;
       }
 
       const artifactHash = artifact.artifactHash.hash;
-      const complianceHash = artifact.complianceHash.hash;
-
-      if (artifactHash !== complianceHash) {
-        if (artifact.complianceStatus !== 'transition') {
-          changes.push({
-            artifact: artifact.artifact.name,
-            previous: artifact.complianceStatus,
-            current: 'transition',
-            hash: artifact.artifactHash,
-          });
-        }
-
-        continue;
-      }
-
-      if (!this.areDependenciesCompliant(artifact)) {
-        if (artifact.complianceStatus !== 'transition') {
-          changes.push({
-            artifact: artifact.artifact.name,
-            previous: artifact.complianceStatus,
-            current: 'transition',
-            hash: artifact.artifactHash,
-          });
-        }
-
-        continue;
-      }
+      const evaluatedHash = artifact.complianceEvaluatedHash?.hash;
+      const approvedHash = artifact.complianceApprovedHash?.hash;
 
       if (artifact.complianceStatus === 'transition') {
+        if (evaluatedHash === artifactHash) {
+          changes.push({
+            environment,
+            artifact: artifact.artifact.name,
+            previousStatus: 'transition',
+            nextStatus: 'approved',
+            evaluatedHash: artifact.artifactHash,
+          });
+
+          continue;
+        }
+
         changes.push({
+          environment,
           artifact: artifact.artifact.name,
-          previous: 'transition',
-          current: 'approved',
-          hash: artifact.artifactHash,
+          previousStatus: 'transition',
+          nextStatus: 'transition',
+          evaluatedHash: artifact.artifactHash,
         });
+
+        continue;
+      }
+
+      if (approvedHash !== artifactHash) {
+        changes.push({
+          environment,
+          artifact: artifact.artifact.name,
+          previousStatus: artifact.complianceStatus,
+          nextStatus: 'transition',
+          evaluatedHash: artifact.artifactHash,
+        });
+
+        continue;
       }
     }
-    console.log(
-      'ArtifactComplianceEvaluator.changes',
-      changes.map((change) => ({
-        artifact: change.artifact,
-        previous: change.previous,
-        current: change.current,
-      })),
-    );
+
     return {
       diagnostics,
       changes,
-      executions: 0,
     };
   }
 
-  private areDependenciesCompliant(artifact: ComplianceArtifactContext): boolean {
-    return artifact.dependencies.every((dependency) =>
-      this.isDependencyCompliant(artifact, dependency),
-    );
-  }
-
-  private isDependencyCompliant(
-    artifact: ComplianceArtifactContext,
-    dependency: ComplianceDependencyContext,
-  ): boolean {
+  private isDependencyCompliant(dependency: ComplianceDependencyContext): boolean {
     if (dependency.artifactStatus !== 'built' && dependency.artifactStatus !== 'cached') {
       return false;
     }
@@ -134,6 +123,20 @@ export class ArtifactComplianceEvaluator implements ComplianceEvaluated {
       return false;
     }
 
-    return true;
+    if (!dependency.artifactHash) {
+      return false;
+    }
+
+    if (!dependency.complianceApprovedHash) {
+      return false;
+    }
+
+    return dependency.artifactHash.hash === dependency.complianceApprovedHash.hash;
+  }
+
+  private findNonCompliantDependency(
+    artifact: ComplianceArtifactContext,
+  ): ComplianceDependencyContext | undefined {
+    return artifact.dependencies.find((dependency) => !this.isDependencyCompliant(dependency));
   }
 }

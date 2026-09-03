@@ -1,5 +1,14 @@
 import type { LogLevel } from './log-types.js';
 
+const ANSI = {
+  reset: '\x1b[0m',
+
+  brightCyan: '\x1b[96m',
+  brightGreen: '\x1b[92m',
+  brightYellow: '\x1b[93m',
+  brightRed: '\x1b[91m',
+} as const;
+
 export const LOG_LEVELS: Record<
   LogLevel,
   {
@@ -9,22 +18,26 @@ export const LOG_LEVELS: Record<
 > = {
   trace: {
     write: console.debug,
-    symbol: '· ',
+    symbol: `${ANSI.brightCyan}· ${ANSI.reset}`,
   },
+
   info: {
     write: console.log,
     symbol: '',
   },
+
   success: {
     write: console.log,
-    symbol: '✔ ',
+    symbol: `${ANSI.brightGreen}✔ ${ANSI.reset}`,
   },
+
   warn: {
     write: console.warn,
-    symbol: '▲ ',
+    symbol: `${ANSI.brightYellow}▲ ${ANSI.reset}`,
   },
+
   error: {
     write: console.error,
-    symbol: '✖ ',
+    symbol: `${ANSI.brightRed}✖ ${ANSI.reset}`,
   },
 };

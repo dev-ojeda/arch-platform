@@ -5,7 +5,14 @@ import type { DiagnosticCli } from './diagnostic-cli.js';
 export function formatterDiagnostic(diagnostic: DiagnosticCli): string {
   const file = diagnostic.location?.file;
   const location = file ? terminalLink(file, toFileUrl(file)) : undefined;
-  const lines = [`✖ ${diagnostic.code}`, `  `, ` ${location}`, `  ${diagnostic.message}`];
+
+  const lines = [`✖ ${diagnostic.code}`, `  `];
+
+  if (location) {
+    lines.push(` ${location}`);
+  }
+
+  lines.push(`  ${diagnostic.message}`);
 
   if (diagnostic.hint) {
     lines.push(`  Hint: ${diagnostic.hint}`);

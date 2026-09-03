@@ -9,16 +9,18 @@ import { formatterDiagnostic } from './formatter-diagnostic.js';
 export function renderComplianceResult(result: ComplianceResult): void {
   renderHeader(result);
 
-  if (result.diagnostics.length === 0) {
+  if (result.success) {
     renderSuccess(result);
   } else {
     renderFailure(result);
+  }
+
+  if (result.diagnostics.length > 0) {
     renderDiagnostics(result);
   }
 
   renderFooter(result);
 }
-
 function renderHeader(result: ComplianceResult): void {
   terminal.info('');
   terminal.info('ARCH Compliance');
@@ -28,9 +30,22 @@ function renderHeader(result: ComplianceResult): void {
 }
 
 function renderSuccess(result: ComplianceResult): void {
-  terminal.success('✓ Status: PASSED');
+  switch (result.action) {
+    case 'evaluate':
+      terminal.warn('⚠ Status: ACTION REQUIRED');
+      break;
+
+    case 'approve':
+      terminal.success('✓ Status: APPROVED');
+      break;
+
+    case 'none':
+      terminal.success('✓ Status: ALREADY COMPLIANT');
+      break;
+  }
+
   terminal.info('');
-  terminal.info(formatSuccess(result));
+  terminal.info(formatComplianceAction(result));
 }
 
 function renderFailure(result: ComplianceResult): void {
@@ -89,12 +104,45 @@ function formatScope(result: ComplianceResult): string {
   }
 }
 
-function formatSuccess(result: ComplianceResult): string {
+function formatComplianceAction(result: ComplianceResult): string {
+  switch (result.action) {
+    case 'evaluate':
+      return formatEvaluateAction(result);
+
+    case 'approve':
+      return formatApproveAction(result);
+
+    case 'none':
+      return formatAlreadyCompliant(result);
+  }
+}
+
+function formatEvaluateAction(result: ComplianceResult): string {
   switch (result.scope.kind) {
     case 'package':
-      return `✓ Compliance passed for ${result.scope.packageName}`;
+      return `Compliance evaluation required for ${result.scope.packageName}`;
 
     case 'workspace':
-      return '✓ Compliance passed for workspace';
+      return 'Compliance evaluation required for workspace';
+  }
+}
+
+function formatApproveAction(result: ComplianceResult): string {
+  switch (result.scope.kind) {
+    case 'package':
+      return `Compliance approved for ${result.scope.packageName}`;
+
+    case 'workspace':
+      return 'Compliance approved for workspace';
+  }
+}
+
+function formatAlreadyCompliant(result: ComplianceResult): string {
+  switch (result.scope.kind) {
+    case 'package':
+      return `${result.scope.packageName} is already compliant`;
+
+    case 'workspace':
+      return 'Workspace is already compliant';
   }
 }

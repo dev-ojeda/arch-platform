@@ -1,4 +1,4 @@
-import type { GovernanceExecutionContext } from '../../../src/context/governance-context.js';
+import type { GovernanceExecutionContext } from '../../../src/context/governance-execution-context.js';
 import { createAnalysisContext } from '../code-analysis/create-analysis-context.js';
 import { createExportedSymbolIndex } from '../code-analysis/create-exported-symbol-index.js';
 import { createGovernanceContext } from '../governance/create-governance-context.js';
@@ -64,6 +64,7 @@ export function createContext(
             name: sourcePackage,
             manifest: {
               name: sourcePackage,
+              arch: undefined,
             },
           }),
 
@@ -74,6 +75,7 @@ export function createContext(
               exports: {
                 '.': './dist/index.js',
               },
+              arch: undefined,
             },
           }),
         ],

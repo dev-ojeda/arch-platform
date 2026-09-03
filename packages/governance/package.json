@@ -30,7 +30,7 @@
     "build": "tsc -p tsconfig.build.json",
     "arch": "arch build --package @arch/governance",
     "clean": "arch clean",
-    "compliance": "arch compliance --package @arch/governance",
+    "compliance": "arch compliance --package @arch/governance --env dev",
     "typecheck": "arch typecheck",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",

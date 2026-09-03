@@ -9,11 +9,13 @@ export function resolveComplianceScope(options: ComplianceOptions): ComplianceSc
       kind: 'package',
       root: options.workspaceRoot,
       packageName: options.packageName,
+      environment: options.environment,
     };
   }
 
   return {
     kind: 'workspace',
     root: options.workspaceRoot,
+    environment: options.environment,
   };
 }

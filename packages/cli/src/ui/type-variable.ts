@@ -1,6 +1,26 @@
 // packages/cli/src/ui/type-variable.ts
+export type LogLevel = 'trace' | 'info' | 'success' | 'warn' | 'error';
+const ANSI = {
+  reset: '\x1b[0m',
 
-export const LOG_LEVELS = {
+  brightCyan: '\x1b[96m',
+  brightGreen: '\x1b[92m',
+  brightYellow: '\x1b[93m',
+  brightRed: '\x1b[91m',
+} as const;
+
+export const LOG_LEVELS: Record<
+  LogLevel,
+  {
+    write: (...args: string[]) => void;
+    symbol: string;
+  }
+> = {
+  trace: {
+    write: console.debug,
+    symbol: `${ANSI.brightCyan}· ${ANSI.reset}`,
+  },
+
   info: {
     write: console.log,
     symbol: '',
@@ -8,20 +28,16 @@ export const LOG_LEVELS = {
 
   success: {
     write: console.log,
-    symbol: '✔ ',
+    symbol: `${ANSI.brightGreen}✔ ${ANSI.reset}`,
   },
 
   warn: {
     write: console.warn,
-    symbol: '▲ ',
+    symbol: `${ANSI.brightYellow}▲ ${ANSI.reset}`,
   },
 
   error: {
     write: console.error,
-    symbol: '✖ ',
+    symbol: `${ANSI.brightRed}✖ ${ANSI.reset}`,
   },
-} as const;
-
-export type LogLevel = keyof typeof LOG_LEVELS;
-
-export type LogLevelConfig = (typeof LOG_LEVELS)[LogLevel];
+};
