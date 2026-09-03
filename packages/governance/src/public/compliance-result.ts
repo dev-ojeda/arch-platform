@@ -2,6 +2,7 @@
 
 import type { Diagnostic } from '@arch/platform-model';
 
+import type { ComplianceAction } from './compliance-action.js';
 import type { ComplianceScope } from './compliance-scope.js';
 
 export interface ComplianceResult {
@@ -11,4 +12,5 @@ export interface ComplianceResult {
   readonly changes: number;
   readonly executions: number;
   readonly scope: ComplianceScope;
+  readonly action: ComplianceAction;
 }

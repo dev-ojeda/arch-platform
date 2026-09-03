@@ -2,6 +2,7 @@
 
 import type { FileSystemAsyncPort, PathService } from '@arch/contracts';
 import type {
+  ComplianceEnvironment,
   ComplianceState,
   ComplianceStateChange,
   ComplianceStateChanges,
@@ -18,40 +19,84 @@ export class FilesystemComplianceStateWriter implements ComplianceStateWriter {
     private readonly filesystem: FileSystemAsyncPort,
     private readonly pathService: PathService,
     private readonly workspaceRoot: string,
+    private readonly environment: ComplianceEnvironment,
   ) {}
 
   apply(change: ComplianceStateChange): void {
-    const previous = this.state.artifacts[change.artifact]?.status;
-
-    if (previous !== change.previous) {
+    if (change.environment !== this.environment) {
       throw new Error(
-        `Invalid compliance state transition for "${change.artifact}": ` +
-          `expected previous state "${previous}", received "${change.previous}".`,
+        `Invalid compliance environment for "${change.artifact}": ` +
+          `expected "${this.environment}", received "${change.environment}".`,
       );
     }
 
+    const previousState = this.state.environment.artifacts[change.artifact];
+
+    const previousStatus = previousState?.status;
+
+    if (previousStatus !== change.previousStatus) {
+      throw new Error(
+        `Invalid compliance state transition for "${change.artifact}": ` +
+          `expected previous state "${previousStatus}", received "${change.previousStatus}".`,
+      );
+    }
+
+    const evaluatedAt = Date.now();
+
+    const artifactState = {
+      status: change.nextStatus,
+
+      evaluatedHash: change.evaluatedHash,
+
+      order: this.state.environment.order,
+
+      evaluatedAt,
+
+      schemaVersion: 1,
+
+      ...(change.nextStatus === 'approved'
+        ? {
+            approvedHash: { ...change.evaluatedHash },
+            approvedAt: evaluatedAt,
+          }
+        : previousState?.approvedHash
+          ? {
+              approvedHash: previousState.approvedHash,
+              ...(previousState.approvedAt !== undefined
+                ? {
+                    approvedAt: previousState.approvedAt,
+                  }
+                : {}),
+            }
+          : {}),
+    };
+
     this.state = {
       ...this.state,
-      artifacts: {
-        ...this.state.artifacts,
-        [change.artifact]: {
-          status: change.current,
-          hash: change.hash,
+
+      environment: {
+        ...this.state.environment,
+
+        artifacts: {
+          ...this.state.environment.artifacts,
+
+          [change.artifact]: artifactState,
         },
       },
     };
 
     this.changes.add(change);
   }
-
   getChanges(): ComplianceStateChanges {
     return this.changes.toSnapshot();
   }
 
   async write(): Promise<void> {
-    const path = this.pathService.join(this.workspaceRoot, '.arch', 'compliance.json');
+    const directory = this.pathService.join(this.workspaceRoot, '.arch', 'compliance');
 
-    await this.filesystem.createDirectory(this.pathService.dirname(path));
+    const path = this.pathService.join(directory, `${this.environment}.json`);
+
+    await this.filesystem.createDirectory(directory);
 
     await this.filesystem.writeJson(path, this.state);
   }

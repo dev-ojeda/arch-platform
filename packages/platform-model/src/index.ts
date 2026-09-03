@@ -20,8 +20,11 @@ export type {
 } from './artifact/index.js';
 export * from './compliance/index.js';
 export type {
-  ArtifactCompliance,
   ArtifactComplianceStatus,
+  ComplianceArtifactEnvironmentState,
+  ComplianceEnvironment,
+  ComplianceEnvironmentDescriptor,
+  ComplianceEnvironmentState,
   ComplianceState,
   ComplianceStateChange,
   ComplianceStateChanges,

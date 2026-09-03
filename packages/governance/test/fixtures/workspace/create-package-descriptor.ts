@@ -11,6 +11,7 @@ export function createPackageDescriptor(
     manifestPath: '/workspace/packages/example/package.json',
     manifest: {
       name: '@arch/example',
+      arch: undefined,
     },
     internalDependencies: [],
     layout: createPackageLayout(),

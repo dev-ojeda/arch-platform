@@ -13,6 +13,7 @@ export async function runComplianceCommand(options: ComplianceCliOptions): Promi
   const result = await runCompliance({
     workspaceRoot: process.cwd(),
     packageName: options.package,
+    environment: options.env,
   });
 
   renderComplianceResult(result);
@@ -24,6 +25,7 @@ export function registerComplianceCommand(cli: CAC): void {
   cli
     .command('compliance', 'Compliance workspace')
     .option('--package <package>', 'Compliance package')
+    .option('--env <environment>', 'Compliance environment')
     .action(async (options: ComplianceCliOptions) => {
       process.exitCode = await runComplianceCommand(options);
     });

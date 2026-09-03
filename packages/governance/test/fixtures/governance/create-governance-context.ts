@@ -15,8 +15,6 @@ export function createGovernanceContext(
     },
     packages: new DefaultPackageQuery(workspace),
 
-    artifactStates: undefined,
-    complianceStates: undefined,
     ...overrides,
   };
 }

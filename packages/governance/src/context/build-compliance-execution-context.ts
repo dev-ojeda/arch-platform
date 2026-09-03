@@ -8,22 +8,37 @@ export function buildComplianceExecutionContext(
   context: ComplianceContext,
 ): ComplianceExecutionContext {
   const packages = resolveCompliancePackages(context.workspace, context.scope);
-  const artifacts = packages.map((pkg) => {
-    const artifactState = context.artifactStates.get(pkg.name);
 
-    const dependencies = pkg.internalDependencies.map((dependency) => {
+  let targetPackages = packages;
+
+  if (context.scope.kind === 'package') {
+    const pkgName = context.scope.packageName;
+    targetPackages = packages.filter((pkg) => pkg.name === pkgName);
+  }
+
+  const environmentState = context.complianceStates.environment;
+  const artifacts = targetPackages.map((pkg) => {
+    const artifactState = context.artifactStates.get(pkg.name);
+    const compliance = environmentState.artifacts[pkg.name];
+
+    const dependencies = (artifactState?.dependencies ?? []).map((dependency) => {
       const dependencyPackage = context.workspace.packages.find(
         (candidate) => candidate.name === dependency,
       );
 
       const dependencyState = context.artifactStates.get(dependency);
+      const dependencyCompliance = environmentState.artifacts[dependency];
 
       return {
         artifact: dependency,
         artifactKind: dependencyPackage?.manifest.arch?.kind,
         artifactType: dependencyState?.artifactType,
         artifactStatus: dependencyState?.status,
-        complianceStatus: context.complianceStates.artifacts[dependency]?.status,
+        artifactHash: dependencyState?.hash,
+
+        complianceStatus: dependencyCompliance?.status,
+        complianceEvaluatedHash: dependencyCompliance?.evaluatedHash,
+        complianceApprovedHash: dependencyCompliance?.approvedHash,
       };
     });
 
@@ -33,8 +48,13 @@ export function buildComplianceExecutionContext(
       artifactType: artifactState?.artifactType,
       artifactStatus: artifactState?.status,
       artifactHash: artifactState?.hash,
-      complianceStatus: context.complianceStates.artifacts[pkg.name]?.status,
-      complianceHash: context.complianceStates.artifacts[pkg.name]?.hash,
+
+      complianceStatus: compliance?.status,
+      complianceEvaluatedHash: compliance?.evaluatedHash,
+      complianceApprovedHash: compliance?.approvedHash,
+
+      environment: environmentState.name,
+
       dependencies,
     };
   });

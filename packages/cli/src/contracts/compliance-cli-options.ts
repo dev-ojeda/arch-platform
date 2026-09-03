@@ -2,4 +2,5 @@
 
 export interface ComplianceCliOptions {
   readonly package?: string;
+  readonly env: string;
 }

@@ -32,7 +32,7 @@
     "build:dts": "tsc -p tsconfig.build.json --emitDeclarationOnly",
     "arch": "arch build --package @arch/tooling",
     "clean": "arch clean",
-    "compliance": "arch compliance --package @arch/tooling",
+    "compliance": "arch compliance --package @arch/tooling --env dev",
     "typecheck": "arch typecheck"
   },
   "dependencies": {

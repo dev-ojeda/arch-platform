@@ -31,7 +31,7 @@
     "build:dts": "tsc -p tsconfig.build.json",
     "arch": "arch build --package @arch/code-analysis",
     "clean": "arch clean",
-    "compliance": "arch compliance --package @arch/code-analysis",
+    "compliance": "arch compliance --package @arch/code-analysis --env dev",
     "typecheck": "arch typecheck",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",
