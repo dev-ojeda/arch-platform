@@ -7,6 +7,8 @@ import {
   DefaultArtifactProvider,
   FilesystemArtifactCache,
   FilesystemArtifactLayoutFactory,
+  FilesystemArtifactStateHistoryReader,
+  FilesystemArtifactStateHistoryWriter,
   FilesystemArtifactStateReader,
   FilesystemArtifactStateWriter,
   FilesystemOutputValidator,
@@ -23,6 +25,8 @@ import {
 import type {
   ArtifactCache,
   ArtifactProvider,
+  ArtifactStateHistoryReader,
+  ArtifactStateHistoryWriter,
   ArtifactStateReader,
   ArtifactStateWriter,
   BuildState,
@@ -91,6 +95,8 @@ export class BuildCompositionRoot {
       artifactStateReader,
       artifactStateWriter: this.createArtifactStateWriter(),
       artifactStateBuilder: this.createArtifactStateBuilder(),
+      artifactStateHistoryReader: this.createArtifactStateHistoryReader(),
+      artifactStateHistoryWriter: this.createArtifactStateHistoryWriter(),
     });
   }
   /**
@@ -170,6 +176,13 @@ export class BuildCompositionRoot {
 
   createArtifactStateWriter(): ArtifactStateWriter {
     return new FilesystemArtifactStateWriter(this.fsAsync, this.pathService);
+  }
+  createArtifactStateHistoryReader(): ArtifactStateHistoryReader {
+    return new FilesystemArtifactStateHistoryReader(this.fsAsync, this.pathService);
+  }
+
+  createArtifactStateHistoryWriter(): ArtifactStateHistoryWriter {
+    return new FilesystemArtifactStateHistoryWriter(this.fsAsync, this.pathService);
   }
   /**
    * Creates the artifact provider used to generate artifact metadata.
