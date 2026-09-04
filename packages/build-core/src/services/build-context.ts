@@ -3,6 +3,8 @@
 import type {
   ArtifactCache,
   ArtifactProvider,
+  ArtifactStateHistoryReader,
+  ArtifactStateHistoryWriter,
   ArtifactStateReader,
   ArtifactStateWriter,
   BuildState,
@@ -32,4 +34,6 @@ export interface BuildContext {
   artifactStateReader: ArtifactStateReader;
   artifactStateWriter: ArtifactStateWriter;
   artifactStateBuilder: ArtifactStateBuilder;
+  artifactStateHistoryReader: ArtifactStateHistoryReader;
+  artifactStateHistoryWriter: ArtifactStateHistoryWriter;
 }

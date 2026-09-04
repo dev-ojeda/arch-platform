@@ -2,10 +2,13 @@
 export {
   ARTIFACT_SCHEMA_VERSION,
   ArtifactPublisherAdapter,
+  ArtifactStateHistoryProvider,
   ArtifactStateProvider,
   DefaultArtifactProvider,
   FilesystemArtifactCache,
   FilesystemArtifactLayoutFactory,
+  FilesystemArtifactStateHistoryReader,
+  FilesystemArtifactStateHistoryWriter,
   FilesystemArtifactStateReader,
   FilesystemArtifactStateWriter,
   FilesystemComplianceStateReader,

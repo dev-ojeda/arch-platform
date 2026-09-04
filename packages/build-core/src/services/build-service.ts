@@ -1,6 +1,6 @@
 // packages/build-core/src/services/build-service.ts
 
-import type { ArtifactState } from '@arch/platform-model';
+import type { ArtifactState, ArtifactStateHistory } from '@arch/platform-model';
 
 import { CacheEvaluator } from '../cache/cache-evaluator.js';
 import type { BuildResult } from '../executor/build-result.js';
@@ -48,6 +48,8 @@ export class BuildService {
       stateWriter,
       artifactStateReader,
       artifactStateWriter,
+      artifactStateHistoryReader,
+      artifactStateHistoryWriter,
       artifactStateBuilder,
       workspaceRoot,
     } = this.context;
@@ -138,6 +140,19 @@ export class BuildService {
       if (artifactStates.size > 0) {
         const persistedArtifactStates = await artifactStateReader.read(workspaceRoot);
 
+        const historyChanges = this.buildArtifactStateHistory(
+          persistedArtifactStates,
+          artifactStates,
+        );
+
+        if (historyChanges.size > 0) {
+          const persistedHistory = await artifactStateHistoryReader.read(workspaceRoot);
+
+          const mergedHistory = this.mergeArtifactStateHistory(persistedHistory, historyChanges);
+
+          await artifactStateHistoryWriter.write(workspaceRoot, mergedHistory);
+        }
+
         const mergedArtifactStates = this.mergeArtifactStates(
           persistedArtifactStates,
           artifactStates,
@@ -162,6 +177,28 @@ export class BuildService {
 
     return merged;
   }
+  private mergeArtifactStateHistory(
+    persisted: ReadonlyMap<string, ArtifactStateHistory>,
+    current: ReadonlyMap<string, ArtifactStateHistory>,
+  ): ReadonlyMap<string, ArtifactStateHistory> {
+    const merged = new Map(persisted);
+
+    for (const [artifact, currentHistory] of current) {
+      const previousHistory = merged.get(artifact);
+
+      if (!previousHistory) {
+        merged.set(artifact, currentHistory);
+        continue;
+      }
+
+      merged.set(artifact, {
+        artifact,
+        changes: [...previousHistory.changes, ...currentHistory.changes],
+      });
+    }
+
+    return merged;
+  }
   private summarize(results: BuildResult[]): BuildServiceSummary {
     return {
       results,
@@ -170,5 +207,49 @@ export class BuildService {
       cached: results.filter((r) => r.execution.reason === 'cached').length,
       failed: results.filter((r) => r.status === 'failed').length,
     };
+  }
+  private buildArtifactStateHistory(
+    previous: ReadonlyMap<string, ArtifactState>,
+    current: ReadonlyMap<string, ArtifactState>,
+  ): ReadonlyMap<string, ArtifactStateHistory> {
+    const history = new Map<string, ArtifactStateHistory>();
+
+    for (const [artifact, currentState] of current) {
+      const previousState = previous.get(artifact);
+
+      if (!previousState) {
+        history.set(artifact, {
+          artifact,
+          changes: [
+            {
+              previousHash: null,
+              currentHash: currentState.hash.hash,
+              reason: currentState.reason,
+              timestamp: currentState.finishedAt,
+            },
+          ],
+        });
+
+        continue;
+      }
+
+      if (previousState.hash.hash === currentState.hash.hash) {
+        continue;
+      }
+
+      history.set(artifact, {
+        artifact,
+        changes: [
+          {
+            previousHash: previousState.hash.hash,
+            currentHash: currentState.hash.hash,
+            reason: currentState.reason,
+            timestamp: currentState.finishedAt,
+          },
+        ],
+      });
+    }
+
+    return history;
   }
 }
