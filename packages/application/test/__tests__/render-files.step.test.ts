@@ -7,8 +7,8 @@ import type {
   RenderedFile,
   ResolvedTemplate,
   TemplateRendererPort,
-} from '@arch/contracts';
-import { createTestPipelineContext } from '@arch/testing';
+} from '@arch-platform/contracts';
+import { createTestPipelineContext } from '@arch-platform/testing';
 
 import { RenderFilesStep } from '../../src/generation/steps/render-files.step.js';
 import { createResolvedTemplateVariables } from '../createResolvedTemplateVariables.js';

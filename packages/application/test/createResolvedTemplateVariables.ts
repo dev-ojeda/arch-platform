@@ -1,6 +1,6 @@
 // packages\application\test\createResolvedTemplateVariables.ts
 
-import type { ResolvedTemplateVariables } from '@arch/contracts';
+import type { ResolvedTemplateVariables } from '@arch-platform/contracts';
 
 import type { TemplateVariables } from '../src/generation/variables/derive-template-variables.js';
 

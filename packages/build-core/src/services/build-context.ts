@@ -11,7 +11,7 @@ import type {
   Graph,
   OutputValidator,
   StateWriter,
-} from '@arch/platform-model';
+} from '@arch-platform/platform-model';
 
 import type { ArtifactStateBuilder } from '../artifact/artifact-state-builder.js';
 import type { BuildExecutor } from '../executor/build-executor.js';

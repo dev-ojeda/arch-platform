@@ -2,7 +2,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { GenerationCancelledError } from '@arch/core';
+import { GenerationCancelledError } from '@arch-platform/core';
 
 import { assertNotCancelled } from '../../../src/generation/runtime/assert-not-cancelled.js';
 

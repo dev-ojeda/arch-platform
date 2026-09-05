@@ -9,12 +9,14 @@ import { createInternalExportContext } from '../../fixtures/public-api/create-ex
 describe('OnlyPublicApiRule', () => {
   const rule = new OnlyPublicApiRule();
   it('allows importing exported symbols', async () => {
-    const diagnostics = rule.run(createContext('@arch/application', '@arch/domain', true));
+    const diagnostics = rule.run(createContext('@arch-platform/application', '@arch/domain', true));
     expect(diagnostics).toHaveLength(0);
   });
 
   it('rejects importing non exported symbols', () => {
-    const diagnostics = rule.run(createContext('@arch/application', '@arch/domain', false));
+    const diagnostics = rule.run(
+      createContext('@arch-platform/application', '@arch/domain', false),
+    );
 
     expect(diagnostics).toHaveLength(1);
 

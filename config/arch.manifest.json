@@ -5,55 +5,55 @@
   },
   "packages": [
     {
-      "name": "@arch/application",
+      "name": "@arch-platform/application",
       "path": "packages/application"
     },
     {
-      "name": "@arch/build-core",
+      "name": "@arch-platform/build-core",
       "path": "packages/build-core"
     },
     {
-      "name": "@arch/cli",
+      "name": "@arch-platform/cli",
       "path": "packages/cli"
     },
     {
-      "name": "@arch/code-analysis",
+      "name": "@arch-platform/code-analysis",
       "path": "packages/code-analysis"
     },
     {
-      "name": "@arch/contracts",
+      "name": "@arch-platform/contracts",
       "path": "packages/contracts"
     },
     {
-      "name": "@arch/core",
+      "name": "@arch-platform/core",
       "path": "packages/core"
     },
     {
-      "name": "@arch/domain-order",
+      "name": "@arch-platform/domain-order",
       "path": "packages/domain-order"
     },
     {
-      "name": "@arch/generator-mvc",
+      "name": "@arch-platform/generator-mvc",
       "path": "packages/generator-mvc"
     },
     {
-      "name": "@arch/governance",
+      "name": "@arch-platform/governance",
       "path": "packages/governance"
     },
     {
-      "name": "@arch/infrastructure",
+      "name": "@arch-platform/infrastructure",
       "path": "packages/infrastructure"
     },
     {
-      "name": "@arch/platform-model",
+      "name": "@arch-platform/platform-model",
       "path": "packages/platform-model"
     },
     {
-      "name": "@arch/testing",
+      "name": "@arch-platform/testing",
       "path": "packages/testing"
     },
     {
-      "name": "@arch/tooling",
+      "name": "@arch-platform/tooling",
       "path": "packages/tooling"
     }
   ]

@@ -1,6 +1,6 @@
 // packages/governance/src/context/build-governance-context.ts
 
-import type { ArchitectureManifest, WorkspaceDescriptor } from '@arch/platform-model';
+import type { ArchitectureManifest, WorkspaceDescriptor } from '@arch-platform/platform-model';
 
 import type { GovernanceOptions } from '../public/governance-options.js';
 

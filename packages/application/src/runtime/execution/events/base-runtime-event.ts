@@ -1,6 +1,6 @@
 // packages/application/src/runtime/execution/events/base-runtime-event.ts
 
-import type { RuntimeMetadata } from '@arch/contracts';
+import type { RuntimeMetadata } from '@arch-platform/contracts';
 
 export interface BaseRuntimeEvent {
   readonly executionId: string;

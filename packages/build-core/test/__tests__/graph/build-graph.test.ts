@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import type { WorkspacePackage } from '@arch/platform-model';
+import type { WorkspacePackage } from '@arch-platform/platform-model';
 
 import { buildGraph } from '../../../src/graph/build-graph.js';
 
@@ -9,16 +9,16 @@ describe('buildGraph', () => {
   it('should include runtime dependencies', () => {
     const packages: WorkspacePackage[] = [
       {
-        name: '@arch/core',
+        name: '@arch-platform/core',
         root: 'packages/core',
         dependencies: [],
         buildDependencies: [],
         outputs: [],
       },
       {
-        name: '@arch/application',
+        name: '@arch-platform/application',
         root: 'packages/application',
-        dependencies: ['@arch/core'],
+        dependencies: ['@arch-platform/core'],
         buildDependencies: [],
         outputs: [],
       },
@@ -26,15 +26,15 @@ describe('buildGraph', () => {
 
     const graph = buildGraph(packages);
 
-    expect(graph.get('@arch/application')?.dependencies).toEqual(['@arch/core']);
+    expect(graph.get('@arch-platform/application')?.dependencies).toEqual(['@arch-platform/core']);
 
-    expect(graph.get('@arch/core')?.dependents).toEqual(['@arch/application']);
+    expect(graph.get('@arch-platform/core')?.dependents).toEqual(['@arch-platform/application']);
   });
 
   it('should include build dependencies from devDependencies', () => {
     const packages: WorkspacePackage[] = [
       {
-        name: '@arch/contracts',
+        name: '@arch-platform/contracts',
         root: 'packages/contracts',
         dependencies: [],
         buildDependencies: [],
@@ -42,18 +42,18 @@ describe('buildGraph', () => {
       },
 
       {
-        name: '@arch/core',
+        name: '@arch-platform/core',
         root: 'packages/core',
         dependencies: [],
-        buildDependencies: ['@arch/contracts'],
+        buildDependencies: ['@arch-platform/contracts'],
         outputs: [],
       },
     ];
 
     const graph = buildGraph(packages);
 
-    expect(graph.get('@arch/core')?.dependencies).toEqual(['@arch/contracts']);
+    expect(graph.get('@arch-platform/core')?.dependencies).toEqual(['@arch-platform/contracts']);
 
-    expect(graph.get('@arch/contracts')?.dependents).toEqual(['@arch/core']);
+    expect(graph.get('@arch-platform/contracts')?.dependents).toEqual(['@arch-platform/core']);
   });
 });

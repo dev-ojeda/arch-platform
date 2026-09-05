@@ -1,7 +1,11 @@
 // packages/infrastructure/src/artifact/adapter/filesystem-artifact-layout-factory.ts
 
-import type { PathService } from '@arch/contracts';
-import type { Artifact, ArtifactLayout, ArtifactLayoutFactory } from '@arch/platform-model';
+import type { PathService } from '@arch-platform/contracts';
+import type {
+  Artifact,
+  ArtifactLayout,
+  ArtifactLayoutFactory,
+} from '@arch-platform/platform-model';
 
 import { FilesystemArtifactLayout } from './filesystem-artifact-layout.js';
 

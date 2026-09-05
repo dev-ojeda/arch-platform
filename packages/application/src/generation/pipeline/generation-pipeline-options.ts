@@ -5,7 +5,7 @@ import type {
   GenerationPipelineStep,
   IdGenerator,
   TemplateVariables,
-} from '@arch/contracts';
+} from '@arch-platform/contracts';
 
 import type { RuntimeEventBus } from '../../runtime/execution/events/runtime-event-bus.js';
 

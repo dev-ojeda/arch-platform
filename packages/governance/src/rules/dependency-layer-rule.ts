@@ -1,6 +1,6 @@
 // packages/governance/src/rules/dependency-layer-rule.ts
 
-import type { Diagnostic } from '@arch/platform-model';
+import type { Diagnostic } from '@arch-platform/platform-model';
 
 import type { GovernanceContext } from '../context/governance-context.js';
 import { DependencyRulesEngine } from '../engine/dependency-rules.engine.js';

@@ -1,5 +1,5 @@
 // packages\testing\src\fixtures\generators\test-generator.ts
-import type { GeneratorDefinition, TemplateVariables } from '@arch/contracts';
+import type { GeneratorDefinition, TemplateVariables } from '@arch-platform/contracts';
 
 export const testGenerator: GeneratorDefinition<TemplateVariables> = {
   descriptor: {

@@ -8,7 +8,7 @@ export class DefaultPackageResolver implements PackageResolver {
 
     const match = normalized.match(/\/?packages\/([^/]+)/);
 
-    return match ? `@arch/${match[1]}` : undefined;
+    return match ? `@arch-platform/${match[1]}` : undefined;
   }
 
   resolveFromModuleSpecifier(moduleSpecifier: string): string | undefined {

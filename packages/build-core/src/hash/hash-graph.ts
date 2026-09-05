@@ -1,6 +1,6 @@
 // packages/build-core/src/hash/hash-graph.ts
 
-import type { Graph, HashResult } from '@arch/platform-model';
+import type { Graph, HashResult } from '@arch-platform/platform-model';
 
 import { DagHasher } from './dag-hasher.js';
 

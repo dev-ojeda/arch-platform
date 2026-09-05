@@ -4,8 +4,8 @@
     "noEmit": true,
     "baseUrl": "..",
     "paths": {
-      "@arch/*": ["../packages/*/src"],
-      "@arch/generator-mvc": ["../packages/generators/mvc/src"]
+      "@arch-platform/*": ["../packages/*/src"],
+      "@arch-platform/generator-mvc": ["../packages/generators/mvc/src"]
     }
   },
   "include": [

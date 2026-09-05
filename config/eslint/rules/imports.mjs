@@ -36,7 +36,7 @@ export const COMMON_IMPORT_RULES = {
 
       pathGroups: [
         {
-          pattern: '@arch/**',
+          pattern: '@arch-platform/**',
           group: 'internal',
           position: 'before',
         },

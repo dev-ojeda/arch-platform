@@ -2,7 +2,7 @@
 
 import { execa } from 'execa';
 
-import type { CommandRunner } from '@arch/build-core';
+import type { CommandRunner } from '@arch-platform/build-core';
 
 import { logger } from '../../logging/logger.js';
 

@@ -1,5 +1,5 @@
 {
-  "name": "@arch/infrastructure",
+  "name": "@arch-platform/infrastructure",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -28,9 +28,9 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "arch": "arch build --package @arch/infrastructure",
+    "arch": "arch build --package @arch-platform/infrastructure",
     "clean": "arch clean",
-    "compliance": "arch compliance --package @arch/infrastructure --env dev",
+    "compliance": "arch compliance --package @arch-platform/infrastructure --env dev",
     "typecheck": "arch typecheck",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",
@@ -38,8 +38,8 @@
     "test:clear": "vitest --clearCache"
   },
   "dependencies": {
-    "@arch/platform-model": "workspace:*",
-    "@arch/contracts": "workspace:*",
-    "@arch/testing": "workspace:*"
+    "@arch-platform/platform-model": "workspace:*",
+    "@arch-platform/contracts": "^0.1.0",
+    "@arch-platform/testing": "workspace:*"
   }
 }

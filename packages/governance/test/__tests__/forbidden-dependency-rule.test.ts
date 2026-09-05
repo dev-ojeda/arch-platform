@@ -15,11 +15,11 @@ describe('ForbiddenDependencyRule', () => {
 
         packages: [
           createPackageDescriptor({
-            name: '@arch/application',
+            name: '@arch-platform/application',
             boundaries: {
               forbiddenDependencies: ['@arch/infra'],
             },
-            internalDependencies: ['@arch/contracts', '@arch/infra'],
+            internalDependencies: ['@arch-platform/contracts', '@arch/infra'],
           }),
         ],
       },
@@ -33,7 +33,7 @@ describe('ForbiddenDependencyRule', () => {
       code: 'FORBIDDEN_DEPENDENCY',
       severity: 'error',
       metadata: {
-        package: '@arch/application',
+        package: '@arch-platform/application',
         dependency: '@arch/infra',
       },
     });
@@ -46,11 +46,11 @@ describe('ForbiddenDependencyRule', () => {
         layout: undefined,
         packages: [
           createPackageDescriptor({
-            name: '@arch/application',
+            name: '@arch-platform/application',
             boundaries: {
               forbiddenDependencies: ['@arch/infra'],
             },
-            internalDependencies: ['@arch/contracts'],
+            internalDependencies: ['@arch-platform/contracts'],
           }),
         ],
       },
@@ -68,7 +68,7 @@ describe('ForbiddenDependencyRule', () => {
         layout: undefined,
         packages: [
           createPackageDescriptor({
-            name: '@arch/application',
+            name: '@arch-platform/application',
             internalDependencies: ['@arch/infra'],
           }),
         ],

@@ -4,7 +4,7 @@ import type {
   ArtifactStateReader,
   ComplianceStateReader,
   WorkspaceDescriptor,
-} from '@arch/platform-model';
+} from '@arch-platform/platform-model';
 
 import type { ComplianceOptions } from '../public/compliance-options.js';
 

@@ -2,7 +2,7 @@
 
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { createMockFilesystem } from '@arch/testing';
+import { createMockFilesystem } from '@arch-platform/testing';
 
 describe('createMockFilesystem', () => {
   let filesystem: ReturnType<typeof createMockFilesystem>;

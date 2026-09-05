@@ -1,5 +1,5 @@
 {
-  "name": "@arch/platform-model",
+  "name": "@arch-platform/platform-model",
   "version": "0.1.0",
   "type": "module",
   "types": "./dist/index.d.ts",
@@ -20,8 +20,8 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "arch": "arch build --package @arch/platform-model",
-    "compliance": "arch compliance --package @arch/platform-model --env dev",
+    "arch": "arch build --package @arch-platform/platform-model",
+    "compliance": "arch compliance --package @arch-platform/platform-model --env dev",
     "clean": "arch clean",
     "typecheck": "arch typecheck"
   }

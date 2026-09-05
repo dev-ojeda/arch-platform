@@ -2,7 +2,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { AdvisoryIdentifier } from '@arch/compliance';
+import { AdvisoryIdentifier } from '@arch-platform/compliance';
 
 describe('AdvisoryIdentifier', () => {
   it('creates an identifier from namespace and value', () => {

@@ -55,11 +55,11 @@
     "package": "vsce package"
   },
   "dependencies": {
-    "@arch/application": "workspace:*",
-    "@arch/contracts": "workspace:*",
-    "@arch/core": "workspace:*",
-    "@arch/generator-mvc": "workspace:*",
-    "@arch/infrastructure": "workspace:*"
+    "@arch-platform/application": "workspace:*",
+    "@arch-platform/contracts": "workspace:*",
+    "@arch-platform/core": "workspace:*",
+    "@arch-platform/generator-mvc": "workspace:*",
+    "@arch-platform/infrastructure": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "catalog:",

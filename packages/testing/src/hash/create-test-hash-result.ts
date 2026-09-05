@@ -1,6 +1,6 @@
 // packages/testing/src/hash/create-test-hash-result.ts
 
-import type { HashResult } from '@arch/platform-model';
+import type { HashResult } from '@arch-platform/platform-model';
 
 export function createTestHashResult(overrides?: Partial<HashResult>): HashResult {
   return {

@@ -1,6 +1,6 @@
 // packages/governance/src/analysis/graph/detect-cycles.ts
 
-import type { CycleDetectionResult } from '@arch/platform-model';
+import type { CycleDetectionResult } from '@arch-platform/platform-model';
 
 export function detectCycles(edges: ReadonlyMap<string, readonly string[]>): CycleDetectionResult {
   const visited = new Set<string>();

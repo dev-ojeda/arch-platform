@@ -1,6 +1,6 @@
 // packages/infrastructure/src/state/state-changes.ts
 
-import type { StateChanges } from '@arch/platform-model';
+import type { StateChanges } from '@arch-platform/platform-model';
 
 export class MutableStateChanges {
   readonly created = new Set<string>();

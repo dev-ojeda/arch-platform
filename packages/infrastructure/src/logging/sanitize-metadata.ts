@@ -1,4 +1,4 @@
-import type { LoggerMetadata } from '@arch/contracts';
+import type { LoggerMetadata } from '@arch-platform/contracts';
 
 import { sanitizeEnv } from './sanitize-env.js';
 import { SECRET_KEY_PATTERN } from './secret-pattern.js';

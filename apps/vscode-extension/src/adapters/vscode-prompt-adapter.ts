@@ -1,7 +1,7 @@
 // apps/vscode-extension/src/adapters/vscode-prompt-adapter.ts
 
-import type { PromptAdapter } from '@arch/application';
-import type { BooleanField, SelectField, SelectOption, StringField } from '@arch/contracts';
+import type { PromptAdapter } from '@arch-platform/application';
+import type { BooleanField, SelectField, SelectOption, StringField } from '@arch-platform/contracts';
 import * as vscode from 'vscode';
 
 export class VSCodePromptAdapter implements PromptAdapter {

@@ -1,6 +1,6 @@
 // packages/governance/src/context/resolve-compliance-packages.ts
 
-import type { PackageDescriptor, WorkspaceDescriptor } from '@arch/platform-model';
+import type { PackageDescriptor, WorkspaceDescriptor } from '@arch-platform/platform-model';
 
 import type { ComplianceScope } from '../public/compliance-scope.js';
 

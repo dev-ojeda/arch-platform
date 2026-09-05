@@ -5,7 +5,7 @@ import type {
   GenerationHooks,
   GenerationPipelineStep,
   TemplateVariables,
-} from '@arch/contracts';
+} from '@arch-platform/contracts';
 
 export class CompositeGenerationHooks<
   TVariables extends TemplateVariables = TemplateVariables,

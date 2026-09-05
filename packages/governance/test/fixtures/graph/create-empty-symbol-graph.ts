@@ -1,5 +1,5 @@
 // packages\governance\test\fixtures\graph\create-empty-symbol-graph.ts
-import type { SymbolGraph } from '@arch/code-analysis';
+import type { SymbolGraph } from '@arch-platform/code-analysis';
 
 export function createSymbolGraph(overrides: Partial<SymbolGraph> = {}): SymbolGraph {
   return {

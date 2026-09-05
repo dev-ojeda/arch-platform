@@ -12,8 +12,8 @@ describe('PackageDependencyAnalyzer', () => {
   it('detects package symbol consumption', () => {
     const symbolGraph = createSymbolGraph({
       nodes: [
-        createNode('service', '@arch/application'),
-        createNode('BuildResult', '@arch/contracts'),
+        createNode('service', '@arch-platform/application'),
+        createNode('BuildResult', '@arch-platform/contracts'),
       ],
       edges: [createImport('service', 'BuildResult')],
     });
@@ -23,8 +23,8 @@ describe('PackageDependencyAnalyzer', () => {
     const result = analyzer.analyze(symbolGraph);
 
     expect(result.dependencies).toContainEqual({
-      fromPackage: '@arch/application',
-      toPackage: '@arch/contracts',
+      fromPackage: '@arch-platform/application',
+      toPackage: '@arch-platform/contracts',
       symbols: ['BuildResult'],
     });
   });

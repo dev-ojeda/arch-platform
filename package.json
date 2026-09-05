@@ -33,7 +33,7 @@
     "vitest": "catalog:",
     "zod": "catalog:",
     "ts-morph": "catalog:",
-    "@arch/cli": "workspace:*"
+    "@arch-platform/cli": "workspace:*"
   },
   "workspaces": [
     "packages/*"
@@ -44,7 +44,7 @@
   },
   "packageManager": "pnpm@10.33.3",
   "scripts": {
-    "arch": "arch",
+    "arch": "pwsh ./tools/powershell/arch.ps1",
     "doctor": "arch doctor",
     "build": "turbo run build",
     "lint": "arch lint",

@@ -3,7 +3,11 @@
 import { readdirSync, renameSync } from 'node:fs';
 import { dirname, join, normalize } from 'node:path';
 
-import type { DirectoryEntry, FileSystemSyncPort, WriteFileOptions } from '@arch/contracts';
+import type {
+  DirectoryEntry,
+  FileSystemSyncPort,
+  WriteFileOptions,
+} from '@arch-platform/contracts';
 
 import { safeStringify } from '../helpers/safe-stringify.js';
 

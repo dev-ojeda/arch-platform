@@ -6,7 +6,7 @@ import {
   type NamedVariables,
   type ResolvedTemplateVariables,
   type VariableValue,
-} from '@arch/contracts';
+} from '@arch-platform/contracts';
 
 export interface TemplateVariables extends NamedVariables {
   readonly name: string;

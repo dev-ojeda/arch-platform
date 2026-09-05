@@ -1,4 +1,4 @@
-import type { PromptSchema } from '@arch/contracts';
+import type { PromptSchema } from '@arch-platform/contracts';
 
 import type { MvcVariables } from '../variables/mvc.variables.js';
 

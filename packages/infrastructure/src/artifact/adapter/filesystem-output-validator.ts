@@ -1,7 +1,7 @@
 // packages/infrastructure/src/artifact/adapter/filesystem-output-validator.ts
 
-import type { FileSystemAsyncPort, PathService } from '@arch/contracts';
-import type { OutputValidator } from '@arch/platform-model';
+import type { FileSystemAsyncPort, PathService } from '@arch-platform/contracts';
+import type { OutputValidator } from '@arch-platform/platform-model';
 
 export class FilesystemOutputValidator implements OutputValidator {
   constructor(

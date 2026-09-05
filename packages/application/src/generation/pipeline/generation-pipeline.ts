@@ -1,6 +1,10 @@
 // packages/application/src/generation/pipeline/generation-pipeline.ts
 
-import type { GenerationContext, GenerationPipelineStep, TemplateVariables } from '@arch/contracts';
+import type {
+  GenerationContext,
+  GenerationPipelineStep,
+  TemplateVariables,
+} from '@arch-platform/contracts';
 
 import type {
   PipelineCompletedEvent,

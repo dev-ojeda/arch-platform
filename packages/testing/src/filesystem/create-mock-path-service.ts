@@ -2,7 +2,7 @@
 
 import { posix } from 'node:path';
 
-import type { PathService } from '@arch/contracts';
+import type { PathService } from '@arch-platform/contracts';
 
 export function createTestPathService(): PathService {
   return {

@@ -1,6 +1,6 @@
 // apps\vscode-extension\src\composition\create-language-registry.ts
 
-import { LanguageConventionRegistry, TypeScriptConvention } from '@arch/core';
+import { LanguageConventionRegistry, TypeScriptConvention } from '@arch-platform/core';
 
 export function createLanguageRegistry(): LanguageConventionRegistry {
   const registry = new LanguageConventionRegistry();

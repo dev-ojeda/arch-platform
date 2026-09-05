@@ -1,6 +1,10 @@
 // packages/application/src/generation/telemetry/measure-step-execution.ts
 
-import type { GenerationContext, GenerationPipelineStep, TemplateVariables } from '@arch/contracts';
+import type {
+  GenerationContext,
+  GenerationPipelineStep,
+  TemplateVariables,
+} from '@arch-platform/contracts';
 
 import { recordStepMetric } from './record-step-metric.js';
 

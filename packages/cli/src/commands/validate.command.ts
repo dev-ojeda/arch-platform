@@ -4,8 +4,8 @@ import { cwd } from 'node:process';
 
 import type { CAC } from 'cac';
 
-import { runGovernance } from '@arch/governance';
-import { NodeWorkspaceProvider } from '@arch/infrastructure';
+import { runGovernance } from '@arch-platform/governance';
+import { NodeWorkspaceProvider } from '@arch-platform/infrastructure';
 
 import type { ValidateCliOptions } from '../contracts/validate-cli-options.js';
 import { renderGovernanceResult } from '../renderers/render-diagnostics.js';

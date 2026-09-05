@@ -1,6 +1,6 @@
 // packages/application/src/runtime/execution/events/publish-generation-event.ts
 
-import type { GenerationContext, GenerationEventName } from '@arch/contracts';
+import type { GenerationContext, GenerationEventName } from '@arch-platform/contracts';
 
 export async function publishGenerationEvent(
   context: Pick<GenerationContext, 'eventBus'>,

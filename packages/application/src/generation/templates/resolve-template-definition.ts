@@ -5,7 +5,7 @@ import type {
   NamedVariables,
   ResolvedFileDefinition,
   ResolvedTemplate,
-} from '@arch/contracts';
+} from '@arch-platform/contracts';
 
 import { resolveTemplateOutputPath } from './resolve-template-output-path.js';
 

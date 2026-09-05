@@ -14,7 +14,7 @@ import {
   type Stats,
 } from 'node:fs';
 
-import type { DirectoryEntry } from '@arch/contracts';
+import type { DirectoryEntry } from '@arch-platform/contracts';
 
 import { safeParse } from '../../serialization/safe-stringify.js';
 

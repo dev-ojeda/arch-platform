@@ -1,6 +1,6 @@
 // packages\governance\test\fixtures\code-analysis\create-exported-symbol-index.ts
 
-import type { ExportedSymbolIndex } from '@arch/code-analysis';
+import type { ExportedSymbolIndex } from '@arch-platform/code-analysis';
 
 export function createExportedSymbolIndex(
   overrides: Partial<ExportedSymbolIndex> = {},

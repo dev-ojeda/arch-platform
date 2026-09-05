@@ -1,6 +1,6 @@
 // packages/cli/src/renderers/render-diagnostics.ts
 
-import type { GovernanceResult } from '@arch/governance';
+import type { GovernanceResult } from '@arch-platform/governance';
 
 import { terminal } from '../ui/terminal.js';
 

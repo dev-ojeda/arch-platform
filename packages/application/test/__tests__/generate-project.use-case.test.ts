@@ -2,8 +2,8 @@
 
 import { describe, expect, it, vi } from 'vitest';
 
-import type { GenerationResult } from '@arch/contracts';
-import { createTestGenerator } from '@arch/testing';
+import type { GenerationResult } from '@arch-platform/contracts';
+import { createTestGenerator } from '@arch-platform/testing';
 
 import type { GenerationEngine } from '../../src/generation/engine/generation-engine.js';
 import { InMemoryGeneratorRegistry } from '../../src/generation/registry/in-memory-generator-registry.js';

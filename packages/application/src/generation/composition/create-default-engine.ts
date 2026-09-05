@@ -6,7 +6,7 @@ import type {
   LoggerPort,
   PromptAdapter,
   TemplateRendererPort,
-} from '@arch/contracts';
+} from '@arch-platform/contracts';
 
 import { DefaultGenerationEngine } from '../engine/default-generation-engine.js';
 import { PromptEngine } from '../engine/prompt-engine.js';

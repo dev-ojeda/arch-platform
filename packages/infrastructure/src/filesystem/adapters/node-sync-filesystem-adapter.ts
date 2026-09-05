@@ -1,6 +1,10 @@
 // packages/infrastructure/src/filesystem/adapters/node-sync-filesystem-adapter.ts
 
-import type { DirectoryEntry, FileSystemSyncPort, WriteFileOptions } from '@arch/contracts';
+import type {
+  DirectoryEntry,
+  FileSystemSyncPort,
+  WriteFileOptions,
+} from '@arch-platform/contracts';
 
 import { safeStringify } from '../../serialization/safe-stringify.js';
 import {

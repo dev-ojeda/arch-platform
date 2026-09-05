@@ -6,7 +6,7 @@ import type {
   GenerationRequest,
   GenerationResult,
   TemplateVariables,
-} from '@arch/contracts';
+} from '@arch-platform/contracts';
 
 import { runGenerationReportExporters } from '../../generation/exporters/run-generation-report-exporters.js';
 import { GenerationPipeline } from '../pipeline/generation-pipeline.js';

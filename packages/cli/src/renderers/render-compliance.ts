@@ -1,6 +1,6 @@
 // packages/cli/src/renderers/render-compliance.ts
 
-import type { ComplianceResult } from '@arch/governance';
+import type { ComplianceResult } from '@arch-platform/governance';
 
 import { terminal } from '../ui/terminal.js';
 

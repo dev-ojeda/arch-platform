@@ -18,7 +18,7 @@ describe('ImpactScoreCalculator', () => {
         'repository-create',
       ],
 
-      affectedPackages: ['@arch/api', '@arch/application'],
+      affectedPackages: ['@arch/api', '@arch-platform/application'],
 
       affectedFiles: ['controller.ts', 'handler.ts', 'service.ts'],
 

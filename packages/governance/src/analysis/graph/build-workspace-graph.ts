@@ -1,6 +1,6 @@
 // packages/governance/src/analysis/graph/build-workspace-graph.ts
 
-import type { PackageDescriptor, WorkspaceGraph } from '@arch/platform-model';
+import type { PackageDescriptor, WorkspaceGraph } from '@arch-platform/platform-model';
 
 import type { GovernanceContext } from '../../context/governance-context.js';
 

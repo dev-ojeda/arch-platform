@@ -1,4 +1,8 @@
-import type { GenerationContext, GenerationPipelineStep, TemplateVariables } from '@arch/contracts';
+import type {
+  GenerationContext,
+  GenerationPipelineStep,
+  TemplateVariables,
+} from '@arch-platform/contracts';
 
 import { GeneratorValidationError } from '../errors/generator-validation-error.js';
 

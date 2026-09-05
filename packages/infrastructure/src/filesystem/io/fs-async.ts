@@ -13,7 +13,7 @@ import {
   writeFile,
 } from 'node:fs/promises';
 
-import type { DirectoryEntry } from '@arch/contracts';
+import type { DirectoryEntry } from '@arch-platform/contracts';
 
 import { LOG_EVENTS } from '../../logging/log-events.js';
 import { loggerFactory } from '../../logging/logger.js';

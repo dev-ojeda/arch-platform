@@ -1,6 +1,6 @@
 // packages/governance/src/engine/governance-rule.ts
 
-import type { Diagnostic, MaybePromise } from '@arch/platform-model';
+import type { Diagnostic, MaybePromise } from '@arch-platform/platform-model';
 
 import type { GovernanceContext } from '../context/governance-context.js';
 import type { GovernanceScope } from '../public/governance-scope.js';

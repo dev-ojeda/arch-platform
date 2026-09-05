@@ -1,6 +1,6 @@
 // packages/governance/src/public/compliance-scope.ts
 
-import type { ComplianceEnvironment } from '@arch/platform-model';
+import type { ComplianceEnvironment } from '@arch-platform/platform-model';
 
 export type ComplianceScope =
   | {

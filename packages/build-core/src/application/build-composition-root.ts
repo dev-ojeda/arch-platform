@@ -21,7 +21,7 @@ import {
   NodeSyncFileSystemAdapter,
   NodeWorkspaceProvider,
   WorkspacePackageProjector,
-} from '@arch/infrastructure';
+} from '@arch-platform/infrastructure';
 import type {
   ArtifactCache,
   ArtifactProvider,
@@ -33,7 +33,7 @@ import type {
   Graph,
   OutputValidator,
   StateWriter,
-} from '@arch/platform-model';
+} from '@arch-platform/platform-model';
 
 import type { ArtifactStateBuilder } from '../artifact/artifact-state-builder.js';
 import { DefaultArtifactStateBuilder } from '../artifact/default-artifact-state-builder.js';
@@ -108,7 +108,7 @@ export class BuildCompositionRoot {
    */
   createArtifactCache(workspaceRoot: string): ArtifactCache {
     const layoutFactory = new FilesystemArtifactLayoutFactory(
-      this.pathService.join(workspaceRoot, '.arch-cache', 'artifacts'),
+      this.pathService.join(workspaceRoot, '.arch-platform-cache', 'artifacts'),
       this.pathService,
     );
 

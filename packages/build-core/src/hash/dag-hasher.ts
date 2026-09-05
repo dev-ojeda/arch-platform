@@ -5,8 +5,8 @@ import type {
   DirectoryHashService,
   HashService,
   PathService,
-} from '@arch/contracts';
-import type { DagNode, HashContext, HashInput, HashResult } from '@arch/platform-model';
+} from '@arch-platform/contracts';
+import type { DagNode, HashContext, HashInput, HashResult } from '@arch-platform/platform-model';
 
 import { logger } from '../logging/logger.js';
 

@@ -1,7 +1,11 @@
 // packages/infrastructure/src/artifact/adapter/artifact-publisher-adapter.ts
 
-import type { FileSystemAsyncPort, PathService } from '@arch/contracts';
-import type { ArtifactLayout, ArtifactManifest, ArtifactPublisher } from '@arch/platform-model';
+import type { FileSystemAsyncPort, PathService } from '@arch-platform/contracts';
+import type {
+  ArtifactLayout,
+  ArtifactManifest,
+  ArtifactPublisher,
+} from '@arch-platform/platform-model';
 
 export class ArtifactPublisherAdapter implements ArtifactPublisher {
   constructor(

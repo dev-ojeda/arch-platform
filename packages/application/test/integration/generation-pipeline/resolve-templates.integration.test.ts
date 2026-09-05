@@ -2,8 +2,8 @@
 
 import { describe, expect, it } from 'vitest';
 
-import type { TemplateVariables } from '@arch/contracts';
-import { createTestGenerationContext } from '@arch/testing';
+import type { TemplateVariables } from '@arch-platform/contracts';
+import { createTestGenerationContext } from '@arch-platform/testing';
 
 import { ResolveVariablesStep } from '../../../src/generation/steps/resolve-variables.step.js';
 import { GenerationPipeline, ResolveTemplatesStep } from '../../../src/testing/index.js';

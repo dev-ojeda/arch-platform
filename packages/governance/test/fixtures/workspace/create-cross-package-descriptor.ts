@@ -1,4 +1,4 @@
-import type { WorkspaceDescriptor } from '@arch/platform-model';
+import type { WorkspaceDescriptor } from '@arch-platform/platform-model';
 
 import { createPackageDescriptor } from './create-package-descriptor.js';
 import { createPackageDescriptors } from './create-package-descriptors.js';

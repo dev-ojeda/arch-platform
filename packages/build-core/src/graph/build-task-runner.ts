@@ -7,7 +7,7 @@ import type {
   Graph,
   OutputValidator,
   StateWriter,
-} from '@arch/platform-model';
+} from '@arch-platform/platform-model';
 
 import type { BuildExecutor } from '../executor/build-executor.js';
 import type { BuildResult } from '../executor/build-result.js';

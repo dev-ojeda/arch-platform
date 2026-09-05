@@ -5,7 +5,7 @@ import type {
   GenerationPipelineStep,
   PromptResolver,
   TemplateVariables,
-} from '@arch/contracts';
+} from '@arch-platform/contracts';
 
 export class ResolvePromptsStep<
   TVariables extends TemplateVariables = TemplateVariables,

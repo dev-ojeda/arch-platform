@@ -1,5 +1,5 @@
 {
-  "name": "@arch/application",
+  "name": "@arch-platform/application",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -29,9 +29,9 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "arch": "arch build --package @arch/application",
+    "arch": "arch build --package @arch-platform/application",
     "clean": "arch clean",
-    "compliance": "arch compliance --package @arch/application --env dev",
+    "compliance": "arch compliance --package @arch-platform/application --env dev",
     "typecheck": "arch typecheck",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",
@@ -39,10 +39,10 @@
     "test:clear": "vitest --clearCache"
   },
   "dependencies": {
-    "@arch/contracts": "workspace:*",
-    "@arch/core": "workspace:*",
-    "@arch/generator-mvc": "workspace:*",
-    "@arch/testing": "workspace:*"
+    "@arch-platform/core": "workspace:*",
+    "@arch-platform/contracts": "^0.1.0",
+    "@arch-platform/generator-mvc": "^0.1.0",
+    "@arch-platform/testing": "workspace:*"
   },
   "devDependencies": {
     "handlebars": "^4.7.9"

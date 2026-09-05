@@ -2,7 +2,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import type { FileSystemAsyncPort } from '@arch/contracts';
+import type { FileSystemAsyncPort } from '@arch-platform/contracts';
 
 export function runFileSystemAsyncPortContract(
   createFileSystem: () => Promise<FileSystemAsyncPort>,

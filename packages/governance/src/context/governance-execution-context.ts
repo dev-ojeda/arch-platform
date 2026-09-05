@@ -1,6 +1,6 @@
 // packages/governance/src/context/governance-execution-context.ts
 
-import type { AnalysisContext } from '@arch/code-analysis';
+import type { AnalysisContext } from '@arch-platform/code-analysis';
 
 import type { GovernanceContext } from './governance-context.js';
 

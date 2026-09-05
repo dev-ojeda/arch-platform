@@ -6,7 +6,7 @@ import type {
   ArtifactCache,
   ArtifactLayout,
   ArtifactPublisher,
-} from '@arch/platform-model';
+} from '@arch-platform/platform-model';
 
 import type { ContractFixtureFactory } from '../contract-fixture-factory.js';
 

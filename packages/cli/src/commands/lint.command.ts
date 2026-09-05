@@ -4,8 +4,8 @@ import { cwd } from 'node:process';
 
 import type { CAC } from 'cac';
 
-import { NodeWorkspaceProvider, resolveLintTargets } from '@arch/infrastructure';
-import { lintCommand } from '@arch/tooling';
+import { NodeWorkspaceProvider, resolveLintTargets } from '@arch-platform/infrastructure';
+import { lintCommand } from '@arch-platform/tooling';
 
 import type { LintCliOptions } from '../contracts/lint-cli-options.js';
 

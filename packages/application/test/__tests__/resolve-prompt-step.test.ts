@@ -6,7 +6,7 @@ import {
   createTestGenerator,
   createTestPipelineContext,
   createTestPromptResolver,
-} from '@arch/testing';
+} from '@arch-platform/testing';
 
 import { ResolvePromptsStep } from '../../src/generation/steps/resolve-prompts.step.js';
 

@@ -2,8 +2,8 @@
 
 import { describe, expect, it, vi } from 'vitest';
 
-import type { GenerationEvent } from '@arch/contracts';
-import { RecordingGenerationEventBus } from '@arch/core';
+import type { GenerationEvent } from '@arch-platform/contracts';
+import { RecordingGenerationEventBus } from '@arch-platform/core';
 
 import { createGenerationReport } from '../../src/generation/reports/create-generation-report.js';
 

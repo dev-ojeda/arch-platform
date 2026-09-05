@@ -1,6 +1,10 @@
 // packages/application/src/generation/steps/resolve-variables.step.ts
 
-import type { GenerationContext, GenerationPipelineStep, TemplateVariables } from '@arch/contracts';
+import type {
+  GenerationContext,
+  GenerationPipelineStep,
+  TemplateVariables,
+} from '@arch-platform/contracts';
 
 import { deriveTemplateVariables } from '../variables/derive-template-variables.js';
 

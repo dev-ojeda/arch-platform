@@ -4,11 +4,11 @@ import { packageSource, PLATFORM_PACKAGES } from './base.js';
 
 export const workspaceAliases = PLATFORM_PACKAGES.flatMap((pkg) => [
   {
-    find: new RegExp(`^@arch/${pkg}$`),
+    find: new RegExp(`^@arch-platform/${pkg}$`),
     replacement: packageSource(pkg),
   },
   {
-    find: new RegExp(`^@arch/${pkg}/(.*)$`),
+    find: new RegExp(`^@arch-platform/${pkg}/(.*)$`),
     replacement: `${packageSource(pkg)}/$1`,
   },
 ]);

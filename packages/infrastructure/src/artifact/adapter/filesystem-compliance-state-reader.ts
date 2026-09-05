@@ -1,11 +1,11 @@
 // packages/infrastructure/src/artifact/adapter/filesystem-compliance-state-reader.ts
 
-import type { FileSystemAsyncPort, PathService } from '@arch/contracts';
+import type { FileSystemAsyncPort, PathService } from '@arch-platform/contracts';
 import type {
   ComplianceEnvironment,
   ComplianceState,
   ComplianceStateReader,
-} from '@arch/platform-model';
+} from '@arch-platform/platform-model';
 
 export class FilesystemComplianceStateReader implements ComplianceStateReader {
   constructor(
@@ -14,7 +14,12 @@ export class FilesystemComplianceStateReader implements ComplianceStateReader {
   ) {}
 
   async read(workspaceRoot: string, environment: ComplianceEnvironment): Promise<ComplianceState> {
-    const path = this.pathService.join(workspaceRoot, '.arch', 'compliance', `${environment}.json`);
+    const path = this.pathService.join(
+      workspaceRoot,
+      '.arch-platform',
+      'compliance',
+      `${environment}.json`,
+    );
 
     if (!(await this.filesystem.exists(path))) {
       return {

@@ -2,7 +2,7 @@
 
 import { createHash } from 'node:crypto';
 
-import type { HashService, HashValue } from '@arch/contracts';
+import type { HashService, HashValue } from '@arch-platform/contracts';
 
 import { safeStringify } from '../serialization/safe-stringify.js';
 

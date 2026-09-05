@@ -1,6 +1,6 @@
 // packages/governance/src/context/default-package-query.ts
 
-import type { PackageDescriptor, WorkspaceDescriptor } from '@arch/platform-model';
+import type { PackageDescriptor, WorkspaceDescriptor } from '@arch-platform/platform-model';
 
 import type { GovernanceScope } from '../public/governance-scope.js';
 

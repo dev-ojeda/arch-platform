@@ -5,7 +5,7 @@ import type {
   GenerationPipelineStep,
   GeneratorDefinition,
   TemplateVariables,
-} from '@arch/contracts';
+} from '@arch-platform/contracts';
 
 import { createTestContext } from '../runtime/create-test-context.js';
 

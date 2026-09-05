@@ -1,6 +1,6 @@
 // packages\core\src\variables\types.ts
 
-import type { FolderLayout } from '@arch/contracts';
+import type { FolderLayout } from '@arch-platform/contracts';
 
 export interface DerivedTemplateVariables {
   className: string;

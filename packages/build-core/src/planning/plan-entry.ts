@@ -1,4 +1,4 @@
-import type { HashResult } from '@arch/platform-model';
+import type { HashResult } from '@arch-platform/platform-model';
 
 import type { CacheDecision, ChangeReason } from '../cache/cache-types.js';
 

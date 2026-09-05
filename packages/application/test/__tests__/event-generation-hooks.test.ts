@@ -2,7 +2,7 @@
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts';
+import type { GenerationContext, GenerationPipelineStep } from '@arch-platform/contracts';
 
 import { EventGenerationHooks } from '../../src/generation/hooks/event-generation-hooks.js';
 import { publishGenerationEvent } from '../../src/runtime/execution/events/publish-generation-event.js';

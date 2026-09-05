@@ -2,8 +2,8 @@
 
 import { describe, expect, it } from 'vitest';
 
-import type { GenerationPipelineStep } from '@arch/contracts';
-import { createTestContext, createTestIdGenerator, createTestStep } from '@arch/testing';
+import type { GenerationPipelineStep } from '@arch-platform/contracts';
+import { createTestContext, createTestIdGenerator, createTestStep } from '@arch-platform/testing';
 
 import { GenerationPipeline } from '../../../src/generation/pipeline/generation-pipeline.js';
 import { createRuntime } from '../../../src/runtime/runtime-bootstrap.js';

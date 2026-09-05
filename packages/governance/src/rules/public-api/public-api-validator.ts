@@ -1,7 +1,7 @@
 // packages/governance/src/rules/public-api/public-api-validator.ts
 
-import type { ExportedSymbolIndex } from '@arch/code-analysis';
-import type { Diagnostic } from '@arch/platform-model';
+import type { ExportedSymbolIndex } from '@arch-platform/code-analysis';
+import type { Diagnostic } from '@arch-platform/platform-model';
 
 import type { ImportContext } from '../../analysis/imports/import-context.js';
 

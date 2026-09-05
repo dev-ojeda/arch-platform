@@ -1,6 +1,6 @@
 // packages/build-core/src/artifact/artifact-state-builder.ts
 
-import type { ArtifactState, Graph } from '@arch/platform-model';
+import type { ArtifactState, Graph } from '@arch-platform/platform-model';
 
 import type { BuildResult } from '../executor/build-result.js';
 import { BuildPlan } from '../planning/build-plan.js';

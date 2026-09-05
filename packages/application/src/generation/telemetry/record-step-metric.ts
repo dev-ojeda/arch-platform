@@ -1,6 +1,10 @@
 // packages/application/src/generation/telemetry/record-step-metric.ts
 
-import type { GenerationContext, StepExecutionMetric, TemplateVariables } from '@arch/contracts';
+import type {
+  GenerationContext,
+  StepExecutionMetric,
+  TemplateVariables,
+} from '@arch-platform/contracts';
 
 import { publishGenerationEvent } from '../../runtime/execution/events/publish-generation-event.js';
 

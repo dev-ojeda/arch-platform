@@ -1,6 +1,6 @@
 // packages/governance/src/compliance/compliance-rule-result.ts
 
-import type { ComplianceStateChange, Diagnostic } from '@arch/platform-model';
+import type { ComplianceStateChange, Diagnostic } from '@arch-platform/platform-model';
 
 export interface ComplianceRuleResult {
   readonly diagnostics: readonly Diagnostic[];

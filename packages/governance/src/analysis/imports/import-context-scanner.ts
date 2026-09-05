@@ -1,6 +1,6 @@
 // packages/governance/src/analysis/imports/import-context-scanner.ts
 
-import { SymbolGraphQuery } from '@arch/code-analysis';
+import { SymbolGraphQuery } from '@arch-platform/code-analysis';
 
 import type { GovernanceExecutionContext } from '../../context/governance-execution-context.js';
 

@@ -15,7 +15,7 @@
 packages:
   # Core platform packages
   - 'packages/*'
-
+  - '!packages/contracts'
   # Generators / scaffolding
   - 'packages/generators/*'
 
@@ -40,6 +40,7 @@ catalog:
   # ===========================================================================
 
   '@changesets/cli': 2.31.0
+  '@arch-platform/contracts': 0.1.0
 
   # ===========================================================================
   # SOURCE CONTROL / COMMITS
@@ -124,6 +125,8 @@ catalog:
 # Fail installation if Node version does not match.
 engineStrict: true
 minimumReleaseAge: 4320
+minimumReleaseAgeExclude:
+  - '@arch-platform/contracts'
 # Future applications
 # - "apps/*"
 

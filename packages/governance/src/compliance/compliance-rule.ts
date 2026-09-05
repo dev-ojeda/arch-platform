@@ -1,6 +1,6 @@
 // packages/governance/src/compliance/compliance-rule.ts
 
-import type { MaybePromise } from '@arch/platform-model';
+import type { MaybePromise } from '@arch-platform/platform-model';
 
 import type { ComplianceExecutionContext } from '../context/compliance-execution-context.js';
 import type { ComplianceScope } from '../public/compliance-scope.js';

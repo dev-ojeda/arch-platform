@@ -2,7 +2,7 @@
 
 import Handlebars from 'handlebars';
 
-import type { NamedVariables } from '@arch/contracts';
+import type { NamedVariables } from '@arch-platform/contracts';
 
 export function resolveTemplateOutputPath(
   output: string,

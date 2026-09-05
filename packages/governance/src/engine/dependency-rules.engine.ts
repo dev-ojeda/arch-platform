@@ -1,4 +1,4 @@
-import type { DependencyMatrix, Diagnostic, Layer } from '@arch/platform-model';
+import type { DependencyMatrix, Diagnostic, Layer } from '@arch-platform/platform-model';
 
 import type { GovernanceContext } from '../context/governance-context.js';
 import { DEFAULT_MATRIX } from '../policies/default-dependency-matrix.js';

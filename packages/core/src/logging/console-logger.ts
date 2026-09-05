@@ -1,5 +1,5 @@
 // packages\core\src\logging\console-logger.ts
-import type { LoggerOptions, LoggerPort } from '@arch/contracts';
+import type { LoggerOptions, LoggerPort } from '@arch-platform/contracts';
 
 export class ConsoleLogger implements LoggerPort {
   trace(): void {

@@ -1,5 +1,5 @@
 {
-  "name": "@arch/cli",
+  "name": "@arch-platform/cli",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -22,16 +22,16 @@
     "arch": "./bin/arch.js"
   },
   "scripts": {
-    "arch": "arch build --package @arch/cli",
+    "arch": "arch build --package @arch-platform/cli",
     "build": "tsup",
     "clean": "arch clean",
-    "compliance": "arch compliance --package @arch/cli --env dev",
+    "compliance": "arch compliance --package @arch-platform/cli --env dev",
     "typecheck": "arch typecheck"
   },
   "dependencies": {
-    "@arch/governance": "workspace:*",
-    "@arch/tooling": "workspace:*",
-    "@arch/infrastructure": "workspace:*",
+    "@arch-platform/governance": "workspace:*",
+    "@arch-platform/tooling": "workspace:*",
+    "@arch-platform/infrastructure": "workspace:*",
     "cac": "catalog:"
   }
 }

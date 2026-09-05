@@ -1,7 +1,6 @@
 {
-  "name": "@arch/generator-mvc",
+  "name": "@arch-platform/generator-mvc",
   "version": "0.1.0",
-  "private": true,
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -26,13 +25,12 @@
     "kind": "tooling"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "arch": "arch build --package @arch/generator-mvc",
+    "arch": "arch build --package @arch-platform/generator-mvc",
     "clean": "arch clean",
-    "compliance": "arch compliance --package @arch/generator-mvc --env dev",
+    "compliance": "arch compliance --package @arch-platform/generator-mvc --env dev",
     "typecheck": "arch typecheck"
   },
   "dependencies": {
-    "@arch/contracts": "workspace:*"
+    "@arch-platform/contracts": "^0.1.0"
   }
 }

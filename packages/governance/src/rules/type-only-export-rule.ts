@@ -1,6 +1,6 @@
 // packages/governance/src/rules/type-only-export-rule.ts
 
-import type { Diagnostic } from '@arch/platform-model';
+import type { Diagnostic } from '@arch-platform/platform-model';
 
 import type { SemanticScanner } from '../analysis/semantics/semantic-scanner.js';
 import type { GovernanceExecutionContext } from '../context/governance-execution-context.js';

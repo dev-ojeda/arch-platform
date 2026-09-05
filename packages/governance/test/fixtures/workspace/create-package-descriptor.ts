@@ -1,4 +1,4 @@
-import type { PackageDescriptor } from '@arch/platform-model';
+import type { PackageDescriptor } from '@arch-platform/platform-model';
 
 import { createPackageLayout } from './create-package-layout.js';
 

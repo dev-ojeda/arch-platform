@@ -1,8 +1,8 @@
 // packages/governance/src/analysis/code-analysis/workspace-package-resolver.ts
 
-import type { PackageResolver } from '@arch/code-analysis';
-import { DefaultPackageResolver } from '@arch/code-analysis';
-import type { PackageDescriptor } from '@arch/platform-model';
+import type { PackageResolver } from '@arch-platform/code-analysis';
+import { DefaultPackageResolver } from '@arch-platform/code-analysis';
+import type { PackageDescriptor } from '@arch-platform/platform-model';
 
 export class WorkspacePackageResolver implements PackageResolver {
   private readonly fallback = new DefaultPackageResolver();

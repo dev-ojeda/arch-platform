@@ -2,7 +2,7 @@
 
 import { vi } from 'vitest';
 
-import type { WriteFileOptions } from '@arch/contracts';
+import type { WriteFileOptions } from '@arch-platform/contracts';
 
 import { createMemoryFilesystem, type MemoryFilesystem } from './create-memory-filesystem.js';
 

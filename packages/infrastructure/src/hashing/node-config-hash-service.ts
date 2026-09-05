@@ -1,6 +1,6 @@
 // packages/infrastructure/src/hashing/node-config-hash-service.ts
 
-import type { ConfigHashService } from '@arch/contracts';
+import type { ConfigHashService } from '@arch-platform/contracts';
 
 import { pathExistsSync, readNormalizedTextFileSync } from '../filesystem/io/fs-sync.js';
 import { joinPath } from '../filesystem/io/path-utils.js';

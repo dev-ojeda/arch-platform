@@ -1,6 +1,10 @@
 // packages/governance/src/compliance/compliance-engine.ts
 
-import type { ComplianceEventBus, ComplianceStateChange, Diagnostic } from '@arch/platform-model';
+import type {
+  ComplianceEventBus,
+  ComplianceStateChange,
+  Diagnostic,
+} from '@arch-platform/platform-model';
 
 import type { ComplianceExecutionContext } from '../context/compliance-execution-context.js';
 

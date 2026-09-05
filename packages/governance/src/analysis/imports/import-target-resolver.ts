@@ -1,7 +1,7 @@
 // packages/governance/src/analysis/imports/import-target-resolver.ts
 
-import type { SymbolEdge, SymbolNode } from '@arch/code-analysis';
-import type { PackageDescriptor } from '@arch/platform-model';
+import type { SymbolEdge, SymbolNode } from '@arch-platform/code-analysis';
+import type { PackageDescriptor } from '@arch-platform/platform-model';
 
 import type { PackageQuery } from '../../context/package-query.js';
 

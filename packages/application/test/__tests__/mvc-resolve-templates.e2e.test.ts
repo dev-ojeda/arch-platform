@@ -2,9 +2,9 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { mvcGenerator } from '@arch/generator-mvc';
-import type { MvcVariables } from '@arch/generator-mvc';
-import { createTestPipelineContext } from '@arch/testing';
+import type { MvcVariables } from '@arch-platform/generator-mvc';
+import { mvcGenerator } from '@arch-platform/generator-mvc';
+import { createTestPipelineContext } from '@arch-platform/testing';
 
 import { ResolveTemplatesStep } from '../../src/generation/steps/resolve-templates.step.js';
 import { deriveTemplateVariables } from '../../src/generation/variables/derive-template-variables.js';

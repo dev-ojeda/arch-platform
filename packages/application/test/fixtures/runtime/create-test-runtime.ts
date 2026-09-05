@@ -6,14 +6,14 @@ import type {
   GeneratorDefinition,
   NamedVariables,
   TemplateVariables,
-} from '@arch/contracts';
+} from '@arch-platform/contracts';
 import {
   createMemoryFilesystem,
   createTestEventBus,
   createTestGenerationContext,
   createTestGenerator,
   createTestIdGenerator,
-} from '@arch/testing';
+} from '@arch-platform/testing';
 
 import { GenerationPipeline } from '../../../src/generation/pipeline/generation-pipeline.js';
 

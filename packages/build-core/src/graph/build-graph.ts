@@ -1,6 +1,6 @@
 // packages/build-core/src/graph/build-graph.ts
 
-import type { Graph, MutableGraph, WorkspacePackage } from '@arch/platform-model';
+import type { Graph, MutableGraph, WorkspacePackage } from '@arch-platform/platform-model';
 
 export function buildGraph(packages: readonly WorkspacePackage[]): Graph {
   const graph = createGraph(packages);

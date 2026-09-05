@@ -1,5 +1,5 @@
 {
-  "name": "@arch/compliance",
+  "name": "@arch-platform/compliance",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -28,9 +28,9 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "arch": "arch build --package @arch/compliance",
+    "arch": "arch build --package @arch-platform/compliance",
     "clean": "arch clean",
-    "compliance": "arch compliance --package @arch/compliance --env dev",
+    "compliance": "arch compliance --package @arch-platform/compliance --env dev",
     "typecheck": "arch typecheck",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",

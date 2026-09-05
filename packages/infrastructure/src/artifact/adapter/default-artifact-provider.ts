@@ -1,6 +1,6 @@
 // packages/infrastructure/src/artifact/adapter/default-artifact-provider.ts
 
-import type { Artifact, ArtifactProvider, HashResult } from '@arch/platform-model';
+import type { Artifact, ArtifactProvider, HashResult } from '@arch-platform/platform-model';
 
 export class DefaultArtifactProvider implements ArtifactProvider {
   create(packageName: string, hash: HashResult): Artifact {

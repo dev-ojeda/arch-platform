@@ -2,7 +2,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { createTestGenerator, createTestPipelineContext } from '@arch/testing';
+import { createTestGenerator, createTestPipelineContext } from '@arch-platform/testing';
 
 import { ResolveTemplatesStep } from '../../src/generation/steps/resolve-templates.step.js';
 import { createResolvedTemplateVariables } from '../createResolvedTemplateVariables.js';

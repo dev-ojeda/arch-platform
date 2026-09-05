@@ -1,6 +1,6 @@
 // packages/tooling/src/commands/builder/build-scope.ts
 
-import type { BuildScope } from '@arch/build-core';
+import type { BuildScope } from '@arch-platform/build-core';
 
 import type { BuildCommandOptions } from '../common/command-options.js';
 

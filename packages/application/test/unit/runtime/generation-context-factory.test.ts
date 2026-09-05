@@ -2,7 +2,11 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { createMockFilesystem, createTestGenerator, createTestLogger } from '@arch/testing';
+import {
+  createMockFilesystem,
+  createTestGenerator,
+  createTestLogger,
+} from '@arch-platform/testing';
 
 import { GenerationContextFactory } from '../../../src/generation/runtime/generation-context-factory.js';
 

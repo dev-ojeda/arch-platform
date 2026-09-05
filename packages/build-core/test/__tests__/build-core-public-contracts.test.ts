@@ -1,9 +1,9 @@
 // packages\build-core\test\__tests__\build-core-public-contracts.test.ts
 import { describe, expect, it } from 'vitest';
 
-import type { BuildScope, BuildServiceSummary } from '@arch/build-core';
+import type { BuildScope, BuildServiceSummary } from '@arch-platform/build-core';
 
-describe('@arch/build-core public contracts', () => {
+describe('@arch-platform/build-core public contracts', () => {
   it('should expose public build contracts', () => {
     const scope = {
       kind: 'workspace',

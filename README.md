@@ -156,7 +156,7 @@ arch-platform/
 
 ## 🧩 Packages Principales
 
-### `@arch/contracts`
+### `@arch-platform/contracts`
 
 Capa de contratos compartidos.
 
@@ -174,7 +174,7 @@ Su propósito es mantener boundaries estables entre módulos.
 
 ---
 
-### `@arch/application`
+### `@arch-platform/application`
 
 Capa de orquestación de casos de uso.
 
@@ -197,7 +197,7 @@ Actualmente contiene lógica relacionada con:
 
 ---
 
-### `@arch/core`
+### `@arch-platform/core`
 
 Núcleo principal de comportamiento reutilizable.
 
@@ -209,7 +209,7 @@ Objetivos:
 
 ---
 
-### `@arch/infrastructure`
+### `@arch-platform/infrastructure`
 
 Implementaciones concretas de adapters.
 
@@ -225,7 +225,7 @@ Esta capa implementa los contratos definidos por application/contracts.
 
 ---
 
-### `@arch/testing`
+### `@arch-platform/testing`
 
 Toolkit de testing compartido.
 
@@ -241,7 +241,7 @@ El objetivo es estandarizar pruebas entre packages.
 
 ---
 
-### `@arch/generator-mvc`
+### `@arch-platform/generator-mvc`
 
 Primer generador desacoplado del ecosistema.
 
