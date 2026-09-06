@@ -14,6 +14,9 @@
       "path": "../platform-model"
     },
     {
+      "path": "../contracts"
+    },
+    {
       "path": "../testing"
     }
   ],

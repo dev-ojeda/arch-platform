@@ -38,6 +38,6 @@
     "test:clear": "vitest --clearCache"
   },
   "dependencies": {
-    "@arch-platform/contracts": "^0.1.0"
+    "@arch-platform/contracts": "0.1.0"
   }
 }

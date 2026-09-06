@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@arch-platform/platform-model": "workspace:*",
-    "@arch-platform/contracts": "^0.1.0",
+    "@arch-platform/contracts": "0.1.0",
     "@arch-platform/infrastructure": "workspace:*"
   }
 }

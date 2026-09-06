@@ -8,12 +8,7 @@ export const SOURCE_FILES = ['packages/**/*.ts', 'packages/**/*.tsx'];
  */
 
 export const RESTRICTED_IMPORTS = {
-  patterns: [
-    '@arch-platform/*/src/**',
-    '@arch-platform/*/dist/**',
-    '@arch-platform/**/src/**',
-    '@arch-platform/**/dist/**',
-  ],
+  patterns: ['@arch-platform/*/src/**', '@arch-platform/*/dist/**'],
 
   paths: [
     {

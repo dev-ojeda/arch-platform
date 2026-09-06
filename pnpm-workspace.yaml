@@ -13,11 +13,10 @@
 # WORKSPACE PACKAGES
 # -----------------------------------------------------------------------------
 packages:
-  # Core platform packages
   - 'packages/*'
-  - '!packages/contracts'
-  # Generators / scaffolding
   - 'packages/generators/*'
+  - '!packages/contracts'
+  - '!packages/generators/mvc'
 
 # -----------------------------------------------------------------------------
 # SHARED DEPENDENCY CATALOG
@@ -41,6 +40,7 @@ catalog:
 
   '@changesets/cli': 2.31.0
   '@arch-platform/contracts': 0.1.0
+  '@arch-platform/generator-mvc': 0.1.0
 
   # ===========================================================================
   # SOURCE CONTROL / COMMITS
@@ -127,6 +127,7 @@ engineStrict: true
 minimumReleaseAge: 4320
 minimumReleaseAgeExclude:
   - '@arch-platform/contracts'
+  - '@arch-platform/generator-mvc'
 # Future applications
 # - "apps/*"
 

@@ -25,12 +25,13 @@
     "kind": "tooling"
   },
   "scripts": {
+    "build": "tsc -p tsconfig.build.json",
     "arch": "arch build --package @arch-platform/generator-mvc",
     "clean": "arch clean",
     "compliance": "arch compliance --package @arch-platform/generator-mvc --env dev",
     "typecheck": "arch typecheck"
   },
   "dependencies": {
-    "@arch-platform/contracts": "^0.1.0"
+    "@arch-platform/contracts": "0.1.0"
   }
 }

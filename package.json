@@ -33,7 +33,8 @@
     "vitest": "catalog:",
     "zod": "catalog:",
     "ts-morph": "catalog:",
-    "@arch-platform/cli": "workspace:*"
+    "@arch-platform/cli": "workspace:*",
+    "@arch-platform/contracts": "0.1.0"
   },
   "workspaces": [
     "packages/*"
