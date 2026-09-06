@@ -1,4 +1,4 @@
-import type { LoggerLevel } from '@arch/contracts';
+import type { LoggerLevel } from '@arch-platform/contracts';
 
 export const LOG_LEVELS: Record<
   LoggerLevel,

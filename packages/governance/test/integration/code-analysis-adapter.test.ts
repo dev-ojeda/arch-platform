@@ -5,8 +5,8 @@ import { fileURLToPath } from 'node:url';
 
 import { describe, expect, it } from 'vitest';
 
-import { CrossPackageRelativeImportScanner, type GovernanceScope } from '@arch/governance';
-import type { ArchitectureManifest, WorkspaceDescriptor } from '@arch/platform-model';
+import { CrossPackageRelativeImportScanner, type GovernanceScope } from '@arch-platform/governance';
+import type { ArchitectureManifest, WorkspaceDescriptor } from '@arch-platform/platform-model';
 
 import { CodeAnalysisAdapter } from '../../src/analysis/code-analysis/code-analysis-adapter.js';
 import { createGovernanceAnalysisContext } from '../../src/analysis/code-analysis/create-governance-analysis-context.js';

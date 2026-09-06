@@ -1,4 +1,4 @@
-import type { WorkspaceLayout } from '@arch/platform-model';
+import type { WorkspaceLayout } from '@arch-platform/platform-model';
 
 export function createWorkspaceLayout(overrides: Partial<WorkspaceLayout> = {}): WorkspaceLayout {
   return {

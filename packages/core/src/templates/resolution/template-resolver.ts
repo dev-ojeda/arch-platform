@@ -1,6 +1,6 @@
 // packages/core/src/templates/template-resolver.ts
 
-import type { PathService, TechnologyStack } from '@arch/contracts';
+import type { PathService, TechnologyStack } from '@arch-platform/contracts';
 
 export function resolveTemplateDir(
   pathService: PathService,

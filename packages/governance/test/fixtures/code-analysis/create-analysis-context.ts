@@ -1,6 +1,6 @@
 // packages\governance\test\fixtures\code-analysis\create-analysis-context.ts
 
-import type { AnalysisContext } from '@arch/code-analysis';
+import type { AnalysisContext } from '@arch-platform/code-analysis';
 
 import { createSymbolGraph } from '../graph/create-empty-symbol-graph.js';
 

@@ -2,7 +2,7 @@
 
 ## 🎯 Objetivo
 
-Documentar los tests implementados para validar el comportamiento del pipeline de generación dentro del paquete `@arch/application`.
+Documentar los tests implementados para validar el comportamiento del pipeline de generación dentro del paquete `@arch-platform/application`.
 
 ---
 
@@ -348,7 +348,7 @@ testGenerator
 La solución fue centralizar fixtures dentro de:
 
 ```txt
-@arch/testing
+@arch-platform/testing
 ```
 
 ---

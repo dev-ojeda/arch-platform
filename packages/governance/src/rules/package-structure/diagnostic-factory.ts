@@ -1,6 +1,6 @@
 // packages/governance/src/rules/package-structure/diagnostic-factory.ts
 
-import type { Diagnostic } from '@arch/platform-model';
+import type { Diagnostic } from '@arch-platform/platform-model';
 
 export function ValidatePackageStructureDiagnostic(
   id: string,

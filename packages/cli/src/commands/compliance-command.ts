@@ -4,7 +4,7 @@ import process from 'node:process';
 
 import type { CAC } from 'cac';
 
-import { runCompliance } from '@arch/governance';
+import { runCompliance } from '@arch-platform/governance';
 
 import type { ComplianceCliOptions } from '../contracts/compliance-cli-options.js';
 import { renderComplianceResult } from '../renderers/render-compliance.js';

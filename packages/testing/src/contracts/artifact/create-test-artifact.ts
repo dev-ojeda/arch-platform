@@ -1,6 +1,6 @@
 // packages/testing/src/contracts/artifact/create-test-artifact.ts
 
-import type { Artifact } from '@arch/platform-model';
+import type { Artifact } from '@arch-platform/platform-model';
 
 export function createTestArtifact(overrides?: Partial<Artifact>): Artifact {
   return {

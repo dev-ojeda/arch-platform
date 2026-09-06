@@ -62,9 +62,9 @@ describe('DependencyRulesEngine', () => {
 
         packages: [
           createPackageDescriptor({
-            name: '@arch/application',
+            name: '@arch-platform/application',
             manifest: {
-              name: '@arch/application',
+              name: '@arch-platform/application',
               arch: {
                 kind: 'app',
                 artifactType: 'runtime',
@@ -100,7 +100,7 @@ describe('DependencyRulesEngine', () => {
 
         packages: [
           createPackageDescriptor({
-            name: '@arch/application',
+            name: '@arch-platform/application',
             internalDependencies: ['@arch/infra'],
           }),
 

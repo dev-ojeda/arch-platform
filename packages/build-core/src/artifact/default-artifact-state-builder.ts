@@ -5,7 +5,7 @@ import type {
   ArtifactStateReason,
   ArtifactStateStatus,
   Graph,
-} from '@arch/platform-model';
+} from '@arch-platform/platform-model';
 
 import type { BuildResult } from '../executor/build-result.js';
 import { BuildPlan } from '../planning/build-plan.js';

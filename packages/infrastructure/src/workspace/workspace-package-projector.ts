@@ -5,7 +5,7 @@ import type {
   PackageManifest,
   WorkspacePackage,
   WorkspaceProjector,
-} from '@arch/platform-model';
+} from '@arch-platform/platform-model';
 
 export class WorkspacePackageProjector implements WorkspaceProjector {
   project(packageDescriptor: PackageDescriptor): WorkspacePackage {
@@ -16,7 +16,7 @@ export class WorkspacePackageProjector implements WorkspaceProjector {
       root: packageDescriptor.rootPath,
       dependencies: Object.keys(manifest.dependencies ?? {}).sort(),
       buildDependencies: Object.keys(manifest.devDependencies ?? {})
-        .filter((dependency) => dependency.startsWith('@arch/'))
+        .filter((dependency) => dependency.startsWith('@arch-platform/'))
         .sort(),
       outputs: this.resolveOutputs(manifest),
       artifactType: manifest.arch.artifactType,

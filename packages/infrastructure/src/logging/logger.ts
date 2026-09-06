@@ -1,6 +1,11 @@
 // packages\infrastructure\src\logging\logger.ts
 
-import type { LoggerLevel, LoggerOptions, LoggerPort, LoggerSource } from '@arch/contracts';
+import type {
+  LoggerLevel,
+  LoggerOptions,
+  LoggerPort,
+  LoggerSource,
+} from '@arch-platform/contracts';
 
 import { safeStringify } from '../serialization/safe-stringify.js';
 

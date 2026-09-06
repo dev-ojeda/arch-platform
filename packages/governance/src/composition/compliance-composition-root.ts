@@ -4,7 +4,7 @@ import {
   ArtifactStateProvider,
   ComplianceStateProvider,
   NodeWorkspaceProvider,
-} from '@arch/infrastructure';
+} from '@arch-platform/infrastructure';
 
 import { ComplianceEngine } from '../compliance/compliance-engine.js';
 import { buildComplianceExecutionContext } from '../context/build-compliance-execution-context.js';

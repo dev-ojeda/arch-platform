@@ -1,4 +1,4 @@
-import type { PackageLayout } from '@arch/platform-model';
+import type { PackageLayout } from '@arch-platform/platform-model';
 
 export function createPackageLayout(overrides: Partial<PackageLayout> = {}): PackageLayout {
   return {

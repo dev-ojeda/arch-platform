@@ -1,6 +1,6 @@
 // packages/infrastructure/src/filesystem/paths/canonicalize-directory-entry.ts
 
-import type { DirectoryEntry } from '@arch/contracts';
+import type { DirectoryEntry } from '@arch-platform/contracts';
 
 export function normalizeDirectoryEntry(entry: DirectoryEntry): DirectoryEntry {
   return {

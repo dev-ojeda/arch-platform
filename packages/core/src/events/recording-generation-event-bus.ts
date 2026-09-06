@@ -1,6 +1,10 @@
 // packages/core/src/events/recording-generation-event-bus.ts
 
-import type { GenerationEvent, GenerationEventBus, GenerationEventHandler } from '@arch/contracts';
+import type {
+  GenerationEvent,
+  GenerationEventBus,
+  GenerationEventHandler,
+} from '@arch-platform/contracts';
 
 export class RecordingGenerationEventBus implements GenerationEventBus {
   readonly events: GenerationEvent[] = [];

@@ -5,7 +5,7 @@ import type {
   ComplianceState,
   ComplianceStateReader,
   ComplianceStateWriter,
-} from '@arch/platform-model';
+} from '@arch-platform/platform-model';
 
 import { FilesystemComplianceStateReader } from '../artifact/adapter/filesystem-compliance-state-reader.js';
 import { FilesystemComplianceStateWriter } from '../artifact/adapter/filesystem-compliance-state-writer.js';

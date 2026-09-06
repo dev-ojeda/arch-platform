@@ -5,7 +5,7 @@ import type {
   GeneratorDefinition,
   ResolvedTemplateVariables,
   TemplateVariables,
-} from '@arch/contracts';
+} from '@arch-platform/contracts';
 
 import { testGenerator } from '../fixtures/generators/test-generator.js';
 import { createTestContext } from '../runtime/create-test-context.js';

@@ -5,7 +5,7 @@ import type {
   ArtifactState,
   HashResult,
   Layer,
-} from '@arch/platform-model';
+} from '@arch-platform/platform-model';
 
 export interface ComplianceDependencyContext {
   readonly artifact: string;

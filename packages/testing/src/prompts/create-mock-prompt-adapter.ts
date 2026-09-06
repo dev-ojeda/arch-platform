@@ -9,7 +9,7 @@ import type {
   SelectField,
   SelectOption,
   StringField,
-} from '@arch/contracts';
+} from '@arch-platform/contracts';
 
 import { createTestPromptAdapter } from './create-test-prompt-adapter.js';
 

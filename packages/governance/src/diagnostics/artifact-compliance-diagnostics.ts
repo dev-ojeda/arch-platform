@@ -1,6 +1,6 @@
 // packages/governance/src/diagnostics/artifact-compliance-diagnostics.ts
 
-import type { Diagnostic } from '@arch/platform-model';
+import type { Diagnostic } from '@arch-platform/platform-model';
 
 import type { ComplianceDependencyContext } from '../compliance/compliance-dependencies-context.js';
 import type { ComplianceArtifactContext } from '../context/compliance-artifact-context.js';

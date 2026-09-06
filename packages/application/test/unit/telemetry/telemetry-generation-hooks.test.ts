@@ -2,7 +2,7 @@
 
 import { describe, expect, it, vi } from 'vitest';
 
-import type { GenerationContext, GenerationPipelineStep } from '@arch/contracts';
+import type { GenerationContext, GenerationPipelineStep } from '@arch-platform/contracts';
 
 import { TelemetryGenerationHooks } from '../../../src/index.js';
 

@@ -1,6 +1,6 @@
 // packages/governance/src/analysis/graph/detect-cycles-rule.ts
 
-import type { Diagnostic } from '@arch/platform-model';
+import type { Diagnostic } from '@arch-platform/platform-model';
 
 import type { GovernanceContext } from '../../context/governance-context.js';
 import { GOVERNANCE_RULE_ID } from '../../engine/governance-rule-id.js';

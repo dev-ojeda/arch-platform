@@ -1,6 +1,6 @@
 // packages/testing/src/runtime/create-test-language-convention.ts
 
-import type { LanguageConvention } from '@arch/contracts';
+import type { LanguageConvention } from '@arch-platform/contracts';
 
 export const testLanguageConvention: LanguageConvention = {
   id: 'typescript',

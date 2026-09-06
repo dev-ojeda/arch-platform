@@ -2,7 +2,7 @@
 
 import type { CAC } from 'cac';
 
-import { typecheckCommand } from '@arch/tooling';
+import { typecheckCommand } from '@arch-platform/tooling';
 
 export function registerTypecheckCommand(cli: CAC): void {
   cli.command('typecheck', 'Typecheck workspace').action(async () => {

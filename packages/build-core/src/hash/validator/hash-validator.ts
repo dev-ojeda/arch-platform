@@ -1,7 +1,7 @@
 // packages/build-core/src/hash/validator/hash-validator.ts
 
-import type { HashService } from '@arch/contracts';
-import type { HashValidation } from '@arch/platform-model';
+import type { HashService } from '@arch-platform/contracts';
+import type { HashValidation } from '@arch-platform/platform-model';
 
 import { HashConsistencyError } from './hash-errors.js';
 

@@ -6,7 +6,7 @@ import type {
   BuildState,
   HashResult,
   OutputValidator,
-} from '@arch/platform-model';
+} from '@arch-platform/platform-model';
 
 import { GraphQueryService } from '../graph/graph-query-services.js';
 import { HASH_SCHEMA_VERSION } from '../hash/hash-schema-version.js';

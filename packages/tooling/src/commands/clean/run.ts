@@ -1,6 +1,6 @@
 // packages/tooling/src/commands/clean/run.ts
 
-import { collectTsBuildInfoFiles, removePaths } from '@arch/infrastructure';
+import { collectTsBuildInfoFiles, removePaths } from '@arch-platform/infrastructure';
 
 import { logger } from '../../logging/logger.js';
 import { ToolingTasks } from '../../runtime/events/tooling-task-events.js';

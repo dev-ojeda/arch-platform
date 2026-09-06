@@ -1,6 +1,6 @@
 // packages/governance/src/analysis/exports/export-barrel-issue.ts
 
-import type { Diagnostic } from '@arch/platform-model';
+import type { Diagnostic } from '@arch-platform/platform-model';
 
 import type { ExportSurface } from './export-barrel-context.js';
 

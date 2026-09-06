@@ -1,6 +1,6 @@
 // packages/infrastructure/src/filesystem/adapters/base-filesystem-adapter.ts
 
-import type { LoggerPort, PathService } from '@arch/contracts';
+import type { LoggerPort, PathService } from '@arch-platform/contracts';
 
 import { loggerFactory } from '../../logging/logger.js';
 import { mapFileSystemError } from '../errors/map-filesystem-error.js';

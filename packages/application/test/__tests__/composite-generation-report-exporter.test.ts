@@ -2,7 +2,7 @@
 
 import { describe, expect, it, vi } from 'vitest';
 
-import type { GenerationReport } from '@arch/contracts';
+import type { GenerationReport } from '@arch-platform/contracts';
 
 import { CompositeGenerationReportExporter } from '../../src/generation/exporters/composite-generation-report-exporter.js';
 

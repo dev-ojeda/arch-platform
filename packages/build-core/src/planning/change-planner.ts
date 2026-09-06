@@ -1,6 +1,6 @@
 // packages/build-core/src/planning/change-planner.ts
 
-import type { Graph, HashResult } from '@arch/platform-model';
+import type { Graph, HashResult } from '@arch-platform/platform-model';
 
 import { CacheEvaluator } from '../cache/cache-evaluator.js';
 import type { CacheDecision } from '../cache/cache-types.js';

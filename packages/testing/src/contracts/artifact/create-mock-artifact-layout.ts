@@ -2,7 +2,7 @@
 
 import { vi } from 'vitest';
 
-import type { ArtifactLayout } from '@arch/platform-model';
+import type { ArtifactLayout } from '@arch-platform/platform-model';
 
 export function createMockArtifactLayout(root = '/cache/artifact'): ArtifactLayout {
   const layout: ArtifactLayout = {

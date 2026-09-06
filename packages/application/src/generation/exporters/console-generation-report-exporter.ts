@@ -1,6 +1,10 @@
 // packages/application/src/generation/exporters/console-generation-report-exporter.ts
 
-import type { GenerationReport, GenerationReportExporter, LoggerPort } from '@arch/contracts';
+import type {
+  GenerationReport,
+  GenerationReportExporter,
+  LoggerPort,
+} from '@arch-platform/contracts';
 
 export interface ConsoleGenerationReportExporterOptions {
   logger: LoggerPort;

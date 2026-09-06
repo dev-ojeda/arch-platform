@@ -1,6 +1,6 @@
 // packages/governance/src/policies/default-dependency-matrix.ts
 
-import type { DependencyMatrix } from '@arch/platform-model';
+import type { DependencyMatrix } from '@arch-platform/platform-model';
 
 export const DEFAULT_MATRIX: DependencyMatrix = {
   domain: {

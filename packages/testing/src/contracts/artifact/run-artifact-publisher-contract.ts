@@ -2,7 +2,11 @@
 
 import { describe, expect, it } from 'vitest';
 
-import type { ArtifactLayout, ArtifactManifest, ArtifactPublisher } from '@arch/platform-model';
+import type {
+  ArtifactLayout,
+  ArtifactManifest,
+  ArtifactPublisher,
+} from '@arch-platform/platform-model';
 
 import type { ContractFixtureFactory } from '../contract-fixture-factory.js';
 

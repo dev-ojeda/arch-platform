@@ -1,8 +1,8 @@
-# @arch/domain-order
+# @arch-platform/domain-order
 
 ## Objetivo
 
-`@arch/domain-order` representa un bounded context de dominio orientado a la gestión de órdenes dentro de la plataforma.
+`@arch-platform/domain-order` representa un bounded context de dominio orientado a la gestión de órdenes dentro de la plataforma.
 
 El package define:
 

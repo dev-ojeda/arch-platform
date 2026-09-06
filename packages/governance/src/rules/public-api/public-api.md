@@ -163,7 +163,7 @@ Un símbolo importado no pertenece a la API pública.
 Ejemplo
 
 ```ts
-import { LoggerPort } from '@arch/contracts';
+import { LoggerPort } from '@arch-platform/contracts';
 ```
 
 cuando `LoggerPort` no forma parte de la API pública.
@@ -177,7 +177,7 @@ Un paquete importa un módulo privado.
 Ejemplo
 
 ```ts
-import { LoggerPort } from '@arch/contracts/src/logging/logger.port';
+import { LoggerPort } from '@arch-platform/contracts/src/logging/logger.port';
 ```
 
 ---
@@ -189,7 +189,7 @@ El módulo importado no forma parte de los `exports` del paquete.
 Ejemplo
 
 ```ts
-import '@arch/contracts/logging/logger.port';
+import '@arch-platform/contracts/logging/logger.port';
 ```
 
 cuando dicho subpath no está declarado en `package.json`.

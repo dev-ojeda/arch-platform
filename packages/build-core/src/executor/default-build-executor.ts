@@ -1,6 +1,6 @@
 // packages/build-core/src/executor/default-build-executor.ts
 
-import type { DagNode } from '@arch/platform-model';
+import type { DagNode } from '@arch-platform/platform-model';
 
 import { logger } from '../logging/logger.js';
 import type { BuildPlanEntry } from '../planning/plan-entry.js';

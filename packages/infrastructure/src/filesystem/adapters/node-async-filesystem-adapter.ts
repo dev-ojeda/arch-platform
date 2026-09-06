@@ -1,6 +1,10 @@
 // packages/infrastructure/src/filesystem/adapters/node-async-filesystem-adapter.ts
 
-import type { DirectoryEntry, FileSystemAsyncPort, WriteFileOptions } from '@arch/contracts';
+import type {
+  DirectoryEntry,
+  FileSystemAsyncPort,
+  WriteFileOptions,
+} from '@arch-platform/contracts';
 
 import { safeParse, safeStringify } from '../../serialization/safe-stringify.js';
 import {

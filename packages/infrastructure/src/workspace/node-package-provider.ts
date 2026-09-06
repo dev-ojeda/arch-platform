@@ -6,7 +6,7 @@ import type {
   PackageLayout,
   PackageManifest,
   PackageProvider,
-} from '@arch/platform-model';
+} from '@arch-platform/platform-model';
 
 import { pathExists, readDirectoryEntries, readTextFile } from '../filesystem/io/fs-async.js';
 import { isDirectory } from '../filesystem/io/fs-sync.js';
@@ -31,7 +31,7 @@ export class NodePackageProvider implements PackageProvider {
       packageRoots.map((packageRoot) => this.createPackageDescriptor(packageRoot)),
     );
 
-    const archPackages = packages.filter((pkg) => pkg.name.startsWith('@arch/'));
+    const archPackages = packages.filter((pkg) => pkg.name.startsWith('@arch-platform/'));
 
     return this.resolveInternalDependencies(archPackages);
   }

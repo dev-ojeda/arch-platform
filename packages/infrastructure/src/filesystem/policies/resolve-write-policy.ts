@@ -1,6 +1,6 @@
 // packages/infrastructure/src/filesystem/policies/resolve-write-policy.ts
 
-import type { WriteFileOptions } from '@arch/contracts';
+import type { WriteFileOptions } from '@arch-platform/contracts';
 
 export function shouldWriteFile(exists: boolean, options?: WriteFileOptions): boolean {
   const policy = options?.overwrite ?? 'overwrite';

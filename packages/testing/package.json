@@ -1,5 +1,5 @@
 {
-  "name": "@arch/testing",
+  "name": "@arch-platform/testing",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -28,14 +28,14 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "arch": "arch build --package @arch/testing",
+    "arch": "arch build --package @arch-platform/testing",
     "clean": "arch clean",
-    "compliance": "arch compliance --package @arch/testing --env dev",
+    "compliance": "arch compliance --package @arch-platform/testing --env dev",
     "typecheck": "arch typecheck"
   },
   "dependencies": {
-    "@arch/contracts": "workspace:*",
-    "@arch/platform-model": "workspace:*",
-    "@arch/core": "workspace:*"
+    "@arch-platform/contracts": "0.1.0",
+    "@arch-platform/platform-model": "workspace:*",
+    "@arch-platform/core": "workspace:*"
   }
 }

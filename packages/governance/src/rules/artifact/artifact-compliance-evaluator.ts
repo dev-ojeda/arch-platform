@@ -4,7 +4,7 @@ import type {
   ComplianceEnvironment,
   ComplianceStateChange,
   Diagnostic,
-} from '@arch/platform-model';
+} from '@arch-platform/platform-model';
 
 import type { ComplianceDependencyContext } from '../../compliance/compliance-dependencies-context.js';
 import type { ComplianceEvaluated } from '../../compliance/compliance-evaluated.js';

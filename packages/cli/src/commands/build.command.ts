@@ -3,7 +3,7 @@ import process from 'node:process';
 
 import type { CAC } from 'cac';
 
-import { buildCommand } from '@arch/tooling';
+import { buildCommand } from '@arch-platform/tooling';
 
 import type { BuildCliOptions } from '../contracts/build-cli-options.js';
 import { logger } from '../ui/logger.js';

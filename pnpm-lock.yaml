@@ -105,9 +105,12 @@ importers:
 
   .:
     devDependencies:
-      '@arch/cli':
+      '@arch-platform/cli':
         specifier: workspace:*
         version: link:packages/cli
+      '@arch-platform/contracts':
+        specifier: 0.1.0
+        version: 0.1.0
       '@changesets/cli':
         specifier: 'catalog:'
         version: 2.31.0(@types/node@24.12.4)
@@ -198,16 +201,16 @@ importers:
 
   packages/application:
     dependencies:
-      '@arch/contracts':
-        specifier: workspace:*
-        version: link:../contracts
-      '@arch/core':
+      '@arch-platform/contracts':
+        specifier: 0.1.0
+        version: 0.1.0
+      '@arch-platform/core':
         specifier: workspace:*
         version: link:../core
-      '@arch/generator-mvc':
-        specifier: workspace:*
-        version: link:../generators/mvc
-      '@arch/testing':
+      '@arch-platform/generator-mvc':
+        specifier: 0.1.0
+        version: 0.1.0
+      '@arch-platform/testing':
         specifier: workspace:*
         version: link:../testing
     devDependencies:
@@ -217,25 +220,25 @@ importers:
 
   packages/build-core:
     dependencies:
-      '@arch/contracts':
-        specifier: workspace:*
-        version: link:../contracts
-      '@arch/infrastructure':
+      '@arch-platform/contracts':
+        specifier: 0.1.0
+        version: 0.1.0
+      '@arch-platform/infrastructure':
         specifier: workspace:*
         version: link:../infrastructure
-      '@arch/platform-model':
+      '@arch-platform/platform-model':
         specifier: workspace:*
         version: link:../platform-model
 
   packages/cli:
     dependencies:
-      '@arch/governance':
+      '@arch-platform/governance':
         specifier: workspace:*
         version: link:../governance
-      '@arch/infrastructure':
+      '@arch-platform/infrastructure':
         specifier: workspace:*
         version: link:../infrastructure
-      '@arch/tooling':
+      '@arch-platform/tooling':
         specifier: workspace:*
         version: link:../tooling
       cac:
@@ -253,43 +256,35 @@ importers:
 
   packages/compliance: {}
 
-  packages/contracts: {}
-
   packages/core:
     dependencies:
-      '@arch/contracts':
-        specifier: workspace:*
-        version: link:../contracts
+      '@arch-platform/contracts':
+        specifier: 0.1.0
+        version: 0.1.0
 
   packages/domain-order: {}
 
-  packages/generators/mvc:
-    dependencies:
-      '@arch/contracts':
-        specifier: workspace:*
-        version: link:../../contracts
-
   packages/governance:
     dependencies:
-      '@arch/code-analysis':
+      '@arch-platform/code-analysis':
         specifier: workspace:*
         version: link:../code-analysis
-      '@arch/infrastructure':
+      '@arch-platform/infrastructure':
         specifier: workspace:*
         version: link:../infrastructure
-      '@arch/platform-model':
+      '@arch-platform/platform-model':
         specifier: workspace:*
         version: link:../platform-model
 
   packages/infrastructure:
     dependencies:
-      '@arch/contracts':
-        specifier: workspace:*
-        version: link:../contracts
-      '@arch/platform-model':
+      '@arch-platform/contracts':
+        specifier: 0.1.0
+        version: 0.1.0
+      '@arch-platform/platform-model':
         specifier: workspace:*
         version: link:../platform-model
-      '@arch/testing':
+      '@arch-platform/testing':
         specifier: workspace:*
         version: link:../testing
 
@@ -297,22 +292,22 @@ importers:
 
   packages/testing:
     dependencies:
-      '@arch/contracts':
-        specifier: workspace:*
-        version: link:../contracts
-      '@arch/core':
+      '@arch-platform/contracts':
+        specifier: 0.1.0
+        version: 0.1.0
+      '@arch-platform/core':
         specifier: workspace:*
         version: link:../core
-      '@arch/platform-model':
+      '@arch-platform/platform-model':
         specifier: workspace:*
         version: link:../platform-model
 
   packages/tooling:
     dependencies:
-      '@arch/build-core':
+      '@arch-platform/build-core':
         specifier: workspace:*
         version: link:../build-core
-      '@arch/infrastructure':
+      '@arch-platform/infrastructure':
         specifier: workspace:*
         version: link:../infrastructure
     devDependencies:
@@ -324,6 +319,12 @@ importers:
         version: 5.9.3
 
 packages:
+
+  '@arch-platform/contracts@0.1.0':
+    resolution: {integrity: sha512-Zdfy24smncfimMk/8bWe3FKgXsnnhfvLmh/coqCFl7zEA+wcVEclDkjfpXTLVXwpm/X4boB8Ad+Im6R3NwHpnQ==}
+
+  '@arch-platform/generator-mvc@0.1.0':
+    resolution: {integrity: sha512-FkcvlCEOkKhf93SONXL+4rJrxesWzeEFdr2cs+bk+jytflZxTS6+CUFeLhU/BQDyyLUjSlYf+nirJnH5gDZNEQ==}
 
   '@babel/code-frame@7.29.7':
     resolution: {integrity: sha512-Aup7aUOfpbAUg2ROOJN6Iw5f9DMBlzu0mIkm/malLQFN/YQgO48wCj0Kxa3sEHJvPVFg7siR+qRInwXd2qhQKw==}
@@ -3748,6 +3749,12 @@ packages:
     resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
 
 snapshots:
+
+  '@arch-platform/contracts@0.1.0': {}
+
+  '@arch-platform/generator-mvc@0.1.0':
+    dependencies:
+      '@arch-platform/contracts': 0.1.0
 
   '@babel/code-frame@7.29.7':
     dependencies:

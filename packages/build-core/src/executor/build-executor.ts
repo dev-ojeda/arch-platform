@@ -2,7 +2,7 @@
 
 // packages/build-core/src/executor/build-executor.ts
 
-import type { DagNode } from '@arch/platform-model';
+import type { DagNode } from '@arch-platform/platform-model';
 
 import type { BuildPlanEntry } from '../planning/plan-entry.js';
 

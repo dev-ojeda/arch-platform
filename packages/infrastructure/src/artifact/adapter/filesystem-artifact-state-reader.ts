@@ -1,7 +1,7 @@
 // packages/infrastructure/src/artifact/adapter/filesystem-artifact-state-reader.ts
 
-import type { FileSystemAsyncPort, PathService } from '@arch/contracts';
-import type { ArtifactState, ArtifactStateReader } from '@arch/platform-model';
+import type { FileSystemAsyncPort, PathService } from '@arch-platform/contracts';
+import type { ArtifactState, ArtifactStateReader } from '@arch-platform/platform-model';
 
 import { getArtifactStatePath } from '../../state/state-paths.js';
 

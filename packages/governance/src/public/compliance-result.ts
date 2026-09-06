@@ -1,6 +1,6 @@
 // packages/governance/src/public/compliance-result.ts
 
-import type { Diagnostic } from '@arch/platform-model';
+import type { Diagnostic } from '@arch-platform/platform-model';
 
 import type { ComplianceAction } from './compliance-action.js';
 import type { ComplianceScope } from './compliance-scope.js';

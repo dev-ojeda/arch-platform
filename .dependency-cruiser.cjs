@@ -71,7 +71,7 @@ const boundaryRules = [
     },
 
     to: {
-      path: '^@arch/.+/src/',
+      path: '^@arch-platform/.+/src/',
     },
   }),
 ];

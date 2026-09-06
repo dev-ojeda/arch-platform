@@ -1,6 +1,6 @@
 // packages/infrastructure/src/hashing/node-file-hash-service.ts
 
-import type { FileHashService, HashService } from '@arch/contracts';
+import type { FileHashService, HashService } from '@arch-platform/contracts';
 
 import { fileSizeSync, readBufferSync } from '../filesystem/io/fs-sync.js';
 import { resolvePath } from '../filesystem/io/path-utils.js';

@@ -1,6 +1,6 @@
 // packages/governance/src/compliance/compliance-evaluation.ts
 
-import type { ComplianceStateChange, Diagnostic } from '@arch/platform-model';
+import type { ComplianceStateChange, Diagnostic } from '@arch-platform/platform-model';
 
 export interface ComplianceEvaluation {
   readonly diagnostics: readonly Diagnostic[];

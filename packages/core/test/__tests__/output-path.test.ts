@@ -2,7 +2,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import type { PathService } from '@arch/contracts';
+import type { PathService } from '@arch-platform/contracts';
 
 import { resolveOutputPath } from '../../src/generation/output/output-path.js';
 

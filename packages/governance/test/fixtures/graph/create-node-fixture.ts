@@ -1,6 +1,6 @@
 // packages\code-analysis\test\fixtures\symbols\create-node-fixture.ts
 
-import type { SymbolNode } from '@arch/code-analysis';
+import type { SymbolNode } from '@arch-platform/code-analysis';
 
 export function createNode(
   id: string,

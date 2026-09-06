@@ -2,7 +2,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import type { FileSystemSyncPort } from '@arch/contracts';
+import type { FileSystemSyncPort } from '@arch-platform/contracts';
 
 export function runFileSystemSyncPortContract(createFileSystem: () => FileSystemSyncPort): void {
   describe('FileSystemSyncPort contract', () => {

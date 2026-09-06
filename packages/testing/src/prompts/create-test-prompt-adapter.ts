@@ -8,7 +8,7 @@ import type {
   SelectOption,
   StringField,
   VariableValue,
-} from '@arch/contracts';
+} from '@arch-platform/contracts';
 
 function getStringValue(value: VariableValue): string | undefined {
   return typeof value === 'string' ? value : undefined;

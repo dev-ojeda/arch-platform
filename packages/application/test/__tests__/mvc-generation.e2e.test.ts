@@ -7,8 +7,8 @@ import type {
   RenderedFile,
   RenderTemplateInput,
   TemplateRendererPort,
-} from '@arch/contracts';
-import { createTestGenerator, createTestPipelineContext } from '@arch/testing';
+} from '@arch-platform/contracts';
+import { createTestGenerator, createTestPipelineContext } from '@arch-platform/testing';
 
 import { GeneratorValidationError } from '../../src/generation/errors/generator-validation-error.js';
 import { RenderFilesStep } from '../../src/generation/steps/render-files.step.js';

@@ -5,7 +5,7 @@ import type {
   ArchitectureManifest,
   ArchitecturePackage,
   ArchitectureProvider,
-} from '@arch/platform-model';
+} from '@arch-platform/platform-model';
 
 import { readTextFile } from '../filesystem/io/fs-async.js';
 import { configPath } from '../filesystem/io/path-utils.js';

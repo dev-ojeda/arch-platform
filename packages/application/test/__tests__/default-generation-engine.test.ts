@@ -6,8 +6,8 @@ import type {
   GenerationContext,
   GenerationReportExporter,
   GenerationRequest,
-} from '@arch/contracts';
-import { createTestGenerator, TestLogger } from '@arch/testing';
+} from '@arch-platform/contracts';
+import { createTestGenerator, TestLogger } from '@arch-platform/testing';
 
 import { DefaultGenerationEngine } from '../../src/generation/engine/default-generation-engine.js';
 

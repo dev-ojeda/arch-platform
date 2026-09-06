@@ -1,5 +1,5 @@
 // apps\vscode-extension\src\adapters\vscode\commands\generate-project.command.ts
-import { GenerateProjectUseCase } from '@arch/application';
+import { GenerateProjectUseCase } from '@arch-platform/application';
 import * as vscode from 'vscode';
 
 import { createGeneratorRegistry } from '../../../composition/create-generator-registry.js';

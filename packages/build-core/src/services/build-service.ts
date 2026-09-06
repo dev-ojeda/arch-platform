@@ -1,6 +1,6 @@
 // packages/build-core/src/services/build-service.ts
 
-import type { ArtifactState, ArtifactStateHistory } from '@arch/platform-model';
+import type { ArtifactState, ArtifactStateHistory } from '@arch-platform/platform-model';
 
 import { CacheEvaluator } from '../cache/cache-evaluator.js';
 import type { BuildResult } from '../executor/build-result.js';

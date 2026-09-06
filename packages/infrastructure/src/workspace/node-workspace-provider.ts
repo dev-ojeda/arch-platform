@@ -1,12 +1,12 @@
 // packages/infrastructure/src/workspace/node-workspace-provider.ts
 
-import type { PathService } from '@arch/contracts';
+import type { PathService } from '@arch-platform/contracts';
 import type {
   PackageProvider,
   WorkspaceDescriptor,
   WorkspaceLayout,
   WorkspaceProvider,
-} from '@arch/platform-model';
+} from '@arch-platform/platform-model';
 
 import { pathExists } from '../filesystem/io/fs-async.js';
 import { pathExistsSync } from '../filesystem/io/fs-sync.js';

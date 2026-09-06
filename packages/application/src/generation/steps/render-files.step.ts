@@ -6,7 +6,7 @@ import type {
   GenerationPipelineStep,
   TemplateRendererPort,
   TemplateVariables,
-} from '@arch/contracts';
+} from '@arch-platform/contracts';
 
 export class RenderFilesStep<
   TVariables extends TemplateVariables = TemplateVariables,

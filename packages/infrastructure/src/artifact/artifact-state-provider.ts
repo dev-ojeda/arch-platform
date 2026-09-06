@@ -1,6 +1,6 @@
 // packages/infrastructure/src/artifact/artifact-state-provider.ts
 
-import type { ArtifactStateReader, ArtifactStateWriter } from '@arch/platform-model';
+import type { ArtifactStateReader, ArtifactStateWriter } from '@arch-platform/platform-model';
 
 import { NodeAsyncFileSystemAdapter } from '../filesystem/adapters/node-async-filesystem-adapter.js';
 import { NodePathService } from '../filesystem/paths/node-path-service.js';

@@ -2,7 +2,7 @@
 
 import { describe, expect, it, vi } from 'vitest';
 
-import { createTestPipelineContext } from '@arch/testing';
+import { createTestPipelineContext } from '@arch-platform/testing';
 
 import { WriteFilesStep } from '../../src/generation/steps/write-files.step.js';
 

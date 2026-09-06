@@ -1,6 +1,6 @@
 // packages/infrastructure/src/filesystem/paths/node-path-service.ts
 
-import type { PathService } from '@arch/contracts';
+import type { PathService } from '@arch-platform/contracts';
 
 import {
   baseName,

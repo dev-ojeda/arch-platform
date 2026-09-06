@@ -6,7 +6,7 @@ import {
   type ResolvedTemplateVariables,
   type TemplateVariables,
   type VariableValue,
-} from '@arch/contracts';
+} from '@arch-platform/contracts';
 
 export function buildVariables<TVariables extends TemplateVariables>(
   ctx: GenerationContext<TVariables>,

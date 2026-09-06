@@ -1,6 +1,6 @@
 // packages/testing/src/prompts/create-test-prompt-resolver.ts
 
-import type { NamedVariables, PromptResolver, PromptSchema } from '@arch/contracts';
+import type { NamedVariables, PromptResolver, PromptSchema } from '@arch-platform/contracts';
 
 function restoreVariables<TVariables extends NamedVariables>(
   variables: NamedVariables,

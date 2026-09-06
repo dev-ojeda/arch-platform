@@ -1,6 +1,6 @@
 // packages/governance/src/diagnostics/resolved-compliance-action.ts
 
-import type { ComplianceStateChange, Diagnostic } from '@arch/platform-model';
+import type { ComplianceStateChange, Diagnostic } from '@arch-platform/platform-model';
 
 import type { ComplianceAction } from '../public/compliance-action.js';
 

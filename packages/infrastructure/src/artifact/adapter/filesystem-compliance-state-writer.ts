@@ -1,13 +1,13 @@
 // packages/infrastructure/src/artifact/adapter/filesystem-compliance-state-writer.ts
 
-import type { FileSystemAsyncPort, PathService } from '@arch/contracts';
+import type { FileSystemAsyncPort, PathService } from '@arch-platform/contracts';
 import type {
   ComplianceEnvironment,
   ComplianceState,
   ComplianceStateChange,
   ComplianceStateChanges,
   ComplianceStateWriter,
-} from '@arch/platform-model';
+} from '@arch-platform/platform-model';
 
 import { MutableComplianceStateChanges } from '../../compliance/compliance-state-changes.js';
 

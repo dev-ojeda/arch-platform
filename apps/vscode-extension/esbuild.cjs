@@ -51,11 +51,11 @@ async function build() {
 
     external: [
       'vscode',
-      '@arch/contracts',
-      '@arch/core',
-      '@arch/application',
-      '@arch/infrastructure',
-      '@arch/generator-mvc',
+      '@arch-platform/contracts',
+      '@arch-platform/core',
+      '@arch-platform/application',
+      '@arch-platform/infrastructure',
+      '@arch-platform/generator-mvc',
     ],
 
     mainFields: ['module', 'main'],

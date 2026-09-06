@@ -1,4 +1,4 @@
-import type { FileDefinition, NamedVariables } from '@arch/contracts';
+import type { FileDefinition, NamedVariables } from '@arch-platform/contracts';
 
 export async function transformContent<TVariables extends NamedVariables>(
   file: FileDefinition<TVariables>,

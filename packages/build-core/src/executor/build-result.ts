@@ -1,6 +1,6 @@
 // packages/build-core/src/executor/build-result.ts
 
-import type { ArtifactStateReason } from '@arch/platform-model';
+import type { ArtifactStateReason } from '@arch-platform/platform-model';
 
 import type { ChangeReason } from '../cache/cache-types.js';
 

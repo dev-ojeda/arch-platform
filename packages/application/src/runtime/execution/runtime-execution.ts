@@ -1,6 +1,6 @@
 // packages/application/src/runtime/execution/runtime-execution.ts
 
-import type { GenerationDiagnostic, StepExecutionMetric } from '@arch/contracts';
+import type { GenerationDiagnostic, StepExecutionMetric } from '@arch-platform/contracts';
 
 import type { RuntimeExecutionStatus } from './runtime-execution-status.js';
 import type { ExecutionTimeline } from './timeline/execution-timeline.js';

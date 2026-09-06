@@ -7,7 +7,7 @@ import type {
   HashResult,
   Layer,
   WorkspaceDescriptor,
-} from '@arch/platform-model';
+} from '@arch-platform/platform-model';
 
 import type { ComplianceDependencyContext } from '../compliance/compliance-dependencies-context.js';
 

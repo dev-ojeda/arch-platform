@@ -2,7 +2,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { createMockFilesystem, createMockPromptAdapter } from '@arch/testing';
+import { createMockFilesystem, createMockPromptAdapter } from '@arch-platform/testing';
 
 import { createGenerationEngine } from '../../src/generation/composition/create-default-engine.js';
 

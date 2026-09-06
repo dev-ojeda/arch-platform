@@ -5,7 +5,7 @@ import type {
   GenerationHooks,
   GenerationPipelineStep,
   TemplateVariables,
-} from '@arch/contracts';
+} from '@arch-platform/contracts';
 
 import { recordStepMetric } from '../telemetry/record-step-metric.js';
 

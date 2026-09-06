@@ -9,7 +9,7 @@ export function createComplianceExecutionContext(): ComplianceExecutionContext {
     scope: {
       kind: 'package',
       root: '',
-      packageName: '@arch/testing',
+      packageName: '@arch-platform/testing',
       environment: 'dev',
     },
 

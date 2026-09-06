@@ -1,5 +1,5 @@
 {
-  "name": "@arch/tooling",
+  "name": "@arch-platform/tooling",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -30,14 +30,14 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "build:dts": "tsc -p tsconfig.build.json --emitDeclarationOnly",
-    "arch": "arch build --package @arch/tooling",
+    "arch": "arch build --package @arch-platform/tooling",
     "clean": "arch clean",
-    "compliance": "arch compliance --package @arch/tooling --env dev",
+    "compliance": "arch compliance --package @arch-platform/tooling --env dev",
     "typecheck": "arch typecheck"
   },
   "dependencies": {
-    "@arch/build-core": "workspace:*",
-    "@arch/infrastructure": "workspace:*"
+    "@arch-platform/build-core": "workspace:*",
+    "@arch-platform/infrastructure": "workspace:*"
   },
   "devDependencies": {
     "typescript": "catalog:",

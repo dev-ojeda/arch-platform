@@ -4,7 +4,7 @@ import type {
   ComplianceEvent,
   ComplianceEventBus,
   ComplianceEventHandler,
-} from '@arch/platform-model';
+} from '@arch-platform/platform-model';
 
 export class InMemoryComplianceEventBus implements ComplianceEventBus {
   private readonly handlers: ComplianceEventHandler[] = [];

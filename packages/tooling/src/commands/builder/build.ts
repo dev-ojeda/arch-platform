@@ -2,7 +2,7 @@
 
 import { cwd } from 'node:process';
 
-import { BuildApplicationFactory } from '@arch/build-core';
+import { BuildApplicationFactory } from '@arch-platform/build-core';
 
 import { logger } from '../../logging/logger.js';
 import { ToolingTasks } from '../../runtime/events/tooling-task-events.js';

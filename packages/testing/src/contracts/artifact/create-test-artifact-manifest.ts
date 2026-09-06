@@ -1,6 +1,6 @@
 // packages/testing/src/contracts/artifact/create-test-artifact-manifest.ts
 
-import type { ArtifactManifest } from '@arch/platform-model';
+import type { ArtifactManifest } from '@arch-platform/platform-model';
 
 import { createTestArtifact } from './create-test-artifact.js';
 

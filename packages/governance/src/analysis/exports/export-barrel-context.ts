@@ -1,7 +1,7 @@
 // packages/governance/src/analysis/exports/export-barrel-context.ts
 
-import type { SymbolNode } from '@arch/code-analysis';
-import type { PackageDescriptor } from '@arch/platform-model';
+import type { SymbolNode } from '@arch-platform/code-analysis';
+import type { PackageDescriptor } from '@arch-platform/platform-model';
 
 export type ExportSurface =
   | {

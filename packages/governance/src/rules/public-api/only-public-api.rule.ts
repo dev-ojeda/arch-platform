@@ -1,6 +1,6 @@
 // packages/governance/src/rules/public-api/only-public-api.rule.ts
 
-import type { Diagnostic } from '@arch/platform-model';
+import type { Diagnostic } from '@arch-platform/platform-model';
 
 import type { GovernanceExecutionContext } from '../../context/governance-execution-context.js';
 import { GOVERNANCE_RULE_ID } from '../../engine/governance-rule-id.js';

@@ -1,5 +1,5 @@
 {
-  "name": "@arch/code-analysis",
+  "name": "@arch-platform/code-analysis",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -29,9 +29,9 @@
   "scripts": {
     "build": "pnpm build:dts",
     "build:dts": "tsc -p tsconfig.build.json",
-    "arch": "arch build --package @arch/code-analysis",
+    "arch": "arch build --package @arch-platform/code-analysis",
     "clean": "arch clean",
-    "compliance": "arch compliance --package @arch/code-analysis --env dev",
+    "compliance": "arch compliance --package @arch-platform/code-analysis --env dev",
     "typecheck": "arch typecheck",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",

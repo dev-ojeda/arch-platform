@@ -2,7 +2,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import type { Diagnostic } from '@arch/platform-model';
+import type { Diagnostic } from '@arch-platform/platform-model';
 
 import { GovernanceEngine } from '../../src/engine/governance-engine.js';
 import type { GovernanceRule } from '../../src/engine/governance-rule.js';

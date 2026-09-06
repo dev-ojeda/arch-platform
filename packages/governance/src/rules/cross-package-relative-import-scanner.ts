@@ -1,6 +1,6 @@
 // packages/governance/src/rules/cross-package-relative-import-scanner.ts
 
-import type { Diagnostic } from '@arch/platform-model';
+import type { Diagnostic } from '@arch-platform/platform-model';
 
 import { ImportContextScanner } from '../analysis/imports/import-context-scanner.js';
 import type { GovernanceExecutionContext } from '../context/governance-execution-context.js';

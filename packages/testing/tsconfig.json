@@ -12,10 +12,10 @@
   "exclude": ["dist", "node_modules"],
   "references": [
     {
-      "path": "../contracts"
+      "path": "../platform-model"
     },
     {
-      "path": "../platform-model"
+      "path": "../contracts"
     },
     {
       "path": "../core"

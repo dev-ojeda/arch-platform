@@ -70,8 +70,9 @@ $CleanupDirectories = @(
   '.turbo',
   'coverage',
   '.next',
-  '.arch',
-  '.arch-cache'
+  '.arch-cache',
+  '.arch-platform',
+  '.arch-platform-cache'
 )
 
 $CleanupFiles = @(

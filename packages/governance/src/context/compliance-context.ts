@@ -5,7 +5,7 @@ import type {
   ComplianceEnvironment,
   ComplianceState,
   WorkspaceDescriptor,
-} from '@arch/platform-model';
+} from '@arch-platform/platform-model';
 
 import type { ComplianceScope } from '../public/compliance-scope.js';
 

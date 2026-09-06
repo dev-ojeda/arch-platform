@@ -5,7 +5,7 @@ import type {
   GenerationHooks,
   GenerationPipelineStep,
   TemplateVariables,
-} from '@arch/contracts';
+} from '@arch-platform/contracts';
 
 import { errorMessage } from '../../errors/error-message.js';
 import { publishGenerationEvent } from '../../runtime/execution/events/publish-generation-event.js';

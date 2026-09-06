@@ -1,6 +1,6 @@
 // packages/governance/src/rules/public-api/private-barrel-scanner.ts
 
-import { SymbolGraphQuery } from '@arch/code-analysis';
+import { SymbolGraphQuery } from '@arch-platform/code-analysis';
 
 import type { ExportBarrelIssue } from '../../analysis/exports/export-barrel-issue.js';
 import type { ExportBarrelScanner } from '../../analysis/exports/export-barrel-scanner.js';

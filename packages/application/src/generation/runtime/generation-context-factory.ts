@@ -6,8 +6,8 @@ import type {
   GenerationRequest,
   LoggerPort,
   TemplateVariables,
-} from '@arch/contracts';
-import { InMemoryGenerationEventBus } from '@arch/core';
+} from '@arch-platform/contracts';
+import { InMemoryGenerationEventBus } from '@arch-platform/core';
 
 export class GenerationContextFactory {
   constructor(

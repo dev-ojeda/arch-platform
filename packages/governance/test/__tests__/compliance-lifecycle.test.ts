@@ -2,7 +2,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import type { ComplianceStateChange, Diagnostic } from '@arch/platform-model';
+import type { ComplianceStateChange, Diagnostic } from '@arch-platform/platform-model';
 
 import { resolveComplianceAction } from '../../src/diagnostics/resolved-compliance-action.js';
 import { createHashResult } from '../fixtures/compliance/create-hash-result.js';
@@ -13,7 +13,7 @@ describe('Compliance lifecycle', () => {
   it('requires evaluation when an artifact enters transition for the first time', () => {
     const change: ComplianceStateChange = {
       environment: 'dev',
-      artifact: '@arch/contracts',
+      artifact: '@arch-platform/contracts',
       previousStatus: undefined,
       nextStatus: 'transition',
       evaluatedHash: hash,
@@ -25,7 +25,7 @@ describe('Compliance lifecycle', () => {
   it('requires evaluation when an approved artifact becomes transition', () => {
     const change: ComplianceStateChange = {
       environment: 'dev',
-      artifact: '@arch/contracts',
+      artifact: '@arch-platform/contracts',
       previousStatus: 'approved',
       nextStatus: 'transition',
       evaluatedHash: hash,
@@ -37,7 +37,7 @@ describe('Compliance lifecycle', () => {
   it('approves an artifact when transition advances to approved', () => {
     const change: ComplianceStateChange = {
       environment: 'dev',
-      artifact: '@arch/contracts',
+      artifact: '@arch-platform/contracts',
       previousStatus: 'transition',
       nextStatus: 'approved',
       evaluatedHash: hash,

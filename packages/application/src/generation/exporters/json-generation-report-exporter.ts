@@ -4,7 +4,7 @@ import type {
   FileSystemAsyncPort,
   GenerationReport,
   GenerationReportExporter,
-} from '@arch/contracts';
+} from '@arch-platform/contracts';
 
 export interface JsonGenerationReportExporterOptions {
   fs: FileSystemAsyncPort;

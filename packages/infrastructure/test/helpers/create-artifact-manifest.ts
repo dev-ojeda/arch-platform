@@ -1,5 +1,5 @@
 // packages\infrastructure\test\helpers\create-artifact-manifest.ts
-import type { Artifact, ArtifactManifest } from '@arch/platform-model';
+import type { Artifact, ArtifactManifest } from '@arch-platform/platform-model';
 
 import { ARTIFACT_SCHEMA_VERSION } from '../../src/artifact/artifact-schema-version.js';
 
@@ -11,7 +11,7 @@ export function createArtifactManifest(options?: {
 }): ArtifactManifest {
   return {
     artifact: {
-      packageName: '@arch/build-core',
+      packageName: '@arch-platform/build-core',
       id: 'artifact-id',
       ...options?.artifact,
     },

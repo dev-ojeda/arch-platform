@@ -1,6 +1,6 @@
 // packages\governance\src\engine\governance-engine.ts
 
-import type { Diagnostic, DiagnosticSeverity } from '@arch/platform-model';
+import type { Diagnostic, DiagnosticSeverity } from '@arch-platform/platform-model';
 
 import type { GovernanceExecutionContext } from '../context/governance-execution-context.js';
 import { createStopwatch } from '../helpers/create-stopwatch.js';

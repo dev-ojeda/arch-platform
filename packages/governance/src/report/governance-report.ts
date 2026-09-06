@@ -1,6 +1,6 @@
 // packages/governance/src/report/governance-report.ts
 
-import type { Diagnostic } from '@arch/platform-model';
+import type { Diagnostic } from '@arch-platform/platform-model';
 
 import type { GovernanceRuleResult } from '../engine/governance-rule-result.js';
 

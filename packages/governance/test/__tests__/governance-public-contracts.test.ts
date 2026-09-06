@@ -2,9 +2,13 @@
 
 import { describe, expect, it } from 'vitest';
 
-import type { GovernanceOptions, GovernanceResult, GovernanceScope } from '@arch/governance';
+import type {
+  GovernanceOptions,
+  GovernanceResult,
+  GovernanceScope,
+} from '@arch-platform/governance';
 
-describe('@arch/governance public contracts', () => {
+describe('@arch-platform/governance public contracts', () => {
   it('should expose public governance contracts', () => {
     const options = {
       workspaceRoot: process.cwd(),

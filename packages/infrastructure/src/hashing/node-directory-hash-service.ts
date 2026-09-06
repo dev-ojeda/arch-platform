@@ -2,7 +2,7 @@
 
 import { createHash } from 'node:crypto';
 
-import type { DirectoryHashService, FileHashService } from '@arch/contracts';
+import type { DirectoryHashService, FileHashService } from '@arch-platform/contracts';
 
 import { isDirectory, readDirectoryEntriesSync } from '../filesystem/io/fs-sync.js';
 import { joinPath, relativePath } from '../filesystem/io/path-utils.js';

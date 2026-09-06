@@ -8,7 +8,7 @@ import type {
   ComplianceEventHandler,
   ComplianceStateChange,
   Diagnostic,
-} from '@arch/platform-model';
+} from '@arch-platform/platform-model';
 
 import { ComplianceEngine } from '../../src/compliance/compliance-engine.js';
 import type { ComplianceRule } from '../../src/compliance/compliance-rule.js';
@@ -52,7 +52,7 @@ describe('ComplianceEngine', () => {
 
     const change: ComplianceStateChange = {
       environment: 'dev',
-      artifact: '@arch/testing',
+      artifact: '@arch-platform/testing',
       previousStatus: 'transition',
       nextStatus: 'approved',
       evaluatedHash: createHashResult(),

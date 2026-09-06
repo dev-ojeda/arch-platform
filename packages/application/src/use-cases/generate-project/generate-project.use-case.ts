@@ -1,6 +1,10 @@
 // packages\application\src\use-cases\generate-project\generate-project.use-case.ts
 
-import type { GenerationRequest, GenerationResult, GeneratorRegistry } from '@arch/contracts';
+import type {
+  GenerationRequest,
+  GenerationResult,
+  GeneratorRegistry,
+} from '@arch-platform/contracts';
 
 import type { GenerationEngine } from '../../generation/engine/generation-engine.js';
 

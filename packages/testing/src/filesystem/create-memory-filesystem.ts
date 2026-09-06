@@ -2,7 +2,11 @@
 
 import { posix } from 'node:path';
 
-import type { DirectoryEntry, FileSystemAsyncPort, WriteFileOptions } from '@arch/contracts';
+import type {
+  DirectoryEntry,
+  FileSystemAsyncPort,
+  WriteFileOptions,
+} from '@arch-platform/contracts';
 
 type MutableMemoryFilesystemState = {
   files: Map<string, string>;

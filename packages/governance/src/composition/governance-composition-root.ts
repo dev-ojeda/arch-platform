@@ -1,6 +1,6 @@
 // packages/governance/src/composition/governance-composition-root.ts
 
-import { NodeArchitectureProvider, NodeWorkspaceProvider } from '@arch/infrastructure';
+import { NodeArchitectureProvider, NodeWorkspaceProvider } from '@arch-platform/infrastructure';
 
 import { CodeAnalysisAdapter } from '../analysis/code-analysis/code-analysis-adapter.js';
 import { createGovernanceAnalysisContext } from '../analysis/code-analysis/create-governance-analysis-context.js';

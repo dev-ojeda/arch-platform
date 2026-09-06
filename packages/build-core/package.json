@@ -1,5 +1,5 @@
 {
-  "name": "@arch/build-core",
+  "name": "@arch-platform/build-core",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -29,9 +29,9 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "build:dts": "tsc -p tsconfig.build.json --emitDeclarationOnly",
-    "arch": "arch build --package @arch/build-core",
+    "arch": "arch build --package @arch-platform/build-core",
     "clean": "arch clean",
-    "compliance": "arch compliance --package @arch/build-core --env dev",
+    "compliance": "arch compliance --package @arch-platform/build-core --env dev",
     "typecheck": "arch typecheck",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",
@@ -39,8 +39,8 @@
     "test:clear": "vitest --clearCache"
   },
   "dependencies": {
-    "@arch/platform-model": "workspace:*",
-    "@arch/contracts": "workspace:*",
-    "@arch/infrastructure": "workspace:*"
+    "@arch-platform/platform-model": "workspace:*",
+    "@arch-platform/contracts": "0.1.0",
+    "@arch-platform/infrastructure": "workspace:*"
   }
 }

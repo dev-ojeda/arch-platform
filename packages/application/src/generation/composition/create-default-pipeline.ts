@@ -7,7 +7,7 @@ import type {
   PromptResolver,
   TemplateRendererPort,
   TemplateVariables,
-} from '@arch/contracts';
+} from '@arch-platform/contracts';
 
 import { CompositeGenerationHooks } from '../hooks/composite-generation-hooks.js';
 import { EventGenerationHooks } from '../hooks/event-generation-hooks.js';

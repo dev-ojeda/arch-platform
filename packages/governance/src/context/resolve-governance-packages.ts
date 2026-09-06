@@ -1,6 +1,6 @@
 // packages/governance/src/context/resolve-governance-packages.ts
 
-import type { WorkspaceDescriptor } from '@arch/platform-model';
+import type { WorkspaceDescriptor } from '@arch-platform/platform-model';
 
 import type { GovernanceScope } from '../public/governance-scope.js';
 

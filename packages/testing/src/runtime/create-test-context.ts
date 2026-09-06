@@ -9,8 +9,8 @@ import type {
   StepExecutionMetric,
   TechnologyStack,
   TemplateVariables,
-} from '@arch/contracts';
-import { InMemoryGenerationEventBus } from '@arch/core';
+} from '@arch-platform/contracts';
+import { InMemoryGenerationEventBus } from '@arch-platform/core';
 
 import { createMemoryFilesystem } from '../filesystem/create-memory-filesystem.js';
 import { TestLogger } from '../logging/test-logger.js';

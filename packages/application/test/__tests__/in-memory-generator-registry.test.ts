@@ -2,7 +2,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { createTestGenerator } from '@arch/testing';
+import { createTestGenerator } from '@arch-platform/testing';
 
 import { InMemoryGeneratorRegistry } from '../../src/generation/registry/in-memory-generator-registry.js';
 

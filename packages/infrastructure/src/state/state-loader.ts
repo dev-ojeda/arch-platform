@@ -1,7 +1,12 @@
 // packages/infrastructure/src/state/state-loader.ts
 
-import type { FileSystemSyncPort, PathService } from '@arch/contracts';
-import type { BuildState, BuildStateEntry, HashResult, StateLoader } from '@arch/platform-model';
+import type { FileSystemSyncPort, PathService } from '@arch-platform/contracts';
+import type {
+  BuildState,
+  BuildStateEntry,
+  HashResult,
+  StateLoader,
+} from '@arch-platform/platform-model';
 
 import { loggerFactory } from '../logging/logger.js';
 import { isRecord } from '../serialization/type-guards.js';

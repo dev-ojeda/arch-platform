@@ -1,7 +1,7 @@
 // packages\governance\src\analysis\code-analysis\code-analysis-adapter.ts
 
-import type { AnalysisContext } from '@arch/code-analysis';
-import { analyzeCode } from '@arch/code-analysis';
+import type { AnalysisContext } from '@arch-platform/code-analysis';
+import { analyzeCode } from '@arch-platform/code-analysis';
 
 import type { GovernanceContext } from '../../context/governance-context.js';
 

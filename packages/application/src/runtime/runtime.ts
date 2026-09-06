@@ -1,6 +1,6 @@
 // packages/application/src/runtime/runtime.ts
 
-import type { IdGenerator } from '@arch/contracts';
+import type { IdGenerator } from '@arch-platform/contracts';
 
 import type { RuntimeEventBus } from './execution/events/runtime-event-bus.js';
 

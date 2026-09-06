@@ -1,4 +1,4 @@
-import type { HashResult } from '@arch/platform-model';
+import type { HashResult } from '@arch-platform/platform-model';
 
 export function createHashResult(): HashResult {
   return {

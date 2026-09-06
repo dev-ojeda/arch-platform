@@ -2,7 +2,7 @@
 
 import { expect, it } from 'vitest';
 
-import type { ArtifactProvider } from '@arch/platform-model';
+import type { ArtifactProvider } from '@arch-platform/platform-model';
 
 import { createTestHashResult } from '../../hash/create-test-hash-result.js';
 import type { ContractFixtureFactory } from '../contract-fixture-factory.js';
@@ -17,10 +17,10 @@ export function runArtifactProviderContract(
   it('should concatenate source, config and dependency hashes', async () => {
     const fixture = await createFixture();
 
-    const artifact = fixture.provider.create('@arch/build-core', createTestHashResult());
+    const artifact = fixture.provider.create('@arch-platform/build-core', createTestHashResult());
 
     expect(artifact).toEqual({
-      packageName: '@arch/build-core',
+      packageName: '@arch-platform/build-core',
       id: 'source-config-deps',
     });
   });

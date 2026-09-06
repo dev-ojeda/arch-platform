@@ -2,8 +2,8 @@
 
 import { describe, expect, it, vi } from 'vitest';
 
-import type { GenerationContext } from '@arch/contracts';
-import { createTestPipelineContext } from '@arch/testing';
+import type { GenerationContext } from '@arch-platform/contracts';
+import { createTestPipelineContext } from '@arch-platform/testing';
 
 import { enforceTimeoutPolicy } from '../../../src/generation/runtime/enforce-timeout-policy.js';
 
