@@ -1,5 +1,5 @@
 // packages/compliance/src/security/security-finding.ts
-import type { AdvisoryIdentifier } from '../advisories/advisory-identifier.js';
+import { AdvisoryIdentifier } from '../advisories/advisory-identifier.js';
 
 import type { SecuritySeverity } from './security-severity.js';
 
