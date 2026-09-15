@@ -18,6 +18,9 @@
     },
     {
       "path": "../testing"
+    },
+    {
+      "path": "../compliance"
     }
   ],
   "exclude": ["dist", "node_modules"]
