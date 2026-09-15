@@ -1,8 +1,12 @@
 // packages/compliance/src/advisories/security-assessment.ts
 
 export interface SecurityAssessment {
-  source: string;
-  type: 'cvss-v4' | 'cvss-v3' | 'other';
-  score?: number;
-  vector?: string;
+  version: string;
+  baseScore: number;
+  vectorString: string;
+  baseSeverity?: string; // Opcional, ya que CVSS 2.0 no lo incluye
+}
+export interface TransformedAssessment {
+  cvssV: string;
+  description: SecurityAssessment;
 }
