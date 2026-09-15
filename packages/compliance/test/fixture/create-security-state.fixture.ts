@@ -1,0 +1,53 @@
+import { AdvisoryIdentifier } from '../../src/advisories/advisory-identifier.js';
+import type { SecurityState } from '../../src/security/security-state.js';
+
+export const securityStateFixture: SecurityState = {
+  schemaVersion: 1,
+
+  artifacts: {
+    '@arch-platform/contracts': {
+      previousStatus: 'allowed',
+      evaluation: {
+        status: 'secure',
+        artifactHash: 'hash-contracts',
+        evaluatedAt: '2026-09-07T21:00:00.000Z',
+        findings: [],
+      },
+
+      decision: {
+        status: 'allowed',
+        artifactHash: 'hash-contracts',
+        policyId: 'default',
+        policyVersion: '1',
+        reasons: [],
+      },
+    },
+
+    '@arch-platform/core': {
+      previousStatus: 'review',
+      evaluation: {
+        status: 'review',
+        artifactHash: 'hash-core',
+        evaluatedAt: '2026-09-07T21:01:00.000Z',
+        findings: [
+          {
+            id: 'SEC-CORE-001',
+            advisory: new AdvisoryIdentifier('CVE', 'CVE-2026-1234'),
+            severity: 'high',
+            category: 'vulnerability',
+            message: 'Vulnerable dependency detected',
+            blocking: true,
+          },
+        ],
+      },
+
+      decision: {
+        status: 'review',
+        artifactHash: 'hash-core',
+        policyId: 'default',
+        policyVersion: '1',
+        reasons: ['Security evaluation requires review'],
+      },
+    },
+  },
+};

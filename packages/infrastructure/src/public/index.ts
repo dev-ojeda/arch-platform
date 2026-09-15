@@ -14,6 +14,8 @@ export {
   FilesystemComplianceStateReader,
   FilesystemComplianceStateWriter,
   FilesystemOutputValidator,
+  FilesystemSecurityStateReader,
+  FilesystemSecurityStateWriter,
 } from '../artifact/index.js';
 export { ComplianceStateProvider } from '../compliance/index.js';
 export {
