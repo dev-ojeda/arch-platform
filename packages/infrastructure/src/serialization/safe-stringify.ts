@@ -49,7 +49,3 @@ export function safeStringify(value: unknown, space?: number): string {
     return '[unserializable]';
   }
 }
-
-export function safeParse<T>(content: string): T {
-  return JSON.parse(content) as T;
-}

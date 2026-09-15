@@ -16,7 +16,7 @@ import {
 
 import type { DirectoryEntry } from '@arch-platform/contracts';
 
-import { safeParse } from '../../serialization/safe-stringify.js';
+import { safeParse } from '../../serialization/safe-parse.js';
 
 import { joinPath } from './path-utils.js';
 

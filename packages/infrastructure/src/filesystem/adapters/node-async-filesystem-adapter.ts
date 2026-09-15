@@ -6,7 +6,8 @@ import type {
   WriteFileOptions,
 } from '@arch-platform/contracts';
 
-import { safeParse, safeStringify } from '../../serialization/safe-stringify.js';
+import { safeParse } from '../../serialization/safe-parse.js';
+import { safeStringify } from '../../serialization/safe-stringify.js';
 import {
   copyPath,
   ensureDirAsync,
