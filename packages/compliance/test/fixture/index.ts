@@ -7,5 +7,4 @@ export * from './create-security-advisory.js';
 export * from './create-security-execution-context.js';
 export * from './create-security-state.fixture.js';
 export * from './create-snapshots-reader.js';
-export * from './fixture-paths.js';
 export type { CVERecordResponse } from './services-cve.js';
