@@ -11,4 +11,5 @@ export const FIXTURE_PATHS = {
     cve69152: fileURLToPath(new URL('./CVE/CVE-2026-69152.json', import.meta.url)),
   },
   securityWorkspace: fileURLToPath(new URL('./security-workspace', import.meta.url)),
+  archWorkspace: fileURLToPath(new URL('./arch-workspace', import.meta.url)),
 } as const;

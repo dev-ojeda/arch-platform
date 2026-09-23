@@ -1,7 +1,6 @@
 // packages/compliance/src/services/dependency-graph-service.ts
 
-import type { DependencyGraph } from '../dependency/dependency-graph.js';
-import type { DependencyNode } from '../dependency/dependency-node.js';
+import type { DependencyGraph, DependencyNode } from '@arch-platform/platform-model';
 
 export class DependencyGraphService {
   constructor(private readonly graph: DependencyGraph) {}

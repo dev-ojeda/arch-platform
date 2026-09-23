@@ -55,6 +55,10 @@
     {
       "name": "@arch-platform/tooling",
       "path": "packages/tooling"
+    },
+    {
+      "name": "@arch-platform/compliance",
+      "path": "packages/compliance"
     }
   ]
 }

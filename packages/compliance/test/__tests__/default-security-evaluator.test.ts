@@ -1,28 +1,20 @@
 // packages\compliance\test\__tests__\default-security-evaluator.test.ts
 import { describe, expect, it } from 'vitest';
 
-import {
-  DefaultSecurityAdvisoryProvider,
-  DefaultSecurityEvaluator,
-  DependencyGraphService,
-  SecurityVulnerabilityMatcher,
-} from '@arch-platform/compliance';
+import { DefaultSecurityEvaluator, SecurityVulnerabilityMatcher } from '@arch-platform/compliance';
 
-import { dependencyGraphFixture } from '../fixture/create-dependency-graph.js';
 import { securityAdvisoryFixtures } from '../fixture/create-security-advisory.js';
+import { createSecurityExecutionContext } from '../fixture/create-security-execution-context.js';
 
 describe('DefaultSecurityEvaluator', () => {
-  const graphService = new DependencyGraphService(dependencyGraphFixture);
+  const evaluator = new DefaultSecurityEvaluator(new SecurityVulnerabilityMatcher());
 
   it('evaluates security findings only for dependencies in the artifact closure', async () => {
-    const provider = new DefaultSecurityAdvisoryProvider(
-      securityAdvisoryFixtures,
-      new SecurityVulnerabilityMatcher(),
-    );
+    const context = createSecurityExecutionContext();
 
-    const evaluator = new DefaultSecurityEvaluator(graphService, provider);
+    const result = await evaluator.evaluate(context);
+    const evaluation = result.changes[0].evaluation;
 
-    const evaluation = await evaluator.evaluate('@arch-platform/code-analysis', 'sha256:H1');
     expect(evaluation.status).toBe('blocked');
     expect(evaluation.artifactHash).toBe('sha256:H1');
 
@@ -38,6 +30,7 @@ describe('DefaultSecurityEvaluator', () => {
       'CVE-2026-69152',
     ]);
   });
+
   it('uses the advisory severity when creating findings', async () => {
     const advisory = {
       ...securityAdvisoryFixtures[0],
@@ -51,14 +44,12 @@ describe('DefaultSecurityEvaluator', () => {
       ],
     };
 
-    const provider = new DefaultSecurityAdvisoryProvider(
-      [advisory],
-      new SecurityVulnerabilityMatcher(),
-    );
+    const context = createSecurityExecutionContext({
+      advisories: [advisory],
+    });
 
-    const evaluator = new DefaultSecurityEvaluator(graphService, provider);
-
-    const evaluation = await evaluator.evaluate('@arch-platform/code-analysis', 'sha256:H1');
+    const result = await evaluator.evaluate(context);
+    const evaluation = result.changes[0].evaluation;
 
     expect(
       evaluation.findings.find((finding) => finding.advisory?.value === 'CVE-2026-13149')?.severity,

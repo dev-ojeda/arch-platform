@@ -1,12 +1,12 @@
 // packages/infrastructure/src/artifact/adapter/filesystem-security-state-writer.ts
 
+import type { FileSystemAsyncPort, PathService } from '@arch-platform/contracts';
 import type {
   SecurityState,
   SecurityStateChange,
   SecurityStateChanges,
   SecurityStateWriter,
-} from '@arch-platform/compliance';
-import type { FileSystemAsyncPort, PathService } from '@arch-platform/contracts';
+} from '@arch-platform/platform-model';
 
 import { MutableSecurityStateChanges } from '../../security/security-state-changes.js';
 

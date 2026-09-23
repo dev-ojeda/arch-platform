@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "environment": {
+    "name": "dev",
+    "order": 0,
+    "artifacts": {
+      "@arch-platform/code-analysis": {
+        "status": "approved",
+        "evaluatedHash": {
+          "hash": "artifact-hash-001",
+          "sourceHash": "artifact-sourceHash-001",
+          "configHash": "artifact-configHash-001",
+          "depsHash": "artifact-depsHash-001",
+          "schemaVersion": 1
+        },
+        "order": 0,
+        "evaluatedAt": 1789519186966,
+        "schemaVersion": 1,
+        "approvedHash": {
+          "hash": "artifact-hash-001",
+          "sourceHash": "artifact-sourceHash-001",
+          "configHash": "artifact-configHash-001",
+          "depsHash": "artifact-depsHash-001",
+          "schemaVersion": 1
+        },
+        "approvedAt": 1789519186966
+      }
+    },
+    "schemaVersion": 1
+  }
+}

@@ -92,4 +92,19 @@ describe('DependencyLockfileQuery', () => {
 
     expect(query.getPackages('unknown-package')).toEqual(new Map());
   });
+  it('returns a snapshot by name and version', () => {
+    const snapshot = query.getSnapshot('@arch-platform/generator-mvc', '0.1.0');
+
+    expect(snapshot).toEqual({
+      dependencies: {
+        '@arch-platform/contracts': '0.1.0',
+      },
+    });
+  });
+
+  it('returns undefined when the snapshot does not exist', () => {
+    const snapshot = query.getSnapshot('@arch-platform/does-not-exist', '0.1.0');
+
+    expect(snapshot).toBeUndefined();
+  });
 });

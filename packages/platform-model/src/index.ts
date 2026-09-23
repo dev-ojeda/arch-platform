@@ -31,6 +31,7 @@ export type {
   ComplianceStateChange,
   ComplianceStateChanges,
 } from './compliance/index.js';
+export * from './dependency/index.js';
 export type { Diagnostic, DiagnosticLocation, DiagnosticSeverity } from './diagnostics/index.js';
 export type {
   CycleDetectionResult,
@@ -60,9 +61,12 @@ export type {
   ComplianceStateReader,
   ComplianceStateWriter,
   OutputValidator,
+  SecurityStateReader,
+  SecurityStateWriter,
   StateLoader,
   StateWriter,
 } from './ports/index.js';
+export * from './security/index.js';
 export type { BuildState, BuildStateEntry, StateChanges } from './state/index.js';
 export type { MaybePromise } from './types/index.js';
 export type {

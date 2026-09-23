@@ -16,6 +16,9 @@
     },
     {
       "path": "../tooling"
+    },
+    {
+      "path": "../compliance"
     }
   ],
   "exclude": ["dist", "node_modules"]

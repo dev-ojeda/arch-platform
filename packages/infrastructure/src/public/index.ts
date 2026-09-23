@@ -18,6 +18,7 @@ export {
   FilesystemSecurityStateWriter,
 } from '../artifact/index.js';
 export { ComplianceStateProvider } from '../compliance/index.js';
+export * from '../config/index.js';
 export {
   collectTsBuildInfoFiles,
   NodeAsyncFileSystemAdapter,
@@ -31,6 +32,16 @@ export {
   NodeFileHashService,
   NodeHashService,
 } from '../hashing/index.js';
+export {
+  CVEAdvisoryProvider,
+  DefaultCVEAdvisoryAdapter,
+  DefaultDependencyLockfileAdapter,
+  DependencyLockfileProvider,
+  FilesystemCVEAdvisoryReader,
+  SecurityAdvisoryAffectedAdapter,
+  SecurityStateProvider,
+} from '../security/index.js';
+export type { CVERecordResponse } from '../security/index.js';
 export { BuildStateLoader, BuildStateWriter } from '../state/index.js';
 export {
   NodeWorkspaceProvider,

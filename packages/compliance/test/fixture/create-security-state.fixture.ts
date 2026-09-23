@@ -1,5 +1,4 @@
-import { AdvisoryIdentifier } from '../../src/advisories/advisory-identifier.js';
-import type { SecurityState } from '../../src/security/security-state.js';
+import type { SecurityState } from '@arch-platform/platform-model';
 
 export const securityStateFixture: SecurityState = {
   schemaVersion: 1,
@@ -32,7 +31,10 @@ export const securityStateFixture: SecurityState = {
         findings: [
           {
             id: 'SEC-CORE-001',
-            advisory: new AdvisoryIdentifier('CVE', 'CVE-2026-1234'),
+            advisory: {
+              namespace: 'CVE',
+              value: 'CVE-2026-1234',
+            },
             severity: 'high',
             category: 'vulnerability',
             message: 'Vulnerable dependency detected',

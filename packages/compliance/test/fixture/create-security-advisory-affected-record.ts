@@ -1,4 +1,4 @@
-import type { SecurityAdvisoryAffectedRecord } from '@arch-platform/compliance';
+import type { SecurityAdvisoryAffectedRecord } from '@arch-platform/platform-model';
 
 export const securityAdvisoryAffectedRecordFixtureCVE69152: SecurityAdvisoryAffectedRecord = {
   vendor: 'juliangruber',

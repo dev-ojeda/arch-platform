@@ -1,7 +1,16 @@
 // packages/infrastructure/src/artifact/adapter/filesystem-security-state-reader.ts
 
-import type { SecurityState, SecurityStateReader } from '@arch-platform/compliance';
 import type { FileSystemAsyncPort, PathService } from '@arch-platform/contracts';
+import type {
+  ComplianceArtifactEnvironmentState,
+  ComplianceState,
+  SecurityState,
+  SecurityStateReader,
+} from '@arch-platform/platform-model';
+
+interface ComplianceEnvArtifact {
+  readonly artifacts: Readonly<Record<string, ComplianceArtifactEnvironmentState>>;
+}
 
 export class FilesystemSecurityStateReader implements SecurityStateReader {
   constructor(
@@ -20,5 +29,14 @@ export class FilesystemSecurityStateReader implements SecurityStateReader {
     }
 
     return this.filesystem.readJson<SecurityState>(path);
+  }
+
+  private async readComplianceEnvArtifact(root: string): Promise<ComplianceEnvArtifact> {
+    const path = this.pathService.join(root, '.arch-platform', 'compliance', `dev.json`);
+    const complianceState = await this.filesystem.readJson<ComplianceState>(path);
+
+    return {
+      artifacts: complianceState.environment.artifacts,
+    };
   }
 }

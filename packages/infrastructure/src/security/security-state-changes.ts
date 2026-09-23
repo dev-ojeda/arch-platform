@@ -1,6 +1,6 @@
 // packages/infrastructure/src/security/security-state-changes.ts
 
-import type { SecurityStateChange, SecurityStateChanges } from '@arch-platform/compliance';
+import type { SecurityStateChange, SecurityStateChanges } from '@arch-platform/platform-model';
 
 export class MutableSecurityStateChanges {
   private readonly changes: SecurityStateChange[] = [];

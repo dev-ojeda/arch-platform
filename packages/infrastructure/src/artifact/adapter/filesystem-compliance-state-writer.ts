@@ -92,7 +92,7 @@ export class FilesystemComplianceStateWriter implements ComplianceStateWriter {
   }
 
   async write(): Promise<void> {
-    const directory = this.pathService.join(this.workspaceRoot, '.arch', 'compliance');
+    const directory = this.pathService.join(this.workspaceRoot, '.arch-platform', 'compliance');
 
     const path = this.pathService.join(directory, `${this.environment}.json`);
 

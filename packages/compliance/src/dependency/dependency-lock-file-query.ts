@@ -1,9 +1,12 @@
 // packages/compliance/src/dependency/dependency-lock-file-query.ts
 
-import type { DependencyLockfileImporter } from './dependency-lock-file-importer.js';
-import type { DependencyLockfilePackageSpec } from './dependency-lock-file-package-spec.js';
-import type { DependencyLockfilePackage } from './dependency-lock-file-package.js';
-import type { DependencyLockfile } from './dependency-lock-file.js';
+import type {
+  DependencyLockfile,
+  DependencyLockfileImporter,
+  DependencyLockfilePackage,
+  DependencyLockfilePackageSpec,
+  DependencyLockfileSnapshot,
+} from '@arch-platform/platform-model';
 
 export class DependencyLockfileQuery {
   constructor(private readonly lockfile: DependencyLockfile) {}
@@ -14,11 +17,9 @@ export class DependencyLockfileQuery {
 
   getPackage(name: string, version: string): DependencyLockfilePackage | undefined {
     const key = this.resolvePackageKey(name, version);
-
     if (!key) {
       return undefined;
     }
-
     return this.lockfile.packages[key];
   }
 
@@ -44,7 +45,11 @@ export class DependencyLockfileQuery {
   ): DependencyLockfilePackageSpec | undefined {
     return this.lockfile.catalogs[catalogName]?.[packageName];
   }
+  getSnapshot(name: string, version: string): DependencyLockfileSnapshot | undefined {
+    const key = `${name}@${version}`;
 
+    return this.lockfile.snapshots[key];
+  }
   private resolvePackageKey(name: string, version: string): string | undefined {
     const key = `${name}@${version}`;
 

@@ -1,31 +1,44 @@
 // packages/compliance/src/security/default-security-evaluator.ts
 
-import type { SecurityAdvisory } from '../advisories/security-advisory.js';
-import type { SecurityAdvisoryProvider } from '../ports/security-advisory-provider.js';
-import { DependencyGraphService } from '../services/dependency-graph-service.js';
+import type {
+  SecurityAdvisory,
+  SecurityDecision,
+  SecurityEvaluation,
+  SecurityEvaluator,
+  SecurityExecutionContext,
+  SecurityFinding,
+  SecuritySeverity,
+  SecurityStateChange,
+  SecurityStateChanges,
+  SecurityVulnerabilitySummary,
+} from '@arch-platform/platform-model';
 
-import type { SecurityEvaluation } from './security-evaluation.js';
-import type { SecurityFinding } from './security-finding.js';
-import type { SecuritySeverity } from './security-severity.js';
+import { SecurityVulnerabilityMatcher } from './security-vulnerability-matcher.js';
 
-export class DefaultSecurityEvaluator {
-  constructor(
-    private readonly dependencyGraph: DependencyGraphService,
-    private readonly advisoryProvider: SecurityAdvisoryProvider,
-  ) {}
+export class DefaultSecurityEvaluator implements SecurityEvaluator {
+  constructor(private readonly vulnerabilityMatcher: SecurityVulnerabilityMatcher) {}
 
-  async evaluate(artifactId: string, artifactHash: string): Promise<SecurityEvaluation> {
-    const closure = this.dependencyGraph.getDependencyClosure(artifactId);
+  evaluate(context: SecurityExecutionContext): Promise<SecurityStateChanges> {
     const findings: SecurityFinding[] = [];
+    const vulnerabilities: SecurityVulnerabilitySummary[] = [];
+    for (const dependency of context.dependencyGraph.nodes.values()) {
+      for (const advisory of context.advisories) {
+        const affected = advisory.affected?.find(
+          (affected) => affected.packageName === dependency.packageName,
+        );
 
-    for (const dependencyId of closure) {
-      const dependency = this.dependencyGraph.getNode(dependencyId);
+        if (!affected) {
+          continue;
+        }
 
-      const advisories = await this.advisoryProvider.getAdvisories(
-        dependency.packageName,
-        dependency.version,
-      );
-      for (const advisory of advisories) {
+        const matchingVersion = this.vulnerabilityMatcher.findMatchingVersion(
+          dependency.version,
+          affected,
+        );
+
+        if (!matchingVersion) {
+          continue;
+        }
         const advisoryIdentifier =
           advisory.identifiers?.find((identifier) => identifier.namespace === 'CVE') ??
           advisory.identifiers?.[0];
@@ -33,25 +46,61 @@ export class DefaultSecurityEvaluator {
         if (!advisoryIdentifier) {
           continue;
         }
-        findings.push({
+        const finding: SecurityFinding = {
           id: `${advisoryIdentifier.namespace}:${advisoryIdentifier.value}:${dependency.id}`,
           advisory: advisoryIdentifier,
+          evidence: {
+            advisoryId: `${advisoryIdentifier.namespace}:${advisoryIdentifier.value}`,
+            packageName: dependency.packageName,
+            versionRange: matchingVersion.range,
+          },
           severity: this.resolveSeverity(advisory),
           category: 'vulnerability',
           message:
             `Security advisory ${advisoryIdentifier.namespace}:${advisoryIdentifier.value} ` +
             `affects ${dependency.packageName}@${dependency.version}`,
           blocking: true,
+        };
+
+        findings.push(finding);
+
+        vulnerabilities.push({
+          advisoryId: `${advisoryIdentifier.namespace}:${advisoryIdentifier.value}`,
+          packageName: dependency.packageName,
+          version: dependency.version,
         });
       }
     }
-
-    return {
+    const evaluation: SecurityEvaluation = {
       status: findings.length > 0 ? 'blocked' : 'secure',
-      artifactHash,
+      artifactHash: context.artifactHash,
       evaluatedAt: new Date().toISOString(),
+      summary: {
+        totalFindings: findings.length,
+        blockingFindings: findings.filter((finding) => finding.blocking).length,
+        vulnerabilities,
+      },
       findings,
     };
+
+    const decision: SecurityDecision = {
+      status: evaluation.status === 'blocked' ? 'blocked' : 'allowed',
+      artifactHash: evaluation.artifactHash,
+      policyId: 'default',
+      policyVersion: '1',
+      reasons: evaluation.status === 'blocked' ? ['Security evaluation is blocked'] : [],
+    };
+
+    const change: SecurityStateChange = {
+      artifact: context.packageName,
+      previousStatus: context.previousSecurityStatus,
+      evaluation,
+      decision,
+    };
+
+    return Promise.resolve({
+      changes: [change],
+    });
   }
 
   private resolveSeverity(advisory: SecurityAdvisory): SecuritySeverity {

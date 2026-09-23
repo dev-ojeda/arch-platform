@@ -1,9 +1,8 @@
 // packages/compliance/src/advisories/default-security-advisory-provider.ts
 
-import type { SecurityAdvisoryProvider } from '../ports/security-advisory-provider.js';
-import { SecurityVulnerabilityMatcher } from '../security/security-vulnerability-matcher.js';
+import type { SecurityAdvisory, SecurityAdvisoryProvider } from '@arch-platform/platform-model';
 
-import type { SecurityAdvisory } from './security-advisory.js';
+import { SecurityVulnerabilityMatcher } from '../security/security-vulnerability-matcher.js';
 
 export class DefaultSecurityAdvisoryProvider implements SecurityAdvisoryProvider {
   constructor(

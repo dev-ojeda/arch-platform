@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import type { SecurityStateChange } from '@arch-platform/compliance';
+import type { SecurityStateChange } from '@arch-platform/platform-model';
 
 import { MutableSecurityStateChanges } from '../../../src/security/security-state-changes.js';
 
@@ -27,6 +27,7 @@ describe('MutableSecurityStateChanges', () => {
         artifactHash: 'hash-core',
         evaluatedAt: '2026-09-07T21:00:00.000Z',
         findings: [],
+        summary: undefined,
       },
 
       decision: {
@@ -60,6 +61,7 @@ describe('MutableSecurityStateChanges', () => {
         artifactHash: 'hash-core',
         evaluatedAt: '2026-09-07T21:00:00.000Z',
         findings: [],
+        summary: undefined,
       },
 
       decision: {
@@ -91,6 +93,7 @@ describe('MutableSecurityStateChanges', () => {
         artifactHash: 'hash-core',
         evaluatedAt: '2026-09-07T21:00:00.000Z',
         findings: [],
+        summary: undefined,
       },
 
       decision: {

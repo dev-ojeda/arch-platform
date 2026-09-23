@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 0,
+  "artifacts": {
+    "@arch-platform/code-analysis": {
+      "previousStatus": "blocked",
+      "evaluation": {
+        "status": "blocked",
+        "artifactHash": "artifact-hash-001",
+        "evaluatedAt": "2026-09-23T03:15:34.871Z",
+        "summary": {
+          "totalFindings": 3,
+          "blockingFindings": 3,
+          "vulnerabilities": [
+            {
+              "advisoryId": "CVE:CVE-2026-13149",
+              "packageName": "brace-expansion",
+              "version": "2.1.1"
+            },
+            {
+              "advisoryId": "CVE:CVE-2026-14257",
+              "packageName": "brace-expansion",
+              "version": "2.1.1"
+            },
+            {
+              "advisoryId": "CVE:CVE-2026-69152",
+              "packageName": "brace-expansion",
+              "version": "2.1.1"
+            }
+          ]
+        },
+        "findings": [
+          {
+            "id": "CVE:CVE-2026-13149:brace-expansion@2.1.1",
+            "advisory": {
+              "namespace": "CVE",
+              "value": "CVE-2026-13149"
+            },
+            "evidence": {
+              "advisoryId": "CVE:CVE-2026-13149",
+              "packageName": "brace-expansion",
+              "versionRange": "<=5.0.6"
+            },
+            "severity": "high",
+            "category": "vulnerability",
+            "message": "Security advisory CVE:CVE-2026-13149 affects brace-expansion@2.1.1",
+            "blocking": true
+          },
+          {
+            "id": "CVE:CVE-2026-14257:brace-expansion@2.1.1",
+            "advisory": {
+              "namespace": "CVE",
+              "value": "CVE-2026-14257"
+            },
+            "evidence": {
+              "advisoryId": "CVE:CVE-2026-14257",
+              "packageName": "brace-expansion",
+              "versionRange": "<=5.0.7"
+            },
+            "severity": "high",
+            "category": "vulnerability",
+            "message": "Security advisory CVE:CVE-2026-14257 affects brace-expansion@2.1.1",
+            "blocking": true
+          },
+          {
+            "id": "CVE:CVE-2026-69152:brace-expansion@2.1.1",
+            "advisory": {
+              "namespace": "CVE",
+              "value": "CVE-2026-69152"
+            },
+            "evidence": {
+              "advisoryId": "CVE:CVE-2026-69152",
+              "packageName": "brace-expansion",
+              "versionRange": ">= 2.0.0 < 2.1.4"
+            },
+            "severity": "high",
+            "category": "vulnerability",
+            "message": "Security advisory CVE:CVE-2026-69152 affects brace-expansion@2.1.1",
+            "blocking": true
+          }
+        ]
+      },
+      "decision": {
+        "status": "blocked",
+        "artifactHash": "artifact-hash-001",
+        "policyId": "default",
+        "policyVersion": "1",
+        "reasons": ["Security evaluation is blocked"]
+      }
+    }
+  }
+}
