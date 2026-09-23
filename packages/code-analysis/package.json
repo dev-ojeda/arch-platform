@@ -32,6 +32,7 @@
     "arch": "arch build --package @arch-platform/code-analysis",
     "clean": "arch clean",
     "compliance": "arch compliance --package @arch-platform/code-analysis --env dev",
+    "security": "arch security --package @arch-platform/code-analysis",
     "typecheck": "arch typecheck",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",

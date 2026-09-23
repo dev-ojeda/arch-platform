@@ -39,6 +39,8 @@
   },
   "dependencies": {
     "semver": "catalog:",
-    "@types/semver": "catalog:"
+    "@types/semver": "catalog:",
+    "@arch-platform/platform-model": "workspace:*",
+    "@arch-platform/infrastructure": "workspace:*"
   }
 }

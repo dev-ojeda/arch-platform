@@ -33,7 +33,10 @@
     "zod": "catalog:",
     "ts-morph": "catalog:",
     "@arch-platform/cli": "workspace:*",
-    "@arch-platform/contracts": "0.1.0"
+    "@arch-platform/contracts": "0.1.0",
+    "semver": "catalog:",
+    "@types/semver": "catalog:",
+    "yaml": "catalog:"
   },
   "workspaces": [
     "packages/*"
