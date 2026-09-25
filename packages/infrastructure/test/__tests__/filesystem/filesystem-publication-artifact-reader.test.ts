@@ -1,0 +1,47 @@
+import { describe, expect, it } from 'vitest';
+
+import {
+  ArtifactStateProvider,
+  ComplianceStateProvider,
+  FilesystemPublicationArtifactReader,
+  SecurityStateProvider,
+} from '@arch-platform/infrastructure';
+
+import { FIXTURE_PATHS } from '../../fixture/fixture-paths.js';
+
+describe('FilesystemPublicationArtifactReader', () => {
+  const reader = new FilesystemPublicationArtifactReader(
+    new ArtifactStateProvider().createReader(),
+    new ComplianceStateProvider().createReader(),
+    new SecurityStateProvider().createReader(),
+  );
+
+  it('reads the publication context for an artifact', async () => {
+    const context = await reader.read(
+      FIXTURE_PATHS.archWorkspace,
+      'dev',
+      '@arch-platform/code-analysis',
+    );
+
+    expect(context).toEqual({
+      artifact: '@arch-platform/code-analysis',
+      artifactHash: 'artifact-hash-001',
+      artifactStatus: 'built',
+      complianceStatus: 'approved',
+      complianceApprovedHash: 'artifact-hash-001',
+      securityPreviousStatus: 'blocked',
+      securityEvaluationStatus: 'blocked',
+      securityDecisionStatus: 'blocked',
+      securityArtifactHash: 'artifact-hash-001',
+    });
+  });
+  it('returns undefined when the artifact does not exist', async () => {
+    const context = await reader.read(
+      FIXTURE_PATHS.archWorkspace,
+      'dev',
+      '@arch-platform/does-not-exist',
+    );
+
+    expect(context).toBeUndefined();
+  });
+});

@@ -14,6 +14,7 @@ export interface PublicationArtifactContext {
   readonly complianceStatus: ArtifactComplianceStatus;
   readonly complianceApprovedHash: string | undefined;
 
+  readonly securityPreviousStatus: SecurityDecisionStatus | undefined;
   readonly securityEvaluationStatus: SecurityEvaluationStatus;
   readonly securityDecisionStatus: SecurityDecisionStatus;
   readonly securityArtifactHash: string;

@@ -32,6 +32,7 @@ export {
   NodeFileHashService,
   NodeHashService,
 } from '../hashing/index.js';
+export * from '../publication/index.js';
 export {
   CVEAdvisoryProvider,
   DefaultCVEAdvisoryAdapter,
