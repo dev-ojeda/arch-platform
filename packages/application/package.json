@@ -42,6 +42,7 @@
     "@arch-platform/contracts": "0.1.0",
     "@arch-platform/core": "workspace:*",
     "@arch-platform/generator-mvc": "0.1.0",
+    "@arch-platform/platform-model": "workspace:*",
     "@arch-platform/testing": "workspace:*"
   },
   "devDependencies": {

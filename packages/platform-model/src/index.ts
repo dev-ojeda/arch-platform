@@ -66,6 +66,7 @@ export type {
   StateLoader,
   StateWriter,
 } from './ports/index.js';
+export * from './publication/index.js';
 export * from './security/index.js';
 export type { BuildState, BuildStateEntry, StateChanges } from './state/index.js';
 export type { MaybePromise } from './types/index.js';

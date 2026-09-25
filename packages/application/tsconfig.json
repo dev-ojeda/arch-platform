@@ -21,6 +21,9 @@
       "path": "../generators/mvc"
     },
     {
+      "path": "../platform-model"
+    },
+    {
       "path": "../testing"
     }
   ]

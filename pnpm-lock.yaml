@@ -223,6 +223,9 @@ importers:
       '@arch-platform/generator-mvc':
         specifier: 0.1.0
         version: 0.1.0
+      '@arch-platform/platform-model':
+        specifier: workspace:*
+        version: link:../platform-model
       '@arch-platform/testing':
         specifier: workspace:*
         version: link:../testing
