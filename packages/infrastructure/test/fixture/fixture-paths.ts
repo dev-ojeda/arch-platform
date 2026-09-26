@@ -2,7 +2,7 @@ import { fileURLToPath } from 'node:url';
 
 export const FIXTURE_PATHS = {
   cve: fileURLToPath(new URL('./CVE', import.meta.url)),
-  lockfile: fileURLToPath(new URL('./pnpm-lock-test.yaml', import.meta.url)),
+  lockfile: 'pnpm-lock-test.yaml',
   system: fileURLToPath(new URL('./filesystem', import.meta.url)),
   cves: {
     cve0570: fileURLToPath(new URL('./CVE/CVE-2026-0570.json', import.meta.url)),
