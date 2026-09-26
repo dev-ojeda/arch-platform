@@ -16,6 +16,13 @@ export class ArtifactStateProvider {
     );
   }
 
+  createReaderForWorkspace(workspaceRoot: string): ArtifactStateReader {
+    return new FilesystemArtifactStateReader(
+      new NodeAsyncFileSystemAdapter({ root: workspaceRoot }),
+      new NodePathService(),
+    );
+  }
+
   createWriter(): ArtifactStateWriter {
     return new FilesystemArtifactStateWriter(
       new NodeAsyncFileSystemAdapter(),

@@ -9,11 +9,11 @@ import { SecurityStateProvider } from '../security/security-state-provider.js';
 import { FilesystemPublicationArtifactReader } from './filesystem-publication-artifact-reader.js';
 
 export class PublicationArtifactProvider {
-  createReader(): PublicationArtifactReader {
+  createReader(workspaceRoot: string): PublicationArtifactReader {
     return new FilesystemPublicationArtifactReader(
-      new ArtifactStateProvider().createReader(),
+      new ArtifactStateProvider().createReaderForWorkspace(workspaceRoot),
       new ComplianceStateProvider().createReader(),
-      new SecurityStateProvider().createReader(),
+      new SecurityStateProvider().createReaderForWorkspace(workspaceRoot),
     );
   }
 }

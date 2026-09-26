@@ -3,19 +3,20 @@ import { describe, expect, it } from 'vitest';
 import {
   FilesystemSecurityStateReader,
   NodeAsyncFileSystemAdapter,
-  NodePathService,
 } from '@arch-platform/infrastructure';
 
 import { FIXTURE_PATHS } from '../../fixture/fixture-paths.js';
 
 describe('FilesystemSecurityStateReader', () => {
   const reader = new FilesystemSecurityStateReader(
-    new NodeAsyncFileSystemAdapter(),
-    new NodePathService(),
+    new NodeAsyncFileSystemAdapter({
+      root: FIXTURE_PATHS.securityWorkspace,
+    }),
   );
 
   it('reads the persisted security state from the workspace', async () => {
     const state = await reader.read(FIXTURE_PATHS.securityWorkspace);
+
     expect(state.schemaVersion).toBe(1);
 
     const artifact = state.artifacts['@arch-platform/code-analysis'];

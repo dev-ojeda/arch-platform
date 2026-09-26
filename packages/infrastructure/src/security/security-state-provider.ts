@@ -16,9 +16,12 @@ import { NodePathService } from '../filesystem/paths/node-path-service.js';
 
 export class SecurityStateProvider implements SecurityStateProviderPort {
   createReader(): SecurityStateReader {
+    return new FilesystemSecurityStateReader(new NodeAsyncFileSystemAdapter());
+  }
+
+  createReaderForWorkspace(workspaceRoot: string): SecurityStateReader {
     return new FilesystemSecurityStateReader(
-      new NodeAsyncFileSystemAdapter(),
-      new NodePathService(),
+      new NodeAsyncFileSystemAdapter({ root: workspaceRoot }),
     );
   }
 

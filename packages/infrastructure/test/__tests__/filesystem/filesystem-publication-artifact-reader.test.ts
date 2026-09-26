@@ -1,20 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import {
-  ArtifactStateProvider,
-  ComplianceStateProvider,
-  FilesystemPublicationArtifactReader,
-  SecurityStateProvider,
-} from '@arch-platform/infrastructure';
+import { PublicationArtifactProvider } from '@arch-platform/infrastructure';
 
 import { FIXTURE_PATHS } from '../../fixture/fixture-paths.js';
 
 describe('FilesystemPublicationArtifactReader', () => {
-  const reader = new FilesystemPublicationArtifactReader(
-    new ArtifactStateProvider().createReader(),
-    new ComplianceStateProvider().createReader(),
-    new SecurityStateProvider().createReader(),
-  );
+  const reader = new PublicationArtifactProvider().createReader(FIXTURE_PATHS.archWorkspace);
 
   it('reads the publication context for an artifact', async () => {
     const context = await reader.read(
@@ -35,6 +26,7 @@ describe('FilesystemPublicationArtifactReader', () => {
       securityArtifactHash: 'artifact-hash-001',
     });
   });
+
   it('returns undefined when the artifact does not exist', async () => {
     const context = await reader.read(
       FIXTURE_PATHS.archWorkspace,
