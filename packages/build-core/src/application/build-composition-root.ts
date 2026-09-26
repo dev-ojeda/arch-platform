@@ -2,6 +2,7 @@
 
 import {
   ArtifactPublisherAdapter,
+  ArtifactStateProvider,
   BuildStateLoader,
   BuildStateWriter,
   DefaultArtifactProvider,
@@ -9,8 +10,6 @@ import {
   FilesystemArtifactLayoutFactory,
   FilesystemArtifactStateHistoryReader,
   FilesystemArtifactStateHistoryWriter,
-  FilesystemArtifactStateReader,
-  FilesystemArtifactStateWriter,
   FilesystemOutputValidator,
   NodeAsyncFileSystemAdapter,
   NodeConfigHashService,
@@ -63,6 +62,7 @@ export class BuildCompositionRoot {
   private readonly fsAsync = new NodeAsyncFileSystemAdapter();
   private readonly fsSync = new NodeSyncFileSystemAdapter();
   private readonly workspaceProvider = new NodeWorkspaceProvider();
+  private readonly artifactStateProvider = new ArtifactStateProvider();
   private readonly workspacePackageProjector = new WorkspacePackageProjector();
   private readonly pathService = new NodePathService();
   private readonly hashService = new NodeHashService();
@@ -76,7 +76,7 @@ export class BuildCompositionRoot {
     const graph = buildGraph(packages);
 
     const state = this.createBuildStateLoader(workspace.root);
-    const artifactStateReader = this.createArtifactStateReader();
+    const artifactStateReader = this.createArtifactStateReader(workspace.root);
 
     const query = this.createGraphQuery(graph);
 
@@ -93,7 +93,7 @@ export class BuildCompositionRoot {
       fsOutputValidator: this.createFileSystemOutputValidator(),
       stateWriter: this.createStateWriter(state, workspace.root),
       artifactStateReader,
-      artifactStateWriter: this.createArtifactStateWriter(),
+      artifactStateWriter: this.createArtifactStateWriter(workspace.root),
       artifactStateBuilder: this.createArtifactStateBuilder(),
       artifactStateHistoryReader: this.createArtifactStateHistoryReader(),
       artifactStateHistoryWriter: this.createArtifactStateHistoryWriter(),
@@ -170,12 +170,12 @@ export class BuildCompositionRoot {
    *
    *
    * @returns An artifact state writer backed by the filesystem. */
-  createArtifactStateReader(): ArtifactStateReader {
-    return new FilesystemArtifactStateReader(this.fsAsync, this.pathService);
+  createArtifactStateReader(workspaceRoot: string): ArtifactStateReader {
+    return this.artifactStateProvider.createReaderForWorkspace(workspaceRoot);
   }
 
-  createArtifactStateWriter(): ArtifactStateWriter {
-    return new FilesystemArtifactStateWriter(this.fsAsync, this.pathService);
+  createArtifactStateWriter(workspaceRoot: string): ArtifactStateWriter {
+    return this.artifactStateProvider.createWriterForWorkspace(workspaceRoot);
   }
   createArtifactStateHistoryReader(): ArtifactStateHistoryReader {
     return new FilesystemArtifactStateHistoryReader(this.fsAsync, this.pathService);

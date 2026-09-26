@@ -17,15 +17,15 @@ export class ComplianceCompositionRoot {
   create() {
     const artifactComplianceEvaluator = new ArtifactComplianceEvaluator();
     const complianceEventBus = new InMemoryComplianceEventBus();
-    const artifactStateReader = new ArtifactStateProvider().createReader();
+    const artifactStateProvider = new ArtifactStateProvider();
     const complianceStateProvider = new ComplianceStateProvider();
     const complianceStateReader = complianceStateProvider.createReader();
     const rules = [new ArtifactComplianceRule(artifactComplianceEvaluator)];
 
     return {
       workspaceProvider: new NodeWorkspaceProvider(),
+      artifactStateProvider,
       complianceStateProvider,
-      artifactStateReader,
       complianceStateReader,
       createComplianceExecutionContext: (context: ComplianceContext) =>
         buildComplianceExecutionContext(context),

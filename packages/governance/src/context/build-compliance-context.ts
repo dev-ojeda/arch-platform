@@ -23,7 +23,7 @@ export async function buildComplianceContext(
     throw new Error('Compliance environment is required.');
   }
 
-  const artifactStates = await artifactStatesReader.read(scope.root);
+  const artifactStates = await artifactStatesReader.read();
 
   const complianceStates = await complianceStatesReader.read(scope.root, options.environment);
 

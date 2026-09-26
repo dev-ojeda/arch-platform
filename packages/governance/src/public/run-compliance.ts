@@ -13,15 +13,15 @@ export async function runCompliance(options: ComplianceOptions): Promise<Complia
 
   const {
     workspaceProvider,
+    artifactStateProvider,
     complianceStateProvider,
-    artifactStateReader,
     complianceStateReader,
     createComplianceExecutionContext,
     complianceEventBus,
     engine,
   } = new ComplianceCompositionRoot().create();
   const workspace = await workspaceProvider.discover(options.workspaceRoot);
-
+  const artifactStateReader = artifactStateProvider.createReaderForWorkspace(workspace.root);
   const complianceContext = await buildComplianceContext(
     options,
     workspace,

@@ -1,9 +1,7 @@
 // packages/infrastructure/src/artifact/adapter/filesystem-artifact-state-reader.ts
 
-import type { FileSystemAsyncPort, PathService } from '@arch-platform/contracts';
+import type { FileSystemAsyncPort } from '@arch-platform/contracts';
 import type { ArtifactState, ArtifactStateReader } from '@arch-platform/platform-model';
-
-import { getArtifactStatePath } from '../../state/state-paths.js';
 
 interface ArtifactStateFile {
   readonly schemaVersion: number;
@@ -11,13 +9,10 @@ interface ArtifactStateFile {
 }
 
 export class FilesystemArtifactStateReader implements ArtifactStateReader {
-  constructor(
-    private readonly filesystem: FileSystemAsyncPort,
-    private readonly pathService: PathService,
-  ) {}
+  constructor(private readonly filesystem: FileSystemAsyncPort) {}
 
-  async read(root: string): Promise<ReadonlyMap<string, ArtifactState>> {
-    const path = getArtifactStatePath(root, this.pathService);
+  async read(): Promise<ReadonlyMap<string, ArtifactState>> {
+    const path = '/.arch-platform/artifact-state.json';
 
     if (!(await this.filesystem.exists(path))) {
       return new Map();

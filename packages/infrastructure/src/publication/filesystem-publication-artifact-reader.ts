@@ -21,7 +21,7 @@ export class FilesystemPublicationArtifactReader implements PublicationArtifactR
     environment: ComplianceEnvironment,
     artifact: string,
   ): Promise<PublicationArtifactContext | undefined> {
-    const artifactStates = await this.artifactStateReader.read(workspaceRoot);
+    const artifactStates = await this.artifactStateReader.read();
     const artifactState = artifactStates.get(artifact);
 
     if (!artifactState) {

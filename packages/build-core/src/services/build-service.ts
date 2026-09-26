@@ -138,7 +138,7 @@ export class BuildService {
       const artifactStates = artifactStateBuilder.build(graph, buildPlan, results, ctx);
 
       if (artifactStates.size > 0) {
-        const persistedArtifactStates = await artifactStateReader.read(workspaceRoot);
+        const persistedArtifactStates = await artifactStateReader.read();
 
         const historyChanges = this.buildArtifactStateHistory(
           persistedArtifactStates,
@@ -158,7 +158,7 @@ export class BuildService {
           artifactStates,
         );
 
-        await artifactStateWriter.write(workspaceRoot, mergedArtifactStates);
+        await artifactStateWriter.write(mergedArtifactStates);
       }
     }
 
