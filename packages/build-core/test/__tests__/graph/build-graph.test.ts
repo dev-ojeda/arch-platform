@@ -14,6 +14,7 @@ describe('buildGraph', () => {
         dependencies: [],
         buildDependencies: [],
         outputs: [],
+        artifactType: 'runtime',
       },
       {
         name: '@arch-platform/application',
@@ -21,6 +22,7 @@ describe('buildGraph', () => {
         dependencies: ['@arch-platform/core'],
         buildDependencies: [],
         outputs: [],
+        artifactType: 'runtime',
       },
     ];
 
@@ -39,6 +41,7 @@ describe('buildGraph', () => {
         dependencies: [],
         buildDependencies: [],
         outputs: [],
+        artifactType: 'declaration',
       },
 
       {
@@ -47,6 +50,7 @@ describe('buildGraph', () => {
         dependencies: [],
         buildDependencies: ['@arch-platform/contracts'],
         outputs: [],
+        artifactType: 'runtime',
       },
     ];
 

@@ -3,5 +3,5 @@
 import type { ArtifactState } from '../artifact/artifact-state.js';
 
 export interface ArtifactStateWriter {
-  write(root: string, artifacts: ReadonlyMap<string, ArtifactState>): Promise<void>;
+  write(artifacts: ReadonlyMap<string, ArtifactState>): Promise<void>;
 }

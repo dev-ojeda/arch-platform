@@ -3,5 +3,5 @@
 import type { BuildState } from '../state/build-state.js';
 
 export interface StateLoader {
-  load(workspaceRoot: string): BuildState;
+  load(): BuildState;
 }

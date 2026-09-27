@@ -13,13 +13,12 @@
     "@vitest/coverage-v8": "catalog:",
     "@vscode/test-electron": "catalog:",
     "cac": "catalog:",
-    "depcheck": "catalog:",
     "dependency-cruiser": "catalog:",
     "esbuild-visualizer": "catalog:",
     "eslint": "catalog:",
     "eslint-import-resolver-node": "catalog:",
     "eslint-import-resolver-typescript": "catalog:",
-    "eslint-plugin-import": "catalog:",
+    "eslint-plugin-import-x": "catalog:",
     "husky": "catalog:",
     "lint-staged": "catalog:",
     "prettier": "catalog:",
@@ -34,7 +33,10 @@
     "zod": "catalog:",
     "ts-morph": "catalog:",
     "@arch-platform/cli": "workspace:*",
-    "@arch-platform/contracts": "0.1.0"
+    "@arch-platform/contracts": "0.1.0",
+    "semver": "catalog:",
+    "@types/semver": "catalog:",
+    "yaml": "catalog:"
   },
   "workspaces": [
     "packages/*"

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "artifacts": {
+    "@arch-platform/code-analysis": {
+      "previousStatus": "blocked",
+      "evaluation": {
+        "status": "blocked",
+        "artifactHash": "artifact-hash-001",
+        "evaluatedAt": "2026-09-13T22:00:00.000Z",
+        "findings": [
+          {
+            "id": "CVE-2026-69152",
+            "advisory": {
+              "namespace": "CVE",
+              "value": "CVE-2026-69152"
+            },
+            "severity": "high",
+            "category": "vulnerability",
+            "message": "Vulnerable dependency brace-expansion@2.1.1",
+            "blocking": true
+          }
+        ]
+      },
+      "decision": {
+        "status": "blocked",
+        "artifactHash": "artifact-hash-001",
+        "policyId": "default",
+        "policyVersion": "1",
+        "reasons": ["Security evaluation is blocked"]
+      }
+    }
+  }
+}

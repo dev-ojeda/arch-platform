@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "artifacts": {
+    "@arch-platform/code-analysis": {
+      "hash": {
+        "hash": "artifact-hash-001",
+        "sourceHash": "artifact-sourceHash-001",
+        "configHash": "artifact-configHash-001",
+        "depsHash": "artifact-depsHash-001",
+        "schemaVersion": 1
+      },
+      "dependencies": [],
+      "artifactType": "runtime",
+      "status": "built",
+      "reason": "first-build",
+      "startedAt": 1789519023687,
+      "finishedAt": 1789519026470,
+      "schemaVersion": 1
+    }
+  }
+}

@@ -11,6 +11,8 @@ export { FilesystemArtifactStateWriter } from './adapter/filesystem-artifact-sta
 export { FilesystemComplianceStateReader } from './adapter/filesystem-compliance-state-reader.js';
 export { FilesystemComplianceStateWriter } from './adapter/filesystem-compliance-state-writer.js';
 export { FilesystemOutputValidator } from './adapter/filesystem-output-validator.js';
+export { FilesystemSecurityStateReader } from './adapter/filesystem-security-state-reader.js';
+export { FilesystemSecurityStateWriter } from './adapter/filesystem-security-state-writer.js';
 export { ARTIFACT_SCHEMA_VERSION } from './artifact-schema-version.js';
 export { ArtifactStateHistoryProvider } from './artifact-state-history-provider.js';
 export { ArtifactStateProvider } from './artifact-state-provider.js';

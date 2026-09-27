@@ -32,6 +32,7 @@
     "@arch-platform/governance": "workspace:*",
     "@arch-platform/tooling": "workspace:*",
     "@arch-platform/infrastructure": "workspace:*",
+    "@arch-platform/compliance": "workspace:*",
     "cac": "catalog:"
   }
 }

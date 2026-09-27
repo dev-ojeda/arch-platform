@@ -1,3 +1,6 @@
+import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
+import { createNodeResolver } from 'eslint-plugin-import-x';
+
 import { RESTRICTED_IMPORTS } from '../constants.mjs';
 
 export const COMMON_IMPORT_RULES = {
@@ -69,31 +72,24 @@ const IMPORT_PARSERS = {
 const IMPORT_SETTINGS = {
   ...IMPORT_PARSERS,
 
-  'import/resolver': {
-    typescript: {
-      project: ['./config/tsconfig/eslint.json'],
-    },
-
-    node: {
-      extensions: ['.js', '.ts'],
-    },
-  },
+  'import-x/resolver-next': [
+    createTypeScriptImportResolver({
+      project: './config/tsconfig/eslint.json',
+    }),
+    createNodeResolver(),
+  ],
 };
 
 const CONFIG_IMPORT_SETTINGS = {
   ...IMPORT_PARSERS,
 
-  'import/resolver': {
-    typescript: {
-      project: ['./config/tsconfig/eslint.json'],
-    },
-
-    node: {
-      extensions: ['.js', '.ts'],
-    },
-  },
+  'import-x/resolver-next': [
+    createTypeScriptImportResolver({
+      project: './config/tsconfig/eslint.json',
+    }),
+    createNodeResolver(),
+  ],
 };
-
 export function createImportSettings() {
   return IMPORT_SETTINGS;
 }

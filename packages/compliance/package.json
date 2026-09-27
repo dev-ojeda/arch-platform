@@ -36,5 +36,11 @@
     "coverage": "vitest run --coverage -c ./vitest.config.ts",
     "test:watch": "vitest",
     "test:clear": "vitest --clearCache"
+  },
+  "dependencies": {
+    "semver": "catalog:",
+    "@types/semver": "catalog:",
+    "@arch-platform/platform-model": "workspace:*",
+    "@arch-platform/infrastructure": "workspace:*"
   }
 }

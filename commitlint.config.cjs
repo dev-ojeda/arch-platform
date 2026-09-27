@@ -35,6 +35,8 @@ module.exports = {
         'artifact',
         'config',
         'contracts',
+        'compliance',
+        'security',
         'core',
         'cli',
         'ci',

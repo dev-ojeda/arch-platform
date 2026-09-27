@@ -14,7 +14,7 @@ import { distPath, joinPath, srcPath, testPath } from '../filesystem/io/path-uti
 import { NodePathService } from '../filesystem/paths/node-path-service.js';
 import { LOG_EVENTS } from '../logging/log-events.js';
 import { loggerFactory } from '../logging/logger.js';
-import { safeParse } from '../serialization/safe-stringify.js';
+import { safeParse } from '../serialization/safe-parse.js';
 
 import { IGNORED_DIRECTORIES } from './ignored-directories.js';
 

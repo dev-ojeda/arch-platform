@@ -9,5 +9,13 @@
     "tsBuildInfoFile": "./.turbo/compliance.tsbuildinfo"
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["dist", "node_modules"]
+  "exclude": ["dist", "node_modules"],
+  "references": [
+    {
+      "path": "../platform-model"
+    },
+    {
+      "path": "../infrastructure"
+    }
+  ]
 }

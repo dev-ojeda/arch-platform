@@ -1,6 +1,6 @@
 // packages/infrastructure/src/state/state-loader.ts
 
-import type { FileSystemSyncPort, PathService } from '@arch-platform/contracts';
+import type { FileSystemSyncPort } from '@arch-platform/contracts';
 import type {
   BuildState,
   BuildStateEntry,
@@ -11,18 +11,13 @@ import type {
 import { loggerFactory } from '../logging/logger.js';
 import { isRecord } from '../serialization/type-guards.js';
 
-import { getBuildStatePath } from './state-paths.js';
-
 export class BuildStateLoader implements StateLoader {
   logger = loggerFactory.createLogger({
     component: 'BuildStateLoader',
   });
-  constructor(
-    private readonly filesystem: FileSystemSyncPort,
-    private readonly pathService: PathService,
-  ) {}
-  load(workspaceRoot: string): BuildState {
-    const statePath = getBuildStatePath(workspaceRoot, this.pathService);
+  constructor(private readonly filesystem: FileSystemSyncPort) {}
+  load(): BuildState {
+    const statePath = '/.arch-platform/state.json';
 
     if (!this.filesystem.exists(statePath)) {
       this.logger.trace('state.file.missing', {

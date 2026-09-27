@@ -12,7 +12,7 @@ import { configPath } from '../filesystem/io/path-utils.js';
 import { NodePathService } from '../filesystem/paths/node-path-service.js';
 import { LOG_EVENTS } from '../logging/log-events.js';
 import { loggerFactory } from '../logging/logger.js';
-import { safeParse } from '../serialization/safe-stringify.js';
+import { safeParse } from '../serialization/safe-parse.js';
 
 export class NodeArchitectureProvider implements ArchitectureProvider {
   private readonly pathService = new NodePathService();

@@ -180,6 +180,11 @@ dist
 .turbo
 .arch-platform/
 .arch-platform-cache/
+
+!packages/infrastructure/test/fixture/security-workspace/.arch-platform/
+!packages/infrastructure/test/fixture/security-workspace/.arch-platform/**
+!packages/infrastructure/test/fixture/arch-workspace/.arch-platform/
+!packages/infrastructure/test/fixture/arch-workspace/.arch-platform/**
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json

@@ -3,5 +3,5 @@
 import type { ArtifactStateHistory } from '../artifact/artifact-state-history.js';
 
 export interface ArtifactStateHistoryReader {
-  read(root: string): Promise<ReadonlyMap<string, ArtifactStateHistory>>;
+  read(): Promise<ReadonlyMap<string, ArtifactStateHistory>>;
 }

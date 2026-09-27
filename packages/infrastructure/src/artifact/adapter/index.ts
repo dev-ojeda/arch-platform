@@ -12,3 +12,5 @@ export { FilesystemArtifactStateWriter } from './filesystem-artifact-state-write
 export { FilesystemComplianceStateReader } from './filesystem-compliance-state-reader.js';
 export { FilesystemComplianceStateWriter } from './filesystem-compliance-state-writer.js';
 export { FilesystemOutputValidator } from './filesystem-output-validator.js';
+export { FilesystemSecurityStateReader } from './filesystem-security-state-reader.js';
+export { FilesystemSecurityStateWriter } from './filesystem-security-state-writer.js';

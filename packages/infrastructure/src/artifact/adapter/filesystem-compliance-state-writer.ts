@@ -1,6 +1,6 @@
 // packages/infrastructure/src/artifact/adapter/filesystem-compliance-state-writer.ts
 
-import type { FileSystemAsyncPort, PathService } from '@arch-platform/contracts';
+import type { FileSystemAsyncPort } from '@arch-platform/contracts';
 import type {
   ComplianceEnvironment,
   ComplianceState,
@@ -17,8 +17,6 @@ export class FilesystemComplianceStateWriter implements ComplianceStateWriter {
   constructor(
     private state: ComplianceState,
     private readonly filesystem: FileSystemAsyncPort,
-    private readonly pathService: PathService,
-    private readonly workspaceRoot: string,
     private readonly environment: ComplianceEnvironment,
   ) {}
 
@@ -92,9 +90,8 @@ export class FilesystemComplianceStateWriter implements ComplianceStateWriter {
   }
 
   async write(): Promise<void> {
-    const directory = this.pathService.join(this.workspaceRoot, '.arch', 'compliance');
-
-    const path = this.pathService.join(directory, `${this.environment}.json`);
+    const directory = '/.arch-platform/compliance';
+    const path = `${directory}/${this.environment}.json`;
 
     await this.filesystem.createDirectory(directory);
 

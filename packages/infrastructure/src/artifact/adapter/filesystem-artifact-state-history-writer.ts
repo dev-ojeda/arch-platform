@@ -1,20 +1,16 @@
 // packages/infrastructure/src/artifact/adapter/filesystem-artifact-state-history-writer.ts
 
-import type { FileSystemAsyncPort, PathService } from '@arch-platform/contracts';
+import type { FileSystemAsyncPort } from '@arch-platform/contracts';
 import type {
   ArtifactStateHistory,
   ArtifactStateHistoryWriter,
 } from '@arch-platform/platform-model';
 
 export class FilesystemArtifactStateHistoryWriter implements ArtifactStateHistoryWriter {
-  constructor(
-    private readonly filesystem: FileSystemAsyncPort,
-    private readonly pathService: PathService,
-  ) {}
-  async write(root: string, artifacts: ReadonlyMap<string, ArtifactStateHistory>): Promise<void> {
-    const directory = this.pathService.join(root, '.arch-platform', 'history');
-
-    const path = this.pathService.join(directory, `artifact-state-history.json`);
+  constructor(private readonly filesystem: FileSystemAsyncPort) {}
+  async write(artifacts: ReadonlyMap<string, ArtifactStateHistory>): Promise<void> {
+    const directory = '/.arch-platform/history';
+    const path = `${directory}/artifact-state-history.json`;
     await this.filesystem.createDirectory(directory);
 
     await this.filesystem.writeJson(path, {
