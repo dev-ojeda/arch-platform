@@ -12,7 +12,7 @@ export class PublicationArtifactProvider {
   createReader(workspaceRoot: string): PublicationArtifactReader {
     return new FilesystemPublicationArtifactReader(
       new ArtifactStateProvider().createReaderForWorkspace(workspaceRoot),
-      new ComplianceStateProvider().createReader(),
+      new ComplianceStateProvider().createReaderForWorkspace(workspaceRoot),
       new SecurityStateProvider().createReaderForWorkspace(workspaceRoot),
     );
   }

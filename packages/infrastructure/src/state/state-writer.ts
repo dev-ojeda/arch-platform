@@ -1,6 +1,6 @@
 // packages/infrastructure/src/state/state-writer.ts
 
-import type { FileSystemAsyncPort, PathService } from '@arch-platform/contracts';
+import type { FileSystemAsyncPort } from '@arch-platform/contracts';
 import type {
   BuildState,
   DagNode,
@@ -13,22 +13,19 @@ import { HASH_SCHEMA_VERSION } from '../hashing/hash-schema-version.js';
 import { safeStringify } from '../serialization/safe-stringify.js';
 
 import { MutableStateChanges } from './state-changes.js';
-import { getBuildStatePath } from './state-paths.js';
 
 export class BuildStateWriter implements StateWriter {
   private readonly changes = new MutableStateChanges();
 
   constructor(
     private readonly state: BuildState,
-    private readonly workspaceRoot: string,
     private readonly filesystem: FileSystemAsyncPort,
-    private readonly pathService: PathService,
   ) {}
   async write(): Promise<void> {
-    const statePath = getBuildStatePath(this.workspaceRoot, this.pathService);
+    const directory = '/.arch-platform';
+    const statePath = `${directory}/state.json`;
 
-    await this.filesystem.createDirectory(this.pathService.dirname(statePath));
-
+    await this.filesystem.createDirectory(directory);
     await this.filesystem.write(statePath, safeStringify(this.state, 2));
   }
   commit(node: DagNode, hash: HashResult): void {

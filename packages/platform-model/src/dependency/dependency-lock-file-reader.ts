@@ -3,5 +3,5 @@
 import type { DependencyLockfile } from './dependency-lock-file.js';
 
 export interface DependencyLockfileReader {
-  read(workspaceRoot: string, lockfilePath: string): Promise<DependencyLockfile>;
+  read(lockfilePath: string): Promise<DependencyLockfile>;
 }

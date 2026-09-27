@@ -1,18 +1,15 @@
 import { describe, expect, it } from 'vitest';
 
 import { PublicationArtifactProvider } from '@arch-platform/infrastructure';
+import type { ComplianceEnvironment } from '@arch-platform/platform-model';
 
 import { FIXTURE_PATHS } from '../../fixture/fixture-paths.js';
 
 describe('FilesystemPublicationArtifactReader', () => {
   const reader = new PublicationArtifactProvider().createReader(FIXTURE_PATHS.archWorkspace);
-
+  const environment: ComplianceEnvironment = 'dev';
   it('reads the publication context for an artifact', async () => {
-    const context = await reader.read(
-      FIXTURE_PATHS.archWorkspace,
-      'dev',
-      '@arch-platform/code-analysis',
-    );
+    const context = await reader.read(environment, '@arch-platform/code-analysis');
 
     expect(context).toEqual({
       artifact: '@arch-platform/code-analysis',
@@ -28,11 +25,7 @@ describe('FilesystemPublicationArtifactReader', () => {
   });
 
   it('returns undefined when the artifact does not exist', async () => {
-    const context = await reader.read(
-      FIXTURE_PATHS.archWorkspace,
-      'dev',
-      '@arch-platform/does-not-exist',
-    );
+    const context = await reader.read(environment, '@arch-platform/does-not-exist');
 
     expect(context).toBeUndefined();
   });

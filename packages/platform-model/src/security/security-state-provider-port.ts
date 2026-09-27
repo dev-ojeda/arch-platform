@@ -7,8 +7,9 @@ import type { SecurityComplianceArtifactReader } from './security-compliance-art
 import type { SecurityState } from './security-state.js';
 
 export interface SecurityStateProviderPort {
-  createReader(): SecurityStateReader;
   createReaderForWorkspace(workspaceRoot: string): SecurityStateReader;
-  createComplianceArtifactReader(): SecurityComplianceArtifactReader;
-  createWriter(workspaceRoot: string, state: SecurityState): SecurityStateWriter;
+  createComplianceArtifactReaderForWorkspace(
+    workspaceRoot: string,
+  ): SecurityComplianceArtifactReader;
+  createWriterForWorkspace(workspaceRoot: string, state: SecurityState): SecurityStateWriter;
 }

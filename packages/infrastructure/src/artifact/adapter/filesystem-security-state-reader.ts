@@ -6,7 +6,7 @@ import type { SecurityState, SecurityStateReader } from '@arch-platform/platform
 export class FilesystemSecurityStateReader implements SecurityStateReader {
   constructor(private readonly filesystem: FileSystemAsyncPort) {}
 
-  async read(_root: string): Promise<SecurityState> {
+  async read(): Promise<SecurityState> {
     const path = '/.arch-platform/security/security.json';
 
     if (!(await this.filesystem.exists(path))) {

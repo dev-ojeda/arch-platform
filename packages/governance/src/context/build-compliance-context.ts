@@ -25,7 +25,7 @@ export async function buildComplianceContext(
 
   const artifactStates = await artifactStatesReader.read();
 
-  const complianceStates = await complianceStatesReader.read(scope.root, options.environment);
+  const complianceStates = await complianceStatesReader.read(options.environment);
 
   return {
     workspace,

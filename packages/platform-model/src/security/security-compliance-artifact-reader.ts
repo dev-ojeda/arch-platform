@@ -3,5 +3,5 @@
 import type { SecurityComplianceArtifact } from './security-compliance-artifact.js';
 
 export interface SecurityComplianceArtifactReader {
-  read(root: string, packageName?: string): Promise<SecurityComplianceArtifact>;
+  read(packageName?: string): Promise<SecurityComplianceArtifact>;
 }

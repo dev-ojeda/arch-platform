@@ -6,23 +6,20 @@ import type {
 } from '@arch-platform/platform-model';
 
 import { NodeAsyncFileSystemAdapter } from '../filesystem/adapters/node-async-filesystem-adapter.js';
-import { NodePathService } from '../filesystem/paths/node-path-service.js';
 
 import { FilesystemArtifactStateHistoryReader } from './adapter/filesystem-artifact-state-history-reader.js';
 import { FilesystemArtifactStateHistoryWriter } from './adapter/filesystem-artifact-state-history-writer.js';
 
 export class ArtifactStateHistoryProvider {
-  createReader(): ArtifactStateHistoryReader {
+  createReaderForWorkspace(workspaceRoot: string): ArtifactStateHistoryReader {
     return new FilesystemArtifactStateHistoryReader(
-      new NodeAsyncFileSystemAdapter(),
-      new NodePathService(),
+      new NodeAsyncFileSystemAdapter({ root: workspaceRoot }),
     );
   }
 
-  createWriter(): ArtifactStateHistoryWriter {
+  createWriterForWorkspace(workspaceRoot: string): ArtifactStateHistoryWriter {
     return new FilesystemArtifactStateHistoryWriter(
-      new NodeAsyncFileSystemAdapter(),
-      new NodePathService(),
+      new NodeAsyncFileSystemAdapter({ root: workspaceRoot }),
     );
   }
 }

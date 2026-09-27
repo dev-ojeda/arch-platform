@@ -17,7 +17,6 @@ export class FilesystemPublicationArtifactReader implements PublicationArtifactR
   ) {}
 
   async read(
-    workspaceRoot: string,
     environment: ComplianceEnvironment,
     artifact: string,
   ): Promise<PublicationArtifactContext | undefined> {
@@ -28,7 +27,7 @@ export class FilesystemPublicationArtifactReader implements PublicationArtifactR
       return undefined;
     }
 
-    const complianceState = await this.complianceStateReader.read(workspaceRoot, environment);
+    const complianceState = await this.complianceStateReader.read(environment);
 
     const complianceArtifact = complianceState.environment.artifacts[artifact];
 
@@ -36,7 +35,7 @@ export class FilesystemPublicationArtifactReader implements PublicationArtifactR
       return undefined;
     }
 
-    const securityState = await this.securityStateReader.read(workspaceRoot);
+    const securityState = await this.securityStateReader.read();
     const securityArtifact = securityState.artifacts[artifact];
 
     if (!securityArtifact) {

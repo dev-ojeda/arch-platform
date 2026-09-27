@@ -9,7 +9,7 @@ import type {
 export class FilesystemDependencyLockfileReader implements DependencyLockfileReader {
   constructor(private readonly adapter: DependencyLockfileAdapter) {}
 
-  async read(_workspaceRoot: string, lockfilePath: string): Promise<DependencyLockfile> {
+  async read(lockfilePath: string): Promise<DependencyLockfile> {
     return this.adapter.adapt(lockfilePath);
   }
 }

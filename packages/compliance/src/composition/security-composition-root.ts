@@ -21,8 +21,6 @@ export class SecurityCompositionRoot {
       workspaceProvider: new NodeWorkspaceProvider(),
       architectureProvider: new NodeArchitectureProvider(),
       securityStateProvider,
-      securityStateReader: securityStateProvider.createReader(),
-      complianceArtifactReader: securityStateProvider.createComplianceArtifactReader(),
       cveAdvisoryProvider,
       dependencyLockfileProvider,
       securityEvaluator: new DefaultSecurityEvaluator(new SecurityVulnerabilityMatcher()),

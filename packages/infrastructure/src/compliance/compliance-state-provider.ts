@@ -10,26 +10,22 @@ import type {
 import { FilesystemComplianceStateReader } from '../artifact/adapter/filesystem-compliance-state-reader.js';
 import { FilesystemComplianceStateWriter } from '../artifact/adapter/filesystem-compliance-state-writer.js';
 import { NodeAsyncFileSystemAdapter } from '../filesystem/adapters/node-async-filesystem-adapter.js';
-import { NodePathService } from '../filesystem/paths/node-path-service.js';
 
 export class ComplianceStateProvider {
-  createReader(): ComplianceStateReader {
+  createReaderForWorkspace(workspaceRoot: string): ComplianceStateReader {
     return new FilesystemComplianceStateReader(
-      new NodeAsyncFileSystemAdapter(),
-      new NodePathService(),
+      new NodeAsyncFileSystemAdapter({ root: workspaceRoot }),
     );
   }
 
-  createWriter(
+  createWriterForWorkspace(
     workspaceRoot: string,
     state: ComplianceState,
     environment: ComplianceEnvironment,
   ): ComplianceStateWriter {
     return new FilesystemComplianceStateWriter(
       state,
-      new NodeAsyncFileSystemAdapter(),
-      new NodePathService(),
-      workspaceRoot,
+      new NodeAsyncFileSystemAdapter({ root: workspaceRoot }),
       environment,
     );
   }

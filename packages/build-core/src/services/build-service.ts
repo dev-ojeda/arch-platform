@@ -51,7 +51,6 @@ export class BuildService {
       artifactStateHistoryReader,
       artifactStateHistoryWriter,
       artifactStateBuilder,
-      workspaceRoot,
     } = this.context;
 
     // -------------------------
@@ -146,11 +145,11 @@ export class BuildService {
         );
 
         if (historyChanges.size > 0) {
-          const persistedHistory = await artifactStateHistoryReader.read(workspaceRoot);
+          const persistedHistory = await artifactStateHistoryReader.read();
 
           const mergedHistory = this.mergeArtifactStateHistory(persistedHistory, historyChanges);
 
-          await artifactStateHistoryWriter.write(workspaceRoot, mergedHistory);
+          await artifactStateHistoryWriter.write(mergedHistory);
         }
 
         const mergedArtifactStates = this.mergeArtifactStates(

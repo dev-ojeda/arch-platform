@@ -1,6 +1,6 @@
 // packages/infrastructure/src/artifact/adapter/filesystem-security-compliance-artifact-reader.ts
 
-import type { FileSystemAsyncPort, PathService } from '@arch-platform/contracts';
+import type { FileSystemAsyncPort } from '@arch-platform/contracts';
 import type {
   ComplianceState,
   SecurityComplianceArtifact,
@@ -8,13 +8,10 @@ import type {
 } from '@arch-platform/platform-model';
 
 export class FilesystemSecurityComplianceArtifactReader implements SecurityComplianceArtifactReader {
-  constructor(
-    private readonly filesystem: FileSystemAsyncPort,
-    private readonly pathService: PathService,
-  ) {}
+  constructor(private readonly filesystem: FileSystemAsyncPort) {}
 
-  async read(root: string, packageName: string): Promise<SecurityComplianceArtifact> {
-    const path = this.pathService.join(root, '.arch-platform', 'compliance', 'dev.json');
+  async read(packageName: string): Promise<SecurityComplianceArtifact> {
+    const path = '/.arch-platform/compliance/dev.json';
 
     const state = await this.filesystem.readJson<ComplianceState>(path);
     const artifact = state.environment.artifacts[packageName];

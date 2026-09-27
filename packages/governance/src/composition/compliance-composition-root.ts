@@ -19,14 +19,12 @@ export class ComplianceCompositionRoot {
     const complianceEventBus = new InMemoryComplianceEventBus();
     const artifactStateProvider = new ArtifactStateProvider();
     const complianceStateProvider = new ComplianceStateProvider();
-    const complianceStateReader = complianceStateProvider.createReader();
     const rules = [new ArtifactComplianceRule(artifactComplianceEvaluator)];
 
     return {
       workspaceProvider: new NodeWorkspaceProvider(),
       artifactStateProvider,
       complianceStateProvider,
-      complianceStateReader,
       createComplianceExecutionContext: (context: ComplianceContext) =>
         buildComplianceExecutionContext(context),
       complianceEventBus,

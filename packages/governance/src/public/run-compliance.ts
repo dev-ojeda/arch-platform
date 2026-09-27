@@ -15,13 +15,14 @@ export async function runCompliance(options: ComplianceOptions): Promise<Complia
     workspaceProvider,
     artifactStateProvider,
     complianceStateProvider,
-    complianceStateReader,
     createComplianceExecutionContext,
     complianceEventBus,
     engine,
   } = new ComplianceCompositionRoot().create();
   const workspace = await workspaceProvider.discover(options.workspaceRoot);
   const artifactStateReader = artifactStateProvider.createReaderForWorkspace(workspace.root);
+  const complianceStateReader = complianceStateProvider.createReaderForWorkspace(workspace.root);
+
   const complianceContext = await buildComplianceContext(
     options,
     workspace,
@@ -36,7 +37,7 @@ export async function runCompliance(options: ComplianceOptions): Promise<Complia
   });
   const evaluation = await engine.run(executionContext);
   const action = resolveComplianceAction(evaluation.changes, evaluation.diagnostics);
-  const complianceStateWriter = complianceStateProvider.createWriter(
+  const complianceStateWriter = complianceStateProvider.createWriterForWorkspace(
     executionContext.workspace.root,
     executionContext.complianceStates,
     executionContext.environment,

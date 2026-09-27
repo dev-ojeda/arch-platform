@@ -3,5 +3,5 @@
 import type { SecurityState } from '../security/security-state.js';
 
 export interface SecurityStateReader {
-  read(root: string): Promise<SecurityState>;
+  read(): Promise<SecurityState>;
 }

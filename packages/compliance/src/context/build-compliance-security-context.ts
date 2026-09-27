@@ -28,10 +28,9 @@ export async function buildComplianceSecurityContext(
     throw new Error('Security environment is required.');
   }
 
-  const securityStates = await securityStatesReader.read(scope.root);
+  const securityStates = await securityStatesReader.read();
 
   const securityComplianceArtifact = await securityComplianceArtifactReader.read(
-    scope.root,
     options.packageName,
   );
 

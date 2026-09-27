@@ -19,8 +19,6 @@ export async function runSecurity(options: SecurityOptions): Promise<SecurityRes
   const {
     workspaceProvider,
     architectureProvider,
-    complianceArtifactReader,
-    securityStateReader,
     securityStateProvider,
     cveAdvisoryProvider,
     dependencyLockfileProvider,
@@ -33,8 +31,12 @@ export async function runSecurity(options: SecurityOptions): Promise<SecurityRes
   const architecture = await architectureProvider.load(workspace.root);
   const cveAdvisoryReader = cveAdvisoryProvider.createReader(workspace.root);
   const dependencyLockfileReader = dependencyLockfileProvider.createReader(workspace.root);
-  const advisories = await cveAdvisoryReader.read(workspace.root, config.advisoryPath);
-  const lockfile = await dependencyLockfileReader.read(workspace.root, config.lockfilePath);
+  const advisories = await cveAdvisoryReader.read(config.advisoryPath);
+  const lockfile = await dependencyLockfileReader.read(config.lockfilePath);
+  const complianceArtifactReader = securityStateProvider.createComplianceArtifactReaderForWorkspace(
+    workspace.root,
+  );
+  const securityStateReader = securityStateProvider.createReaderForWorkspace(workspace.root);
   const securityContext = await buildComplianceSecurityContext(
     options,
     workspace,
@@ -56,7 +58,7 @@ export async function runSecurity(options: SecurityOptions): Promise<SecurityRes
 
   const changes = await securityEvaluator.evaluate(securityExecutionContext);
 
-  const securityStateWriter = securityStateProvider.createWriter(
+  const securityStateWriter = securityStateProvider.createWriterForWorkspace(
     securityContext.scope.root,
     securityContext.securityStates,
   );
