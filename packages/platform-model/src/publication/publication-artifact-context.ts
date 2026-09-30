@@ -10,6 +10,7 @@ export interface PublicationArtifactContext {
 
   readonly artifactHash: string;
   readonly artifactStatus: ArtifactStateStatus;
+  readonly outputs: readonly string[];
 
   readonly complianceStatus: ArtifactComplianceStatus;
   readonly complianceApprovedHash: string | undefined;

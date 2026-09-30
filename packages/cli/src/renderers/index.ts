@@ -2,4 +2,5 @@
 
 export { renderComplianceResult } from './render-compliance.js';
 export { renderGovernanceResult } from './render-diagnostics.js';
+export { renderPublishResult } from './render-publish.js';
 export { renderSecurityResult } from './render-security.js';

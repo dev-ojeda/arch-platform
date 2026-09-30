@@ -15,6 +15,7 @@ describe('FilesystemPublicationArtifactReader', () => {
       artifact: '@arch-platform/code-analysis',
       artifactHash: 'artifact-hash-001',
       artifactStatus: 'built',
+      outputs: ['dist'],
       complianceStatus: 'approved',
       complianceApprovedHash: 'artifact-hash-001',
       securityPreviousStatus: 'blocked',

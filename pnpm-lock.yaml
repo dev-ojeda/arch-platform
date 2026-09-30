@@ -223,6 +223,9 @@ importers:
       '@arch-platform/generator-mvc':
         specifier: 0.1.0
         version: 0.1.0
+      '@arch-platform/infrastructure':
+        specifier: workspace:*
+        version: link:../infrastructure
       '@arch-platform/platform-model':
         specifier: workspace:*
         version: link:../platform-model
@@ -248,15 +251,15 @@ importers:
 
   packages/cli:
     dependencies:
+      '@arch-platform/application':
+        specifier: workspace:*
+        version: link:../application
       '@arch-platform/compliance':
         specifier: workspace:*
         version: link:../compliance
       '@arch-platform/governance':
         specifier: workspace:*
         version: link:../governance
-      '@arch-platform/infrastructure':
-        specifier: workspace:*
-        version: link:../infrastructure
       '@arch-platform/tooling':
         specifier: workspace:*
         version: link:../tooling

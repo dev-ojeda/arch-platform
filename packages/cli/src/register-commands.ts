@@ -6,6 +6,7 @@ import { registerBuildCommand } from './commands/build.command.js';
 import { registerCleanCommand } from './commands/clean.command.js';
 import { registerComplianceCommand } from './commands/compliance-command.js';
 import { registerLintCommand } from './commands/lint.command.js';
+import { registerPublishCommand } from './commands/publish-command.js';
 import { registerSecurityCommand } from './commands/security-command.js';
 import { registerTypecheckCommand } from './commands/typecheck.command.js';
 import { registerValidateCommand } from './commands/validate.command.js';
@@ -18,4 +19,5 @@ export function registerCommands(cli: CAC): void {
   registerValidateCommand(cli);
   registerComplianceCommand(cli);
   registerSecurityCommand(cli);
+  registerPublishCommand(cli);
 }
