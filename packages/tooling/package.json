@@ -33,7 +33,11 @@
     "arch": "arch build --package @arch-platform/tooling",
     "clean": "arch clean",
     "compliance": "arch compliance --package @arch-platform/tooling --env dev",
-    "typecheck": "arch typecheck"
+    "typecheck": "arch typecheck",
+    "test": "vitest run -c ./vitest.config.ts",
+    "coverage": "vitest run --coverage -c ./vitest.config.ts",
+    "test:watch": "vitest",
+    "test:clear": "vitest --clearCache"
   },
   "dependencies": {
     "@arch-platform/build-core": "workspace:*",

@@ -20,6 +20,7 @@ export const ToolingTasks = {
   test: createToolingTask('tooling.test', 'Running tests'),
   typecheck: createToolingTask('tooling.typecheck', 'Typechecking'),
   clean: createToolingTask('tooling.clean', 'Cleaning'),
+  pack: createToolingTask('tooling.pack', 'Packing'),
 } as const satisfies Record<string, ToolingTaskDescriptor>;
 
 function createToolingTask(id: string, label: string): ToolingTaskDescriptor {
