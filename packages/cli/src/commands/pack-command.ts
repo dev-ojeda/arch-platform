@@ -22,6 +22,7 @@ export function registerPackCommand(cli: CAC): void {
     .option('--package <packageName>', 'Package to pack')
     .option('--out <directory>', 'Output directory for the generated tarball')
     .option('--ignore-scripts', 'Ignore package lifecycle scripts')
+    .option('--json', 'Log output in JSON format')
     .action(async (options: PackCliOptions) => {
       return await runPackCommand(options);
     });

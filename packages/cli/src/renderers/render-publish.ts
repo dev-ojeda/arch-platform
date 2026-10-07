@@ -21,6 +21,7 @@ function renderHeader(result: PublishResult): void {
   terminal.info('ARCH Publish');
   terminal.info('──────────────────────────────────────────────');
   terminal.info(`Artifact: ${result.artifact}`);
+  terminal.info(`Version: ${result.version}`);
   terminal.info('');
 }
 

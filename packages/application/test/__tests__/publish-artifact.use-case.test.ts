@@ -2,14 +2,25 @@
 
 import { describe, expect, it, vi } from 'vitest';
 
-import { PublishArtifactUseCase } from '@arch-platform/application';
 import type {
   PublicationArtifactContext,
   PublicationArtifactReader,
   PublicationEligibilityEvaluator,
 } from '@arch-platform/platform-model';
 
+import { PublishArtifactUseCase } from '../../src/use-cases/publish-artifact/publish-artifact.use-case.js';
+
 const artifactHash = 'sha512-test-generator-mvc';
+const artifactDistribution = {
+  artifactRegistryStatus: 'not-registered' as const,
+  artifact: 'arch-platform-generator-mvc-0.1.0.tgz',
+  file: 'artifact/arch-platform-generator-mvc-0.1.0.tgz',
+  packageName: '@arch-platform/generator-mvc',
+  version: '0.1.0',
+  integrityCalculated: true,
+  integrityMatches: true,
+  integrityResolved: true,
+};
 const publishableFixtureGenerator: PublicationArtifactContext = {
   artifact: '@arch-platform/generator-mvc',
   artifactHash,
@@ -21,6 +32,7 @@ const publishableFixtureGenerator: PublicationArtifactContext = {
   securityEvaluationStatus: 'secure',
   securityDecisionStatus: 'allowed',
   securityArtifactHash: artifactHash,
+  artifactDistributionPrepared: artifactDistribution,
 };
 describe('PublishArtifactUseCase', () => {
   it('returns a successful result when publication state is eligible', async () => {
@@ -39,6 +51,7 @@ describe('PublishArtifactUseCase', () => {
       success: true,
       durationMs: expect.any(Number),
       artifact: '@arch-platform/generator-mvc',
+      version: '0.1.0',
       eligibility: { status: 'eligible', reasons: [] },
     });
     expect(reader.read).toHaveBeenCalledWith('dev', '@arch-platform/generator-mvc');
@@ -62,6 +75,7 @@ describe('PublishArtifactUseCase', () => {
       success: false,
       durationMs: expect.any(Number),
       artifact: '@arch-platform/generator-mvc',
+      version: '0.1.0',
       eligibility: { status: 'blocked', reasons: ['compliance-hash-mismatch'] },
     });
     expect(evaluator.evaluate).toHaveBeenCalledWith(publishableFixtureGenerator);

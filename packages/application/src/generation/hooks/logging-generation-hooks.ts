@@ -1,11 +1,11 @@
 // packages/application/src/generation/hooks/logging-generation-hooks.ts
 
-import {
-  type GenerationContext,
-  type GenerationDiagnostic,
-  type GenerationHooks,
-  type GenerationPipelineStep,
-  type TemplateVariables,
+import type {
+  GenerationContext,
+  GenerationDiagnostic,
+  GenerationHooks,
+  GenerationPipelineStep,
+  TemplateVariables,
 } from '@arch-platform/contracts';
 
 import { errorMessage } from '../../errors/error-message.js';

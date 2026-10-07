@@ -1,6 +1,7 @@
 // packages/infrastructure/src/publication/filesystem-publication-artifact-reader.ts
 
 import type {
+  ArtifactDistributionPreparedReader,
   ArtifactStateReader,
   BuildState,
   ComplianceEnvironment,
@@ -16,6 +17,7 @@ export class FilesystemPublicationArtifactReader implements PublicationArtifactR
     private readonly complianceStateReader: ComplianceStateReader,
     private readonly securityStateReader: SecurityStateReader,
     private readonly buildState: BuildState,
+    private readonly artifactDistributionPreparedReader: ArtifactDistributionPreparedReader,
   ) {}
 
   async read(
@@ -53,6 +55,12 @@ export class FilesystemPublicationArtifactReader implements PublicationArtifactR
     if (buildStateEntry.hash.hash !== artifactState.hash.hash) {
       return undefined;
     }
+    const distributionPrepared = await this.artifactDistributionPreparedReader.read(artifact);
+
+    if (!distributionPrepared) {
+      return undefined;
+    }
+
     return {
       artifact,
       artifactHash: artifactState.hash.hash,
@@ -64,6 +72,7 @@ export class FilesystemPublicationArtifactReader implements PublicationArtifactR
       securityEvaluationStatus: securityArtifact.evaluation.status,
       securityDecisionStatus: securityArtifact.decision.status,
       securityArtifactHash: securityArtifact.evaluation.artifactHash,
+      artifactDistributionPrepared: distributionPrepared,
     };
   }
 }

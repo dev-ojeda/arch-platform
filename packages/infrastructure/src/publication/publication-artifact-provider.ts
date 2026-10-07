@@ -4,6 +4,7 @@ import type { PublicationArtifactReader } from '@arch-platform/platform-model';
 
 import { ArtifactStateProvider } from '../artifact/artifact-state-provider.js';
 import { ComplianceStateProvider } from '../compliance/compliance-state-provider.js';
+import { ArtifactDistributionPreparedProvider } from '../distribution/artifact-distribution-prepared-provider.js';
 import { NodeSyncFileSystemAdapter } from '../filesystem/adapters/node-sync-filesystem-adapter.js';
 import { SecurityStateProvider } from '../security/security-state-provider.js';
 import { BuildStateLoader } from '../state/state-loader.js';
@@ -21,6 +22,7 @@ export class PublicationArtifactProvider {
       new ComplianceStateProvider().createReaderForWorkspace(workspaceRoot),
       new SecurityStateProvider().createReaderForWorkspace(workspaceRoot),
       buildState,
+      new ArtifactDistributionPreparedProvider().createReaderForWorkspace(workspaceRoot),
     );
   }
 }

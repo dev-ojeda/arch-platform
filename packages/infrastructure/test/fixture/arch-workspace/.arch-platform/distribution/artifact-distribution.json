@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "artifacts": {
+    "@arch-platform/contracts": {
+      "artifactRegistryStatus": "registered",
+      "artifact": "arch-platform-contracts-0.1.0.tgz",
+      "file": "artifacts/arch-platform-contracts-0.1.0.tgz",
+      "packageName": "@arch-platform/contracts",
+      "version": "0.1.0",
+      "integrityCalculated": true,
+      "integrityMatches": true,
+      "integrityResolved": true
+    },
+    "@arch-platform/code-analysis": {
+      "artifactRegistryStatus": "not-registered",
+      "artifact": "arch-platform-code-analysis-0.1.0.tgz",
+      "file": "artifacts/arch-platform-code-analysis-0.1.0.tgz",
+      "packageName": "@arch-platform/code-analysis",
+      "version": "0.1.0",
+      "integrityCalculated": true,
+      "integrityResolved": false
+    }
+  }
+}

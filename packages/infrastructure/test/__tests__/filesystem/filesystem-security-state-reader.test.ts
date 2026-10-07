@@ -1,10 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import {
-  FilesystemSecurityStateReader,
-  NodeAsyncFileSystemAdapter,
-} from '@arch-platform/infrastructure';
-
+import { FilesystemSecurityStateReader } from '../../../src/artifact/adapter/filesystem-security-state-reader.js';
+import { NodeAsyncFileSystemAdapter } from '../../../src/filesystem/adapters/node-async-filesystem-adapter.js';
 import { FIXTURE_PATHS } from '../../fixture/fixture-paths.js';
 
 describe('FilesystemSecurityStateReader', () => {
@@ -15,7 +12,7 @@ describe('FilesystemSecurityStateReader', () => {
   );
 
   it('reads the persisted security state from the workspace', async () => {
-    const state = await reader.read(FIXTURE_PATHS.securityWorkspace);
+    const state = await reader.read();
 
     expect(state.schemaVersion).toBe(1);
 

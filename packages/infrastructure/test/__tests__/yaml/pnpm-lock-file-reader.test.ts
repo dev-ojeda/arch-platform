@@ -6,22 +6,18 @@ import { DependencyLockfileProvider } from '@arch-platform/infrastructure';
 
 import { FIXTURE_PATHS } from '../../fixture/fixture-paths.js';
 
-describe('DependencyLockfileProvider', () => {
+describe('DependencyLockfileProvider', async () => {
   const readerFactory = new DependencyLockfileProvider();
   const lockfilePath = 'pnpm-lock-test.yaml';
+  const reader = readerFactory.createReader(FIXTURE_PATHS.archWorkspace);
+  const lockfile = await reader.read(lockfilePath);
   it('reads the pnpm lockfile fixture', async () => {
-    const reader = readerFactory.createReader(FIXTURE_PATHS.archWorkspace);
-    const lockfile = await reader.read(lockfilePath);
-
     expect(lockfile.lockfileVersion).toBeDefined();
     expect(lockfile.importers).toBeDefined();
     expect(lockfile.packages).toBeDefined();
   });
 
   it('reads workspace importer dependency information', async () => {
-    const reader = readerFactory.createReader(FIXTURE_PATHS.archWorkspace);
-    const lockfile = await reader.read(lockfilePath);
-
     const testing = lockfile.importers['packages/testing'];
 
     expect(testing).toBeDefined();
@@ -30,9 +26,6 @@ describe('DependencyLockfileProvider', () => {
   });
 
   it('returns a package with peerDependencies context', async () => {
-    const reader = readerFactory.createReader(FIXTURE_PATHS.archWorkspace);
-    const lockfile = await reader.read(lockfilePath);
-
     const pkg = lockfile.packages['typescript-eslint@8.59.4'];
 
     expect(pkg?.peerDependencies).toEqual({
@@ -42,9 +35,6 @@ describe('DependencyLockfileProvider', () => {
   });
 
   it('returns a dependency from a catalog', async () => {
-    const reader = readerFactory.createReader(FIXTURE_PATHS.archWorkspace);
-    const lockfile = await reader.read(lockfilePath);
-
     const catalogs = lockfile.catalogs['default']?.['@changesets/cli'];
 
     expect(catalogs.specifier).toBe('2.31.0');
@@ -52,9 +42,6 @@ describe('DependencyLockfileProvider', () => {
   });
 
   it('reads package snapshots', async () => {
-    const reader = readerFactory.createReader(FIXTURE_PATHS.archWorkspace);
-    const lockfile = await reader.read(lockfilePath);
-
     const snapshot = lockfile.snapshots['@arch-platform/generator-mvc@0.1.0'];
 
     expect(snapshot).toBeDefined();
@@ -62,9 +49,6 @@ describe('DependencyLockfileProvider', () => {
   });
 
   it('reads an empty package snapshot', async () => {
-    const reader = readerFactory.createReader(FIXTURE_PATHS.archWorkspace);
-    const lockfile = await reader.read(lockfilePath);
-
     const snapshot = lockfile.snapshots['@arch-platform/contracts@0.1.0'];
 
     expect(snapshot).toBeDefined();

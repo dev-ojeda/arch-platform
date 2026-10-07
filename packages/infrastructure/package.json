@@ -41,6 +41,9 @@
     "@arch-platform/platform-model": "workspace:*",
     "@arch-platform/contracts": "0.1.0",
     "@arch-platform/testing": "workspace:*",
-    "yaml": "catalog:"
+    "yaml": "catalog:",
+    "tar": "catalog:",
+    "semver": "catalog:",
+    "@types/semver": "catalog:"
   }
 }

@@ -1,10 +1,22 @@
 import { describe, expect, it } from 'vitest';
 
-import { DefaultPublicationEligibilityEvaluator } from '@arch-platform/application';
 import type { PublicationArtifactContext } from '@arch-platform/platform-model';
+
+import { DefaultPublicationEligibilityEvaluator } from '../../src/use-cases/publish-artifact/default-publication-eligibility-evaluator.js';
 
 const artifactHash = 'sha512-test-generator-mvc';
 const staleHash = 'sha512-test-stale-generator-mvc';
+
+const artifactDistribution = {
+  artifactRegistryStatus: 'not-registered' as const,
+  artifact: 'arch-platform-generator-mvc-0.1.0.tgz',
+  file: 'artifact/arch-platform-generator-mvc-0.1.0.tgz',
+  packageName: '@arch-platform/generator-mvc',
+  version: '0.1.0',
+  integrityCalculated: true,
+  integrityMatches: true,
+  integrityResolved: true,
+};
 
 const publishableContext: PublicationArtifactContext = {
   artifact: '@arch-platform/generator-mvc',
@@ -17,6 +29,7 @@ const publishableContext: PublicationArtifactContext = {
   securityEvaluationStatus: 'secure',
   securityDecisionStatus: 'allowed',
   securityArtifactHash: artifactHash,
+  artifactDistributionPrepared: artifactDistribution,
 };
 
 describe('DefaultPublicationEligibilityEvaluator', () => {

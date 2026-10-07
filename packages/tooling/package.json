@@ -41,10 +41,10 @@
   },
   "dependencies": {
     "@arch-platform/build-core": "workspace:*",
-    "@arch-platform/infrastructure": "workspace:*"
+    "@arch-platform/infrastructure": "workspace:*",
+    "execa": "catalog:"
   },
   "devDependencies": {
-    "typescript": "catalog:",
-    "execa": "catalog:"
+    "typescript": "catalog:"
   }
 }

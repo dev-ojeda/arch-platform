@@ -132,6 +132,24 @@ export function runFileSystemAsyncPortContract(
 
         expect(result).toEqual(data);
       });
+
+      it('omits undefined properties when writing json', async () => {
+        const fs = await createFileSystem();
+
+        await fs.writeJson('/config.json', {
+          name: 'arch-platform',
+          optional: undefined,
+        });
+
+        const result = await fs.readJson<{
+          name: string;
+          optional?: unknown;
+        }>('/config.json');
+
+        expect(result).toEqual({
+          name: 'arch-platform',
+        });
+      });
     });
   });
 }

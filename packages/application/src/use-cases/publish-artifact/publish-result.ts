@@ -6,5 +6,6 @@ export interface PublishResult {
   readonly success: boolean;
   readonly durationMs: number;
   readonly artifact: string;
+  readonly version: string;
   readonly eligibility: PublicationEligibility;
 }

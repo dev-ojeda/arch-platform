@@ -12,7 +12,6 @@
     "@typescript-eslint/parser": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "@vscode/test-electron": "catalog:",
-    "cac": "catalog:",
     "dependency-cruiser": "catalog:",
     "esbuild-visualizer": "catalog:",
     "eslint": "catalog:",
@@ -30,13 +29,8 @@
     "typescript": "catalog:",
     "typescript-eslint": "catalog:",
     "vitest": "catalog:",
-    "zod": "catalog:",
-    "ts-morph": "catalog:",
     "@arch-platform/cli": "workspace:*",
-    "@arch-platform/contracts": "0.1.0",
-    "semver": "catalog:",
-    "@types/semver": "catalog:",
-    "yaml": "catalog:"
+    "@arch-platform/contracts": "0.1.0"
   },
   "workspaces": [
     "packages/*"

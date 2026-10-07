@@ -6,6 +6,8 @@ import type {
   PublicationEligibilityEvaluator,
 } from '@arch-platform/platform-model';
 
+import { createStopwatch } from '../../helpers/create-stopwatch.js';
+
 import type { PublishResult } from './publish-result.js';
 
 export interface PublishArtifactInput {
@@ -20,7 +22,7 @@ export class PublishArtifactUseCase {
   ) {}
 
   public async execute(input: PublishArtifactInput): Promise<PublishResult> {
-    const startedAt = performance.now();
+    const stopwatch = createStopwatch();
 
     const context = await this.reader.read(input.environment, input.artifact);
 
@@ -32,8 +34,9 @@ export class PublishArtifactUseCase {
 
     return {
       success: eligibility.status === 'eligible',
-      durationMs: performance.now() - startedAt,
+      durationMs: stopwatch.milliseconds(),
       artifact: input.artifact,
+      version: context.artifactDistributionPrepared.version,
       eligibility,
     };
   }

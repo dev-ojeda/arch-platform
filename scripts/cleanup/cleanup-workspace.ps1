@@ -62,7 +62,9 @@ $ExcludedDirectories = @(
   '.git',
   '.idea',
   '.vscode',
-  'node_modules'
+  'node_modules',
+  'security-workspace',
+  'arch-workspace'
 )
 
 $CleanupDirectories = @(

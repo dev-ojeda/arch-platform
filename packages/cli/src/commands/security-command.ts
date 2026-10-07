@@ -10,15 +10,19 @@ import type { SecurityCliOptions } from '../contracts/security-cli-options.js';
 import { renderSecurityResult } from '../renderers/render-security.js';
 
 export async function runSecurityCommand(options: SecurityCliOptions): Promise<number> {
-  const result = await runSecurity({
-    workspaceRoot: process.cwd(),
-    packageName: options.package,
-    environment: options.env,
-    lockfilePath: options.lockfile,
-  });
+  try {
+    const result = await runSecurity({
+      workspaceRoot: process.cwd(),
+      packageName: options.package,
+      environment: options.env,
+      lockfilePath: options.lockfile,
+    });
 
-  renderSecurityResult(result);
-  return result.success ? 0 : 1;
+    renderSecurityResult(result);
+    return result.success ? 0 : 1;
+  } catch {
+    return 1;
+  }
 }
 
 export function registerSecurityCommand(cli: CAC): void {

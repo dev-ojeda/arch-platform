@@ -10,15 +10,18 @@ import type { ComplianceCliOptions } from '../contracts/compliance-cli-options.j
 import { renderComplianceResult } from '../renderers/render-compliance.js';
 
 export async function runComplianceCommand(options: ComplianceCliOptions): Promise<number> {
-  const result = await runCompliance({
-    workspaceRoot: process.cwd(),
-    packageName: options.package,
-    environment: options.env,
-  });
+  try {
+    const result = await runCompliance({
+      workspaceRoot: process.cwd(),
+      packageName: options.package,
+      environment: options.env,
+    });
 
-  renderComplianceResult(result);
-
-  return result.success ? 0 : 1;
+    renderComplianceResult(result);
+    return result.success ? 0 : 1;
+  } catch {
+    return 1;
+  }
 }
 
 export function registerComplianceCommand(cli: CAC): void {

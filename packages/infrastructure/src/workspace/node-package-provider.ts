@@ -74,9 +74,9 @@ export class NodePackageProvider implements PackageProvider {
 
       if (await pathExists(packageFile)) {
         roots.push(fullPath);
+        continue;
       }
 
-      // No retornamos: pueden existir nested packages.
       roots.push(...(await this.findPackageRoots(fullPath)));
     }
 

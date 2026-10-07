@@ -5,17 +5,13 @@ import { cwd } from 'node:process';
 import type { CAC } from 'cac';
 
 import { runGovernance } from '@arch-platform/governance';
-import { NodeWorkspaceProvider } from '@arch-platform/infrastructure';
 
 import type { ValidateCliOptions } from '../contracts/validate-cli-options.js';
 import { renderGovernanceResult } from '../renderers/render-diagnostics.js';
 
 export async function runValidateCommand(options: ValidateCliOptions): Promise<number> {
-  const workspaceProvider = new NodeWorkspaceProvider();
-  const workspace = await workspaceProvider.discover(cwd());
-
   const result = await runGovernance({
-    workspaceRoot: workspace.root,
+    workspaceRoot: cwd(),
     packageName: options.package,
   });
 

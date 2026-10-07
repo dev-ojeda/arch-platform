@@ -14,11 +14,11 @@ export {
   FilesystemComplianceStateReader,
   FilesystemComplianceStateWriter,
   FilesystemOutputValidator,
-  FilesystemSecurityStateReader,
   FilesystemSecurityStateWriter,
 } from '../artifact/index.js';
 export { ComplianceStateProvider } from '../compliance/index.js';
 export * from '../config/index.js';
+export * from '../distribution/index.js';
 export {
   collectTsBuildInfoFiles,
   NodeAsyncFileSystemAdapter,
@@ -32,6 +32,7 @@ export {
   NodeFileHashService,
   NodeHashService,
 } from '../hashing/index.js';
+export * from '../inspect/index.js';
 export * from '../publication/index.js';
 export {
   CVEAdvisoryProvider,
@@ -44,6 +45,7 @@ export {
 } from '../security/index.js';
 export type { CVERecordResponse } from '../security/index.js';
 export { BuildStateLoader, BuildStateWriter } from '../state/index.js';
+export * from '../versioning/index.js';
 export {
   NodeWorkspaceProvider,
   resolveLintTargets,
