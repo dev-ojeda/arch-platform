@@ -185,7 +185,8 @@ dist
 !packages/infrastructure/test/fixture/security-workspace/.arch-platform/**
 !packages/infrastructure/test/fixture/arch-workspace/.arch-platform/
 !packages/infrastructure/test/fixture/arch-workspace/.arch-platform/**
-!packages/infrastructure/test/fixture/artifacts/**
+!packages/infrastructure/test/fixture/arch-workspace/artifacts/
+!packages/infrastructure/test/fixture/arch-workspace/artifacts/**
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
