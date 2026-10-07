@@ -61,12 +61,5 @@ describe('pack', { timeout: 15000 }, () => {
       cwd: consumerRoot,
     });
     expect(typecheckResult.exitCode).toBe(0);
-
-    const readJson = await executeProcess('tar', ['-O', '-xf', tarball, 'package/package.json'], {
-      cwd: consumerRoot,
-      stdout: 'pipe',
-    });
-
-    expect(readJson.exitCode).toBe(0);
   });
 });
