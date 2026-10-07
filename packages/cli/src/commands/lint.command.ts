@@ -4,19 +4,16 @@ import { cwd } from 'node:process';
 
 import type { CAC } from 'cac';
 
-import { NodeWorkspaceProvider, resolveLintTargets } from '@arch-platform/infrastructure';
 import { lintCommand } from '@arch-platform/tooling';
 
 import type { LintCliOptions } from '../contracts/lint-cli-options.js';
 
 export async function runLintCommand(options: LintCliOptions): Promise<number> {
-  const workspaceProvider = new NodeWorkspaceProvider();
-  const workspace = await workspaceProvider.discover(cwd());
-
-  const targets = resolveLintTargets(workspace, options.package);
   return await lintCommand({
-    targets,
-    args: options.fix ? ['--fix'] : options.debug ? ['--debug'] : [],
+    workspaceRoot: cwd(),
+    packageName: options.package,
+    fix: options.fix,
+    debug: options.debug,
   });
 }
 export function registerLintCommand(cli: CAC): void {

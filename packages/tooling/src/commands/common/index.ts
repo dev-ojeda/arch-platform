@@ -6,6 +6,7 @@ export type {
   CleanCommandOptions,
   CommandOptions,
   LintCommandOptions,
+  PackCommandOptions,
   TypecheckCommandOptions,
 } from './command-options.js';
 export type { CommandResult } from './command-result.js';

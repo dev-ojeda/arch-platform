@@ -33,6 +33,7 @@ export type {
 } from './compliance/index.js';
 export * from './dependency/index.js';
 export type { Diagnostic, DiagnosticLocation, DiagnosticSeverity } from './diagnostics/index.js';
+export * from './distribution/index.js';
 export type {
   CycleDetectionResult,
   DagNode,
@@ -41,6 +42,7 @@ export type {
   MutableGraph,
 } from './graph/index.js';
 export type { HashContext, HashInput, HashResult, HashValidation } from './hashing/index.js';
+export * from './pack/index.js';
 export type {
   PackageBoundaries,
   PackageBuildConfig,
@@ -70,6 +72,7 @@ export * from './publication/index.js';
 export * from './security/index.js';
 export type { BuildState, BuildStateEntry, StateChanges } from './state/index.js';
 export type { MaybePromise } from './types/index.js';
+export * from './versioning/index.js';
 export type {
   WorkspaceDescriptor,
   WorkspaceGraph,

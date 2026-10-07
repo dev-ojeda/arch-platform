@@ -21,15 +21,18 @@ export class DependencyGraphBuilder {
     const importerPath = this.resolveImporterPath(packageName);
     const importer = this.query.getImporter(importerPath);
 
-    if (!importer) {
-      throw new Error(`Missing lockfile importer ${importerPath}`);
+    if (importer) {
+      const dependencies = importer.dependencies ?? {};
+
+      for (const [dependencyName, spec] of Object.entries(dependencies)) {
+        this.visitDependency(dependencyName, spec, nodes);
+      }
+
+      return { nodes };
     }
 
-    const dependencies = importer.dependencies ?? {};
+    this.visitRegistryRoot(packageName, nodes);
 
-    for (const [dependencyName, spec] of Object.entries(dependencies)) {
-      this.visitDependency(dependencyName, spec, nodes);
-    }
     return {
       nodes,
     };
@@ -148,5 +151,25 @@ export class DependencyGraphBuilder {
   }
   private isWorkspaceDependency(spec: DependencyLockfilePackageSpec): boolean {
     return spec.version?.startsWith('link:') === true;
+  }
+  private visitRegistryRoot(packageName: string, nodes: Map<string, DependencyNode>): void {
+    const packages = this.query.getPackages(packageName);
+
+    if (packages.size === 0) {
+      throw new Error(`Missing lockfile package ${packageName}`);
+    }
+
+    if (packages.size > 1) {
+      const versions = [...packages.keys()].join(', ');
+      throw new Error(`Ambiguous lockfile package ${packageName}; found versions: ${versions}`);
+    }
+
+    const [version] = packages.keys();
+
+    if (!version) {
+      throw new Error(`Missing lockfile version for package ${packageName}`);
+    }
+
+    this.visitRegistryDependency(packageName, version, nodes);
   }
 }

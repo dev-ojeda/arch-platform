@@ -1,0 +1,14 @@
+{
+  "@arch-platform/code-analysis": {
+    "hash": {
+      "hash": "artifact-hash-001",
+      "sourceHash": "artifact-sourceHash-001",
+      "configHash": "artifact-configHash-001",
+      "depsHash": "artifact-depsHash-001",
+      "schemaVersion": 1
+    },
+    "outputs": ["dist"],
+    "timestamp": 1790721622890,
+    "schemaVersion": 1
+  }
+}

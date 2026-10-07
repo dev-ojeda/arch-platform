@@ -21,7 +21,7 @@ export const LOG_LEVELS: Record<
   },
   success: {
     write: console.log,
-    symbol: '✔  - SUCCESS ',
+    symbol: '✅  - SUCCESS ',
   },
   warn: {
     write: console.warn,
@@ -29,6 +29,6 @@ export const LOG_LEVELS: Record<
   },
   error: {
     write: console.error,
-    symbol: '✖  - ERROR ',
+    symbol: '❌  - ERROR ',
   },
 };

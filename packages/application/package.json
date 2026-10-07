@@ -43,7 +43,8 @@
     "@arch-platform/core": "workspace:*",
     "@arch-platform/generator-mvc": "0.1.0",
     "@arch-platform/platform-model": "workspace:*",
-    "@arch-platform/testing": "workspace:*"
+    "@arch-platform/testing": "workspace:*",
+    "@arch-platform/infrastructure": "workspace:*"
   },
   "devDependencies": {
     "handlebars": "^4.7.9"

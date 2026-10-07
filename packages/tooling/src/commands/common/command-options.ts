@@ -40,3 +40,9 @@ export interface BuildCommandOptions extends CommandOptions {
   readonly concurrency?: number;
   readonly force?: boolean;
 }
+
+export interface PackCommandOptions extends CommandOptions {
+  readonly cwd: string;
+  readonly packageName?: string;
+  readonly outputDirectory?: string;
+}

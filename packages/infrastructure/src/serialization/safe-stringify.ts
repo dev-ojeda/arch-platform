@@ -1,6 +1,6 @@
 // packages/infrastructure/src/serialization/safe-stringify.ts
 
-export function safeStringify(value: unknown, space?: number): string {
+export function safeStringify(value: unknown, space: number = 2): string {
   const seen = new WeakSet<object>();
 
   const replacer = (_key: string, currentValue: unknown): unknown => {
@@ -17,7 +17,7 @@ export function safeStringify(value: unknown, space?: number): string {
     }
 
     if (typeof currentValue === 'undefined') {
-      return '[undefined]';
+      return undefined;
     }
 
     if (typeof currentValue === 'symbol') {

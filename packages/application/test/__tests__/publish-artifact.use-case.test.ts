@@ -2,136 +2,91 @@
 
 import { describe, expect, it, vi } from 'vitest';
 
-import { PublishArtifactUseCase } from '@arch-platform/application';
 import type {
-  ArtifactPublisher,
-  ComplianceEnvironment,
   PublicationArtifactContext,
   PublicationArtifactReader,
+  PublicationEligibilityEvaluator,
 } from '@arch-platform/platform-model';
-import { createMockArtifactLayout, createTestArtifactManifest } from '@arch-platform/testing';
 
-export const fixture: PublicationArtifactContext = {
-  artifact: '@arch-platform/code-analysis',
+import { PublishArtifactUseCase } from '../../src/use-cases/publish-artifact/publish-artifact.use-case.js';
 
-  artifactHash: 'sha512-test-code-analysis',
-  artifactStatus: 'built',
-
-  complianceStatus: 'approved',
-  complianceApprovedHash: 'sha512-test-code-analysis',
-
-  securityPreviousStatus: 'blocked',
-  securityEvaluationStatus: 'blocked',
-  securityDecisionStatus: 'blocked',
-  securityArtifactHash: 'sha512-test-code-analysis',
+const artifactHash = 'sha512-test-generator-mvc';
+const artifactDistribution = {
+  artifactRegistryStatus: 'not-registered' as const,
+  artifact: 'arch-platform-generator-mvc-0.1.0.tgz',
+  file: 'artifact/arch-platform-generator-mvc-0.1.0.tgz',
+  packageName: '@arch-platform/generator-mvc',
+  version: '0.1.0',
+  integrityCalculated: true,
+  integrityMatches: true,
+  integrityResolved: true,
 };
-
-const publishableFixture: PublicationArtifactContext = {
-  ...fixture,
+const publishableFixtureGenerator: PublicationArtifactContext = {
+  artifact: '@arch-platform/generator-mvc',
+  artifactHash,
+  artifactStatus: 'cached',
+  outputs: ['dist'],
+  complianceStatus: 'approved',
+  complianceApprovedHash: artifactHash,
+  securityPreviousStatus: 'allowed',
   securityEvaluationStatus: 'secure',
   securityDecisionStatus: 'allowed',
+  securityArtifactHash: artifactHash,
+  artifactDistributionPrepared: artifactDistribution,
 };
-
 describe('PublishArtifactUseCase', () => {
-  it('publishes the artifact when publication state is eligible', async () => {
+  it('returns a successful result when publication state is eligible', async () => {
     const reader: PublicationArtifactReader = {
-      read: vi.fn().mockResolvedValue(publishableFixture),
+      read: vi.fn().mockResolvedValue(publishableFixtureGenerator),
     };
-
-    const publisher: ArtifactPublisher = {
-      publish: vi.fn(),
+    const evaluator: PublicationEligibilityEvaluator = {
+      evaluate: vi.fn().mockReturnValue({ status: 'eligible', reasons: [] }),
     };
-
-    const useCase = new PublishArtifactUseCase(reader, publisher);
-
-    const workspaceRoot = '/workspace';
-    const artifact = '@arch-platform/code-analysis';
-    const environment: ComplianceEnvironment = 'dev';
-    const manifest = createTestArtifactManifest();
-    const layout = createMockArtifactLayout();
-
-    await useCase.execute({
-      workspaceRoot,
-      artifact,
-      environment,
-      manifest,
-      layout,
+    const useCase = new PublishArtifactUseCase(reader, evaluator);
+    const result = await useCase.execute({
+      artifact: '@arch-platform/generator-mvc',
+      environment: 'dev',
     });
-
-    expect(reader.read).toHaveBeenCalledOnce();
-    expect(reader.read).toHaveBeenCalledWith(workspaceRoot, environment, artifact);
-
-    expect(publisher.publish).toHaveBeenCalledOnce();
-    expect(publisher.publish).toHaveBeenCalledWith(workspaceRoot, manifest, layout);
+    expect(result).toEqual({
+      success: true,
+      durationMs: expect.any(Number),
+      artifact: '@arch-platform/generator-mvc',
+      version: '0.1.0',
+      eligibility: { status: 'eligible', reasons: [] },
+    });
+    expect(reader.read).toHaveBeenCalledWith('dev', '@arch-platform/generator-mvc');
+    expect(evaluator.evaluate).toHaveBeenCalledWith(publishableFixtureGenerator);
   });
-
-  it('does not publish the artifact when security blocks publication', async () => {
+  it('returns a blocked result when eligibility is blocked', async () => {
     const reader: PublicationArtifactReader = {
-      read: vi.fn().mockResolvedValue(fixture),
+      read: vi.fn().mockResolvedValue(publishableFixtureGenerator),
     };
-
-    const publisher: ArtifactPublisher = {
-      publish: vi.fn(),
+    const evaluator: PublicationEligibilityEvaluator = {
+      evaluate: vi
+        .fn()
+        .mockReturnValue({ status: 'blocked', reasons: ['compliance-hash-mismatch'] }),
     };
-
-    const useCase = new PublishArtifactUseCase(reader, publisher);
-
-    await expect(
-      useCase.execute({
-        workspaceRoot: '/workspace',
-        artifact: '@arch-platform/code-analysis',
-        manifest: createTestArtifactManifest(),
-        layout: createMockArtifactLayout(),
-      }),
-    ).rejects.toThrow('Artifact "@arch-platform/code-analysis" cannot be published');
-
-    expect(publisher.publish).not.toHaveBeenCalled();
+    const useCase = new PublishArtifactUseCase(reader, evaluator);
+    const result = await useCase.execute({
+      environment: 'dev',
+      artifact: '@arch-platform/generator-mvc',
+    });
+    expect(result).toEqual({
+      success: false,
+      durationMs: expect.any(Number),
+      artifact: '@arch-platform/generator-mvc',
+      version: '0.1.0',
+      eligibility: { status: 'blocked', reasons: ['compliance-hash-mismatch'] },
+    });
+    expect(evaluator.evaluate).toHaveBeenCalledWith(publishableFixtureGenerator);
   });
-
-  it('propagates publisher errors', async () => {
-    const error = new Error('Publication failed');
-
-    const reader: PublicationArtifactReader = {
-      read: vi.fn().mockResolvedValue(publishableFixture),
-    };
-
-    const publisher: ArtifactPublisher = {
-      publish: vi.fn().mockRejectedValue(error),
-    };
-
-    const useCase = new PublishArtifactUseCase(reader, publisher);
-
+  it('fails when publication state is unavailable', async () => {
+    const reader: PublicationArtifactReader = { read: vi.fn().mockResolvedValue(undefined) };
+    const evaluator: PublicationEligibilityEvaluator = { evaluate: vi.fn() };
+    const useCase = new PublishArtifactUseCase(reader, evaluator);
     await expect(
-      useCase.execute({
-        workspaceRoot: '/workspace',
-        artifact: '@arch-platform/code-analysis',
-        manifest: createTestArtifactManifest(),
-        layout: createMockArtifactLayout(),
-      }),
-    ).rejects.toThrow(error);
-  });
-
-  it('does not publish when publication state is unavailable', async () => {
-    const reader: PublicationArtifactReader = {
-      read: vi.fn().mockResolvedValue(undefined),
-    };
-
-    const publisher: ArtifactPublisher = {
-      publish: vi.fn(),
-    };
-
-    const useCase = new PublishArtifactUseCase(reader, publisher);
-
-    await expect(
-      useCase.execute({
-        workspaceRoot: '/workspace',
-        environment: 'dev',
-        artifact: '@arch-platform/code-analysis',
-        manifest: createTestArtifactManifest(),
-        layout: createMockArtifactLayout(),
-      }),
+      useCase.execute({ environment: 'dev', artifact: '@arch-platform/code-analysis' }),
     ).rejects.toThrow('Artifact "@arch-platform/code-analysis" publication state is unavailable');
-
-    expect(publisher.publish).not.toHaveBeenCalled();
+    expect(evaluator.evaluate).not.toHaveBeenCalled();
   });
 });

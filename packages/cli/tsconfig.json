@@ -9,10 +9,10 @@
   "include": ["src/**/*.ts"],
   "references": [
     {
-      "path": "../governance"
+      "path": "../application"
     },
     {
-      "path": "../infrastructure"
+      "path": "../governance"
     },
     {
       "path": "../tooling"

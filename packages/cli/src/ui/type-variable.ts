@@ -28,16 +28,16 @@ export const LOG_LEVELS: Record<
 
   success: {
     write: console.log,
-    symbol: `${ANSI.brightGreen}✔ ${ANSI.reset}`,
+    symbol: `${ANSI.brightGreen}✅ ${ANSI.reset}`,
   },
 
   warn: {
     write: console.warn,
-    symbol: `${ANSI.brightYellow}▲ ${ANSI.reset}`,
+    symbol: `${ANSI.brightYellow}⚠ ${ANSI.reset}`,
   },
 
   error: {
     write: console.error,
-    symbol: `${ANSI.brightRed}✖ ${ANSI.reset}`,
+    symbol: `${ANSI.brightRed}❌ ${ANSI.reset}`,
   },
 };

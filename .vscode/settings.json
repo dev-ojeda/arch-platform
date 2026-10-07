@@ -53,7 +53,9 @@
     "*.bat": "bat",
     "*.scpt": "shellscript",
     ".npmrc": "ini",
-    ".json": "json"
+    ".json": "json",
+    ".env": "ini",
+    ".env.local": "ini"
   },
   // -----------------------------------------------------------------------------
   // SEARCH

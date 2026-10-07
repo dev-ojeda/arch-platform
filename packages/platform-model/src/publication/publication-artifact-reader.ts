@@ -6,7 +6,6 @@ import type { PublicationArtifactContext } from './publication-artifact-context.
 
 export interface PublicationArtifactReader {
   read(
-    workspaceRoot: string,
     environment: ComplianceEnvironment,
     artifact: string,
   ): Promise<PublicationArtifactContext | undefined>;

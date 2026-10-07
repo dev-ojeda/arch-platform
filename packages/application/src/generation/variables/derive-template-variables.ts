@@ -1,11 +1,11 @@
 // packages/application/src/generation/variables/derive-template-variables.ts
 
-import {
-  type GenerationContext,
-  type LanguageConvention,
-  type NamedVariables,
-  type ResolvedTemplateVariables,
-  type VariableValue,
+import type {
+  GenerationContext,
+  LanguageConvention,
+  NamedVariables,
+  ResolvedTemplateVariables,
+  VariableValue,
 } from '@arch-platform/contracts';
 
 export interface TemplateVariables extends NamedVariables {
