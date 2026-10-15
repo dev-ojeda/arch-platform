@@ -11,7 +11,9 @@ function Get-CleanupConfiguration {
       '.vscode'
       '.idea'
       'packages\tooling\src\build'
-      'packages\tooling\src\commands\build'
+      'packages\tooling\src\commands\build',
+      '.arch-platform-cache',
+      'packages\tooling\test\fixtures\workspace\packages\package-to-pack\dist'
     )
 
     ArtifactDirectories = @(

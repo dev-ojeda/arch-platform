@@ -3,7 +3,7 @@
 import type { PackedReader } from '@arch-platform/platform-model';
 
 import { NodeAsyncFileSystemAdapter } from '../filesystem/adapters/node-async-filesystem-adapter.js';
-import { NpmArtifactRegistryReader } from '../versioning/npm-artifact-registry-reader.js';
+import { RegistryPublishedVersionsProvider } from '../registry/registry-published-versions-provider.js';
 
 import { FilesystemPackReader } from './filesystem-pack-reader.js';
 import { NodePackInspectAdapter } from './node-pack-inspect-adapter.js';
@@ -14,10 +14,9 @@ export class PackArtifactInspectProvider {
       root: workspaceRoot,
     });
 
-    return new FilesystemPackReader(
-      filesystem,
-      new NodePackInspectAdapter(),
-      new NpmArtifactRegistryReader(),
-    );
+    const registryProvider = new RegistryPublishedVersionsProvider();
+    const registryReader = registryProvider.createReaderForWorkspace(workspaceRoot);
+
+    return new FilesystemPackReader(filesystem, new NodePackInspectAdapter(), registryReader);
   }
 }

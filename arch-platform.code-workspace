@@ -1,8 +1,207 @@
 {
   "folders": [
-    {
-      "name": "arch-platform",
-      "path": "."
-    }
-  ]
+    { "name": "⚓ Raíz del Proyecto", "path": "." },
+    { "name": "📱 Aplicaciones (Apps)", "path": "apps" },
+    { "name": "📦 Paquetes Core (Packages)", "path": "packages" },
+    { "name": "⚙️ Configuraciones Globales", "path": "config" },
+    { "name": "📊 Estados (.arch-platform)", "path": ".arch-platform" },
+    { "name": "📜 Compliance", "path": ".arch-platform/compliance" },
+    { "name": "🚚 Distribution", "path": ".arch-platform/distribution" },
+    { "name": "⏳ History", "path": ".arch-platform/history" },
+    { "name": "🗂️ Registry", "path": ".arch-platform/registry" },
+    { "name": "🔒 Security", "path": ".arch-platform/security" },
+    { "name": "🧪 Tests: Application", "path": "packages/application/test" },
+    { "name": "🧪 Tests: Infrastructure", "path": "packages/infrastructure/test" },
+    { "name": "🧪 Tests: Governance", "path": "packages/governance/test" },
+    { "name": "🧪 Tests: Compliance", "path": "packages/compliance/test" },
+  ],
+  "settings": {
+    // -----------------------------------------------------------------------------
+    // EDITOR
+    // -----------------------------------------------------------------------------
+    "editor.tabSize": 2,
+    "editor.detectIndentation": false,
+    "editor.autoClosingBrackets": "always",
+    "editor.autoClosingQuotes": "always",
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.minimap.enabled": false,
+    "editor.stickyScroll.enabled": true,
+    "editor.suggestSelection": "first",
+    "editor.snippetSuggestions": "top",
+    "editor.inlineSuggest.enabled": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "always",
+      "source.organizeImports": "always",
+    },
+
+    // -----------------------------------------------------------------------------
+    // WORKBENCH
+    // -----------------------------------------------------------------------------
+    "workbench.startupEditor": "readme",
+    "workbench.colorTheme": "Default Dark Modern",
+    "debug.inlineValues": "on",
+
+    // -----------------------------------------------------------------------------
+    // EXPLORER
+    // -----------------------------------------------------------------------------
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+
+    // -----------------------------------------------------------------------------
+    // FILES
+    // -----------------------------------------------------------------------------
+    "files.insertFinalNewline": false,
+    "files.trimTrailingWhitespace": true,
+    "files.eol": "\n",
+    "files.exclude": {
+      "**/.turbo": true,
+      "**/.pnpm-store": true,
+      "**/coverage": true,
+    },
+    "files.watcherExclude": {
+      "**/.pnpm-store/**": true,
+      "**/.turbo/**": true,
+      "**/node_modules/**": true,
+      "**/dist/**": true,
+      "**/coverage/**": true,
+    },
+    "files.associations": {
+      "*.ts": "typescript",
+      "*.js": "javascript",
+      "*.yml": "yaml",
+      "*.bat": "bat",
+      "*.scpt": "shellscript",
+      ".npmrc": "ini",
+      ".json": "json",
+      ".env": "ini",
+      ".env.local": "ini",
+    },
+
+    // -----------------------------------------------------------------------------
+    // SEARCH
+    // -----------------------------------------------------------------------------
+    "search.followSymlinks": false,
+    "search.sortOrder": "type",
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/.pnpm-store": true,
+      "**/.turbo": true,
+      "**/.cache": true,
+      "**/coverage": true,
+      "**/dist": true,
+    },
+
+    // -----------------------------------------------------------------------------
+    // GIT
+    // -----------------------------------------------------------------------------
+    "git.autoStash": true,
+    "git.confirmForcePush": false,
+    "git.openRepositoryInParentFolders": "always",
+
+    // -----------------------------------------------------------------------------
+    // TASKS
+    // -----------------------------------------------------------------------------
+    "task.allowAutomaticTasks": "on",
+    "task.quickOpen.history": 30,
+    "task.quickOpen.skip": true,
+
+    // -----------------------------------------------------------------------------
+    // TESTING
+    // -----------------------------------------------------------------------------
+    "testing.automaticallyOpenPeekView": "never",
+
+    // -----------------------------------------------------------------------------
+    // TYPESCRIPT / JAVASCRIPT
+    // -----------------------------------------------------------------------------
+    "typescript.disableAutomaticTypeAcquisition": true,
+    "typescript.tsdk": "./node_modules/typescript/lib",
+    "typescript.tsserver.maxTsServerMemory": 4096,
+    "typescript.tsserver.experimental.enableProjectDiagnostics": true,
+    "typescript.preferences.includePackageJsonAutoImports": "off",
+    "typescript.tsserver.log": "off",
+    "typescript.tsserver.watchOptions": {
+      "watchFile": "dynamicPriorityPolling",
+      "watchDirectory": "fixedPollingInterval",
+    },
+    "typescript.preferences.preferTypeOnlyAutoImports": true,
+    "typescript.preferences.importModuleSpecifierEnding": "js",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "typescript.tsserver.useSyntaxServer": "never",
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+
+    // -----------------------------------------------------------------------------
+    // ESLINT
+    // -----------------------------------------------------------------------------
+    "eslint.validate": ["javascript", "typescript", "typescriptreact"],
+    "eslint.workingDirectories": [
+      {
+        "mode": "auto",
+      },
+    ],
+
+    // -----------------------------------------------------------------------------
+    // PACKAGE MANAGERS
+    // -----------------------------------------------------------------------------
+    "npm.autoDetect": "off",
+
+    // -----------------------------------------------------------------------------
+    // BETTER COMMENTS
+    // -----------------------------------------------------------------------------
+    "better-comments.multilineComments": true,
+    "better-comments.highlightPlainText": false,
+    "better-comments.tags": [
+      { "tag": "!", "color": "#FF5555", "bold": true },
+      { "tag": "?", "color": "#61AFEF", "bold": true },
+      { "tag": "todo", "color": "#FFB86C", "bold": true },
+      { "tag": "fix", "color": "#FF6B6B", "bold": true },
+      { "tag": "hack", "color": "#E06C75", "bold": true, "italic": true },
+      { "tag": "perf", "color": "#C678DD", "bold": true },
+      { "tag": "deprecated", "color": "#7F848E", "italic": true, "strikethrough": true },
+      { "tag": "*", "color": "#98C379" },
+    ],
+
+    // -----------------------------------------------------------------------------
+    // TODO TREE
+    // -----------------------------------------------------------------------------
+    "todo-tree.general.tags": ["todo", "fix", "hack", "perf", "deprecated"],
+
+    // -----------------------------------------------------------------------------
+    // AUTO PATH HEADER
+    // -----------------------------------------------------------------------------
+    "autoPathHeader.ignoredDirectories": ["temp", "**/node_modules", "dist/*"],
+    "autoPathHeader.allowedOnlyDirectories": ["src", "**/utils", "src/**/*.ts"],
+
+    // -----------------------------------------------------------------------------
+    // FOLDER TEMPLATES
+    // -----------------------------------------------------------------------------
+    "folderTemplates.structures": [
+      {
+        "structure": [
+          {
+            "fileName": "index.ts",
+            "template": "export * from './';",
+          },
+        ],
+      },
+    ],
+
+    // -----------------------------------------------------------------------------
+    // RUFF
+    // -----------------------------------------------------------------------------
+    // "ruff.format.preview": true,
+
+    // -----------------------------------------------------------------------------
+    // LANGUAGE SPECIFIC
+    // -----------------------------------------------------------------------------
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.formatOnSave": true,
+    },
+    "[json]": {
+      "editor.defaultFormatter": "vscode.json-language-features",
+      "editor.tabSize": 2,
+    },
+  },
 }

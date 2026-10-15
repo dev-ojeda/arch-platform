@@ -153,6 +153,19 @@ export class DependencyGraphBuilder {
     return spec.version?.startsWith('link:') === true;
   }
   private visitRegistryRoot(packageName: string, nodes: Map<string, DependencyNode>): void {
+    const rootImporter = this.query.getImporter('.');
+
+    const rootSpec =
+      rootImporter?.dependencies?.[packageName] ?? rootImporter?.devDependencies?.[packageName];
+
+    if (rootSpec) {
+      const version = this.resolveVersion(packageName, rootSpec);
+
+      this.visitRegistryDependency(packageName, version, nodes);
+
+      return;
+    }
+
     const packages = this.query.getPackages(packageName);
 
     if (packages.size === 0) {
@@ -161,6 +174,7 @@ export class DependencyGraphBuilder {
 
     if (packages.size > 1) {
       const versions = [...packages.keys()].join(', ');
+
       throw new Error(`Ambiguous lockfile package ${packageName}; found versions: ${versions}`);
     }
 

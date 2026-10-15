@@ -8,20 +8,25 @@ import { createPublishArtifactUseCase } from '@arch-platform/application';
 
 import type { PublishCliOptions } from '../contracts/publish-cli-options.js';
 import { renderPublishResult } from '../renderers/render-publish.js';
+import { logger } from '../ui/logger.js';
 
 export async function runPublishCommand(options: PublishCliOptions): Promise<number> {
   try {
     const workspaceRoot = process.cwd();
-
     const useCase = createPublishArtifactUseCase(workspaceRoot);
 
     const result = await useCase.execute({
       environment: options.env,
       artifact: options.package,
+      dryRun: options.dryRun,
     });
+
     renderPublishResult(result);
     return result.success ? 0 : 1;
-  } catch {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+
+    logger.error(message);
     return 1;
   }
 }
@@ -31,6 +36,7 @@ export function registerPublishCommand(cli: CAC): void {
     .command('publish', 'Publish artifact')
     .option('--package <package>', 'Publish package')
     .option('--env <environment>', 'Publish environment')
+    .option('--dry-run', 'Evaluate publication without publishing')
     .action(async (options: PublishCliOptions) => {
       process.exitCode = await runPublishCommand(options);
     });

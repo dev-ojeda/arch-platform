@@ -3,4 +3,5 @@
 export interface PublishCliOptions {
   readonly package: string;
   readonly env: string;
+  readonly dryRun?: boolean;
 }

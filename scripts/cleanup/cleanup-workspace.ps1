@@ -64,7 +64,8 @@ $ExcludedDirectories = @(
   '.vscode',
   'node_modules',
   'security-workspace',
-  'arch-workspace'
+  'arch-workspace',
+  'workspace'
 )
 
 $CleanupDirectories = @(

@@ -3,5 +3,5 @@
 import type { PackedArtifactInspect } from './pack-artifact-inspect.js';
 
 export interface PackedReader {
-  read(packPath: string): Promise<readonly PackedArtifactInspect[]>;
+  read(artifactPath: string): Promise<PackedArtifactInspect>;
 }

@@ -2,5 +2,6 @@
 
 export interface VersionCliOptions {
   readonly package: string;
-  readonly type: 'major' | 'minor' | 'patch';
+  readonly type: 'major' | 'minor' | 'patch' | 'prerelease' | 'premajor' | 'preminor' | 'prepatch';
+  readonly tag?: string;
 }

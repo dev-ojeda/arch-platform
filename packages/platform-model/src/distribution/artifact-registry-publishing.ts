@@ -5,4 +5,5 @@ export interface ArtifactRegistryPublishing {
   readonly version: string;
   readonly integrity?: string;
   readonly tarball?: string;
+  readonly tag?: string;
 }

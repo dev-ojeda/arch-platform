@@ -3,13 +3,13 @@
 import {
   NodeWorkspaceProvider,
   PackageVersionProvider,
+  RegistryPublishedVersionsProvider,
   SemanticVersionCalculator,
 } from '@arch-platform/infrastructure';
 
 export class VersionCompositionRoot {
   async create(fromDirectory: string, packageName?: string) {
     const workspaceProvider = new NodeWorkspaceProvider();
-
     const workspace = await workspaceProvider.discover(fromDirectory);
 
     const packageDescriptor = workspace.packages.find((pkg) => pkg.name === packageName);
@@ -23,15 +23,17 @@ export class VersionCompositionRoot {
     }
 
     const versionProvider = new PackageVersionProvider();
-
     const versionWriter = versionProvider.createWriterForWorkspace(workspace.root);
-
     const calculator = new SemanticVersionCalculator();
+
+    const registryProvider = new RegistryPublishedVersionsProvider();
+    const registryReader = registryProvider.createReaderForWorkspace(workspace.root);
 
     return {
       packageDescriptor,
       versionWriter,
       calculator,
+      registryReader,
     };
   }
 }

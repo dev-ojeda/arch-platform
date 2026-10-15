@@ -39,8 +39,8 @@
     "test:clear": "vitest --clearCache"
   },
   "dependencies": {
-    "@arch-platform/platform-model": "workspace:*",
-    "@arch-platform/contracts": "0.1.0",
-    "@arch-platform/infrastructure": "workspace:*"
+    "@arch-platform/contracts": "0.2.2",
+    "@arch-platform/infrastructure": "workspace:*",
+    "@arch-platform/platform-model": "workspace:*"
   }
 }

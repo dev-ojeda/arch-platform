@@ -4,34 +4,23 @@ import { createHash } from 'node:crypto';
 
 import type { FileSystemAsyncPort } from '@arch-platform/contracts';
 import type {
-  ArtifactRegistryPublishingReader,
   PackedArtifactInspect,
   PackedReader,
   PackInspectPort,
+  RegistryPublishedVersionsReader,
 } from '@arch-platform/platform-model';
 
-import { baseName, joinPath } from '../filesystem/io/path-utils.js';
+import { baseName } from '../filesystem/io/path-utils.js';
 
 export class FilesystemPackReader implements PackedReader {
   constructor(
     private readonly filesystem: FileSystemAsyncPort,
     private readonly packInspect: PackInspectPort,
-    private readonly registryReader: ArtifactRegistryPublishingReader,
+    private readonly registryReader: RegistryPublishedVersionsReader,
   ) {}
 
-  async read(packPath: string): Promise<readonly PackedArtifactInspect[]> {
-    const directory = await this.filesystem.readDirectory(packPath);
-
-    const artifacts = directory.filter((entry) => entry.isFile && entry.name.endsWith('.tgz'));
-
-    const inspections: PackedArtifactInspect[] = [];
-
-    for (const artifact of artifacts) {
-      const artifactPath = joinPath(packPath, artifact.name);
-      inspections.push(await this.inspectPackedArtifact(artifactPath));
-    }
-
-    return inspections;
+  async read(artifactPath: string): Promise<PackedArtifactInspect> {
+    return this.inspectPackedArtifact(artifactPath);
   }
 
   private async inspectPackedArtifact(artifactPath: string): Promise<PackedArtifactInspect> {
@@ -42,12 +31,15 @@ export class FilesystemPackReader implements PackedReader {
 
     const inspection = await this.packInspect.inspect(fileBuffer);
 
-    const registryArtifact = await this.registryReader.find(inspection.name, inspection.version);
+    const catalog = await this.registryReader.read(inspection.name);
 
-    const expectedIntegrity = registryArtifact?.integrity;
+    const publishedPackage = catalog?.packages.find((item) => item.packageName === inspection.name);
+
+    const registryVersion = publishedPackage?.versions[inspection.version];
+    const expectedIntegrity = registryVersion?.dist?.integrity;
 
     return Object.freeze({
-      artifactRegistryStatus: registryArtifact === undefined ? 'not-registered' : 'registered',
+      artifactRegistryStatus: registryVersion === undefined ? 'not-registered' : 'registered',
       artifact: baseName(artifactPath),
       file: artifactPath,
       size: fileBuffer.byteLength,

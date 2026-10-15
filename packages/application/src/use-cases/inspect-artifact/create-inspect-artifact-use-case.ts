@@ -6,8 +6,14 @@ import { InspectCompositionRoot } from './inspect-composition-root.js';
 export async function createInspectArtifactUseCase(
   fromDirectory: string,
 ): Promise<InspectArtifactUseCase> {
-  const { packReader, distributionWriter, artifactsDirectory } =
+  const { packReader, distributionWriter, artifactsDirectory, packages, pathService } =
     await new InspectCompositionRoot().create(fromDirectory);
 
-  return new InspectArtifactUseCase(packReader, distributionWriter, artifactsDirectory);
+  return new InspectArtifactUseCase(
+    packReader,
+    distributionWriter,
+    artifactsDirectory,
+    packages,
+    pathService,
+  );
 }

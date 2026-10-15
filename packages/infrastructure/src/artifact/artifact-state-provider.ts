@@ -19,4 +19,15 @@ export class ArtifactStateProvider {
       new NodeAsyncFileSystemAdapter({ root: workspaceRoot }),
     );
   }
+
+  async assertArtifactStateExistsForWorkspace(workspaceRoot: string): Promise<void> {
+    const filesystem = new NodeAsyncFileSystemAdapter({ root: workspaceRoot });
+    const path = '/.arch-platform/artifact-state.json';
+
+    if (!(await filesystem.exists(path))) {
+      throw new Error(
+        `Compliance requires artifact state file "${path}" in workspace "${workspaceRoot}".`,
+      );
+    }
+  }
 }

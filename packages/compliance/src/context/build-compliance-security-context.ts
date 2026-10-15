@@ -30,8 +30,13 @@ export async function buildComplianceSecurityContext(
 
   const securityStates = await securityStatesReader.read();
 
+  if (!options.packageName) {
+    throw new Error('Security package is required.');
+  }
+
   const securityComplianceArtifact = await securityComplianceArtifactReader.read(
     options.packageName,
+    options.environment,
   );
 
   return {

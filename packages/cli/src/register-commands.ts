@@ -9,6 +9,7 @@ import { registerInspectCommand } from './commands/inspect-command.js';
 import { registerLintCommand } from './commands/lint.command.js';
 import { registerPackCommand } from './commands/pack-command.js';
 import { registerPublishCommand } from './commands/publish-command.js';
+import { registerSyncCommand } from './commands/registry-command.js';
 import { registerSecurityCommand } from './commands/security-command.js';
 import { registerTypecheckCommand } from './commands/typecheck.command.js';
 import { registerValidateCommand } from './commands/validate.command.js';
@@ -26,4 +27,5 @@ export function registerCommands(cli: CAC): void {
   registerPackCommand(cli);
   registerInspectCommand(cli);
   registerVersionCommand(cli);
+  registerSyncCommand(cli);
 }
