@@ -23,7 +23,10 @@ export class ArtifactPublisherAdapter implements ArtifactPublisher {
       await this.filesystem.createDirectory(temp.root);
 
       for (const output of manifest.outputs) {
-        await this.filesystem.copy(this.pathService.join(root, output), temp.output(output));
+        const origen = this.pathService.join(root, output);
+        const destino = temp.output(output);
+
+        await this.filesystem.copy(origen, destino);
       }
 
       await this.filesystem.writeJson<ArtifactManifest>(temp.manifest(), manifest);

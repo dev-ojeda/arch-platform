@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "artifacts": {
+    "@arch-platform/contracts": {
+      "schemaVersion": 1,
+      "registry": "https://registry.npmjs.org",
+      "synchronizedAt": "2026-10-13T00:00:00.000Z",
+      "packages": [
+        {
+          "packageName": "@arch-platform/contracts",
+          "dist-tags": {
+            "latest": "0.2.1"
+          },
+          "versions": {
+            "0.1.0": {
+              "name": "@arch-platform/contracts",
+              "version": "0.1.0"
+            },
+            "0.2.1": {
+              "name": "@arch-platform/contracts",
+              "version": "0.2.1"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -33,7 +33,9 @@ export {
   NodeHashService,
 } from '../hashing/index.js';
 export * from '../inspect/index.js';
+export * from '../process/index.js';
 export * from '../publication/index.js';
+export * from '../registry/index.js';
 export {
   CVEAdvisoryProvider,
   DefaultCVEAdvisoryAdapter,

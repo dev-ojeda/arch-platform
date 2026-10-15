@@ -38,12 +38,12 @@
     "test:clear": "vitest --clearCache"
   },
   "dependencies": {
+    "@arch-platform/contracts": "0.2.2",
     "@arch-platform/platform-model": "workspace:*",
-    "@arch-platform/contracts": "0.1.0",
     "@arch-platform/testing": "workspace:*",
-    "yaml": "catalog:",
-    "tar": "catalog:",
+    "@types/semver": "catalog:",
     "semver": "catalog:",
-    "@types/semver": "catalog:"
+    "tar": "catalog:",
+    "yaml": "catalog:"
   }
 }

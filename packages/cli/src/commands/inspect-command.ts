@@ -8,6 +8,7 @@ import { createInspectArtifactUseCase } from '@arch-platform/application';
 
 import type { InspectCliOptions } from '../contracts/inspect-cli-options.js';
 import { renderInspectResult } from '../renderers/render-inspect.js';
+import { logger } from '../ui/logger.js';
 
 export async function runInspectCommand(options: InspectCliOptions): Promise<number> {
   try {
@@ -20,7 +21,10 @@ export async function runInspectCommand(options: InspectCliOptions): Promise<num
     });
     renderInspectResult(result);
     return result.success ? 0 : 1;
-  } catch {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+
+    logger.error(message);
     return 1;
   }
 }

@@ -1,6 +1,9 @@
 // packages/application/src/use-cases/publish-artifact/publish-result.ts
 
-import type { PublicationEligibility } from '@arch-platform/platform-model';
+import type {
+  ArtifactRegistryPublishing,
+  PublicationEligibility,
+} from '@arch-platform/platform-model';
 
 export interface PublishResult {
   readonly success: boolean;
@@ -8,4 +11,6 @@ export interface PublishResult {
   readonly artifact: string;
   readonly version: string;
   readonly eligibility: PublicationEligibility;
+  readonly dryRun: boolean;
+  readonly publication?: ArtifactRegistryPublishing;
 }

@@ -12,13 +12,7 @@
   "exclude": ["dist", "node_modules"],
   "references": [
     {
-      "path": "../contracts"
-    },
-    {
       "path": "../core"
-    },
-    {
-      "path": "../generators/mvc"
     },
     {
       "path": "../platform-model"

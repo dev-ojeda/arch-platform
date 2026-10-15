@@ -38,8 +38,8 @@ catalog:
   # RELEASE / VERSIONING
   # ===========================================================================
 
-  '@arch-platform/contracts': 0.1.0
-  '@arch-platform/generator-mvc': 0.1.0
+  '@arch-platform/contracts': 0.2.2
+  '@arch-platform/generator-mvc': 0.1.1
   '@changesets/cli': 3.0.2
 
   # ===========================================================================

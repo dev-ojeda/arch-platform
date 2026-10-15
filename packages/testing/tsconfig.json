@@ -15,9 +15,6 @@
       "path": "../platform-model"
     },
     {
-      "path": "../contracts"
-    },
-    {
       "path": "../core"
     }
   ]

@@ -8,6 +8,7 @@ import { runCompliance } from '@arch-platform/governance';
 
 import type { ComplianceCliOptions } from '../contracts/compliance-cli-options.js';
 import { renderComplianceResult } from '../renderers/render-compliance.js';
+import { logger } from '../ui/logger.js';
 
 export async function runComplianceCommand(options: ComplianceCliOptions): Promise<number> {
   try {
@@ -19,7 +20,10 @@ export async function runComplianceCommand(options: ComplianceCliOptions): Promi
 
     renderComplianceResult(result);
     return result.success ? 0 : 1;
-  } catch {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+
+    logger.error(message);
     return 1;
   }
 }

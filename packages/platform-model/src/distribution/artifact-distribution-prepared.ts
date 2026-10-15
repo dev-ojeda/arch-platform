@@ -8,6 +8,7 @@ export interface ArtifactDistributionPrepared {
   readonly file: string;
   readonly packageName: string;
   readonly version: string;
+  readonly tag?: string;
   readonly integrityCalculated: boolean;
   readonly integrityMatches?: boolean;
   readonly integrityResolved: boolean;

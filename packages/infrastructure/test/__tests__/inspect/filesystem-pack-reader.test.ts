@@ -1,8 +1,11 @@
-// packages\infrastructure\test\__tests__\inspect\filesystem-pack-reader.test.ts
+// packages/infrastructure/test/__tests__/inspect/filesystem-pack-reader.test.ts
 
 import { describe, expect, it } from 'vitest';
 
-import type { ArtifactRegistryPublishingReader } from '@arch-platform/platform-model';
+import type {
+  RegistryPublishedVersions,
+  RegistryPublishedVersionsReader,
+} from '@arch-platform/platform-model';
 
 import { NodeAsyncFileSystemAdapter } from '../../../src/filesystem/adapters/node-async-filesystem-adapter.js';
 import { FilesystemPackReader } from '../../../src/inspect/filesystem-pack-reader.js';
@@ -15,18 +18,31 @@ describe('FilesystemPackReader', () => {
       root: FIXTURE_PATHS.archWorkspace,
     });
 
-    const registryReader: ArtifactRegistryPublishingReader = {
-      find: async (packageName, version) => {
-        if (packageName === '@arch-platform/contracts' && version === '0.1.0') {
-          return {
-            packageName,
-            version,
-            integrity: 'sha512-test-integrity',
-          };
-        }
+    const catalog: RegistryPublishedVersions = {
+      schemaVersion: 1,
+      registry: 'https://registry.npmjs.org',
+      synchronizedAt: '2026-10-14T00:00:00.000Z',
+      packages: [
+        {
+          packageName: '@arch-platform/contracts',
+          'dist-tags': {
+            latest: '0.2.1',
+          },
+          versions: {
+            '0.2.1': {
+              name: '@arch-platform/contracts',
+              version: '0.2.1',
+              dist: {
+                integrity: 'sha512-test-integrity',
+              },
+            },
+          },
+        },
+      ],
+    };
 
-        return undefined;
-      },
+    const registryReader: RegistryPublishedVersionsReader = {
+      read: async (artifact) => (artifact === '@arch-platform/contracts' ? catalog : undefined),
     };
 
     const reader = new FilesystemPackReader(
@@ -35,24 +51,17 @@ describe('FilesystemPackReader', () => {
       registryReader,
     );
 
-    const result = await reader.read('artifacts');
+    const result = await reader.read(
+      'artifacts/@arch-platform/contracts/0.2.1/arch-platform-contracts-0.2.1.tgz',
+    );
 
-    expect(result).toHaveLength(2);
-
-    const inspection = result.find((item) => item.package.name === '@arch-platform/contracts');
-
-    if (!inspection) {
-      throw new Error('Expected contracts artifact inspection');
-    }
-
-    expect(inspection.artifact).toBe('arch-platform-contracts-0.1.0.tgz');
-    expect(inspection.size).toBeGreaterThan(0);
-    expect(inspection.package.version).toBe('0.1.0');
-    expect(inspection.package.filesInside).toContain('package/package.json');
-
-    expect(inspection.integrity.calculated).toMatch(/^sha512-/);
-    expect(inspection.integrity.expected).toBe('sha512-test-integrity');
-    expect(inspection.integrity.matches).toBe(false);
-    expect(inspection.artifactRegistryStatus).toBe('registered');
+    expect(result.artifact).toBe('arch-platform-contracts-0.2.1.tgz');
+    expect(result.size).toBeGreaterThan(0);
+    expect(result.package.name).toBe('@arch-platform/contracts');
+    expect(result.package.version).toBe('0.2.1');
+    expect(result.integrity.calculated).toMatch(/^sha512-/);
+    expect(result.integrity.expected).toBe('sha512-test-integrity');
+    expect(result.integrity.matches).toBe(false);
+    expect(result.artifactRegistryStatus).toBe('registered');
   });
 });

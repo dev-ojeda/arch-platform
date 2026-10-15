@@ -7,8 +7,8 @@ export async function createVersionPackageUseCase(
   workspaceRoot: string,
   packageName: string,
 ): Promise<VersionPackageUseCase> {
-  const { packageDescriptor, versionWriter, calculator } =
+  const { packageDescriptor, versionWriter, calculator, registryReader } =
     await new VersionCompositionRoot().create(workspaceRoot, packageName);
 
-  return new VersionPackageUseCase(packageDescriptor, calculator, versionWriter);
+  return new VersionPackageUseCase(packageDescriptor, calculator, versionWriter, registryReader);
 }

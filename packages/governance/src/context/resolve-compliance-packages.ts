@@ -22,7 +22,9 @@ function resolvePackageDependencies(
   packageName: string,
 ): readonly PackageDescriptor[] {
   const packagesByName = new Map(workspace.packages.map((pkg) => [pkg.name, pkg]));
-
+  if (!packagesByName.has(packageName)) {
+    throw new Error(`Compliance package "${packageName}" was not found in the workspace.`);
+  }
   const resolved = new Map<string, PackageDescriptor>();
   const pending = [packageName];
 

@@ -1,6 +1,6 @@
 {
   "name": "@arch-platform/contracts",
-  "version": "0.1.0",
+  "version": "0.2.2",
   "type": "module",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -9,7 +9,9 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "arch": {
     "artifactType": "declaration",
@@ -28,5 +30,6 @@
     "clean": "arch clean",
     "compliance": "arch compliance --package @arch-platform/contracts --env dev",
     "typecheck": "arch typecheck"
-  }
+  },
+  "license": "MIT"
 }

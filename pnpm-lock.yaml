@@ -6,6 +6,9 @@ settings:
 
 catalogs:
   default:
+    '@arch-platform/generator-mvc':
+      specifier: 0.1.1
+      version: 0.1.1
     '@changesets/cli':
       specifier: 3.0.2
       version: 3.0.2
@@ -116,8 +119,8 @@ importers:
         specifier: workspace:*
         version: link:packages/cli
       '@arch-platform/contracts':
-        specifier: 0.1.0
-        version: 0.1.0
+        specifier: 0.2.2
+        version: 0.2.2
       '@changesets/cli':
         specifier: 'catalog:'
         version: 3.0.2
@@ -197,14 +200,14 @@ importers:
   packages/application:
     dependencies:
       '@arch-platform/contracts':
-        specifier: 0.1.0
-        version: 0.1.0
+        specifier: 0.2.2
+        version: 0.2.2
       '@arch-platform/core':
         specifier: workspace:*
         version: link:../core
       '@arch-platform/generator-mvc':
-        specifier: 0.1.0
-        version: 0.1.0
+        specifier: 'catalog:'
+        version: 0.1.1
       '@arch-platform/infrastructure':
         specifier: workspace:*
         version: link:../infrastructure
@@ -222,8 +225,8 @@ importers:
   packages/build-core:
     dependencies:
       '@arch-platform/contracts':
-        specifier: 0.1.0
-        version: 0.1.0
+        specifier: 0.2.2
+        version: 0.2.2
       '@arch-platform/infrastructure':
         specifier: workspace:*
         version: link:../infrastructure
@@ -276,8 +279,8 @@ importers:
   packages/core:
     dependencies:
       '@arch-platform/contracts':
-        specifier: 0.1.0
-        version: 0.1.0
+        specifier: 0.2.2
+        version: 0.2.2
 
   packages/domain-order: {}
 
@@ -296,8 +299,8 @@ importers:
   packages/infrastructure:
     dependencies:
       '@arch-platform/contracts':
-        specifier: 0.1.0
-        version: 0.1.0
+        specifier: 0.2.2
+        version: 0.2.2
       '@arch-platform/platform-model':
         specifier: workspace:*
         version: link:../platform-model
@@ -322,8 +325,8 @@ importers:
   packages/testing:
     dependencies:
       '@arch-platform/contracts':
-        specifier: 0.1.0
-        version: 0.1.0
+        specifier: 0.2.2
+        version: 0.2.2
       '@arch-platform/core':
         specifier: workspace:*
         version: link:../core
@@ -349,11 +352,14 @@ importers:
 
 packages:
 
-  '@arch-platform/contracts@0.1.0':
-    resolution: {integrity: sha512-Zdfy24smncfimMk/8bWe3FKgXsnnhfvLmh/coqCFl7zEA+wcVEclDkjfpXTLVXwpm/X4boB8Ad+Im6R3NwHpnQ==}
+  '@arch-platform/contracts@0.2.1':
+    resolution: {integrity: sha512-mTYLuCvZrfZKZoe0MLULo+2elOFjgwtVK6CLvu1QManOXscevYjoh8N6VLqPaw/fXnLbxeP81c9B5rd2OXXyUA==}
 
-  '@arch-platform/generator-mvc@0.1.0':
-    resolution: {integrity: sha512-FkcvlCEOkKhf93SONXL+4rJrxesWzeEFdr2cs+bk+jytflZxTS6+CUFeLhU/BQDyyLUjSlYf+nirJnH5gDZNEQ==}
+  '@arch-platform/contracts@0.2.2':
+    resolution: {integrity: sha512-88rqE//r5zgFJ7tubLaDvZ7vUxbAxMHpi9ae6RJzOT+fz8ytLZ23FQX0z9wzdpg5MLAr9T+IWwCKQQ2QPBvlKQ==}
+
+  '@arch-platform/generator-mvc@0.1.1':
+    resolution: {integrity: sha512-n8NP5kAUUjdO1CyizHZvAEOt16s5IraOXKjmwLXk8pQcZk6/uVQWUZP65376qsf/da+FKdSbgAhyqqi+2+YToQ==}
 
   '@babel/code-frame@7.29.7':
     resolution: {integrity: sha512-Aup7aUOfpbAUg2ROOJN6Iw5f9DMBlzu0mIkm/malLQFN/YQgO48wCj0Kxa3sEHJvPVFg7siR+qRInwXd2qhQKw==}
@@ -3390,11 +3396,13 @@ packages:
 
 snapshots:
 
-  '@arch-platform/contracts@0.1.0': {}
+  '@arch-platform/contracts@0.2.1': {}
 
-  '@arch-platform/generator-mvc@0.1.0':
+  '@arch-platform/contracts@0.2.2': {}
+
+  '@arch-platform/generator-mvc@0.1.1':
     dependencies:
-      '@arch-platform/contracts': 0.1.0
+      '@arch-platform/contracts': 0.2.1
 
   '@babel/code-frame@7.29.7':
     dependencies:

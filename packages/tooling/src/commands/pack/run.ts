@@ -27,9 +27,12 @@ export async function runPackCommand(options: PackCommandOptions): Promise<TaskP
   if (!packageDescriptor) {
     throw new Error(`Package "${packageName}" was not found`);
   }
-
-  const absoluteOutputDirectory = resolve(cwd, outputDirectory);
-
+  const version = packageDescriptor.manifest.version;
+  if (!version) {
+    throw new Error(`Package "${packageName}" does not have a version`);
+  }
+  const packagePathSegments = packageDescriptor.name.split('/');
+  const absoluteOutputDirectory = resolve(cwd, outputDirectory, ...packagePathSegments, version);
   const result = await executeProcess('pnpm', createPackArguments(absoluteOutputDirectory, args), {
     cwd: packageDescriptor.rootPath,
   });

@@ -4,8 +4,12 @@ import { PublishArtifactUseCase } from './publish-artifact.use-case.js';
 import { PublishCompositionRoot } from './publish-composition-root.js';
 
 export function createPublishArtifactUseCase(workspaceRoot: string): PublishArtifactUseCase {
-  const { publicationArtifactReader, publicationEligibilityEvaluator } =
+  const { publicationArtifactReader, publicationEligibilityEvaluator, artifactRegistryPublisher } =
     new PublishCompositionRoot().create(workspaceRoot);
 
-  return new PublishArtifactUseCase(publicationArtifactReader, publicationEligibilityEvaluator);
+  return new PublishArtifactUseCase(
+    publicationArtifactReader,
+    publicationEligibilityEvaluator,
+    artifactRegistryPublisher,
+  );
 }

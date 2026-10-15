@@ -8,6 +8,7 @@ import { runSecurity } from '@arch-platform/compliance';
 
 import type { SecurityCliOptions } from '../contracts/security-cli-options.js';
 import { renderSecurityResult } from '../renderers/render-security.js';
+import { logger } from '../ui/logger.js';
 
 export async function runSecurityCommand(options: SecurityCliOptions): Promise<number> {
   try {
@@ -20,7 +21,10 @@ export async function runSecurityCommand(options: SecurityCliOptions): Promise<n
 
     renderSecurityResult(result);
     return result.success ? 0 : 1;
-  } catch {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+
+    logger.error(message);
     return 1;
   }
 }

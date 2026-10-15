@@ -25,6 +25,8 @@ export class InspectCompositionRoot {
       packReader,
       distributionWriter,
       artifactsDirectory: pathService.join(workspace.root, 'artifacts'),
+      packages: workspace.packages,
+      pathService,
     };
   }
 }

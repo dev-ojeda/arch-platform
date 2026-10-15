@@ -1,0 +1,32 @@
+{
+  "name": "@arch-platform/contracts",
+  "version": "0.2.1",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "arch": {
+    "artifactType": "declaration",
+    "build": {
+      "builder": "tsc-declaration",
+      "outputs": [
+        "dist"
+      ]
+    },
+    "kind": "tooling"
+  },
+  "scripts": {
+    "build": "pnpm build:dts",
+    "build:dts": "tsc -p tsconfig.build.json",
+    "arch": "arch build --package @arch-platform/contracts",
+    "clean": "arch clean",
+    "compliance": "arch compliance --package @arch-platform/contracts --env dev",
+    "typecheck": "arch typecheck"
+  }
+}
