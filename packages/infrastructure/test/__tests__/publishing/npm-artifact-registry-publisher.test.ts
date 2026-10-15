@@ -10,6 +10,7 @@ import { joinPath } from '../../../src/filesystem/io/path-utils.js';
 import { FIXTURE_PATHS } from '../../fixture/fixture-paths.js';
 
 describe('NpmArtifactRegistryPublisher', { timeout: 50000 }, () => {
+  const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
   it('publishes the exact registry artifact', async () => {
     const registryReader: ArtifactRegistryPublishingReader = {
       find: async (packageName, version) => ({
@@ -54,7 +55,7 @@ describe('NpmArtifactRegistryPublisher', { timeout: 50000 }, () => {
 
     expect(calls).toEqual([
       {
-        filePath: 'npm.cmd',
+        filePath: npmCommand,
         args: [
           'publish',
           archContractsArtifact,

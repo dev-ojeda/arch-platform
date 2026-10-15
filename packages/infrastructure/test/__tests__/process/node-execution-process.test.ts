@@ -61,7 +61,7 @@ describe('NodeExecutionProcess', () => {
       });
 
       await expect(
-        executionProcess.executeInteractive('npm.cmd', ['--version']),
+        executionProcess.executeInteractive('test-command', ['--version']),
       ).resolves.toBeUndefined();
 
       expect(mockSpawn).toHaveBeenCalled();
@@ -75,9 +75,9 @@ describe('NodeExecutionProcess', () => {
         mockChild.emit('close', 1, null);
       });
 
-      await expect(executionProcess.executeInteractive('npm.cmd', ['invalid'])).rejects.toThrow(
-        'Interactive process failed with exit code: 1',
-      );
+      await expect(
+        executionProcess.executeInteractive('test-command', ['invalid']),
+      ).rejects.toThrow('Interactive process failed with exit code: 1');
     });
   });
 });
