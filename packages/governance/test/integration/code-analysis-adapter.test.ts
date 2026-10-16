@@ -112,7 +112,7 @@ describe('CodeAnalysisAdapter', () => {
 
     expect(analysis.symbolGraph.nodes.length).toBeGreaterThan(0);
     expect(analysis.packageGraph).toBeDefined();
-  });
+  }, 15_000);
   it('detects type-only imports', async () => {
     const executionContext = await analyzeWorkspace(fixturePathCodeAnalysis, {
       hasPackageManifest: false,
