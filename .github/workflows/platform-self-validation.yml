@@ -1,0 +1,73 @@
+name: Platform Self-Validation
+
+on:
+  push:
+    branches:
+      - feature/platform-self-validation
+
+  pull_request:
+    branches:
+      - dev
+
+permissions:
+  contents: read
+
+jobs:
+  self-validation:
+    name: Validate platform capabilities
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 10.33.3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Synchronize registry package
+        run: pnpm arch sync --package @arch-platform/contracts
+
+      - name: Version artifact
+        run: pnpm arch version --package @arch-platform/contracts --type prerelease --tag dev
+
+      - name: Build selected artifact
+        run: pnpm arch build --package @arch-platform/contracts
+
+      - name: Verify generated state
+        shell: bash
+        run: |
+          test -f .arch-platform/state.json
+          test -f .arch-platform/artifact-state.json
+          test -d .arch-platform-cache/artifacts/@arch-platform/contracts
+
+      - name: Compliance — first evaluation
+        run: pnpm arch compliance --package @arch-platform/contracts --env dev
+
+      - name: Compliance — approval
+        run: pnpm arch compliance --package @arch-platform/contracts --env dev
+
+      - name: Security — first evaluation
+        run: pnpm arch security --package @arch-platform/contracts --env dev
+
+      - name: Security — approval
+        run: pnpm arch security --package @arch-platform/contracts --env dev
+
+      - name: Pack artifact
+        run: pnpm arch pack --package @arch-platform/contracts
+
+      - name: Inspect artifact
+        run: pnpm arch inspect --package @arch-platform/contracts
+
+      - name: Evaluate publication
+        run: pnpm arch publish --package @arch-platform/contracts --env dev --dry-run
