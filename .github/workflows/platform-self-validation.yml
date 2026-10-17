@@ -1,0 +1,161 @@
+name: Platform Self-Validation
+
+on:
+  push:
+    branches:
+      - feature/platform-self-validation
+
+  pull_request:
+    branches:
+      - dev
+
+permissions:
+  contents: read
+
+jobs:
+  self-validation:
+    name: Validate platform capabilities
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 10.33.3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Synchronize registry package
+        run: pnpm arch sync --package @arch-platform/contracts
+
+      - name: Version artifact
+        run: pnpm arch version --package @arch-platform/contracts --type prerelease --tag dev
+
+      - name: Build selected artifact
+        run: pnpm arch build --package @arch-platform/contracts
+
+      - name: Verify generated state
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          test -s .arch-platform/state.json
+          test -s .arch-platform/artifact-state.json
+          test -d .arch-platform-cache/artifacts/@arch-platform/contracts
+
+          jq -e . .arch-platform/state.json > /dev/null
+          jq -e . .arch-platform/artifact-state.json > /dev/null
+
+      - name: Compliance — first evaluation
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          output="$(pnpm arch compliance --package @arch-platform/contracts --env dev 2>&1)" || {
+            printf '%s\n' "$output"
+            exit 1
+          }
+          printf '%s\n' "$output"
+          grep -Fq 'Status: ACTION REQUIRED' <<< "$output"
+
+      - name: Compliance — approval
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          output="$(pnpm arch compliance --package @arch-platform/contracts --env dev 2>&1)" || {
+            printf '%s\n' "$output"
+            exit 1
+          }
+          printf '%s\n' "$output"
+          grep -Fq 'Status: APPROVED' <<< "$output"
+
+      - name: Security — first evaluation
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          output="$(pnpm arch security --package @arch-platform/contracts --env dev 2>&1)" || {
+            printf '%s\n' "$output"
+            exit 1
+          }
+          printf '%s\n' "$output"
+          grep -Eq 'Status:[[:space:]]+EVALUATION REQUIRED' <<< "$output"
+          grep -Eq 'Evaluation status:[[:space:]]+secure' <<< "$output"
+          grep -Eq 'Decision status:[[:space:]]+allowed' <<< "$output"
+
+      - name: Security — approval
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          output="$(pnpm arch security --package @arch-platform/contracts --env dev 2>&1)" || {
+            printf '%s\n' "$output"
+            exit 1
+          }
+          printf '%s\n' "$output"
+          grep -Eq 'Status:[[:space:]]+ALLOWED' <<< "$output"
+          grep -Eq 'Evaluation status:[[:space:]]+secure' <<< "$output"
+          grep -Eq 'Decision status:[[:space:]]+allowed' <<< "$output"
+
+      - name: Pack artifact
+        run: pnpm arch pack --package @arch-platform/contracts
+
+      - name: Verify packed artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mapfile -t artifacts < <(
+            find artifacts/@arch-platform/contracts \
+              -type f -name 'arch-platform-contracts-*.tgz'
+          )
+
+          if [[ "${#artifacts[@]}" -ne 1 ]]; then
+            printf 'Expected exactly one package tarball; found %s\n' "${#artifacts[@]}"
+            printf '%s\n' "${artifacts[@]}"
+            exit 1
+          fi
+
+          test -s "${artifacts[0]}"
+          printf 'Verified artifact: %s\n' "${artifacts[0]}"
+
+      - name: Inspect artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          output="$(pnpm arch inspect --package @arch-platform/contracts 2>&1)" || {
+            printf '%s\n' "$output"
+            exit 1
+          }
+          printf '%s\n' "$output"
+
+          grep -Eq 'Name:[[:space:]]+@arch-platform/contracts' <<< "$output"
+          grep -Eq 'Version: [0-9]+\.[0-9]+\.[0-9]+-dev\.[0-9]+' <<< "$output"
+          grep -Eq 'Files:[[:space:]]+[1-9][0-9]*' <<< "$output"
+
+      - name: Evaluate publication
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          output="$(pnpm arch publish --package @arch-platform/contracts --env dev --dry-run 2>&1)" || {
+            printf '%s\n' "$output"
+            exit 1
+          }
+          printf '%s\n' "$output"
+
+          grep -Eq 'Status:[[:space:]]+ELIGIBLE' <<< "$output"
+          grep -Fq 'Mode: DRY RUN' <<< "$output"
+          grep -Fq 'No publication was performed.' <<< "$output"

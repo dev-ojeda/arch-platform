@@ -1,4 +1,4 @@
-name: Validate
+name: Platform Quality Gates
 
 on:
   push:
