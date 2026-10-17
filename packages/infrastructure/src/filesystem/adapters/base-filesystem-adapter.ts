@@ -55,6 +55,19 @@ export abstract class BaseFileSystemAdapter {
   }
 
   private isPhysicalPath(targetPath: string): boolean {
-    return /^[a-zA-Z]:[\\/]/.test(targetPath) || targetPath.startsWith('\\\\');
+    if (/^[a-zA-Z]:[\\/]/.test(targetPath) || targetPath.startsWith('\\\\')) {
+      return true;
+    }
+
+    if (!this.pathService.isAbsolute(targetPath)) {
+      return false;
+    }
+
+    const relativePath = this.pathService.relative(this.root, targetPath);
+
+    return (
+      relativePath === '' ||
+      (!relativePath.startsWith('..') && !this.pathService.isAbsolute(relativePath))
+    );
   }
 }
