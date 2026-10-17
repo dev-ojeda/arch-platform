@@ -1,6 +1,8 @@
 name: Platform Self-Validation
 
 on:
+  workflow_dispatch:
+
   push:
     branches:
       - feature/platform-self-validation

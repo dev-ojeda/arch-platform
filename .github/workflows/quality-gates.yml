@@ -1,6 +1,8 @@
 name: Platform Quality Gates
 
 on:
+  workflow_dispatch:
+
   push:
     branches:
       - dev
