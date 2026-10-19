@@ -21,6 +21,7 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: 22.19.0
+          package-manager-cache: false
 
       - name: Test branch name validator
         run: node --test scripts/git/validate-branch-name.test.mjs
