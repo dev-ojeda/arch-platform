@@ -59,7 +59,7 @@ module.exports = {
         'code-analysis',
         'build-core',
         'repo',
-        'testing',
+        'git',
         'application/engine',
         'application/runtime',
         'application/pipeline',
@@ -68,15 +68,12 @@ module.exports = {
         'deps',
         'contracts/generation',
         'contracts/runtime',
-
         'core/cancellation',
         'core/errors',
         'core/runtime',
-
         'testing/unit',
         'testing/integration',
         'testing/runtime',
-
         'infrastructure/logging',
         'infrastructure/persistence',
       ],
