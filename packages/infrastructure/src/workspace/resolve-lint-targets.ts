@@ -10,19 +10,24 @@ export function resolveLintTargets(
     ? workspace.packages.filter((pkg) => pkg.name === packageName)
     : workspace.packages;
 
-  return packages
-    .flatMap((pkg) => {
-      const targets: string[] = [];
+  const packageTargets = packages.flatMap((pkg) => {
+    const targets: string[] = [];
 
-      if (pkg.layout.hasSourceDirectory) {
-        targets.push(pkg.layout.sourceDirectory);
-      }
+    if (pkg.layout.hasSourceDirectory) {
+      targets.push(pkg.layout.sourceDirectory);
+    }
 
-      if (pkg.layout.hasTestsDirectory) {
-        targets.push(pkg.layout.testsDirectory);
-      }
+    if (pkg.layout.hasTestsDirectory) {
+      targets.push(pkg.layout.testsDirectory);
+    }
 
-      return targets;
-    })
-    .sort();
+    return targets;
+  });
+
+  const workspaceTargets =
+    !packageName && workspace.layout.hasScriptPath && workspace.layout.scriptPath
+      ? [workspace.layout.scriptPath]
+      : [];
+
+  return [...packageTargets, ...workspaceTargets].sort();
 }

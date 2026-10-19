@@ -15,7 +15,6 @@ import { NodePathService } from '../filesystem/paths/node-path-service.js';
 import { NodePackageProvider } from './node-package-provider.js';
 
 const WORKSPACE_FILE = 'pnpm-workspace.yaml';
-
 export class NodeWorkspaceProvider implements WorkspaceProvider {
   constructor(
     private readonly packageProvider: PackageProvider = new NodePackageProvider(),
@@ -61,19 +60,25 @@ export class NodeWorkspaceProvider implements WorkspaceProvider {
     const configDirectory = this.pathService.join(root, 'config');
     const archManifestPath = this.pathService.join(configDirectory, 'arch.manifest.json');
 
-    const [hasPackageManifest, hasTsconfig, hasArchManifest] = await Promise.all([
+    const scriptDirectory = this.pathService.join(root, 'scripts');
+    const scriptPath = this.pathService.join(this.pathService.resolve(scriptDirectory), 'git');
+
+    const [hasPackageManifest, hasTsconfig, hasArchManifest, hasScriptPath] = await Promise.all([
       pathExists(packageJsonPath),
       pathExists(tsconfigPath),
       pathExists(archManifestPath),
+      pathExists(scriptPath),
     ]);
 
     return {
       packageJsonPath,
       tsconfigPath,
       archManifestPath,
+      scriptPath,
       hasPackageManifest,
       hasTsconfig,
       hasArchManifest,
+      hasScriptPath,
     };
   }
 }

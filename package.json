@@ -75,6 +75,10 @@
       "eslint --fix --cache",
       "prettier --write"
     ],
+    "{scripts,config}/**/*.{js,mjs,cjs}": [
+      "eslint --fix --cache",
+      "prettier --write"
+    ],
     "*.{js,mjs,cjs,json,yml,yaml,md}": [
       "prettier --write"
     ]
