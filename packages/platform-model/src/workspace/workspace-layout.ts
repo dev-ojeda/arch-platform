@@ -4,8 +4,10 @@ export interface WorkspaceLayout {
   readonly packageJsonPath: string;
   readonly tsconfigPath: string;
   readonly archManifestPath: string;
+  readonly scriptPath?: string;
 
   readonly hasPackageManifest: boolean;
   readonly hasTsconfig: boolean;
   readonly hasArchManifest: boolean;
+  readonly hasScriptPath?: boolean;
 }

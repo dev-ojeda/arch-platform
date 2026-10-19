@@ -1,0 +1,32 @@
+name: Branch Naming Policy
+
+on:
+  pull_request:
+    branches:
+      - dev
+
+permissions:
+  contents: read
+
+jobs:
+  validate-branch-name:
+    name: Validate branch policy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22.19.0
+          package-manager-cache: false
+
+      - name: Test branch name validator
+        run: node --test scripts/git/validate-branch-name.test.mjs
+
+      - name: Validate source branch
+        run: node scripts/git/validate-branch-name.mjs "$BRANCH_NAME"
+        env:
+          BRANCH_NAME: ${{ github.head_ref }}
