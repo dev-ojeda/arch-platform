@@ -30,7 +30,7 @@
     "typescript-eslint": "catalog:",
     "vitest": "catalog:",
     "@arch-platform/cli": "workspace:*",
-    "@arch-platform/contracts": "0.2.2"
+    "@arch-platform/contracts": "0.3.0-0"
   },
   "workspaces": [
     "packages/*"
@@ -46,7 +46,7 @@
     "build": "turbo run build",
     "lint": "arch lint",
     "typecheck": "turbo run typecheck",
-    "validate": "pnpm lint && pnpm typecheck && pnpm test && pnpm arch validate",
+    "validate": "pnpm lint && pnpm typecheck --output-logs=errors-only && pnpm test --output-logs=errors-only && pnpm arch validate",
     "bootstrap": "pnpm install && turbo run build",
     "rebuild": "pnpm clean && pnpm build",
     "dev": "turbo run dev --parallel",

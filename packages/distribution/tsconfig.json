@@ -1,0 +1,16 @@
+{
+  "extends": "../../config/tsconfig/cli.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "composite": true,
+    "tsBuildInfoFile": "./.turbo/distribution.tsbuildinfo"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"],
+  "references": [
+    {
+      "path": "../build-core/tsconfig.build.json"
+    }
+  ]
+}

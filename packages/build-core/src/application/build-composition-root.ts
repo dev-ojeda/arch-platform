@@ -1,6 +1,8 @@
 // packages/build-core/src/application/build-composition-root.ts
 
 import {
+  ArtifactOutputComparator,
+  ArtifactOutputFingerprinter,
   ArtifactPublisherAdapter,
   ArtifactStateHistoryProvider,
   ArtifactStateProvider,
@@ -9,19 +11,20 @@ import {
   DefaultArtifactProvider,
   FilesystemArtifactCache,
   FilesystemArtifactLayoutFactory,
+  FilesystemArtifactOutputPreparer,
   FilesystemOutputValidator,
   NodeAsyncFileSystemAdapter,
   NodeConfigHashService,
-  NodeDirectoryHashService,
-  NodeFileHashService,
   NodeHashService,
   NodePathService,
+  NodeSourceHashService,
   NodeSyncFileSystemAdapter,
   NodeWorkspaceProvider,
   WorkspacePackageProjector,
 } from '@arch-platform/infrastructure';
 import type {
   ArtifactCache,
+  ArtifactOutputPreparer,
   ArtifactProvider,
   ArtifactStateHistoryReader,
   ArtifactStateHistoryWriter,
@@ -40,6 +43,7 @@ import { ExecutorFactory } from '../executor/executor-factory.js';
 import { buildGraph } from '../graph/build-graph.js';
 import { GraphQueryService } from '../graph/graph-query-services.js';
 import { DagHasher } from '../hash/dag-hasher.js';
+import { HashValidator } from '../hash/validator/hash-validator.js';
 import { WorkspaceExecutionContractResolver } from '../planning/workspace-execution-contract-resolver.js';
 import type { CommandRunner } from '../public/command-runner.js';
 import { BuildService } from '../services/build-service.js';
@@ -59,7 +63,6 @@ import { BuildService } from '../services/build-service.js';
  */
 export class BuildCompositionRoot {
   private readonly fsAsync = new NodeAsyncFileSystemAdapter();
-  private readonly fsSync = new NodeSyncFileSystemAdapter();
   private readonly workspaceProvider = new NodeWorkspaceProvider();
   private readonly artifactStateProvider = new ArtifactStateProvider();
   private readonly artifactStateHistoryProvider = new ArtifactStateHistoryProvider();
@@ -89,6 +92,7 @@ export class BuildCompositionRoot {
       executor: this.createExecutor(),
       artifactCache: this.createArtifactCache(workspace.root),
       artifactProvider: this.createArtifactProvider(),
+      artifactOutputPreparer: this.createArtifactOutputPreparer(),
       workspaceRoot: workspace.root,
       fsOutputValidator: this.createFileSystemOutputValidator(),
       stateWriter: this.createStateWriter(state, workspace.root),
@@ -113,10 +117,24 @@ export class BuildCompositionRoot {
     );
 
     const publisher = new ArtifactPublisherAdapter(this.fsAsync, this.pathService);
-
-    return new FilesystemArtifactCache(layoutFactory, publisher, this.fsAsync, this.pathService);
+    const fingerprinter = new ArtifactOutputFingerprinter(
+      this.fsAsync,
+      this.pathService,
+      this.hashService,
+    );
+    const comparator = new ArtifactOutputComparator();
+    return new FilesystemArtifactCache(
+      layoutFactory,
+      publisher,
+      this.fsAsync,
+      this.pathService,
+      fingerprinter,
+      comparator,
+    );
   }
-
+  createArtifactOutputPreparer(): ArtifactOutputPreparer {
+    return new FilesystemArtifactOutputPreparer(this.fsAsync, this.pathService);
+  }
   /**
    * Creates the component responsible for executing build commands.
    *
@@ -208,17 +226,16 @@ export class BuildCompositionRoot {
     return new FilesystemOutputValidator(this.fsAsync, this.pathService);
   }
   createDagHasher(): DagHasher {
-    const fileHashService = new NodeFileHashService(this.hashService);
+    // const fileHashService = new NodeFileHashService(this.hashService);
 
-    const directoryHashService = new NodeDirectoryHashService(fileHashService);
+    // const directoryHashService = new NodeDirectoryHashService(fileHashService);
 
     const configHashService = new NodeConfigHashService(this.hashService);
 
-    return new DagHasher(
-      directoryHashService,
-      configHashService,
-      this.hashService,
-      this.pathService,
-    );
+    const sourceHashService = new NodeSourceHashService(this.hashService);
+
+    const validator = new HashValidator(this.hashService);
+
+    return new DagHasher(configHashService, sourceHashService, this.hashService, validator);
   }
 }

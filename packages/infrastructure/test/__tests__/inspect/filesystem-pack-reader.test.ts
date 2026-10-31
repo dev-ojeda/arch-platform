@@ -22,23 +22,21 @@ describe('FilesystemPackReader', () => {
       schemaVersion: 1,
       registry: 'https://registry.npmjs.org',
       synchronizedAt: '2026-10-14T00:00:00.000Z',
-      packages: [
-        {
-          packageName: '@arch-platform/contracts',
-          'dist-tags': {
-            latest: '0.2.1',
-          },
-          versions: {
-            '0.2.1': {
-              name: '@arch-platform/contracts',
-              version: '0.2.1',
-              dist: {
-                integrity: 'sha512-test-integrity',
-              },
+      package: {
+        packageName: '@arch-platform/contracts',
+        'dist-tags': {
+          latest: '0.2.1',
+        },
+        versions: {
+          '0.2.1': {
+            name: '@arch-platform/contracts',
+            version: '0.2.1',
+            dist: {
+              integrity: 'sha512-test-integrity',
             },
           },
         },
-      ],
+      },
     };
 
     const registryReader: RegistryPublishedVersionsReader = {

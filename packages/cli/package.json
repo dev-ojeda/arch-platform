@@ -24,9 +24,9 @@
   "scripts": {
     "arch": "arch build --package @arch-platform/cli",
     "build": "tsup",
-    "clean": "arch clean",
+    "clean": "arch clean --package @arch-platform/cli",
     "compliance": "arch compliance --package @arch-platform/cli --env dev",
-    "typecheck": "arch typecheck"
+    "typecheck": "arch typecheck --package @arch-platform/cli"
   },
   "dependencies": {
     "@arch-platform/application": "workspace:*",

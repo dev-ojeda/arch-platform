@@ -26,6 +26,7 @@ export const PLATFORM_PACKAGES = [
   'contracts',
   'core',
   'domain-order',
+  'distribution',
   'governance',
   'infrastructure',
   'platform-model',

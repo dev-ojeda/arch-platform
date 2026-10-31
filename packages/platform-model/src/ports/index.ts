@@ -1,6 +1,9 @@
 // packages/platform-model/src/ports/index.ts
 
 export type { ArtifactCache } from './artifact-cache.js';
+export type { ArtifactOutputComparatorPort } from './artifact-output-comparator-port.js';
+export type { ArtifactOutputFingerprinterPort } from './artifact-output-fingerprint-port.js';
+export type { ArtifactOutputPreparer } from './artifact-output-preparer.js';
 export type { ArtifactProvider } from './artifact-provider.js';
 export type { ArtifactPublisher } from './artifact-publisher.js';
 export type { ArtifactStateHistoryReader } from './artifact-state-history-reader.js';

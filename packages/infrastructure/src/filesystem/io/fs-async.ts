@@ -2,7 +2,6 @@
 
 import {
   access,
-  chmod,
   cp,
   mkdir,
   readdir,
@@ -103,13 +102,7 @@ export async function copyPath(
     }),
   );
 }
-export async function normalizePathPermissions(targetPath: string): Promise<void> {
-  try {
-    await chmod(targetPath, 0o777);
-  } catch {
-    // ignore
-  }
-}
+
 export async function writeTextFile(filePath: string, content: string): Promise<void> {
   await writeFile(filePath, content, 'utf8');
 }

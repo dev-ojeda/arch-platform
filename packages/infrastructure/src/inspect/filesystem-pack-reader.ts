@@ -33,7 +33,8 @@ export class FilesystemPackReader implements PackedReader {
 
     const catalog = await this.registryReader.read(inspection.name);
 
-    const publishedPackage = catalog?.packages.find((item) => item.packageName === inspection.name);
+    const publishedPackage =
+      catalog?.package.packageName === inspection.name ? catalog.package : undefined;
 
     const registryVersion = publishedPackage?.versions[inspection.version];
     const expectedIntegrity = registryVersion?.dist?.integrity;

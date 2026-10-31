@@ -1,11 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { createTestFilesystemRoot } from '@arch-platform/testing';
-
 import { ensureDirAsync, removePathWithRetry } from '../../../src/filesystem/io/fs-async.js';
 import { writeTextFileSync } from '../../../src/filesystem/io/fs-sync.js';
 import { joinPath } from '../../../src/filesystem/io/path-utils.js';
 import { NodeWorkspaceProvider } from '../../../src/workspace/node-workspace-provider.js';
+import { createTestFilesystemRoot } from '../../helpers/create-filesystem-root.js';
 
 describe('NodeWorkspaceProvider', () => {
   let workspaceRoot: string | undefined;

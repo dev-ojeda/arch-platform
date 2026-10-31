@@ -1,6 +1,6 @@
 // packages/cli/src/commands/version-command.ts
 
-import process, { cwd } from 'node:process';
+import process from 'node:process';
 
 import type { CAC } from 'cac';
 
@@ -13,7 +13,7 @@ import { logger } from '../ui/logger.js';
 export async function runVersionCommand(options: VersionCliOptions): Promise<number> {
   try {
     const packageName = options.package?.replaceAll('\\', '/');
-    const useCase = await createVersionPackageUseCase(cwd(), packageName);
+    const useCase = await createVersionPackageUseCase(process.cwd(), packageName);
 
     const result = await useCase.execute({
       packageName: packageName,
@@ -33,8 +33,8 @@ export async function runVersionCommand(options: VersionCliOptions): Promise<num
 export function registerVersionCommand(cli: CAC): void {
   cli
     .command('version', 'Version Package')
-    .option('--package <package>', 'Version package')
-    .option('--type <type>', 'Version package')
+    .option('--package <package>', 'Package versions')
+    .option('--type <type>', 'Package Version Types')
     .option('--tag <tag>', 'Tag package')
     .action(async (options: VersionCliOptions) => {
       process.exitCode = await runVersionCommand(options);

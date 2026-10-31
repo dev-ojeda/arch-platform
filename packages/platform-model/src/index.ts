@@ -13,12 +13,15 @@ export type {
   ArtifactLayout,
   ArtifactLayoutFactory,
   ArtifactManifest,
+  ArtifactOutputComparison,
+  ArtifactOutputFingerprintDiff,
   ArtifactState,
   ArtifactStateHistory,
   ArtifactStateHistoryEntry,
   ArtifactStateReason,
   ArtifactStateStatus,
   ArtifactType,
+  OutputFingerprint,
 } from './artifact/index.js';
 export * from './compliance/index.js';
 export type {
@@ -54,6 +57,9 @@ export type {
 } from './package/index.js';
 export type {
   ArtifactCache,
+  ArtifactOutputComparatorPort,
+  ArtifactOutputFingerprinterPort,
+  ArtifactOutputPreparer,
   ArtifactProvider,
   ArtifactPublisher,
   ArtifactStateHistoryReader,

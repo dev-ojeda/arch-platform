@@ -20,12 +20,10 @@ export async function runPublishCommand(options: PublishCliOptions): Promise<num
       artifact: options.package,
       dryRun: options.dryRun,
     });
-
     renderPublishResult(result);
     return result.success ? 0 : 1;
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
-
     logger.error(message);
     return 1;
   }

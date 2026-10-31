@@ -2,12 +2,7 @@
   "extends": "../../config/tsconfig/declarations.json",
   "compilerOptions": {
     "rootDir": "./src",
-    "outDir": "./dist",
-    "composite": true,
-    "declaration": true,
-    "declarationMap": true,
-    "tsBuildInfoFile": "./.turbo/domain-order.tsbuildinfo"
+    "noEmit": true
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["dist", "node_modules"]
+  "include": ["src/**/*.ts"]
 }

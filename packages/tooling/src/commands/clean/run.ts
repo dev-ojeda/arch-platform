@@ -1,6 +1,10 @@
 // packages/tooling/src/commands/clean/run.ts
 
-import { collectTsBuildInfoFiles, removePaths } from '@arch-platform/infrastructure';
+import {
+  collectTsBuildInfoFiles,
+  NodeWorkspaceProvider,
+  removePaths,
+} from '@arch-platform/infrastructure';
 
 import { logger } from '../../logging/logger.js';
 import { ToolingTasks } from '../../runtime/events/tooling-task-events.js';
@@ -13,14 +17,26 @@ import { resolveCleanOptions } from './resolve-clean-options.js';
 
 export async function runCleanCommand(options: CleanCommandOptions = {}): Promise<TaskResult> {
   const stopwatch = createStopwatch();
+  const workspaceProvider = new NodeWorkspaceProvider();
+
   const resolvedOptions = resolveCleanOptions(options);
+  const workspace = await workspaceProvider.discover(resolvedOptions.cwd);
 
-  await removePaths(createPathsToRemove(resolvedOptions.cwd, resolvedOptions));
+  const packages = resolvedOptions.packageName
+    ? workspace.packages.filter((pkg) => pkg.name === resolvedOptions.packageName)
+    : workspace.packages;
 
-  if (resolvedOptions.removeTsBuildInfo) {
-    const files = await collectTsBuildInfoFiles(resolvedOptions.cwd);
+  if (packages.length === 0) {
+    throw new Error('No matching packages found for clean');
+  }
 
-    await removePaths(files);
+  for (const pkg of packages) {
+    await removePaths(createPathsToRemove(pkg.rootPath, resolvedOptions));
+
+    if (resolvedOptions.removeTsBuildInfo) {
+      const files = await collectTsBuildInfoFiles(pkg.rootPath);
+      await removePaths(files);
+    }
   }
   const durationMs = stopwatch.elapsed();
   logger.success(ToolingTasks.clean.events.completed, {
@@ -29,7 +45,6 @@ export async function runCleanCommand(options: CleanCommandOptions = {}): Promis
       removeDist: resolvedOptions.removeDist,
       removeCoverage: resolvedOptions.removeCoverage,
       removeTsBuildInfo: resolvedOptions.removeTsBuildInfo,
-      removeTurbo: resolvedOptions.removeTurbo,
       durationMs,
     },
   });

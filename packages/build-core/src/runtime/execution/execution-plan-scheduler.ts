@@ -230,6 +230,7 @@ export class ExecutionPlanScheduler {
       case 'cache-version':
       case 'config':
       case 'missing-output':
+      case 'output-integrity':
         return 'cache-invalidated';
 
       case 'dependency-failed':

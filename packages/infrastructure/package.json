@@ -29,21 +29,21 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "arch": "arch build --package @arch-platform/infrastructure",
-    "clean": "arch clean",
+    "clean": "arch clean --package @arch-platform/infrastructure",
     "compliance": "arch compliance --package @arch-platform/infrastructure --env dev",
-    "typecheck": "arch typecheck",
+    "typecheck": "arch typecheck --package @arch-platform/infrastructure",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",
     "test:watch": "vitest",
     "test:clear": "vitest --clearCache"
   },
   "dependencies": {
-    "@arch-platform/contracts": "0.2.2",
+    "@arch-platform/contracts": "0.3.0-0",
     "@arch-platform/platform-model": "workspace:*",
-    "@arch-platform/testing": "workspace:*",
     "@types/semver": "catalog:",
     "semver": "catalog:",
     "tar": "catalog:",
+    "typescript": "catalog:",
     "yaml": "catalog:"
   }
 }

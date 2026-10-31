@@ -34,32 +34,29 @@ export class SyncRegistryUseCase {
         );
       }
 
-      this.writer.apply(input.artifact, published);
+      const pkg = published.package;
+
+      this.writer.apply(pkg.packageName, published);
       await this.writer.write();
 
       return {
         success: true,
         durationMs: stopwatch.milliseconds(),
         scope: input.scope,
-        packagesSynchronized: published.packages.length,
-        versionsSynchronized: published.packages.reduce(
-          (total, pkg) => total + Object.keys(pkg.versions).length,
-          0,
-        ),
+        packagesSynchronized: 1,
+        versionsSynchronized: Object.keys(pkg.versions).length,
       };
     }
 
-    const publishedPackages = await this.adapter.fetchPublishedVersionsByScope(input.scope);
+    const published = await this.adapter.fetchPublishedVersionsByScope(input.scope);
 
-    let packagesSynchronized = 0;
-    let versionsSynchronized = 0;
-
-    for (const published of publishedPackages) {
-      for (const pkg of published.packages) {
-        this.writer.apply(pkg.packageName, published);
-        packagesSynchronized += 1;
-        versionsSynchronized += Object.keys(pkg.versions).length;
-      }
+    for (const pkg of published.packages) {
+      this.writer.apply(pkg.packageName, {
+        schemaVersion: published.schemaVersion,
+        registry: published.registry,
+        synchronizedAt: published.synchronizedAt,
+        package: pkg,
+      });
     }
 
     await this.writer.write();
@@ -68,8 +65,11 @@ export class SyncRegistryUseCase {
       success: true,
       durationMs: stopwatch.milliseconds(),
       scope: input.scope,
-      packagesSynchronized,
-      versionsSynchronized,
+      packagesSynchronized: published.packages.length,
+      versionsSynchronized: published.packages.reduce(
+        (total, pkg) => total + Object.keys(pkg.versions).length,
+        0,
+      ),
     };
   }
 }

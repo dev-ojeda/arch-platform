@@ -8,10 +8,14 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "files": [
+    "dist"
+  ],
   "arch": {
     "artifactType": "declaration",
     "build": {
       "builder": "tsc-declaration",
+      "tsconfig": "tsconfig.build.json",
       "outputs": [
         "dist"
       ]
@@ -22,7 +26,7 @@
     "build": "tsc -p tsconfig.build.json",
     "arch": "arch build --package @arch-platform/platform-model",
     "compliance": "arch compliance --package @arch-platform/platform-model --env dev",
-    "clean": "arch clean",
-    "typecheck": "arch typecheck"
+    "clean": "arch clean --package @arch-platform/platform-model",
+    "typecheck": "arch typecheck --package @arch-platform/platform-model"
   }
 }

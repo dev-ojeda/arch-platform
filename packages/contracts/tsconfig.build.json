@@ -1,9 +1,13 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "composite": true,
+    "noEmit": false,
     "emitDeclarationOnly": true,
     "declaration": true,
     "declarationMap": false,
-    "skipLibCheck": true
-  }
+    "outDir": "./dist",
+    "tsBuildInfoFile": "./.turbo/contracts.tsbuildinfo"
+  },
+  "exclude": ["node_modules"]
 }

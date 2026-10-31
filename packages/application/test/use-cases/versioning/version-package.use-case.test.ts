@@ -39,21 +39,19 @@ function createRegistryState(versions: string[]): RegistryPublishedVersions {
     schemaVersion: 1,
     registry: 'https://registry.npmjs.org',
     synchronizedAt: '2026-10-14T00:00:00.000Z',
-    packages: [
-      {
-        packageName,
-        'dist-tags': {},
-        versions: Object.fromEntries(
-          versions.map((version) => [
+    package: {
+      packageName,
+      'dist-tags': {},
+      versions: Object.fromEntries(
+        versions.map((version) => [
+          version,
+          {
+            name: packageName,
             version,
-            {
-              name: packageName,
-              version,
-            },
-          ]),
-        ),
-      },
-    ],
+          },
+        ]),
+      ),
+    },
   };
 }
 

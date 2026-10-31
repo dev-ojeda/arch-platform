@@ -5,3 +5,4 @@ export type { DirectoryHashService } from './directory-hash-service.js';
 export type { FileHashService } from './file-hash-service.js';
 export type { HashService } from './hash-service.js';
 export type { HashValue } from './hash-value.js';
+export type { SourceHashService } from './source-hash-service.js';

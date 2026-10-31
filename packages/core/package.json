@@ -30,14 +30,14 @@
     "build": "tsc -p tsconfig.build.json",
     "arch": "arch build --package @arch-platform/core",
     "compliance": "arch compliance --package @arch-platform/core --env dev",
-    "clean": "arch clean",
-    "typecheck": "arch typecheck",
+    "clean": "arch clean --package @arch-platform/core",
+    "typecheck": "arch typecheck --package @arch-platform/core",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",
     "test:watch": "vitest",
     "test:clear": "vitest --clearCache"
   },
   "dependencies": {
-    "@arch-platform/contracts": "0.2.2"
+    "@arch-platform/contracts": "0.3.0-0"
   }
 }

@@ -16,21 +16,28 @@ export function createBuildSteps(config?: PackageBuildConfig): BuildStep[] {
         },
       ];
 
-    case 'tsup':
+    case 'tsup': {
+      const args = ['exec', 'tsup'];
+
+      if (config?.tsconfig) {
+        args.push('--tsconfig', config.tsconfig);
+      }
+
       return [
         {
           name: 'bundle',
           command: 'pnpm',
-          args: ['exec', 'tsup'],
+          args,
         },
       ];
+    }
 
     case 'tsc-declaration':
       return [
         {
           name: 'types',
           command: 'pnpm',
-          args: ['exec', 'tsc', '-p', 'tsconfig.build.json', '--emitDeclarationOnly'],
+          args: ['exec', 'tsc', '--build', 'tsconfig.build.json'],
         },
       ];
 
@@ -53,7 +60,7 @@ export function createBuildSteps(config?: PackageBuildConfig): BuildStep[] {
         {
           name: 'compile',
           command: 'pnpm',
-          args: ['exec', 'tsc', '-p', 'tsconfig.build.json'],
+          args: ['exec', 'tsc', '--build', 'tsconfig.build.json'],
         },
       ];
   }

@@ -1,17 +1,13 @@
 {
-  "extends": "../../config/tsconfig/library.json",
+  "extends": "../../config/tsconfig/runtime.json",
   "compilerOptions": {
     "rootDir": "./src",
-    "outDir": "./dist",
-    "composite": true,
-    "declaration": true,
-    "declarationMap": true,
-    "tsBuildInfoFile": "./.turbo/code-analysis.tsbuildinfo"
+    "noEmit": true
   },
   "include": [
     "src/**/*.ts",
     "src/public/analyze-code.disabled",
     "src/public/exported-symbols.disabled"
   ],
-  "exclude": ["dist", "node_modules"]
+  "exclude": ["node_modules"]
 }

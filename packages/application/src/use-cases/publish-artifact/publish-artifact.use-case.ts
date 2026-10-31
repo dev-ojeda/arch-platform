@@ -27,7 +27,6 @@ export class PublishArtifactUseCase {
   public async execute(input: PublishArtifactInput): Promise<PublishResult> {
     const stopwatch = createStopwatch();
     const context = await this.reader.read(input.environment, input.artifact);
-
     if (!context) {
       throw new Error(`Artifact "${input.artifact}" publication state is unavailable`);
     }

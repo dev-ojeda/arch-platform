@@ -2,6 +2,7 @@
 
 import type {
   ArtifactCache,
+  ArtifactOutputPreparer,
   ArtifactProvider,
   ArtifactStateHistoryReader,
   ArtifactStateHistoryWriter,
@@ -28,6 +29,7 @@ export interface BuildContext {
   executor: BuildExecutor;
   artifactCache: ArtifactCache;
   artifactProvider: ArtifactProvider;
+  artifactOutputPreparer: ArtifactOutputPreparer;
   workspaceRoot: string;
   fsOutputValidator: OutputValidator;
   stateWriter: StateWriter;

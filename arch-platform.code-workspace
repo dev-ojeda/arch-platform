@@ -115,9 +115,8 @@
     // TYPESCRIPT / JAVASCRIPT
     // -----------------------------------------------------------------------------
     "typescript.disableAutomaticTypeAcquisition": true,
-    "typescript.tsdk": "./node_modules/typescript/lib",
+    "typescript.tsdk": "⚓ Raíz del Proyecto\\node_modules\\typescript\\lib",
     "typescript.tsserver.maxTsServerMemory": 4096,
-    "typescript.tsserver.experimental.enableProjectDiagnostics": true,
     "typescript.preferences.includePackageJsonAutoImports": "off",
     "typescript.tsserver.log": "off",
     "typescript.tsserver.watchOptions": {

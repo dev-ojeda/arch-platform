@@ -2,6 +2,7 @@
 
 import type {
   ArtifactCache,
+  ArtifactOutputPreparer,
   ArtifactProvider,
   DagNode,
   Graph,
@@ -12,6 +13,7 @@ import type {
 import type { BuildExecutor } from '../executor/build-executor.js';
 import type { BuildResult } from '../executor/build-result.js';
 import type { ExecutionReason } from '../executor/execution-types.js';
+import { logger } from '../logging/logger.js';
 import { BuildPlan } from '../planning/build-plan.js';
 import type { BuildPlanEntry } from '../planning/plan-entry.js';
 
@@ -24,6 +26,7 @@ export class BuildTaskRunner {
     private readonly artifactCache: ArtifactCache,
     private readonly outputValidator: OutputValidator,
     private readonly artifactProvider: ArtifactProvider,
+    private readonly artifactOutputPreparer: ArtifactOutputPreparer,
   ) {}
 
   async run(name: string): Promise<BuildResult> {
@@ -69,31 +72,46 @@ export class BuildTaskRunner {
   }
 
   private async executeAndCache(node: DagNode, entry: BuildPlanEntry): Promise<BuildResult> {
-    const result = await this.executor.execute(node, entry);
+    try {
+      await this.artifactOutputPreparer.prepare(node.root, node.outputs);
 
-    if (result.status !== 'success') {
+      const result = await this.executor.execute(node, entry);
+
+      if (result.status !== 'success') {
+        return result;
+      }
+
+      if (node.outputs.length > 0) {
+        const outputsExistAfterBuild = await this.outputValidator.exists(node.root, node.outputs);
+
+        if (!outputsExistAfterBuild) {
+          throw new Error(
+            [
+              'Build completed but declared outputs are missing.',
+              `package=${node.name}`,
+              `outputs=${node.outputs.join(', ')}`,
+            ].join(' '),
+          );
+        }
+      }
+
+      const artifact = this.artifactProvider.create(node.name, entry.hash);
+      await this.artifactCache.save(artifact, node.root, node.outputs);
+      this.writer.commit(node, entry.hash);
+
       return result;
+    } catch (error: unknown) {
+      logger.error('[build] executeAndCache failed:', {
+        metadata: {
+          package: node.name,
+          root: node.root,
+          error,
+        },
+      });
+
+      throw error;
     }
-
-    if (node.outputs.length > 0 && !(await this.outputValidator.exists(node.root, node.outputs))) {
-      throw new Error(
-        [
-          'Build completed but declared outputs are missing.',
-          `package=${node.name}`,
-          `outputs=${node.outputs.join(', ')}`,
-        ].join(' '),
-      );
-    }
-
-    const artifact = this.artifactProvider.create(node.name, entry.hash);
-
-    await this.artifactCache.save(artifact, node.root, node.outputs);
-
-    this.writer.commit(node, entry.hash);
-
-    return result;
   }
-
   private async restore(node: DagNode, entry: BuildPlanEntry): Promise<BuildResult> {
     const artifact = this.artifactProvider.create(node.name, entry.hash);
 

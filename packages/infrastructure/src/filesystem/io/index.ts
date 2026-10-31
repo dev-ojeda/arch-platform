@@ -4,7 +4,6 @@ export {
   collectTsBuildInfoFiles,
   copyPath,
   ensureDirAsync,
-  normalizePathPermissions,
   pathExists,
   readBuffer,
   readDirectoryEntries,

@@ -1,7 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { ArtifactStateProvider } from '@arch-platform/infrastructure';
-import { createTestFilesystemRoot } from '@arch-platform/testing';
 
 import {
   ensureDirAsync,
@@ -9,6 +8,7 @@ import {
   writeTextFile,
 } from '../../../src/filesystem/io/fs-async.js';
 import { packagePath } from '../../../src/filesystem/io/path-utils.js';
+import { createTestFilesystemRoot } from '../../helpers/create-filesystem-root.js';
 
 describe('ArtifactStateProvider', () => {
   let workspaceRoot: string | undefined;

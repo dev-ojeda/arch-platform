@@ -4,9 +4,12 @@ import type {
   RegistryPublishedPackage,
   RegistryPublishedVersions,
   RegistryPublishedVersionsAdapterPort,
+  RegistryPublishedVersionsByScope,
 } from '@arch-platform/platform-model';
 
 import { SemanticVersionCalculator } from '../versioning/semantic-version-calculator.js';
+
+import { knownPackages } from './registry-know-packages.js';
 
 interface NpmPackageRootMetadata {
   name: string;
@@ -96,71 +99,66 @@ export class NpmRegistryPublishedVersionsAdapter implements RegistryPublishedVer
       schemaVersion: 1,
       registry: this.registryUrl,
       synchronizedAt: new Date().toISOString(),
-      packages: [publishedPackage],
+      package: publishedPackage,
     };
   }
 
   /**
-   * Obtiene el histórico y metadatos de TODOS los paquetes publicados bajo un scope específico.
-   * Optimizado con una estrategia híbrida tolerante a fallos de red.
+   * Obtiene el histórico y metadatos de todos los paquetes publicados bajo un scope específico.
    */
-  async fetchPublishedVersionsByScope(scopeName: string): Promise<RegistryPublishedVersions[]> {
+  async fetchPublishedVersionsByScope(
+    scopeName: string,
+  ): Promise<RegistryPublishedVersionsByScope> {
     const cleanScope = scopeName.startsWith('@') ? scopeName.slice(1) : scopeName;
 
-    // OPTIMIZACIÓN 1: Estrategia de Paquetes Conocidos.
-    // Si es tu scope interno principal, evitamos la latencia del buscador de NPM y resolvemos de inmediato.
+    let packageNames: string[];
+
+    // Estrategia de paquetes conocidos para el scope interno.
     if (cleanScope === 'arch-platform') {
-      const knownPackages = ['@arch-platform/contracts', '@arch-platform/generator-mvc'];
+      packageNames = knownPackages;
+    } else {
+      const expectedPrefix = `@${cleanScope}/`;
+      const searchUrl = `${this.registryUrl}/-/v1/search?text=scope:${encodeURIComponent(cleanScope)}&size=250`;
 
-      const results = await Promise.all(
-        knownPackages.map((name) => this.fetchPublishedVersions(name)),
-      );
+      const searchResponse = await fetch(searchUrl);
 
-      return results.filter((result): result is RegistryPublishedVersions => result !== undefined);
+      if (!searchResponse.ok) {
+        throw new Error(
+          `Failed to search scope "${scopeName}": ${searchResponse.status} ${searchResponse.statusText}`,
+        );
+      }
+
+      const searchData = (await searchResponse.json()) as NpmSearchResponse;
+
+      packageNames = [
+        ...new Set(
+          (searchData.objects ?? [])
+            .map((item) => item.package.name)
+            .filter((name) => name.startsWith(expectedPrefix)),
+        ),
+      ];
     }
 
-    // --- Estrategia Dinámica Fallback para otros Scopes ---
-    const expectedPrefix = `@${cleanScope}/`;
-    const searchUrl = `${this.registryUrl}/-/v1/search?text=scope:${encodeURIComponent(cleanScope)}&size=250`;
-
-    const searchResponse = await fetch(searchUrl);
-
-    if (!searchResponse.ok) {
-      throw new Error(
-        `Failed to search scope "${scopeName}": ${searchResponse.status} ${searchResponse.statusText}`,
-      );
-    }
-
-    const searchData = (await searchResponse.json()) as NpmSearchResponse;
-
-    if (!searchData.objects?.length) {
-      return [];
-    }
-
-    const packageNames = [
-      ...new Set(
-        searchData.objects
-          .map((item) => item.package.name)
-          .filter((name) => name.startsWith(expectedPrefix)),
-      ),
-    ];
-
-    // OPTIMIZACIÓN 2: Mapeo seguro con Promise.allSettled en lugar de Promise.all
-    // Si un paquete del registro falla temporalmente por red, el proceso de sincronización no se rompe por completo.
     const settlementResults = await Promise.allSettled(
       packageNames.map((name) => this.fetchPublishedVersions(name)),
     );
 
-    const results: RegistryPublishedVersions[] = [];
+    const packages: RegistryPublishedPackage[] = [];
+
     for (const item of settlementResults) {
       if (item.status === 'fulfilled' && item.value !== undefined) {
-        results.push(item.value);
+        packages.push(item.value.package);
       } else if (item.status === 'rejected') {
         console.warn('Sincronización parcial interrumpida para un paquete:', item.reason);
       }
     }
 
-    return results;
+    return {
+      schemaVersion: 1,
+      registry: this.registryUrl,
+      synchronizedAt: new Date().toISOString(),
+      packages,
+    };
   }
 
   private escapePackageName(packageName: string): string {

@@ -21,18 +21,12 @@ export class ChangePlanner {
         throw new Error(`[ChangePlanner] Missing hash for "${name}"`);
       }
 
-      const evaluation = await this.evaluator.evaluate(
-        node.name,
-        node.root,
-        node.outputs,
-        node.dependencies,
-        hash,
-      );
+      const evaluation = await this.evaluator.evaluate(node.name, node.root, node.outputs, hash);
 
       plan.set(name, {
         package: name,
 
-        buildAction: this.resolveBuildAction(evaluation.decision),
+        buildAction: this.resolveBuildAction(evaluation.decision, evaluation.available),
 
         cache: {
           decision: evaluation.decision,
@@ -45,7 +39,11 @@ export class ChangePlanner {
 
     return plan;
   }
-  private resolveBuildAction(decision: CacheDecision): BuildAction {
+  private resolveBuildAction(decision: CacheDecision, available: boolean): BuildAction {
+    if (available && decision !== 'hit') {
+      return 'restore';
+    }
+
     switch (decision) {
       case 'restore':
         return 'restore';

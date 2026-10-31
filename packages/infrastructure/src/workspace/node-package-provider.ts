@@ -26,14 +26,15 @@ export class NodePackageProvider implements PackageProvider {
 
   async discover(workspaceRoot: string): Promise<readonly PackageDescriptor[]> {
     const packageRoots = await this.findPackageRoots(joinPath(workspaceRoot, 'packages'));
-
+    // 1. Expresión regular para validar cualquier ámbito que comience con @
+    const scopedPackageRegex = /^@[^/]+\//;
     const packages = await Promise.all(
       packageRoots.map((packageRoot) => this.createPackageDescriptor(packageRoot)),
     );
 
-    const archPackages = packages.filter((pkg) => pkg.name.startsWith('@arch-platform/'));
-
-    return this.resolveInternalDependencies(archPackages);
+    // 2. Filtro dinámico: Acepta cualquier paquete cuyo nombre tenga un formato de ámbito (@org/...)
+    const scopedPackages = packages.filter((pkg) => scopedPackageRegex.test(pkg.name));
+    return this.resolveInternalDependencies(scopedPackages);
   }
   private async createPackageDescriptor(packageRoot: string): Promise<PackageDescriptor> {
     const manifestPath = joinPath(packageRoot, 'package.json');

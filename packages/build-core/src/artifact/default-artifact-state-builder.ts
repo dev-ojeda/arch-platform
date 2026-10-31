@@ -89,6 +89,7 @@ export class DefaultArtifactStateBuilder implements ArtifactStateBuilder {
 
       case 'cache-version':
       case 'config':
+      case 'output-integrity':
         return 'cache-invalidated';
 
       case 'missing-output':

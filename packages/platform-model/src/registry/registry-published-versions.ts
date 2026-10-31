@@ -20,5 +20,12 @@ export interface RegistryPublishedVersions {
   schemaVersion: 1;
   registry: string;
   synchronizedAt: string;
+  package: RegistryPublishedPackage;
+}
+
+export interface RegistryPublishedVersionsByScope {
+  schemaVersion: 1;
+  registry: string;
+  synchronizedAt: string;
   packages: RegistryPublishedPackage[];
 }

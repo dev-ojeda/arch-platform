@@ -1,0 +1,12 @@
+import type { HashResult } from '@arch-platform/platform-model';
+
+export function createTestHashResult(overrides?: Partial<HashResult>): HashResult {
+  return {
+    hash: 'hash',
+    sourceHash: 'source',
+    configHash: 'config',
+    depsHash: 'deps',
+    schemaVersion: 1,
+    ...overrides,
+  };
+}

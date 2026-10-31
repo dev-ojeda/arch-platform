@@ -7,19 +7,19 @@
     "tsBuildInfoFile": "./.turbo/cli.tsbuildinfo"
   },
   "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"],
   "references": [
     {
-      "path": "../application"
+      "path": "../application/tsconfig.build.json"
     },
     {
-      "path": "../governance"
+      "path": "../governance/tsconfig.build.json"
     },
     {
-      "path": "../tooling"
+      "path": "../tooling/tsconfig.build.json"
     },
     {
-      "path": "../compliance"
+      "path": "../compliance/tsconfig.build.json"
     }
-  ],
-  "exclude": ["dist", "node_modules"]
+  ]
 }

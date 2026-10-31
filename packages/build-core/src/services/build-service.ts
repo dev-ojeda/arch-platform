@@ -44,6 +44,7 @@ export class BuildService {
       executor,
       artifactCache,
       artifactProvider,
+      artifactOutputPreparer,
       fsOutputValidator,
       stateWriter,
       artifactStateReader,
@@ -62,14 +63,7 @@ export class BuildService {
     // 2. CACHE
     // -------------------------
 
-    const cache = new CacheEvaluator(
-      state,
-      fsOutputValidator,
-      query,
-      artifactCache,
-      artifactProvider,
-    );
-
+    const cache = new CacheEvaluator(state, fsOutputValidator, artifactCache, artifactProvider);
     const planner = new ChangePlanner(cache);
     const buildPlan = await planner.createPlan(graph, hashes);
 
@@ -101,6 +95,7 @@ export class BuildService {
       artifactCache,
       fsOutputValidator,
       artifactProvider,
+      artifactOutputPreparer,
     );
 
     const scheduler = new ExecutionPlanScheduler(runner, options.concurrency ?? 4);

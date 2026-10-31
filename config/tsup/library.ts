@@ -8,15 +8,12 @@ import type { ConfigOverrides } from './types.js';
 export function createLibraryConfig(overrides: ConfigOverrides = {}) {
   return defineConfig({
     ...createBaseConfig(),
-
-    entry: ['src/index.ts'],
-
+    entry: ['src/bin-cli.ts'],
+    noExternal: [/@arch-platform\//],
+    shims: false,
+    bundle: true,
     dts: false,
-
-    splitting: false,
-
-    clean: false,
-
+    minify: true,
     ...overrides,
   });
 }
