@@ -8,7 +8,6 @@ import type {
   OutputValidator,
 } from '@arch-platform/platform-model';
 
-import { GraphQueryService } from '../graph/graph-query-services.js';
 import { HASH_SCHEMA_VERSION } from '../hash/hash-schema-version.js';
 import { logger } from '../logging/logger.js';
 
@@ -19,7 +18,6 @@ export class CacheEvaluator {
   constructor(
     private readonly state: BuildState,
     private readonly outputValidator: OutputValidator,
-    private readonly query: GraphQueryService,
     private readonly artifactCache: ArtifactCache,
     private readonly artifactProvider: ArtifactProvider,
   ) {}
@@ -27,18 +25,40 @@ export class CacheEvaluator {
     packageName: string,
     root: string,
     outputs: readonly string[],
-    dependencies: readonly string[],
     current: HashResult,
   ): Promise<CacheEvaluation> {
     const previous = this.state.get(packageName);
 
     if (!previous) {
+      const artifact = this.artifactProvider.create(packageName, current);
+      const available = await this.artifactCache.exists(artifact);
+
+      if (available) {
+        logger.trace('build.cache.evaluated', {
+          category: 'cache',
+          metadata: {
+            packageName,
+            decision: 'restore',
+            changeReason: 'first-build',
+            available: available,
+          },
+        });
+
+        return {
+          packageName,
+          decision: 'restore',
+          changeReason: 'first-build',
+          available: available,
+        };
+      }
+
       logger.trace('build.cache.evaluated', {
         category: 'cache',
         metadata: {
           packageName,
           decision: 'miss',
           changeReason: 'first-build',
+          available: available,
         },
       });
 
@@ -46,6 +66,7 @@ export class CacheEvaluator {
         packageName,
         decision: 'miss',
         changeReason: 'first-build',
+        available: available,
       };
     }
 
@@ -65,50 +86,49 @@ export class CacheEvaluator {
       return this.stale(packageName, 'dependency');
     }
 
-    // const dependencyMissing = await this.hasMissingDependencyOutputs(dependencies);
+    const artifact = this.artifactProvider.create(packageName, current);
 
-    // if (dependencyMissing) {
-    //   logger.trace('build.cache.evaluated', {
-    //     category: 'cache',
-    //     metadata: {
-    //       packageName,
-    //       decision: 'restore',
-    //       changeReason: 'missing-output',
-    //     },
-    //   });
+    const outputsExist = await this.outputValidator.exists(root, outputs);
 
-    //   return {
-    //     packageName,
-    //     decision: 'restore',
-    //     changeReason: 'missing-output',
-    //   };
-    // }
-
-    if (!(await this.outputValidator.exists(root, outputs))) {
-      const artifact = this.artifactProvider.create(packageName, current);
-
+    if (outputsExist && (await this.artifactCache.verifyOutputs(artifact, root))) {
       const available = await this.artifactCache.exists(artifact);
-
-      logger.trace('build.cache.artifact', {
+      logger.trace('build.cache.evaluated', {
         category: 'cache',
         metadata: {
           packageName,
-          available,
+          decision: 'hit',
+          changeReason: 'none',
         },
       });
 
-      if (available) {
-        return {
+      return {
+        packageName,
+        decision: 'hit',
+        changeReason: 'none',
+        available: available,
+      };
+    }
+
+    const changeReason: ChangeReason = outputsExist ? 'output-integrity' : 'missing-output';
+
+    const available = await this.artifactCache.exists(artifact);
+
+    if (available) {
+      logger.trace('build.cache.evaluated', {
+        category: 'cache',
+        metadata: {
           packageName,
           decision: 'restore',
-          changeReason: 'missing-output',
-        };
-      }
+          changeReason,
+          available: available,
+        },
+      });
 
       return {
         packageName,
-        decision: 'invalid',
-        changeReason: 'missing-output',
+        decision: 'restore',
+        changeReason,
+        available: available,
       };
     }
 
@@ -116,15 +136,17 @@ export class CacheEvaluator {
       category: 'cache',
       metadata: {
         packageName,
-        decision: 'hit',
-        changeReason: 'none',
+        decision: 'invalid',
+        changeReason,
+        available: available,
       },
     });
 
     return {
       packageName,
-      decision: 'hit',
-      changeReason: 'none',
+      decision: 'invalid',
+      changeReason,
+      available: available,
     };
   }
 
@@ -133,51 +155,7 @@ export class CacheEvaluator {
       packageName: packageName,
       decision: 'stale',
       changeReason: reason,
+      available: true,
     };
-  }
-
-  private async hasMissingDependencyOutputs(dependencies: readonly string[]): Promise<boolean> {
-    for (const dependency of dependencies) {
-      const entry = this.state.get(dependency);
-
-      if (!entry) {
-        logger.trace('build.cache.dependency.missing', {
-          category: 'cache',
-          metadata: {
-            packageName: dependency,
-            reason: 'missing-state',
-          },
-        });
-
-        return true;
-      }
-
-      const node = this.query.getNode(dependency);
-
-      logger.trace('build.cache.dependency.check', {
-        category: 'cache',
-        metadata: {
-          packageName: dependency,
-          root: node.root,
-          outputs: node.outputs,
-        },
-      });
-
-      const exists = await this.outputValidator.exists(node.root, node.outputs);
-
-      logger.trace('build.cache.dependency.result', {
-        category: 'cache',
-        metadata: {
-          packageName: dependency,
-          exists,
-        },
-      });
-
-      if (!exists) {
-        return true;
-      }
-    }
-
-    return false;
   }
 }

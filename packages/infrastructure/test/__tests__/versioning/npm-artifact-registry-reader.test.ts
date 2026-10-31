@@ -29,6 +29,14 @@ describe('NpmArtifactRegistryReader', () => {
     expect(readers).toEqual([
       {
         integrity:
+          'sha512-61FXwdSykq2BnI0xXEP6JR0LjocZtv13AUa+3rUm6tpL3umo5CsWo8ARIbw/wt8HkRK6CjqCumlStFo+HX+InQ==',
+        packageName: '@arch-platform/contracts',
+        tag: undefined,
+        tarball: 'https://registry.npmjs.org/@arch-platform/contracts/-/contracts-0.3.0-0.tgz',
+        version: '0.3.0-0',
+      },
+      {
+        integrity:
           'sha512-88rqE//r5zgFJ7tubLaDvZ7vUxbAxMHpi9ae6RJzOT+fz8ytLZ23FQX0z9wzdpg5MLAr9T+IWwCKQQ2QPBvlKQ==',
         packageName: '@arch-platform/contracts',
         tag: undefined,

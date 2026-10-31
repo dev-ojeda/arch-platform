@@ -1,12 +1,16 @@
 // packages\infrastructure\src\public\index.ts
 export {
   ARTIFACT_SCHEMA_VERSION,
+  ArtifactOutputComparator,
+  ArtifactOutputFingerprinter,
   ArtifactPublisherAdapter,
   ArtifactStateHistoryProvider,
   ArtifactStateProvider,
   DefaultArtifactProvider,
   FilesystemArtifactCache,
+  FilesystemArtifactLayout,
   FilesystemArtifactLayoutFactory,
+  FilesystemArtifactOutputPreparer,
   FilesystemArtifactStateHistoryReader,
   FilesystemArtifactStateHistoryWriter,
   FilesystemArtifactStateReader,
@@ -14,6 +18,7 @@ export {
   FilesystemComplianceStateReader,
   FilesystemComplianceStateWriter,
   FilesystemOutputValidator,
+  FilesystemSecurityStateReader,
   FilesystemSecurityStateWriter,
 } from '../artifact/index.js';
 export { ComplianceStateProvider } from '../compliance/index.js';
@@ -24,13 +29,16 @@ export {
   NodeAsyncFileSystemAdapter,
   NodePathService,
   NodeSyncFileSystemAdapter,
+  packagePath,
   removePaths,
+  resolvePath,
 } from '../filesystem/index.js';
 export {
   NodeConfigHashService,
   NodeDirectoryHashService,
   NodeFileHashService,
   NodeHashService,
+  NodeSourceHashService,
 } from '../hashing/index.js';
 export * from '../inspect/index.js';
 export * from '../process/index.js';

@@ -6,4 +6,5 @@ export interface CacheEvaluation {
   packageName: string;
   decision: CacheDecision;
   changeReason: ChangeReason;
+  available: boolean;
 }

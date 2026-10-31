@@ -12,11 +12,11 @@ describe('NpmRegistryPublishedVersionsAdapter', () => {
 
     expect(result).toBeDefined();
     expect(result?.schemaVersion).toBe(1);
-    expect(result?.packages[0]).toBeDefined();
-    expect(result?.packages[0].packageName).toBe('@arch-platform/contracts');
+    expect(result?.package).toBeDefined();
+    expect(result?.package.packageName).toBe('@arch-platform/contracts');
 
     // Validamos que contenga el historial de versiones mapeado como objeto
-    const versions = result?.packages[0].versions;
+    const versions = result?.package.versions;
     expect(versions).toBeDefined();
     expect(Object.keys(versions || {}).length).toBeGreaterThan(0);
   });
@@ -24,24 +24,15 @@ describe('NpmRegistryPublishedVersionsAdapter', () => {
   // 2. CASO ÉXITO: Todo un scope/organización (Múltiples paquetes)
   it('should fetch all packages published under a specific scope', async () => {
     const packagesInScope = await readerNpm.fetchPublishedVersionsByScope('arch-platform');
-
-    expect(Array.isArray(packagesInScope)).toBe(true);
-    expect(packagesInScope.length).toBeGreaterThan(0);
-
-    console.log(`Total de contenedores de sincronización en el scope: ${packagesInScope.length}`);
-
-    // Iteramos de forma segura por todos los paquetes devueltos en el scope
-    for (const container of packagesInScope) {
-      expect(container.schemaVersion).toBe(1);
-      const pkg = container.packages[0];
-      expect(pkg).toBeDefined();
-      console.log(
-        `-> Procesado exitosamente: ${pkg.packageName} con ${Object.keys(pkg.versions).length} versiones.`,
-      );
-
-      // Verificamos que se esté extrayendo correctamente el dist-tag principal
-      expect(pkg['dist-tags']).toHaveProperty('latest');
-    }
+    expect(Array.isArray(packagesInScope.packages)).toBe(true);
+    expect(packagesInScope.packages.length).toBeGreaterThan(0);
+    expect(packagesInScope.packages.map((pkg) => pkg.packageName)).toEqual(
+      expect.arrayContaining([
+        '@arch-platform/contracts',
+        '@arch-platform/generator-mvc',
+        '@arch-platform/distribution',
+      ]),
+    );
   }, 15000);
 
   // 3. CASO CONTROL DE ERRORES: Paquete que no existe (404)
@@ -51,9 +42,9 @@ describe('NpmRegistryPublishedVersionsAdapter', () => {
   });
 
   // 4. CASO CONTROL DE ERRORES: Scope que no existe
-  it('should return an empty array when a scope does not exist', async () => {
+  it('should return an empty packages collection when a scope does not exist', async () => {
     const results = await readerNpm.fetchPublishedVersionsByScope('unexisting-scope-at-all-xyz');
-    expect(Array.isArray(results)).toBe(true);
-    expect(results.length).toBe(0);
+
+    expect(results.packages).toEqual([]);
   });
 });

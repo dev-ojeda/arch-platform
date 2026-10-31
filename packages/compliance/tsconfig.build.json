@@ -1,9 +1,13 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "composite": true,
+    "noEmit": false,
     "emitDeclarationOnly": false,
     "declaration": true,
     "declarationMap": true,
-    "skipLibCheck": true
+    "sourceMap": true,
+    "outDir": "./dist",
+    "tsBuildInfoFile": "./.turbo/compliance.tsbuildinfo"
   }
 }

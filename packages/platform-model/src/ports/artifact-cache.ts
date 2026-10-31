@@ -8,10 +8,18 @@ import type { Artifact } from '../artifact/artifact.js';
  * Implementations may use different storage mechanisms, but consumers
  * should not depend on the underlying persistence strategy.
  */
+
 export interface ArtifactCache {
   exists(artifact: Artifact): Promise<boolean>;
 
   save(artifact: Artifact, root: string, outputs: readonly string[]): Promise<void>;
 
   restore(artifact: Artifact, root: string): Promise<boolean>;
+
+  /**
+   * Verifies workspace outputs against the fingerprints stored in the artifact manifest.
+   *
+   * Returns false when outputs are missing, modified, or unverifiable.
+   */
+  verifyOutputs(artifact: Artifact, root: string): Promise<boolean>;
 }

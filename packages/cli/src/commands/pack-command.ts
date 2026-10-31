@@ -1,7 +1,5 @@
 // packages/cli/src/commands/pack-command.ts
 
-import { cwd } from 'process';
-
 import type { CAC } from 'cac';
 
 import { packCommand } from '@arch-platform/tooling';
@@ -10,7 +8,7 @@ import type { PackCliOptions } from '../contracts/pack-cli-options.js';
 
 export async function runPackCommand(options: PackCliOptions): Promise<number> {
   return await packCommand({
-    cwd: cwd(),
+    cwd: process.cwd(),
     packageName: options.package,
     outputDirectory: options.out,
   });

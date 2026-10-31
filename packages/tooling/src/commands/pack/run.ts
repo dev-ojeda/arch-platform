@@ -1,8 +1,6 @@
 // packages/tooling/src/commands/pack/run.ts
 
-import { resolve } from 'node:path';
-
-import { NodeWorkspaceProvider } from '@arch-platform/infrastructure';
+import { NodeWorkspaceProvider, resolvePath } from '@arch-platform/infrastructure';
 
 import { logger } from '../../logging/logger.js';
 import { ToolingTasks } from '../../runtime/events/tooling-task-events.js';
@@ -32,7 +30,12 @@ export async function runPackCommand(options: PackCommandOptions): Promise<TaskP
     throw new Error(`Package "${packageName}" does not have a version`);
   }
   const packagePathSegments = packageDescriptor.name.split('/');
-  const absoluteOutputDirectory = resolve(cwd, outputDirectory, ...packagePathSegments, version);
+  const absoluteOutputDirectory = resolvePath(
+    cwd,
+    outputDirectory,
+    ...packagePathSegments,
+    version,
+  );
   const result = await executeProcess('pnpm', createPackArguments(absoluteOutputDirectory, args), {
     cwd: packageDescriptor.rootPath,
   });

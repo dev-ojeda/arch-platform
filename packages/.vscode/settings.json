@@ -1,0 +1,28 @@
+{
+  "files.exclude": {
+    "**/.turbo": false,
+    "**/.pnpm-store": true,
+    "**/coverage": true
+  },
+  "files.watcherExclude": {
+    "**/.pnpm-store/**": true,
+    "**/.turbo/**": true,
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/coverage/**": true
+  },
+  "files.associations": {
+    "*.ts": "typescript",
+    "*.js": "javascript",
+    "*.yml": "yaml",
+    "*.bat": "bat",
+    "*.scpt": "shellscript",
+    ".npmrc": "ini",
+    ".json": "json",
+    ".env": "ini",
+    ".env.local": "ini"
+  },
+  "vscodeGoogleTranslate.preferredLanguage": "English",
+  "vscodeGoogleTranslate.proxyHost": "127.0.0.1",
+  "vscodeGoogleTranslate.proxyPort": "8080"
+}

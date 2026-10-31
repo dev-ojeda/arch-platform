@@ -35,9 +35,11 @@ describe('FilesystemPublicationArtifactReader', () => {
     expect(context?.artifactDistributionPrepared.integrityMatches).toBeUndefined();
   });
 
-  it('returns undefined when the artifact does not exist', async () => {
-    const context = await reader.read(environment, '@arch-platform/does-not-exist');
+  it('throws when the artifact does not exist', async () => {
+    const artifact = '@arch-platform/does-not-exist';
 
-    expect(context).toBeUndefined();
+    await expect(reader.read(environment, artifact)).rejects.toThrow(
+      `State "${artifact}" is requerided`,
+    );
   });
 });

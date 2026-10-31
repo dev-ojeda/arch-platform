@@ -1,9 +1,13 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "emitDeclarationOnly": false,
+    "composite": true,
+    "noEmit": false,
+    "emitDeclarationOnly": false, // Asegura que emita tanto .js como .d.ts
     "declaration": true,
     "declarationMap": true,
-    "skipLibCheck": true
+    "sourceMap": true, // Mapeo para el código JavaScript ejecutable
+    "outDir": "./dist",
+    "tsBuildInfoFile": "./.turbo/core.tsbuildinfo" // Archivo de caché único para este paquete
   }
 }

@@ -119,8 +119,8 @@ importers:
         specifier: workspace:*
         version: link:packages/cli
       '@arch-platform/contracts':
-        specifier: 0.2.2
-        version: 0.2.2
+        specifier: 0.3.0-0
+        version: 0.3.0-0
       '@changesets/cli':
         specifier: 'catalog:'
         version: 3.0.2
@@ -200,8 +200,8 @@ importers:
   packages/application:
     dependencies:
       '@arch-platform/contracts':
-        specifier: 0.2.2
-        version: 0.2.2
+        specifier: 0.3.0-0
+        version: 0.3.0-0
       '@arch-platform/core':
         specifier: workspace:*
         version: link:../core
@@ -225,8 +225,8 @@ importers:
   packages/build-core:
     dependencies:
       '@arch-platform/contracts':
-        specifier: 0.2.2
-        version: 0.2.2
+        specifier: 0.3.0-0
+        version: 0.3.0-0
       '@arch-platform/infrastructure':
         specifier: workspace:*
         version: link:../infrastructure
@@ -279,8 +279,24 @@ importers:
   packages/core:
     dependencies:
       '@arch-platform/contracts':
-        specifier: 0.2.2
-        version: 0.2.2
+        specifier: 0.3.0-0
+        version: 0.3.0-0
+
+  packages/distribution:
+    dependencies:
+      cac:
+        specifier: 'catalog:'
+        version: 6.7.14
+      execa:
+        specifier: 'catalog:'
+        version: 9.6.1
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+    devDependencies:
+      '@arch-platform/build-core':
+        specifier: workspace:*
+        version: link:../build-core
 
   packages/domain-order: {}
 
@@ -299,14 +315,11 @@ importers:
   packages/infrastructure:
     dependencies:
       '@arch-platform/contracts':
-        specifier: 0.2.2
-        version: 0.2.2
+        specifier: 0.3.0-0
+        version: 0.3.0-0
       '@arch-platform/platform-model':
         specifier: workspace:*
         version: link:../platform-model
-      '@arch-platform/testing':
-        specifier: workspace:*
-        version: link:../testing
       '@types/semver':
         specifier: 'catalog:'
         version: 7.8.0
@@ -316,6 +329,9 @@ importers:
       tar:
         specifier: 'catalog:'
         version: 7.5.22
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
       yaml:
         specifier: 'catalog:'
         version: 2.9.0
@@ -325,8 +341,8 @@ importers:
   packages/testing:
     dependencies:
       '@arch-platform/contracts':
-        specifier: 0.2.2
-        version: 0.2.2
+        specifier: 0.3.0-0
+        version: 0.3.0-0
       '@arch-platform/core':
         specifier: workspace:*
         version: link:../core
@@ -355,8 +371,8 @@ packages:
   '@arch-platform/contracts@0.2.1':
     resolution: {integrity: sha512-mTYLuCvZrfZKZoe0MLULo+2elOFjgwtVK6CLvu1QManOXscevYjoh8N6VLqPaw/fXnLbxeP81c9B5rd2OXXyUA==}
 
-  '@arch-platform/contracts@0.2.2':
-    resolution: {integrity: sha512-88rqE//r5zgFJ7tubLaDvZ7vUxbAxMHpi9ae6RJzOT+fz8ytLZ23FQX0z9wzdpg5MLAr9T+IWwCKQQ2QPBvlKQ==}
+  '@arch-platform/contracts@0.3.0-0':
+    resolution: {integrity: sha512-61FXwdSykq2BnI0xXEP6JR0LjocZtv13AUa+3rUm6tpL3umo5CsWo8ARIbw/wt8HkRK6CjqCumlStFo+HX+InQ==}
 
   '@arch-platform/generator-mvc@0.1.1':
     resolution: {integrity: sha512-n8NP5kAUUjdO1CyizHZvAEOt16s5IraOXKjmwLXk8pQcZk6/uVQWUZP65376qsf/da+FKdSbgAhyqqi+2+YToQ==}
@@ -3398,7 +3414,7 @@ snapshots:
 
   '@arch-platform/contracts@0.2.1': {}
 
-  '@arch-platform/contracts@0.2.2': {}
+  '@arch-platform/contracts@0.3.0-0': {}
 
   '@arch-platform/generator-mvc@0.1.1':
     dependencies:

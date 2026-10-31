@@ -44,12 +44,8 @@ export class VersionPackageUseCase {
 
     const registryState = await this.registryReader.read(input.packageName);
 
-    const publishedPackage = registryState?.packages.find(
-      (pkg) => pkg.packageName === input.packageName,
-    );
-
     const latestStablePublishedVersion = this.calculator.getLatestStable(
-      Object.keys(publishedPackage?.versions ?? {}),
+      Object.keys(registryState?.package?.versions ?? {}),
     );
 
     const baseVersion =

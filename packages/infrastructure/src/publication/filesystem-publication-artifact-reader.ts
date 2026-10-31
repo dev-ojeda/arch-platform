@@ -28,7 +28,7 @@ export class FilesystemPublicationArtifactReader implements PublicationArtifactR
     const artifactState = artifactStates.get(artifact);
 
     if (!artifactState) {
-      return undefined;
+      throw new Error(`State "${artifact}" is requerided`);
     }
 
     const complianceState = await this.complianceStateReader.read(environment);
@@ -36,14 +36,14 @@ export class FilesystemPublicationArtifactReader implements PublicationArtifactR
     const complianceArtifact = complianceState.environment.artifacts[artifact];
 
     if (!complianceArtifact) {
-      return undefined;
+      throw new Error(`Compliance "${artifact}" is requerided`);
     }
 
     const securityState = await this.securityStateReader.read();
     const securityArtifact = securityState.artifacts[artifact];
 
     if (!securityArtifact) {
-      return undefined;
+      throw new Error(`Security "${artifact}" is requerided`);
     }
 
     const buildStateEntry = this.buildState.get(artifact);
@@ -58,7 +58,7 @@ export class FilesystemPublicationArtifactReader implements PublicationArtifactR
     const distributionPrepared = await this.artifactDistributionPreparedReader.read(artifact);
 
     if (!distributionPrepared) {
-      return undefined;
+      throw new Error(`Distribution "${artifact}" is requerided`);
     }
 
     return {

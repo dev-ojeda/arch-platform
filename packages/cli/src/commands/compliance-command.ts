@@ -1,7 +1,5 @@
 // packages/cli/src/commands/compliance-command.ts
 
-import process from 'node:process';
-
 import type { CAC } from 'cac';
 
 import { runCompliance } from '@arch-platform/governance';

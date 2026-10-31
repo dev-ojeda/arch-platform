@@ -15,36 +15,32 @@ const contracts: RegistryPublishedVersions = {
   schemaVersion: 1,
   registry: 'https://registry.npmjs.org',
   synchronizedAt: '2026-10-13T00:00:00.000Z',
-  packages: [
-    {
-      packageName: '@arch-platform/contracts',
-      'dist-tags': { latest: '1.0.0' },
-      versions: {
-        '1.0.0': {
-          name: '@arch-platform/contracts',
-          version: '1.0.0',
-        },
+  package: {
+    packageName: '@arch-platform/contracts',
+    'dist-tags': { latest: '1.0.0' },
+    versions: {
+      '1.0.0': {
+        name: '@arch-platform/contracts',
+        version: '1.0.0',
       },
     },
-  ],
+  },
 };
 
 const generator: RegistryPublishedVersions = {
   schemaVersion: 1,
   registry: 'https://registry.npmjs.org',
   synchronizedAt: '2026-10-13T00:00:00.000Z',
-  packages: [
-    {
-      packageName: '@arch-platform/generator-mvc',
-      'dist-tags': { latest: '2.0.0' },
-      versions: {
-        '2.0.0': {
-          name: '@arch-platform/generator-mvc',
-          version: '2.0.0',
-        },
+  package: {
+    packageName: '@arch-platform/generator-mvc',
+    'dist-tags': { latest: '2.0.0' },
+    versions: {
+      '2.0.0': {
+        name: '@arch-platform/generator-mvc',
+        version: '2.0.0',
       },
     },
-  ],
+  },
 };
 
 describe('FilesystemRegistryPublishedVersionsWriter', () => {

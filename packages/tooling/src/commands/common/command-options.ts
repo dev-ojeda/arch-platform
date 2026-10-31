@@ -18,21 +18,23 @@ export interface LintCommandOptions extends CommandOptions {
 }
 
 export interface TypecheckCommandOptions extends CommandOptions {
+  readonly cwd?: string;
+  readonly packageName?: string;
   readonly configPath?: FileConfigName;
   readonly noEmit?: boolean;
 }
 export interface CleanCommandOptions {
   readonly cwd?: string;
+  readonly packageName?: string;
   readonly removeDist?: boolean;
   readonly removeCoverage?: boolean;
   readonly removeTsBuildInfo?: boolean;
-  readonly removeTurbo?: boolean;
 }
 export const DEFAULT_CLEAN_OPTIONS = {
+  packageName: '',
   removeDist: true,
   removeCoverage: true,
   removeTsBuildInfo: true,
-  removeTurbo: true,
 } as const satisfies Required<Omit<CleanCommandOptions, 'cwd'>>;
 
 export interface BuildCommandOptions extends CommandOptions {

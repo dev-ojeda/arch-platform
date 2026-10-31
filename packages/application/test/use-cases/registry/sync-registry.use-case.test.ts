@@ -13,57 +13,53 @@ const contractsPublished: RegistryPublishedVersions = {
   schemaVersion: 1,
   registry: 'https://registry.npmjs.org',
   synchronizedAt: '2026-10-13T12:00:00.000Z',
-  packages: [
-    {
-      packageName: '@arch-platform/contracts',
-      'dist-tags': {
-        latest: '0.2.1',
-      },
-      versions: {
-        '0.2.0': {
-          name: '@arch-platform/contracts',
-          version: '0.2.0',
-          dist: {
-            integrity: 'sha512-contracts-020',
-            tarball: 'https://registry.npmjs.org/@arch-platform/contracts/-/contracts-0.2.0.tgz',
-          },
+  package: {
+    packageName: '@arch-platform/contracts',
+    'dist-tags': {
+      latest: '0.2.1',
+    },
+    versions: {
+      '0.2.0': {
+        name: '@arch-platform/contracts',
+        version: '0.2.0',
+        dist: {
+          integrity: 'sha512-contracts-020',
+          tarball: 'https://registry.npmjs.org/@arch-platform/contracts/-/contracts-0.2.0.tgz',
         },
-        '0.2.1': {
-          name: '@arch-platform/contracts',
-          version: '0.2.1',
-          dist: {
-            integrity: 'sha512-contracts-021',
-            tarball: 'https://registry.npmjs.org/@arch-platform/contracts/-/contracts-0.2.1.tgz',
-          },
+      },
+      '0.2.1': {
+        name: '@arch-platform/contracts',
+        version: '0.2.1',
+        dist: {
+          integrity: 'sha512-contracts-021',
+          tarball: 'https://registry.npmjs.org/@arch-platform/contracts/-/contracts-0.2.1.tgz',
         },
       },
     },
-  ],
+  },
 };
 
 const generatorPublished: RegistryPublishedVersions = {
   schemaVersion: 1,
   registry: 'https://registry.npmjs.org',
   synchronizedAt: '2026-10-13T12:00:00.000Z',
-  packages: [
-    {
-      packageName: '@arch-platform/generator-mvc',
-      'dist-tags': {
-        latest: '0.1.0',
-      },
-      versions: {
-        '0.1.0': {
-          name: '@arch-platform/generator-mvc',
-          version: '0.1.0',
-          dist: {
-            integrity: 'sha512-generator-mvc-010',
-            tarball:
-              'https://registry.npmjs.org/@arch-platform/generator-mvc/-/generator-mvc-0.1.0.tgz',
-          },
+  package: {
+    packageName: '@arch-platform/generator-mvc',
+    'dist-tags': {
+      latest: '0.1.0',
+    },
+    versions: {
+      '0.1.0': {
+        name: '@arch-platform/generator-mvc',
+        version: '0.1.0',
+        dist: {
+          integrity: 'sha512-generator-mvc-010',
+          tarball:
+            'https://registry.npmjs.org/@arch-platform/generator-mvc/-/generator-mvc-0.1.0.tgz',
         },
       },
     },
-  ],
+  },
 };
 
 function createAdapter(): RegistryPublishedVersionsAdapterPort {
@@ -86,7 +82,12 @@ function createWriter(): RegistryPublishedVersionsWriter {
     getState: vi.fn(),
   };
 }
-
+const publishedByScope = {
+  schemaVersion: 1 as const,
+  registry: 'https://registry.npmjs.org',
+  synchronizedAt: '2026-10-13T12:00:00.000Z',
+  packages: [contractsPublished.package, generatorPublished.package],
+};
 describe('SyncRegistryUseCase', () => {
   it('synchronizes the requested package and persists its published versions', async () => {
     const adapter = createAdapter();
@@ -122,10 +123,7 @@ describe('SyncRegistryUseCase', () => {
   it('synchronizes all packages returned for the requested scope', async () => {
     const adapter = createAdapter();
 
-    vi.mocked(adapter.fetchPublishedVersionsByScope).mockResolvedValue([
-      contractsPublished,
-      generatorPublished,
-    ]);
+    vi.mocked(adapter.fetchPublishedVersionsByScope).mockResolvedValue(publishedByScope);
 
     const reader = createReader();
     const writer = createWriter();
@@ -148,19 +146,29 @@ describe('SyncRegistryUseCase', () => {
     expect(adapter.fetchPublishedVersionsByScope).toHaveBeenCalledWith('@arch-platform');
     expect(adapter.fetchPublishedVersions).not.toHaveBeenCalled();
 
-    expect(writer.apply).toHaveBeenNthCalledWith(1, '@arch-platform/contracts', contractsPublished);
-    expect(writer.apply).toHaveBeenNthCalledWith(
-      2,
-      '@arch-platform/generator-mvc',
-      generatorPublished,
-    );
-    expect(writer.apply).toHaveBeenCalledTimes(2);
-    expect(writer.write).toHaveBeenCalledOnce();
+    expect(writer.apply).toHaveBeenNthCalledWith(1, '@arch-platform/contracts', {
+      schemaVersion: 1,
+      registry: publishedByScope.registry,
+      synchronizedAt: publishedByScope.synchronizedAt,
+      package: contractsPublished.package,
+    });
+
+    expect(writer.apply).toHaveBeenNthCalledWith(2, '@arch-platform/generator-mvc', {
+      schemaVersion: 1,
+      registry: publishedByScope.registry,
+      synchronizedAt: publishedByScope.synchronizedAt,
+      package: generatorPublished.package,
+    });
   });
 
   it('persists the state once when the scope contains no published packages', async () => {
     const adapter = createAdapter();
-    vi.mocked(adapter.fetchPublishedVersionsByScope).mockResolvedValue([]);
+    vi.mocked(adapter.fetchPublishedVersionsByScope).mockResolvedValue({
+      schemaVersion: 1,
+      registry: 'https://registry.npmjs.org',
+      synchronizedAt: '2026-10-13T12:00:00.000Z',
+      packages: [],
+    });
 
     const reader = createReader();
     const writer = createWriter();

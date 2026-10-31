@@ -1,9 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { createTestFilesystemRoot } from '@arch-platform/testing';
-
 import { NodeAsyncFileSystemAdapter } from '../../../src/filesystem/adapters/node-async-filesystem-adapter.js';
 import { FilesystemPackageVersionWriter } from '../../../src/versioning/filesystem-package-version-writer.js';
+import { createTestFilesystemRoot } from '../../helpers/create-filesystem-root.js';
 
 const manifest = {
   name: '@arch-platform/contracts',

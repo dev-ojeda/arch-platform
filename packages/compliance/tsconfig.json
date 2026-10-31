@@ -1,21 +1,17 @@
 {
-  "extends": "../../config/tsconfig/library.json",
+  "extends": "../../config/tsconfig/runtime.json",
   "compilerOptions": {
     "rootDir": "./src",
-    "outDir": "./dist",
-    "composite": true,
-    "declaration": true,
-    "declarationMap": true,
-    "tsBuildInfoFile": "./.turbo/compliance.tsbuildinfo"
+    "noEmit": true
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["dist", "node_modules"],
+  "exclude": ["node_modules"],
   "references": [
     {
-      "path": "../platform-model"
+      "path": "../platform-model/tsconfig.build.json"
     },
     {
-      "path": "../infrastructure"
+      "path": "../infrastructure/tsconfig.build.json"
     }
   ]
 }

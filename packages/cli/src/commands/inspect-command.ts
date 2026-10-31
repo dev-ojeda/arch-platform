@@ -1,7 +1,5 @@
 // packages/cli/src/commands/inspect-command.ts
 
-import process from 'node:process';
-
 import type { CAC } from 'cac';
 
 import { createInspectArtifactUseCase } from '@arch-platform/application';

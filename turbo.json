@@ -1,12 +1,11 @@
 {
   "$schema": "https://turbo.build/schema.json",
-
+  "noUpdateNotifier": true,
   "globalDependencies": [
     "package.json",
     "pnpm-lock.yaml",
     "pnpm-workspace.yaml",
-    "eslint.config.mjs",
-    "config/**"
+    "eslint.config.mjs"
   ],
 
   "globalEnv": ["NODE_ENV", "CI", "GITHUB_ACTIONS"],
@@ -34,7 +33,6 @@
     },
 
     "typecheck": {
-      "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$"],
       "outputs": []
     },

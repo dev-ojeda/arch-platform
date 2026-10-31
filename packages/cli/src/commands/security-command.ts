@@ -1,7 +1,5 @@
 // packages/cli/src/commands/security-command.ts
 
-import process from 'node:process';
-
 import type { CAC } from 'cac';
 
 import { runSecurity } from '@arch-platform/compliance';

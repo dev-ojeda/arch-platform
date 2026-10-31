@@ -1,7 +1,5 @@
 // validate.command.ts
 
-import { cwd } from 'node:process';
-
 import type { CAC } from 'cac';
 
 import { runGovernance } from '@arch-platform/governance';
@@ -11,7 +9,7 @@ import { renderGovernanceResult } from '../renderers/render-diagnostics.js';
 
 export async function runValidateCommand(options: ValidateCliOptions): Promise<number> {
   const result = await runGovernance({
-    workspaceRoot: cwd(),
+    workspaceRoot: process.cwd(),
     packageName: options.package,
   });
 

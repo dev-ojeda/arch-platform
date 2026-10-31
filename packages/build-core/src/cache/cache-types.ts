@@ -8,7 +8,8 @@ export type ChangeReason =
   | 'cache-version'
   | 'config'
   | 'dependency-failed'
-  | 'missing-output';
+  | 'missing-output'
+  | 'output-integrity';
 
 export type CacheDecision = 'hit' | 'miss' | 'stale' | 'invalid' | 'restore';
 

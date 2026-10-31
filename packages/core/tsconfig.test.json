@@ -1,13 +1,7 @@
 {
   "extends": "../../config/tsconfig/test.json",
   "compilerOptions": {
-    "rootDir": ".",
-    "outDir": "./dist-test"
+    "rootDir": "."
   },
-  "include": ["src/**/*.ts", "test/**/*.ts"],
-  "references": [
-    {
-      "path": "./tsconfig.json"
-    }
-  ]
+  "include": ["src/**/*.ts", "test/**/*.ts", "vitest.config.ts"]
 }

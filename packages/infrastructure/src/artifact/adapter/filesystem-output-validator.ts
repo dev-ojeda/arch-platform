@@ -11,11 +11,10 @@ export class FilesystemOutputValidator implements OutputValidator {
 
   async exists(root: string, outputs: readonly string[]): Promise<boolean> {
     for (const output of outputs) {
-      const exists = await this.fileSystem.exists(this.pathService.join(root, output));
+      const pathOutput = this.pathService.join(root, output);
+      const exists = await this.fileSystem.exists(pathOutput);
 
-      if (!exists) {
-        return false;
-      }
+      if (!exists) return false;
     }
 
     return true;

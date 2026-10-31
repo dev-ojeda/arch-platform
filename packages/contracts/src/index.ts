@@ -39,6 +39,7 @@ export type {
   FileHashService,
   HashService,
   HashValue,
+  SourceHashService,
 } from './hashing/index.js';
 
 export type { GenerationHooks } from './hooks/index.js';
@@ -76,4 +77,3 @@ export type { StepExecutionMetric } from './telemetry/index.js';
 export type { FileDefinition, ResolvedTemplateVariables } from './templates/index.js';
 export type { NamedVariables, TemplateVariables, VariableValue } from './variables/index.js';
 export type { WorkspaceProvider } from './workspace/index.js';
-// test 7

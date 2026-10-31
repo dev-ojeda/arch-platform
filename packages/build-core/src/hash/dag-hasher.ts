@@ -1,11 +1,6 @@
 // packages\build-core\src\hash\dag-hasher.ts
 
-import type {
-  ConfigHashService,
-  DirectoryHashService,
-  HashService,
-  PathService,
-} from '@arch-platform/contracts';
+import type { ConfigHashService, HashService, SourceHashService } from '@arch-platform/contracts';
 import type { DagNode, HashContext, HashInput, HashResult } from '@arch-platform/platform-model';
 
 import { logger } from '../logging/logger.js';
@@ -19,17 +14,14 @@ function stableJoin(values: readonly string[]): string {
 
 export class DagHasher {
   constructor(
-    private readonly directoryHashService: DirectoryHashService,
     private readonly configHashService: ConfigHashService,
+    private readonly sourceHashService: SourceHashService,
     private readonly hashService: HashService,
-    private readonly pathService: PathService,
-    private readonly validator?: HashValidator,
+    private readonly validator: HashValidator,
   ) {}
 
   hash(node: DagNode, context: HashContext): HashResult {
-    const sourceHash = this.directoryHashService.hashDirectory(
-      this.pathService.join(node.root, 'src'),
-    );
+    const sourceHash = this.sourceHashService.hashSource(node.root);
 
     const configHash = this.configHashService.hashConfig(node.root);
 
@@ -53,7 +45,7 @@ export class DagHasher {
       schemaVersion: HASH_SCHEMA_VERSION,
     };
 
-    this.validator?.validate({
+    this.validator.validate({
       input: hashInput,
       result,
     });

@@ -33,6 +33,10 @@
       "path": "packages/domain-order"
     },
     {
+      "name": "@arch-platform/distribution",
+      "path": "packages/distribution"
+    },
+    {
       "name": "@arch-platform/generator-mvc",
       "path": "packages/generator-mvc"
     },

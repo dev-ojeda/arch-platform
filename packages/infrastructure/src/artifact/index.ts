@@ -1,9 +1,12 @@
 // packages/infrastructure/src/artifact/index.ts
+export { ArtifactOutputComparator } from './adapter/artifact-output-comparator.js';
+export { ArtifactOutputFingerprinter } from './adapter/artifact-output-fingerprinter.js';
 export { ArtifactPublisherAdapter } from './adapter/artifact-publisher-adapter.js';
 export { DefaultArtifactProvider } from './adapter/default-artifact-provider.js';
 export { FilesystemArtifactCache } from './adapter/filesystem-artifact-cache.js';
 export { FilesystemArtifactLayoutFactory } from './adapter/filesystem-artifact-layout-factory.js';
 export { FilesystemArtifactLayout } from './adapter/filesystem-artifact-layout.js';
+export { FilesystemArtifactOutputPreparer } from './adapter/filesystem-artifact-output-preparer.js';
 export { FilesystemArtifactStateHistoryReader } from './adapter/filesystem-artifact-state-history-reader.js';
 export { FilesystemArtifactStateHistoryWriter } from './adapter/filesystem-artifact-state-history-writer.js';
 export { FilesystemArtifactStateReader } from './adapter/filesystem-artifact-state-reader.js';
