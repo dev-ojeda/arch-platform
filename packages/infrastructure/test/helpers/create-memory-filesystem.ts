@@ -65,20 +65,53 @@ export function createMemoryFilesystem(): MemoryFilesystem {
 
     copy(source: string, destination: string): Promise<void> {
       const normalizedSource = resolvePath(source);
-
       const normalizedDestination = resolvePath(destination);
 
-      const content = internalState.files.get(normalizedSource);
+      const fileContent = internalState.files.get(normalizedSource);
 
-      if (content === undefined) {
-        throw new Error(`File not found: ${normalizedSource}`);
+      // Copia individual de archivos.
+      if (fileContent !== undefined) {
+        assertPathIsNotDirectory(internalState, normalizedDestination);
+        ensureParentDirectories(internalState, normalizedDestination);
+        internalState.files.set(normalizedDestination, fileContent);
+
+        return Promise.resolve();
       }
 
-      assertPathIsNotDirectory(internalState, normalizedDestination);
+      // La fuente debe ser un directorio.
+      if (!internalState.directories.has(normalizedSource)) {
+        throw new Error(`Path not found: ${normalizedSource}`);
+      }
 
-      ensureParentDirectories(internalState, normalizedDestination);
+      assertPathIsNotFile(internalState, normalizedDestination);
 
-      internalState.files.set(normalizedDestination, content);
+      // Copiar directorio raíz y subdirectorios.
+      const directories = Array.from(internalState.directories)
+        .filter(
+          (directory) =>
+            directory === normalizedSource || directory.startsWith(`${normalizedSource}/`),
+        )
+        .sort((left, right) => left.length - right.length);
+
+      for (const directory of directories) {
+        const relativePath = directory.slice(normalizedSource.length);
+        const targetPath = `${normalizedDestination}${relativePath}`;
+
+        ensureDirectoryHierarchy(internalState, targetPath);
+      }
+
+      // Copiar archivos conservando su estructura relativa.
+      const files = Array.from(internalState.files.entries()).filter(([filePath]) =>
+        filePath.startsWith(`${normalizedSource}/`),
+      );
+
+      for (const [filePath, content] of files) {
+        const relativePath = filePath.slice(normalizedSource.length);
+        const targetPath = `${normalizedDestination}${relativePath}`;
+
+        ensureParentDirectories(internalState, targetPath);
+        internalState.files.set(targetPath, content);
+      }
 
       return Promise.resolve();
     },
@@ -157,9 +190,75 @@ export function createMemoryFilesystem(): MemoryFilesystem {
     readBuffer(filePath: string): Promise<Uint8Array> {
       return this.read(filePath).then((content) => Buffer.from(content, 'utf8'));
     },
+
     async rename(source: string, destination: string): Promise<void> {
-      await this.copy(source, destination);
-      await this.remove(source);
+      const normalizedSource = resolvePath(source);
+      const normalizedDestination = resolvePath(destination);
+
+      if (normalizedSource === normalizedDestination) {
+        return Promise.resolve();
+      }
+
+      const sourceFile = internalState.files.get(normalizedSource);
+
+      if (sourceFile !== undefined) {
+        assertPathIsNotDirectory(internalState, normalizedDestination);
+
+        ensureParentDirectories(internalState, normalizedDestination);
+
+        internalState.files.set(normalizedDestination, sourceFile);
+        internalState.files.delete(normalizedSource);
+
+        return Promise.resolve();
+      }
+
+      if (!internalState.directories.has(normalizedSource)) {
+        throw new Error(`Path not found: ${normalizedSource}`);
+      }
+
+      assertPathIsNotFile(internalState, normalizedDestination);
+
+      const sourcePrefix = `${normalizedSource}/`;
+
+      const directories = Array.from(internalState.directories)
+        .filter((directory) => directory === normalizedSource || directory.startsWith(sourcePrefix))
+        .sort((left, right) => left.length - right.length);
+
+      const files = Array.from(internalState.files.entries()).filter(([filePath]) =>
+        filePath.startsWith(sourcePrefix),
+      );
+
+      ensureParentDirectories(internalState, normalizedDestination);
+
+      for (const directory of directories) {
+        const relativePath = directory.slice(normalizedSource.length);
+        const targetPath = `${normalizedDestination}${relativePath}`;
+
+        ensureDirectoryHierarchy(internalState, targetPath);
+      }
+
+      for (const [filePath, content] of files) {
+        const relativePath = filePath.slice(normalizedSource.length);
+        const targetPath = `${normalizedDestination}${relativePath}`;
+
+        ensureParentDirectories(internalState, targetPath);
+
+        internalState.files.set(targetPath, content);
+      }
+
+      internalState.directories.delete(normalizedSource);
+
+      for (const directory of directories) {
+        if (directory !== normalizedSource) {
+          internalState.directories.delete(directory);
+        }
+      }
+
+      for (const [filePath] of files) {
+        internalState.files.delete(filePath);
+      }
+
+      return Promise.resolve();
     },
   };
 }

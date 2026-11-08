@@ -31,11 +31,12 @@
     "arch": "arch build --package @arch-platform/testing",
     "clean": "arch clean --package @arch-platform/testing",
     "compliance": "arch compliance --package @arch-platform/testing --env dev",
-    "typecheck": "arch typecheck --package @arch-platform/testing"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . --max-warnings 0 --no-warn-ignored --cache --cache-strategy content"
   },
   "dependencies": {
     "@arch-platform/contracts": "0.3.0-0",
     "@arch-platform/core": "workspace:*",
-    "@arch-platform/platform-model": "workspace:*"
+    "vitest": "catalog:"
   }
 }

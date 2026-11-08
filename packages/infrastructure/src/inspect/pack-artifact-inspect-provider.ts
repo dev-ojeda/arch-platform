@@ -2,11 +2,11 @@
 
 import type { PackedReader } from '@arch-platform/platform-model';
 
+import { FilesystemPackReader } from './filesystem-pack-reader.js';
+import { NodePackInspectAdapter } from './node-pack-inspect-adapter.js';
 import { NodeAsyncFileSystemAdapter } from '../filesystem/adapters/node-async-filesystem-adapter.js';
 import { RegistryPublishedVersionsProvider } from '../registry/registry-published-versions-provider.js';
 
-import { FilesystemPackReader } from './filesystem-pack-reader.js';
-import { NodePackInspectAdapter } from './node-pack-inspect-adapter.js';
 
 export class PackArtifactInspectProvider {
   createReaderForWorkspace(workspaceRoot: string): PackedReader {

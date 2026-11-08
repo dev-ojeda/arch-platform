@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "devDependencies": {
+    "@arch-platform/cli": "workspace:*",
+    "@arch-platform/contracts": "0.3.0-0",
     "@changesets/cli": "catalog:",
     "@commitlint/cli": "catalog:",
     "@commitlint/config-conventional": "catalog:",
@@ -17,9 +19,11 @@
     "eslint": "catalog:",
     "eslint-import-resolver-node": "catalog:",
     "eslint-import-resolver-typescript": "catalog:",
+    "eslint-plugin-import": "npm:eslint-plugin-import-x@4.17.1",
     "eslint-plugin-import-x": "catalog:",
     "husky": "catalog:",
     "lint-staged": "catalog:",
+    "markdownlint-cli2": "catalog:",
     "prettier": "catalog:",
     "rimraf": "catalog:",
     "syncpack": "catalog:",
@@ -28,12 +32,11 @@
     "turbo": "catalog:",
     "typescript": "catalog:",
     "typescript-eslint": "catalog:",
-    "vitest": "catalog:",
-    "@arch-platform/cli": "workspace:*",
-    "@arch-platform/contracts": "0.3.0-0"
+    "vitest": "catalog:"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "packages/generators/*"
   ],
   "engines": {
     "node": "22.19.0",
@@ -43,10 +46,13 @@
   "scripts": {
     "arch": "pwsh ./tools/powershell/arch.ps1",
     "doctor": "arch doctor",
-    "build": "turbo run build",
-    "lint": "arch lint",
-    "typecheck": "turbo run typecheck",
-    "validate": "pnpm lint && pnpm typecheck --output-logs=errors-only && pnpm test --output-logs=errors-only && pnpm arch validate",
+    "build": "turbo run build --output-logs=errors-only",
+    "lint": "turbo run lint //#lint:scripts --concurrency=8 --output-logs=errors-only",
+    "lint:fix": "turbo run lint //#lint:scripts --concurrency=8 -- --fix",
+    "lint:scripts": "arch lint",
+    "lint:all": "pwsh ./tools/powershell/arch.ps1 \"lint\"",
+    "typecheck": "turbo run typecheck --output-logs=errors-only",
+    "validate": "pnpm lint && pnpm markdown:lint && pnpm typecheck && pnpm test --output-logs=errors-only && pnpm arch validate",
     "bootstrap": "pnpm install && turbo run build",
     "rebuild": "pnpm clean && pnpm build",
     "dev": "turbo run dev --parallel",
@@ -60,15 +66,19 @@
     "format:check": "prettier --check .",
     "syncpack:lint": "syncpack lint",
     "syncpack:fix": "syncpack fix",
-    "clean:dist": "pwsh -File ./scripts/cleanup/cleanup-workspace.ps1",
     "clean": "pnpm run clean:dist",
+    "clean:dist": "pwsh -File ./scripts/cleanup/cleanup-workspace.ps1",
     "clean:all": "pwsh ./tools/powershell/cleanup.ps1",
+    "clean:dry": "pwsh -File ./scripts/cleanup/cleanup-workspace.ps1 -DryRun -VerboseOutput",
     "reset": "pnpm run clean:all && pnpm install",
     "reinstall": "pnpm run clean:all && pnpm install --frozen-lockfile",
     "cruiser": "depcruise . --config .dependency-cruiser.cjs",
     "prepare": "husky",
     "check-auth": "npm whoami || (echo '❌ Sesión expirada. Por favor ejecuta: npm login' && exit 1)",
-    "prepublishOnly": "npm run check-auth"
+    "prepublishOnly": "npm run check-auth",
+    "markdown:lint": "markdownlint-cli2 \"**/*.md\"",
+    "cache:lock-rename": "tsx ./scripts/run-rename.ts",
+    "lint:profile": "pwsh -Command \"$env:TIMING=1; pnpm exec eslint src --no-cache\""
   },
   "lint-staged": {
     "{packages,config}/**/*.{ts,tsx}": [

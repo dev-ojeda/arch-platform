@@ -1,8 +1,8 @@
 // packages/contracts/src/generation/generation-context.ts
+import type { GeneratedFile } from './generated-file.js';
 import type { GenerationDiagnostic } from '../diagnostics/generation-diagnostic.js';
 import type { GenerationEventBus } from '../events/generation-event-bus.js';
 import type { FileSystemAsyncPort } from '../filesystem/filesystem-async-port.js';
-import type { GeneratedFile } from '../generation/generated-file.js';
 import type { GeneratorDefinition } from '../generators/generator-definition.js';
 import type { LoggerPort } from '../logging/logger.port.js';
 import type { ResolvedTemplate } from '../pipeline/resolved-template.js';

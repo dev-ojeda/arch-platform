@@ -1,13 +1,13 @@
 // packages/contracts/src/generators/generator-definition.ts
 
+import type { GeneratorCapabilities } from './generator-capabilities.js';
+import type { GeneratorDescriptor } from './generator-descriptor.js';
+import type { GeneratorMetadata } from './generator.metadata.js';
 import type { PromptSchema } from '../prompts/prompt-schema.js';
 import type { FileDefinition } from '../templates/file-definition.js';
 import type { ResolvedTemplateVariables } from '../templates/resolved-template-variables.js';
 import type { NamedVariables } from '../variables/named-variables.js';
 
-import type { GeneratorCapabilities } from './generator-capabilities.js';
-import type { GeneratorDescriptor } from './generator-descriptor.js';
-import type { GeneratorMetadata } from './generator.metadata.js';
 
 export interface GeneratorDefinition<TValues extends NamedVariables = NamedVariables> {
   readonly descriptor: GeneratorDescriptor;

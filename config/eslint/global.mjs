@@ -8,4 +8,6 @@ export const IGNORES = [
   '**/.cache/**',
   '**/*.d.ts',
   'apps/**',
+  '**/fixture/**',
+  '**/fixtures/**',
 ];

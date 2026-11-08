@@ -7,9 +7,9 @@ import type {
   RegistryPublishedVersionsByScope,
 } from '@arch-platform/platform-model';
 
+import { knownPackages } from './registry-know-packages.js';
 import { SemanticVersionCalculator } from '../versioning/semantic-version-calculator.js';
 
-import { knownPackages } from './registry-know-packages.js';
 
 interface NpmPackageRootMetadata {
   name: string;

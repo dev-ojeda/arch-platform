@@ -12,10 +12,9 @@ import type {
 } from '@arch-platform/contracts';
 import { InMemoryGenerationEventBus } from '@arch-platform/core';
 
+import { createTestTechnologyStack } from './create-test-technology-stack.js';
 import { createMemoryFilesystem } from '../filesystem/create-memory-filesystem.js';
 import { TestLogger } from '../logging/test-logger.js';
-
-import { createTestTechnologyStack } from './create-test-technology-stack.js';
 
 export interface CreateTestContextOptions<
   TVariables extends TemplateVariables = TemplateVariables,

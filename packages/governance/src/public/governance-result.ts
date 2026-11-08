@@ -2,9 +2,9 @@
 
 import type { Diagnostic } from '@arch-platform/platform-model';
 
+import type { GovernanceScope } from './governance-scope.js';
 import type { GovernanceRuleResult } from '../engine/governance-rule-result.js';
 
-import type { GovernanceScope } from './governance-scope.js';
 
 export interface GovernanceResult {
   readonly success: boolean;

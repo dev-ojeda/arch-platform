@@ -7,9 +7,9 @@ import type {
   RegistryPublishedVersionsReader,
 } from '@arch-platform/platform-model';
 
+import type { VersionResult } from './version-package-result.js';
 import { createStopwatch } from '../../helpers/create-stopwatch.js';
 
-import type { VersionResult } from './version-package-result.js';
 
 interface VersionPackageInput {
   readonly packageName: string;

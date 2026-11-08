@@ -5,6 +5,9 @@
   "files": [],
   "references": [
     {
+      "path": "./config/tsconfig/eslint.json"
+    },
+    {
       "path": "./packages/contracts"
     },
     {

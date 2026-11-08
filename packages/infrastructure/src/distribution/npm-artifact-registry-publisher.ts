@@ -1,6 +1,6 @@
 // packages/infrastructure/src/distribution/npm-artifact-registry-publisher.ts
 
-import process from 'node:process';
+import { platform } from 'node:process';
 
 import type {
   ArtifactRegistryPublisher,
@@ -37,7 +37,7 @@ export class NpmArtifactRegistryPublisher implements ArtifactRegistryPublisher {
     packageName: string,
     version: string,
   ): Promise<ArtifactRegistryPublishing> {
-    const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+    const npmCommand = platform === 'win32' ? 'npm.cmd' : 'npm';
 
     this.logger.info('npm.publisher.started', {
       metadata: {

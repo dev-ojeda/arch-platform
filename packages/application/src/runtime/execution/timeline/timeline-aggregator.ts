@@ -1,5 +1,6 @@
 // packages/application/src/runtime/execution/timeline/timeline-aggregator.ts
 
+import type { ExecutionTimeline } from './execution-timeline.js';
 import type {
   PipelineCompletedEvent,
   PipelineFailedEvent,
@@ -15,7 +16,6 @@ import type {
 } from '../events/step-events.js';
 import { EXECUTION_STATUS, type ExecutionStatus } from '../status/execution-status.js';
 
-import type { ExecutionTimeline } from './execution-timeline.js';
 
 interface MutableExecutionTimelineStep {
   stepId: string;

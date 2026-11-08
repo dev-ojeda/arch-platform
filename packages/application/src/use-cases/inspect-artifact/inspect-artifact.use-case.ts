@@ -7,9 +7,9 @@ import type {
   PackedReader,
 } from '@arch-platform/platform-model';
 
+import type { InspectResult } from './inspect-result.js';
 import { createStopwatch } from '../../helpers/create-stopwatch.js';
 
-import type { InspectResult } from './inspect-result.js';
 
 export interface InspectArtifactInput {
   readonly artifact: string;

@@ -1,8 +1,8 @@
 // packages/code-analysis/src/public/exported-symbol.ts
 
+import type { SymbolKind } from './symbol-kind.js';
 import type { ExportKind } from '../api-surface/model/export-kind.js';
 
-import type { SymbolKind } from './symbol-kind.js';
 
 export interface ExportedSymbol {
   readonly id: string;

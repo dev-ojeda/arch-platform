@@ -1,3 +1,3 @@
 // packages/compliance/src/composition/index.ts
 
-export * from './security-composition-root.js';
+export { SecurityCompositionRoot } from './security-composition-root.js';

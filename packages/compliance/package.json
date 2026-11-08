@@ -31,7 +31,8 @@
     "arch": "arch build --package @arch-platform/compliance",
     "clean": "arch clean --package @arch-platform/compliance",
     "compliance": "arch compliance --package @arch-platform/compliance --env dev",
-    "typecheck": "arch typecheck --package @arch-platform/compliance",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . --max-warnings 0 --no-warn-ignored --cache --cache-strategy content",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",
     "test:watch": "vitest",
@@ -39,8 +40,11 @@
   },
   "dependencies": {
     "semver": "catalog:",
-    "@types/semver": "catalog:",
     "@arch-platform/platform-model": "workspace:*",
     "@arch-platform/infrastructure": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/semver": "catalog:",
+    "vitest": "catalog:"
   }
 }

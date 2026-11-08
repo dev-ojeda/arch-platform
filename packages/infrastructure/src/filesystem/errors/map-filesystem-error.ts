@@ -1,9 +1,9 @@
 // packages/infrastructure/src/filesystem/errors/map-filesystem-error.ts
 
-import { formatPathForMessage } from '../paths/format-path-for-message.js';
 
 import { isErrnoException } from './errno-utils.js';
 import { FileSystemError } from './filesystem-error.js';
+import { formatPathForMessage } from '../paths/format-path-for-message.js';
 
 export function mapFileSystemError(error: unknown, operation = 'filesystem'): FileSystemError {
   if (!isErrnoException(error)) {

@@ -8,7 +8,11 @@ export {
   topologySort,
 } from './graph/index.js';
 
-export * from './code-analysis/index.js';
+export {
+  CodeAnalysisAdapter,
+  createGovernanceAnalysisContext,
+  WorkspacePackageResolver,
+} from './code-analysis/index.js';
 export type { ExportedSymbolContext } from './exports/index.js';
 export type { ImportContext } from './imports/index.js';
 export {

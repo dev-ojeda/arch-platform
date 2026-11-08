@@ -6,6 +6,6 @@
     "declaration": true,
     "declarationMap": true,
     "outDir": "./dist",
-    "tsBuildInfoFile": "./.turbo/tooling.tsbuildinfo"
+    "tsBuildInfoFile": "./dist/.tsbuildinfo"
   }
 }

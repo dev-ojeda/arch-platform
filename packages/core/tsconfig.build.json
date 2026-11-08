@@ -8,6 +8,6 @@
     "declarationMap": true,
     "sourceMap": true, // Mapeo para el código JavaScript ejecutable
     "outDir": "./dist",
-    "tsBuildInfoFile": "./.turbo/core.tsbuildinfo" // Archivo de caché único para este paquete
+    "tsBuildInfoFile": "./dist/.tsbuildinfo" // Archivo de caché único para este paquete
   }
 }

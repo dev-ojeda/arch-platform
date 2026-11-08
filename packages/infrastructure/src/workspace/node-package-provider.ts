@@ -8,6 +8,7 @@ import type {
   PackageProvider,
 } from '@arch-platform/platform-model';
 
+import { IGNORED_DIRECTORIES } from './ignored-directories.js';
 import { pathExists, readDirectoryEntries, readTextFile } from '../filesystem/io/fs-async.js';
 import { isDirectory } from '../filesystem/io/fs-sync.js';
 import { distPath, joinPath, srcPath, testPath } from '../filesystem/io/path-utils.js';
@@ -16,7 +17,6 @@ import { LOG_EVENTS } from '../logging/log-events.js';
 import { loggerFactory } from '../logging/logger.js';
 import { safeParse } from '../serialization/safe-parse.js';
 
-import { IGNORED_DIRECTORIES } from './ignored-directories.js';
 
 export class NodePackageProvider implements PackageProvider {
   logger = loggerFactory.createLogger({

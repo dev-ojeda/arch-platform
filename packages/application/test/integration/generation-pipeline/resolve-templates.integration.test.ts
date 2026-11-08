@@ -5,8 +5,9 @@ import { describe, expect, it } from 'vitest';
 import type { TemplateVariables } from '@arch-platform/contracts';
 import { createTestGenerationContext } from '@arch-platform/testing';
 
+import { GenerationPipeline } from '../../../src/generation/pipeline/generation-pipeline.js';
+import { ResolveTemplatesStep } from '../../../src/generation/steps/resolve-templates.step.js';
 import { ResolveVariablesStep } from '../../../src/generation/steps/resolve-variables.step.js';
-import { GenerationPipeline, ResolveTemplatesStep } from '../../../src/testing/index.js';
 
 describe('ResolveTemplatesStep integration', () => {
   it('resolves generator templates using resolved variables', async () => {

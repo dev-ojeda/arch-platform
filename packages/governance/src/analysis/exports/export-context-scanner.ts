@@ -2,9 +2,9 @@
 
 import { SymbolGraphQuery } from '@arch-platform/code-analysis';
 
+import type { ExportContext } from './export-context.js';
 import type { GovernanceExecutionContext } from '../../context/governance-execution-context.js';
 
-import type { ExportContext } from './export-context.js';
 
 export class ExportContextScanner {
   scan(context: GovernanceExecutionContext): readonly ExportContext[] {

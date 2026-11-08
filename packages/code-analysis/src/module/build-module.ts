@@ -1,13 +1,14 @@
 // packages/code-analysis/src/module/build-module.ts
 
-import type { ExportedDeclaration } from '../language/typescript/model/export-declaration.js';
-import type { SourceUnit } from '../language/typescript/source/source-unit.js';
-import type { PackageResolver } from '../package/resolvers/package-resolver.js';
 
 import type { ModuleDescriptor } from './model/module-descriptor.js';
+import type { ModuleExportDeclaration } from './model/module-export-declaration.js';
 import type { ModuleExport } from './model/module-export.js';
 import type { ModuleKind } from './model/module-kind.js';
 import type { ModuleReference } from './model/module-reference.js';
+import type { ExportedDeclaration } from '../language/typescript/model/export-declaration.js';
+import type { SourceUnit } from '../language/typescript/source/source-unit.js';
+import type { PackageResolver } from '../package/resolvers/package-resolver.js';
 
 export function buildModuleImports(
   source: SourceUnit,
@@ -35,6 +36,18 @@ export function buildModuleExports(
   return source
     .getExports()
     .flatMap((declaration) => buildModuleExport(source, declaration, packageResolver));
+}
+
+export function buildModuleExportDeclarations(
+  source: SourceUnit,
+): readonly ModuleExportDeclaration[] {
+  return source.getExports().map((declaration) => ({
+    sourceFile: source.path,
+    kind: declaration.kind,
+    moduleSpecifier: declaration.moduleSpecifier,
+    resolvedFile: declaration.resolvedFile,
+    isTypeOnly: declaration.isTypeOnlyDeclaration,
+  }));
 }
 
 function buildModuleExport(
@@ -78,5 +91,6 @@ export function buildModuleDescriptor(
     filePath: source.path,
     imports: buildModuleImports(source, packageResolver),
     exports: buildModuleExports(source, packageResolver),
+    exportDeclarations: buildModuleExportDeclarations(source),
   };
 }

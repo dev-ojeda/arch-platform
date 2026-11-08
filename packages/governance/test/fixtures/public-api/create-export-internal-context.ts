@@ -63,7 +63,9 @@ export function createInternalExportContext(): GovernanceExecutionContext {
             name: sourcePackage,
             manifest: {
               name: sourcePackage,
-              arch: undefined,
+              arch: {
+                artifactType: 'declaration',
+              },
             },
           }),
 
@@ -75,7 +77,9 @@ export function createInternalExportContext(): GovernanceExecutionContext {
                 '.': './dist/public/index.js',
                 './internal': './dist/internal/index.js',
               },
-              arch: undefined,
+              arch: {
+                artifactType: 'declaration',
+              },
             },
           }),
         ],

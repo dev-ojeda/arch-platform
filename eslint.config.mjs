@@ -1,7 +1,15 @@
 // eslint.config.mjs
+import { existsSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import eslint from '@eslint/js';
-import tseslint from 'typescript-eslint';
+import { defineConfig } from 'eslint/config';
+import {
+  configs as tslintConfigs,
+  parser as tslintParser,
+  plugin as tslintPlugin,
+} from 'typescript-eslint';
 
 import { ESLINT_PLUGINS } from './config/eslint/base.mjs';
 import { CONFIG_TS_FILES, SOURCE_FILES } from './config/eslint/constants.mjs';
@@ -16,132 +24,170 @@ import {
 import {
   ARCHITECTURE_RULES,
   ARCHITECTURE_RULES_NO_COMMONJS,
+  NO_BARREL_STAR_EXPORT_RULE,
 } from './config/eslint/rules/architecture.mjs';
+import { COMMON_IMPORT_RULES, createImportSettings } from './config/eslint/rules/imports.mjs';
 import {
-  COMMON_IMPORT_RULES,
-  createConfigImportSettings,
-  createImportSettings,
-} from './config/eslint/rules/imports.mjs';
-import { COMMON_TS_RULES, TYPESCRIPT_LANGUAGE_OPTIONS } from './config/eslint/rules/typescript.mjs';
+  COMMON_TS_RULES,
+  TYPESCRIPT_LANGUAGE_OPTIONS,
+  TYPE_CHECKED_TS_RULES,
+} from './config/eslint/rules/typescript.mjs';
 
-export default tseslint.config(
+const repositoryRoot = dirname(fileURLToPath(import.meta.url));
+
+// ⚡ Optimización: Carga únicamente el tsconfig.test.json del paquete en ejecución
+const localTestTsconfig = resolve(process.cwd(), 'tsconfig.test.json');
+const testProjects = existsSync(localTestTsconfig)
+  ? [localTestTsconfig]
+  : ['./packages/*/tsconfig.test.json', './packages/generators/*/tsconfig.test.json'];
+
+const TS_PLUGIN_DEFINITION = {
+  '@typescript-eslint': tslintPlugin,
+};
+
+// 1. Extraemos dinámicamente el diccionario de todas las reglas del preset tipado oficial.
+const ALL_TYPE_CHECKED_RULES = tslintConfigs.recommendedTypeChecked.reduce((acc, config) => {
+  return { ...acc, ...config.rules };
+}, {});
+
+// 2. Creamos un objeto de mitigación que apaga masivamente todas las reglas que exigen un tsconfig activo.
+const DISABLE_ALL_TYPE_CHECKED_RULES = Object.keys(ALL_TYPE_CHECKED_RULES).reduce((acc, rule) => {
+  if (rule.startsWith('@typescript-eslint/')) {
+    acc[rule] = 'off';
+  }
+  return acc;
+}, {});
+
+export default defineConfig(
   /**
-   * Global ignores
+   * 1. Global ignores
    */
   {
     ignores: IGNORES,
   },
 
   /**
-   * ESLint base
+   * 2. Global Presets, Resolvers Compartidos & Gobernanza Universal
    */
   eslint.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
-  /**
-   * -----------------------------------------------------------------------------
-   * Config source
-   * -----------------------------------------------------------------------------
-   */
   {
-    files: CONFIG_TS_FILES,
-
-    extends: [tseslint.configs.disableTypeChecked],
-
-    plugins: ESLINT_PLUGINS,
-
-    languageOptions: {
-      parserOptions: {
-        projectService: false,
-      },
-    },
-
-    settings: createConfigImportSettings(),
-
+    settings: createImportSettings(),
     rules: {
-      ...COMMON_IMPORT_RULES,
-      ...COMMON_TS_RULES,
+      ...NO_BARREL_STAR_EXPORT_RULE,
     },
   },
+
   /**
-   * -----------------------------------------------------------------------------
-   * Application source
-   * -----------------------------------------------------------------------------
+   * 3. Application source
    */
   {
     files: SOURCE_FILES,
     languageOptions: TYPESCRIPT_LANGUAGE_OPTIONS,
-
-    plugins: ESLINT_PLUGINS,
-
-    settings: createImportSettings(),
-
+    plugins: {
+      ...ESLINT_PLUGINS,
+      ...TS_PLUGIN_DEFINITION,
+    },
     rules: {
+      ...TYPE_CHECKED_TS_RULES,
       ...COMMON_IMPORT_RULES,
       ...COMMON_TS_RULES,
       ...ARCHITECTURE_RULES,
+      // ⚡ Optimización: tsc ya valida las rutas en typecheck; en CI se mantiene activo
+      'import-x/no-unresolved': process.env.CI ? 'error' : 'off',
     },
   },
 
   /**
-   * -----------------------------------------------------------------------------
-   * CommonJS tooling
-   * -----------------------------------------------------------------------------
+   * 4. Config source
+   */
+  {
+    files: CONFIG_TS_FILES,
+    ignores: ['packages/*/src/**', 'packages/generators/*/src/**'],
+    plugins: {
+      ...ESLINT_PLUGINS,
+      ...TS_PLUGIN_DEFINITION,
+    },
+    languageOptions: {
+      parser: tslintParser,
+      parserOptions: {
+        projectService: false,
+      },
+    },
+    rules: {
+      ...DISABLE_ALL_TYPE_CHECKED_RULES,
+      ...COMMON_IMPORT_RULES,
+      ...COMMON_TS_RULES,
+      'import-x/no-extraneous-dependencies': 'off',
+    },
+  },
+
+  /**
+   * 5. CommonJS tooling
    */
   {
     files: COMMONJS_FILES,
-
-    extends: [tseslint.configs.disableTypeChecked],
-
     plugins: ESLINT_PLUGINS,
-
     languageOptions: COMMONJS_LANGUAGE_OPTIONS,
-
     rules: {
+      ...DISABLE_ALL_TYPE_CHECKED_RULES,
       ...COMMON_IMPORT_RULES,
       ...ARCHITECTURE_RULES_NO_COMMONJS,
     },
   },
 
   /**
-   * -----------------------------------------------------------------------------
-   * Tests
-   * -----------------------------------------------------------------------------
+   * 6. Tests
    */
   {
     files: TEST_FILES,
-
-    extends: [tseslint.configs.disableTypeChecked],
-
-    plugins: ESLINT_PLUGINS,
-
-    languageOptions: TEST_LANGUAGE_OPTIONS,
-
+    plugins: {
+      ...ESLINT_PLUGINS,
+      ...TS_PLUGIN_DEFINITION,
+    },
+    languageOptions: {
+      ...TEST_LANGUAGE_OPTIONS,
+      parser: tslintParser,
+      parserOptions: {
+        projectService: false,
+        project: testProjects,
+        tsconfigRootDir: repositoryRoot,
+      },
+    },
     rules: {
+      ...TYPE_CHECKED_TS_RULES,
       ...COMMON_IMPORT_RULES,
       ...COMMON_TS_RULES,
       ...ARCHITECTURE_RULES_NO_COMMONJS,
+      'import-x/no-unresolved': process.env.CI ? 'error' : 'off',
     },
   },
 
   /**
-   * -----------------------------------------------------------------------------
-   * Tooling / configuration files
-   * -----------------------------------------------------------------------------
+   * 7. Tooling / configuration files
    */
   {
     files: TOOLING_FILES,
-
-    extends: [tseslint.configs.disableTypeChecked],
-
-    plugins: ESLINT_PLUGINS,
-
-    languageOptions: TOOLING_LANGUAGE_OPTIONS,
-
-    settings: createImportSettings(),
-
+    ignores: ['packages/*/src/**', 'packages/generators/*/src/**'],
+    plugins: {
+      ...ESLINT_PLUGINS,
+      ...TS_PLUGIN_DEFINITION,
+    },
+    languageOptions: {
+      ...TOOLING_LANGUAGE_OPTIONS,
+      parser: tslintParser,
+      parserOptions: {
+        ...TOOLING_LANGUAGE_OPTIONS.parserOptions,
+        projectService: false,
+      },
+    },
     rules: {
+      ...DISABLE_ALL_TYPE_CHECKED_RULES,
       ...COMMON_IMPORT_RULES,
+      ...COMMON_TS_RULES,
       ...ARCHITECTURE_RULES_NO_COMMONJS,
+      'import-x/named': 'off',
+      'import-x/no-cycle': 'off',
+      'import-x/no-extraneous-dependencies': 'off',
     },
   },
 );

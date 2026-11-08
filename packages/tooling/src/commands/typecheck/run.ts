@@ -2,6 +2,7 @@
 
 import { NodeWorkspaceProvider } from '@arch-platform/infrastructure';
 
+import { createTypecheckArguments } from './create-typecheck-arguments.js';
 import { logger } from '../../logging/logger.js';
 import { ToolingTasks } from '../../runtime/events/tooling-task-events.js';
 import { createStopwatch } from '../../runtime/process/create-stopwatch.js';
@@ -10,7 +11,6 @@ import type { TaskResult } from '../../runtime/task/task-result.js';
 import type { TypecheckCommandOptions } from '../common/command-options.js';
 import { FileConfigNames } from '../config/config-file-name.js';
 
-import { createTypecheckArguments } from './create-typecheck-arguments.js';
 
 export async function runTypecheckCommand(
   options: TypecheckCommandOptions = {},

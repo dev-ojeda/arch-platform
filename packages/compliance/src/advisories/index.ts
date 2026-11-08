@@ -1,4 +1,4 @@
 // packages/compliance/src/advisories/index.ts
 
-export * from './advisory-identifier.js';
-export * from './default-security-advisory-provider.js';
+export { AdvisoryIdentifier } from './advisory-identifier.js';
+export { DefaultSecurityAdvisoryProvider } from './default-security-advisory-provider.js';

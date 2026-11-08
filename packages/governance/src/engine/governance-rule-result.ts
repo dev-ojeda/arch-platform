@@ -2,7 +2,7 @@
 
 import type { DiagnosticSeverity } from '@arch-platform/platform-model';
 
-import type { GovernanceRuleId } from '../engine/governance-rule-id.js';
+import type { GovernanceRuleId } from './governance-rule-id.js';
 
 export interface GovernanceRuleResult {
   readonly rule: GovernanceRuleId;

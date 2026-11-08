@@ -5,5 +5,11 @@ export function createLintArguments(
   maxWarnings: number,
   additionalArguments: readonly string[] = [],
 ): string[] {
-  return [...targets, '--max-warnings', String(maxWarnings), ...additionalArguments];
+  return [
+    ...targets,
+    '--max-warnings',
+    String(maxWarnings),
+    '--no-warn-ignored', // Evita que los archivos de config/infraestructura ignorados rompan el build
+    ...additionalArguments,
+  ];
 }

@@ -1,3 +1,3 @@
-export * from './cli.js';
+export { createCliConfig } from './cli.js';
 
-export * from './library.js';
+export { createLibraryConfig } from './library.js';

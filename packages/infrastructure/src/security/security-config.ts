@@ -1,4 +1,4 @@
-// packages/infrastructure/src/config/security-config.ts
+// packages/infrastructure/src/security/security-config.ts
 
 export interface SecurityConfig {
   readonly advisoryPath: string;

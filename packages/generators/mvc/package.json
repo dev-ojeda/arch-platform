@@ -31,7 +31,8 @@
     "arch": "arch build --package @arch-platform/generator-mvc",
     "clean": "arch clean --package @arch-platform/generator-mvc",
     "compliance": "arch compliance --package @arch-platform/generator-mvc --env dev",
-    "typecheck": "arch typecheck --package @arch-platform/generator-mvc"
+    "typecheck": "arch typecheck --package @arch-platform/generator-mvc",
+    "lint": "arch lint --package @arch-platform/generator-mvc"
   },
   "dependencies": {
     "@arch-platform/contracts": "catalog:"

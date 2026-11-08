@@ -1,8 +1,11 @@
+// config/eslint/presets/tooling.mjs
+
 export const TOOLING_FILES = [
-  '**/*.config.{js,mjs,ts}',
-  '**/eslint/**/*.mjs',
-  '**/config/**/*.mjs',
-  'scripts/**/*.mjs',
+  '*.config.{js,mjs,ts}',
+  'packages/*/*.config.{js,mjs,ts}',
+  'packages/generators/*/*.config.{js,mjs,ts}',
+  'config/**/*.{js,mjs,ts}',
+  'scripts/**/*.{js,mjs,ts}',
 ];
 
 export const COMMONJS_FILES = [
@@ -11,6 +14,9 @@ export const COMMONJS_FILES = [
   '**/.dependency-cruiser.cjs',
 ];
 
+// OPTIMIZACIÓN ABSOLUTA: Al asignar 'projectService: false', el linter de TypeScript
+// analiza la sintaxis nativa de tus configuraciones e infraestructura al instante
+// SIN intentar compilarlas ni exigir que pertenezcan a un tsconfig.json.
 export const TOOLING_LANGUAGE_OPTIONS = {
   globals: {
     console: 'readonly',

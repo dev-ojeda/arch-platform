@@ -1,4 +1,4 @@
 // packages/application/src/use-cases/inspect-artifact/index.ts
 
-export * from './create-inspect-artifact-use-case.js';
-export * from './inspect-result.js';
+export { createInspectArtifactUseCase } from './create-inspect-artifact-use-case.js';
+export type { InspectResult } from './inspect-result.js';

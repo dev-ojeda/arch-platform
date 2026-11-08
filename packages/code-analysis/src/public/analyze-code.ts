@@ -1,5 +1,6 @@
 // packages/code-analysis/src/public/analyze-code.ts
 
+import type { AnalysisContext } from './analysis-context.js';
 import { DefaultExportedSymbolIndexBuilder } from '../api-surface/default-exported-symbol-index-builder.js';
 import type { AnalysisRequest } from '../application/analysis-request.js';
 import { SymbolGraphBuilder } from '../graph/symbol-graph-builder.js';
@@ -11,7 +12,6 @@ import { buildModuleAnalysis } from '../module/build-module-analysis.js';
 import { PackageDependencyAnalyzer } from '../package/dependency/package-dependency-analyzer.js';
 import { PackageDependencyGraphBuilder } from '../package/dependency/package-dependency-graph-builder.js';
 import { DefaultPackageResolver } from '../package/resolvers/default-package-resolver.js';
-import type { AnalysisContext } from '../public/analysis-context.js';
 
 export function analyzeCode(request: AnalysisRequest): AnalysisContext {
   const packageResolver = request.packageResolver ?? new DefaultPackageResolver();

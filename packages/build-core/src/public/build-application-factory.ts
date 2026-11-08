@@ -1,9 +1,9 @@
 // packages/build-core/src/public/build-application-factory.ts
 
+import type { CommandRunner } from './command-runner.js';
 import { BuildCompositionRoot } from '../application/build-composition-root.js';
 import { BuildService } from '../services/build-service.js';
 
-import type { CommandRunner } from './command-runner.js';
 
 /**
  * Factory responsible for creating the build application.

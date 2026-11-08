@@ -4,14 +4,14 @@ import process from 'node:process';
 
 import type { CAC } from 'cac';
 
-import { createSyncRegistryUseCase } from '@arch-platform/application';
-
 import type { RegistryCliOptions } from '../contracts/registry-cli-options.js';
 import { renderSyncResult } from '../renderers/render-sync.js';
 import { logger } from '../ui/logger.js';
 
 export async function runSyncRegistryCommand(options: RegistryCliOptions): Promise<number> {
   try {
+    const { createSyncRegistryUseCase } = await import('@arch-platform/application');
+
     const workspaceRoot = process.cwd();
     const useCase = await createSyncRegistryUseCase(workspaceRoot);
 

@@ -2,6 +2,7 @@
 
 import { NodeWorkspaceProvider, resolvePath } from '@arch-platform/infrastructure';
 
+import { createPackArguments } from './create-pack-arguments.js';
 import { logger } from '../../logging/logger.js';
 import { ToolingTasks } from '../../runtime/events/tooling-task-events.js';
 import { executeProcess } from '../../runtime/process/execute-process.js';
@@ -9,7 +10,6 @@ import { createProcessTaskResult } from '../../runtime/task/create-process-task-
 import type { TaskProcessResult } from '../../runtime/task/task-process-result.js';
 import type { PackCommandOptions } from '../common/command-options.js';
 
-import { createPackArguments } from './create-pack-arguments.js';
 
 export async function runPackCommand(options: PackCommandOptions): Promise<TaskProcessResult> {
   const { args = [], cwd, packageName, outputDirectory = 'artifacts' } = options;

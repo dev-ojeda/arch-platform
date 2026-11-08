@@ -1,8 +1,8 @@
 // packages/governance/src/report/governance-report-builder.ts
 
+import type { GovernanceReport } from './governance-report.js';
 import type { GovernanceResult } from '../public/governance-result.js';
 
-import type { GovernanceReport } from './governance-report.js';
 
 export class GovernanceReportBuilder {
   build(result: GovernanceResult): GovernanceReport {

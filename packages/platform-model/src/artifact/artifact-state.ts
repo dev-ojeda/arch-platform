@@ -1,9 +1,9 @@
 // packages/platform-model/src/artifact/artifact-state.ts
 
-import type { HashResult } from '../hashing/hash-result.js';
 
 import type { ArtifactStateReason } from './artifact-state-reason.js';
 import type { ArtifactType } from './artifact-type.js';
+import type { HashResult } from '../hashing/hash-result.js';
 
 export interface ArtifactState {
   readonly hash: HashResult;

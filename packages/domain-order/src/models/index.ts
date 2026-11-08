@@ -1,4 +1,4 @@
 // packages/domain-order/src/models/index.ts
 
-export * from './order-status.js';
-export * from './order.js';
+export { OrderStatus } from './order-status.js';
+export type { Order } from './order.js';

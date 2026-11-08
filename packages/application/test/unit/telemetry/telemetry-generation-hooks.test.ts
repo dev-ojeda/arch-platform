@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import type { GenerationContext, GenerationPipelineStep } from '@arch-platform/contracts';
 
-import { TelemetryGenerationHooks } from '../../../src/index.js';
+import { TelemetryGenerationHooks } from '../../../src/generation/hooks/telemetry-generation-hooks.js';
 
 describe('CreateTestTelemetryGenerationHook', () => {
   it('does nothing when step was not started', async () => {

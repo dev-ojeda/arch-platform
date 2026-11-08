@@ -13,10 +13,6 @@
   "editor.suggestSelection": "first",
   "editor.snippetSuggestions": "top",
   "editor.inlineSuggest.enabled": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "always",
-    "source.organizeImports": "always"
-  },
 
   // -----------------------------------------------------------------------------
   // WORKBENCH
@@ -32,7 +28,7 @@
   // -----------------------------------------------------------------------------
   // FILES
   // -----------------------------------------------------------------------------
-  "files.insertFinalNewline": false,
+  "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
   "files.eol": "\n",
   "files.exclude": {
@@ -92,13 +88,13 @@
   // -----------------------------------------------------------------------------
   "typescript.disableAutomaticTypeAcquisition": true,
   "typescript.tsdk": "./node_modules/typescript/lib",
-  "typescript.tsserver.maxTsServerMemory": 4096,
-  "typescript.tsserver.experimental.enableProjectDiagnostics": true,
+  "typescript.tsserver.maxTsServerMemory": 8192,
+  "typescript.tsserver.experimental.enableProjectDiagnostics": false,
   "typescript.preferences.includePackageJsonAutoImports": "off",
   "typescript.tsserver.log": "off",
   "typescript.tsserver.watchOptions": {
-    "watchFile": "dynamicPriorityPolling",
-    "watchDirectory": "fixedPollingInterval"
+    "watchFile": "useFsEvents",
+    "watchDirectory": "useFsEvents"
   },
   "typescript.preferences.preferTypeOnlyAutoImports": true,
   "typescript.preferences.importModuleSpecifierEnding": "js",
@@ -120,27 +116,18 @@
   // -----------------------------------------------------------------------------
   "terminal.integrated.defaultProfile.windows": "PowerShell",
   "terminal.integrated.enablePersistentSessions": false,
+  "terminal.integrated.cursorStyle": "line",
   "terminal.integrated.profiles.windows": {
     "PowerShell": {
-      "path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+      "path": "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\powershell.exe",
       "icon": "terminal-powershell"
-    },
-    "Command Prompt": {
-      "path": ["${env:windir}\\Sysnative\\cmd.exe", "${env:windir}\\System32\\cmd.exe"],
-      "args": [],
-      "icon": "terminal-cmd",
-      "overrideName": true
-    },
-    "Git Bash": {
-      "source": "Git Bash"
     }
   },
-  "powershell.cwd": "${workspaceFolder}",
-  "powershell.powerShellAdditionalExePaths": {
-    "pwsh": "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+  "terminal.integrated.env.windows": {
+    "NODE_OPTIONS": "--max-old-space-size=8192",
+    "UV_THREADPOOL_SIZE": "16",
+    "TIMING": "1"
   },
-  "powershell.integratedConsole.focusConsoleOnExecute": false,
-  "powershell.promptToUpdatePowerShell": false,
   // -----------------------------------------------------------------------------
   // PACKAGE MANAGERS
   // -----------------------------------------------------------------------------
@@ -200,8 +187,8 @@
   // -----------------------------------------------------------------------------
   // AUTO PATH HEADER
   // -----------------------------------------------------------------------------
-  "autoPathHeader.ignoredDirectories": ["temp", "**/node_modules", "dist/*"],
-  "autoPathHeader.allowedOnlyDirectories": ["src", "**/utils", "src/**/*.ts"],
+  // "autoPathHeader.ignoredDirectories": ["temp", "**/node_modules", "dist/*"],
+  // "autoPathHeader.allowedOnlyDirectories": ["src", "**/utils", "src/**/*.ts"],
   // -----------------------------------------------------------------------------
   // FOLDER TEMPLATES
   // -----------------------------------------------------------------------------
@@ -210,7 +197,7 @@
       "structure": [
         {
           "fileName": "index.ts",
-          "template": "export * from './';"
+          "template": "export {} from '';"
         }
       ]
     }
@@ -226,8 +213,7 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "always",
-      "source.organizeImports": "always"
+      "source.fixAll.eslint": "explicit"
     }
   },
   "[json]": {
@@ -254,7 +240,7 @@
     }
   },
   "[bat]": {
-    "files.eol": "\n",
+    "files.eol": "\r\n",
     "editor.autoIndent": "full",
     "editor.autoClosingBrackets": "always",
     "editor.autoClosingComments": "beforeWhitespace",
@@ -267,5 +253,7 @@
     "diffEditor.ignoreTrimWhitespace": true,
     "editor.defaultFormatter": "toramameseven.bat-tools"
   },
-  "terminal.integrated.tabs.defaultColor": "terminal.ansiGreen"
+  "terminal.integrated.tabs.defaultColor": "terminal.ansiGreen",
+  "terminal.explorerKind": "external",
+  "terminal.integrated.allowChords": false
 }

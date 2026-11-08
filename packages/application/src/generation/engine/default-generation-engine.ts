@@ -8,12 +8,11 @@ import type {
   TemplateVariables,
 } from '@arch-platform/contracts';
 
-import { runGenerationReportExporters } from '../../generation/exporters/run-generation-report-exporters.js';
+import type { GenerationEngine } from './generation-engine.js';
+import { runGenerationReportExporters } from '../exporters/run-generation-report-exporters.js';
 import { GenerationPipeline } from '../pipeline/generation-pipeline.js';
 import { createGenerationReport } from '../reports/create-generation-report.js';
 import { GenerationContextFactory } from '../runtime/generation-context-factory.js';
-
-import type { GenerationEngine } from './generation-engine.js';
 
 export class DefaultGenerationEngine<
   TVariables extends TemplateVariables = TemplateVariables,

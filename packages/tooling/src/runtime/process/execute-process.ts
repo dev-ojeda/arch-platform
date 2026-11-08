@@ -2,14 +2,13 @@
 
 import { execa, ExecaError } from 'execa';
 
+import { createExecaOptions } from './create-execa-options.js';
+import { createProcessResult } from './create-process-result.js';
+import { createStopwatch } from './create-stopwatch.js';
 import { normalizeOutput } from '../../serialization/normalize-output.js';
 import { formatCommand } from '../../utils/format-command.js';
 import type { ExecuteProcessOptions } from '../execution/execute-process-option.js';
 import type { ExecuteProcessResult } from '../execution/execute-process-result.js';
-
-import { createExecaOptions } from './create-execa-options.js';
-import { createProcessResult } from './create-process-result.js';
-import { createStopwatch } from './create-stopwatch.js';
 
 export async function executeProcess(
   command: string,

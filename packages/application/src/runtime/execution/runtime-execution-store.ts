@@ -1,13 +1,13 @@
 // packages/application/src/runtime/execution/runtime-execution-store.ts
 
-import { RuntimeEventTypes } from '../../runtime/execution/events/runtime-event-types.js';
-import type { RuntimeEvent } from '../../runtime/execution/events/runtime-event.js';
 
 import type {
   PipelineCompletedEvent,
   PipelineFailedEvent,
   PipelineStartedEvent,
 } from './events/pipeline-events.js';
+import { RuntimeEventTypes } from "./events/runtime-event-types.js";
+import type { RuntimeEvent } from "./events/runtime-event.js";
 import type {
   StepCompletedEvent,
   StepFailedEvent,

@@ -1,3 +1,3 @@
 // packages/platform-model/src/security/environment/index.ts
 
-export * from './security-environment.js';
+export type { SecurityEnvironment } from './security-environment.js';

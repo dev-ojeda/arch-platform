@@ -2,11 +2,11 @@
 
 import type { ConfigHashService } from '@arch-platform/contracts';
 
+import { NodeHashService } from './node-hash-service.js';
 import { pathExistsSync, readNormalizedTextFileSync } from '../filesystem/io/fs-sync.js';
 import { joinPath } from '../filesystem/io/path-utils.js';
 import { safeStringify } from '../serialization/safe-stringify.js';
 
-import { NodeHashService } from './node-hash-service.js';
 
 const CONFIG_FILES = ['package.json', 'tsconfig.json', 'tsconfig.build.json', 'tsup.config.ts'];
 

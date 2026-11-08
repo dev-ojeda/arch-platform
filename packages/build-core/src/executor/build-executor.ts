@@ -4,9 +4,9 @@
 
 import type { DagNode } from '@arch-platform/platform-model';
 
+import type { BuildResult } from './build-result.js';
 import type { BuildPlanEntry } from '../planning/plan-entry.js';
 
-import type { BuildResult } from './build-result.js';
 
 /**
  * Contract for executing package build operations.

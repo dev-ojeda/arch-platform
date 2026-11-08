@@ -4,6 +4,8 @@ import { cwd } from 'node:process';
 
 import { BuildApplicationFactory } from '@arch-platform/build-core';
 
+import { createBuildScope } from './build-scope.js';
+import type { BuildTaskResult } from './build-task-result.js';
 import { logger } from '../../logging/logger.js';
 import { ToolingTasks } from '../../runtime/events/tooling-task-events.js';
 import { createStopwatch } from '../../runtime/process/create-stopwatch.js';
@@ -12,8 +14,6 @@ import { runTask } from '../../runtime/task/run-task.js';
 import { formatDuration } from '../../utils/format-duration.js';
 import type { BuildCommandOptions } from '../common/command-options.js';
 
-import { createBuildScope } from './build-scope.js';
-import type { BuildTaskResult } from './build-task-result.js';
 
 export async function buildCommand(options: BuildCommandOptions): Promise<number> {
   return runTask({

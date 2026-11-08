@@ -16,9 +16,9 @@ import {
 
 import type { DirectoryEntry } from '@arch-platform/contracts';
 
+import { joinPath } from './path-utils.js';
 import { safeParse } from '../../serialization/safe-parse.js';
 
-import { joinPath } from './path-utils.js';
 
 //#region existence
 /**

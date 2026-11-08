@@ -2,14 +2,14 @@
 
 import type { Diagnostic, DiagnosticSeverity } from '@arch-platform/platform-model';
 
+import type { GovernanceRuleResult } from './governance-rule-result.js';
+import type { GovernanceRule } from './governance-rule.js';
 import type { GovernanceExecutionContext } from '../context/governance-execution-context.js';
 import { createStopwatch } from '../helpers/create-stopwatch.js';
 import { getErrorMessage } from '../helpers/error-message.js';
 import type { GovernanceResult } from '../public/governance-result.js';
 import type { RuleExecutionResult } from '../rules/execution-result-rule.js';
 
-import type { GovernanceRuleResult } from './governance-rule-result.js';
-import type { GovernanceRule } from './governance-rule.js';
 
 export class GovernanceEngine {
   constructor(private readonly rules: readonly GovernanceRule[]) {}

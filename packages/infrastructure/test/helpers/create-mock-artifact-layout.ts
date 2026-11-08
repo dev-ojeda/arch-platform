@@ -7,12 +7,8 @@ export function createMockArtifactLayout(root = '/cache/artifact'): ArtifactLayo
     root,
     manifest: () => `${root}/manifest.json`,
     output: (output) => `${root}/${output}`,
-    temporary: vi.fn(),
+    temporary: vi.fn((suffix: string) => createMockArtifactLayout(`${root}.${suffix}`)),
   };
-
-  vi.mocked(layout.temporary).mockImplementation((suffix) =>
-    createMockArtifactLayout(`${root}.${suffix}`),
-  );
 
   return layout;
 }

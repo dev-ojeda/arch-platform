@@ -2,7 +2,6 @@
 
 import { SymbolGraphQuery } from '@arch-platform/code-analysis';
 
-import type { GovernanceExecutionContext } from '../../context/governance-execution-context.js';
 
 import type { ImportContext } from './import-context.js';
 import {
@@ -10,6 +9,7 @@ import {
   resolveTargetPackage,
   resolveTargetPackageFromFile,
 } from './import-target-resolver.js';
+import type { GovernanceExecutionContext } from '../../context/governance-execution-context.js';
 
 export class ImportContextScanner {
   scan(context: GovernanceExecutionContext): readonly ImportContext[] {

@@ -1,3 +1,3 @@
 // packages/platform-model/src/process/index.ts
 
-export * from './execution-process.js';
+export type { ExecutionProcess } from './execution-process.js';

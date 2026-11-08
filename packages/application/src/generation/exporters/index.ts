@@ -9,4 +9,4 @@ export {
   JsonGenerationReportExporter,
   type JsonGenerationReportExporterOptions,
 } from './json-generation-report-exporter.js';
-export * from './run-generation-report-exporters.js';
+export { runGenerationReportExporters } from './run-generation-report-exporters.js';

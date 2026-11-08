@@ -1,8 +1,15 @@
 // packages/domain-order/src/public/index.ts
 
-export * from '../contracts/index.js';
-export * from '../errors/index.js';
-export * from '../events/index.js';
-export * from '../models/index.js';
-export * from '../services/index.js';
-export * from '../value-objects/index.js';
+export type {
+  CreateOrderInput,
+  EventPublisherContract,
+  OrderRepositoryContract,
+  OrderServiceContract,
+} from '../contracts/index.js';
+export { DomainError, InvalidOrderError, OrderNotFoundError } from '../errors/index.js';
+export { OrderCreatedEvent } from '../events/index.js';
+export type { DomainEvent, OrderCreatedPayload } from '../events/index.js';
+export { OrderStatus } from '../models/index.js';
+export type { Order } from '../models/index.js';
+export { OrderService } from '../services/index.js';
+export { CustomerId, Money, OrderId } from '../value-objects/index.js';

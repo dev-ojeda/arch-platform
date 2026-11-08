@@ -2,10 +2,10 @@
 
 import type { ArtifactStateReader, ArtifactStateWriter } from '@arch-platform/platform-model';
 
-import { NodeAsyncFileSystemAdapter } from '../filesystem/adapters/node-async-filesystem-adapter.js';
 
 import { FilesystemArtifactStateReader } from './adapter/filesystem-artifact-state-reader.js';
 import { FilesystemArtifactStateWriter } from './adapter/filesystem-artifact-state-writer.js';
+import { NodeAsyncFileSystemAdapter } from '../filesystem/adapters/node-async-filesystem-adapter.js';
 
 export class ArtifactStateProvider {
   createReaderForWorkspace(workspaceRoot: string): ArtifactStateReader {

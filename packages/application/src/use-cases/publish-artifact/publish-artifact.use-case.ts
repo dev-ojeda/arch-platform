@@ -7,9 +7,9 @@ import type {
   PublicationEligibilityEvaluator,
 } from '@arch-platform/platform-model';
 
+import type { PublishResult } from './publish-result.js';
 import { createStopwatch } from '../../helpers/create-stopwatch.js';
 
-import type { PublishResult } from './publish-result.js';
 
 export interface PublishArtifactInput {
   readonly environment: ComplianceEnvironment;

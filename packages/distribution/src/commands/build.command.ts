@@ -5,12 +5,12 @@ import type { CAC } from 'cac';
 import type { BuildServiceSummary } from '@arch-platform/build-core';
 import { BuildApplicationFactory } from '@arch-platform/build-core';
 
+import { createBuildScope } from './build.scope.js';
 import type { BuildCliOptions } from '../contracts/build-cli-options.js';
 import type { BuildCommandOptions } from '../contracts/build-command-options.js';
 import { processRunner } from '../process/process-runner.js';
 import { logger } from '../ui/logger.js';
 
-import { createBuildScope } from './build.scope.js';
 
 export function registerBuildCommand(cli: CAC): void {
   cli

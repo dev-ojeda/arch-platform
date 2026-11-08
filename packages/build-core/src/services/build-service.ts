@@ -2,6 +2,8 @@
 
 import type { ArtifactState, ArtifactStateHistory } from '@arch-platform/platform-model';
 
+import type { BuildContext } from './build-context.js';
+import type { BuildOptions } from './build-options.js';
 import { CacheEvaluator } from '../cache/cache-evaluator.js';
 import type { BuildResult } from '../executor/build-result.js';
 import { BuildTaskRunner } from '../graph/build-task-runner.js';
@@ -15,8 +17,6 @@ import type { BuildServiceSummary } from '../public/build-service-summary.js';
 import { createExecutionContext } from '../runtime/execution/execution-context.js';
 import { ExecutionPlanScheduler } from '../runtime/execution/execution-plan-scheduler.js';
 
-import type { BuildContext } from './build-context.js';
-import type { BuildOptions } from './build-options.js';
 
 /**
  * Application service responsible for orchestrating the build pipeline.

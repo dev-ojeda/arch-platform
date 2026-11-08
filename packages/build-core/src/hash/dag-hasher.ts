@@ -3,9 +3,8 @@
 import type { ConfigHashService, HashService, SourceHashService } from '@arch-platform/contracts';
 import type { DagNode, HashContext, HashInput, HashResult } from '@arch-platform/platform-model';
 
-import { logger } from '../logging/logger.js';
-
 import { HASH_SCHEMA_VERSION } from './hash-schema-version.js';
+import { logger } from '../logging/logger.js';
 import { HashValidator } from './validator/hash-validator.js';
 
 function stableJoin(values: readonly string[]): string {

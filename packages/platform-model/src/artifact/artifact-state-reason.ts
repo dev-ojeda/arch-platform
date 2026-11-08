@@ -2,9 +2,11 @@
 
 export type ArtifactStateReason =
   | 'none'
-  | 'dependency-changed'
-  | 'source-changed'
   | 'first-build'
   | 'manual'
-  | 'cache-invalidated'
+  | 'source-changed'
+  | 'config-changed'
+  | 'dependency-changed'
+  | 'cache-version-changed'
+  | 'output-integrity-failed'
   | 'missing-output';

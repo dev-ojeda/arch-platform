@@ -33,7 +33,8 @@
     "arch": "arch build --package @arch-platform/tooling",
     "clean": "arch clean --package @arch-platform/tooling",
     "compliance": "arch compliance --package @arch-platform/tooling --env dev",
-    "typecheck": "arch typecheck --package @arch-platform/tooling",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . --max-warnings 0 --no-warn-ignored --cache --cache-strategy content",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",
     "test:watch": "vitest",
@@ -42,7 +43,8 @@
   "dependencies": {
     "@arch-platform/build-core": "workspace:*",
     "@arch-platform/infrastructure": "workspace:*",
-    "execa": "catalog:"
+    "execa": "catalog:",
+    "vitest": "catalog:"
   },
   "devDependencies": {
     "typescript": "catalog:"

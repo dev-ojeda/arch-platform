@@ -1,31 +1,15 @@
 // packages/infrastructure/src/filesystem/io/fs-async.ts
 
-import {
-  access,
-  cp,
-  mkdir,
-  readdir,
-  readFile,
-  rename,
-  rm,
-  stat,
-  writeFile,
-} from 'node:fs/promises';
+import { access, cp, mkdir, readdir, readFile, rename, stat, writeFile } from 'node:fs/promises';
+
+import { rimraf } from 'rimraf';
 
 import type { DirectoryEntry } from '@arch-platform/contracts';
 
-import { LOG_EVENTS } from '../../logging/log-events.js';
-import { loggerFactory } from '../../logging/logger.js';
-import { hasErrorCode } from '../errors/errno-utils.js';
-
 import { joinPath } from './path-utils.js';
 import { retryFsOperation } from './retry-fs-operation.js';
+import { hasErrorCode } from '../errors/errno-utils.js';
 
-const logger = loggerFactory.createLogger({
-  component: 'fs-async',
-});
-
-const IGNORED_DIRECTORIES = new Set(['.git', '.turbo', 'node_modules', 'dist', 'coverage']);
 type CopyPathAsyncOptions = Parameters<typeof cp>[2];
 
 //#region existence
@@ -109,16 +93,17 @@ export async function writeTextFile(filePath: string, content: string): Promise<
 //#endregion
 //#region delete
 export async function removePaths(paths: readonly string[]): Promise<void> {
-  await Promise.all(paths.map((targetPath) => removePathWithRetry(targetPath)));
+  await removePathsByRimraf(paths);
 }
 export function removePathWithRetry(target: string): Promise<void> {
   return retryFsOperation(() => removePath(target));
 }
 
 export async function removePath(targetPath: string): Promise<void> {
-  await rm(targetPath, {
-    recursive: true,
-    force: true,
+  // rimraf maneja nativamente la recursividad y fuerza el borrado de archivos ocultos/bloqueados
+  await rimraf(targetPath, {
+    preserveRoot: true,
+    glob: false,
   });
 }
 
@@ -126,42 +111,17 @@ export async function removePath(targetPath: string): Promise<void> {
 
 //#region helpers
 
-export async function collectTsBuildInfoFiles(directory: string): Promise<string[]> {
-  try {
-    const entries = await readDirectoryEntries(directory);
-
-    const files: string[] = [];
-
-    for (const entry of entries) {
-      const fullPath = joinPath(directory, entry.name);
-
-      if (entry.isDirectory) {
-        if (IGNORED_DIRECTORIES.has(entry.name)) {
-          continue;
-        }
-
-        files.push(...(await collectTsBuildInfoFiles(fullPath)));
-
-        continue;
-      }
-
-      if (entry.name.endsWith('.tsbuildinfo')) {
-        files.push(fullPath);
-      }
-    }
-
-    return files;
-  } catch (error) {
-    logger.error(LOG_EVENTS.FILESYSTEM_IO_FS_ASYNC_FAILED, {
-      metadata: {
-        operation: 'collectTsBuildInfoFiles',
-        directory,
-        error: String(error),
-      },
-    });
-
-    return [];
-  }
+/**
+ * Remueve una lista de rutas físicas del SSD de forma ultra rápida y segura
+ */
+export async function removePathsByRimraf(paths: readonly string[]): Promise<void> {
+  await Promise.all(
+    paths.map((path) =>
+      rimraf(path, {
+        preserveRoot: true,
+        glob: false,
+      }),
+    ),
+  );
 }
-
 //#endregion

@@ -6,6 +6,7 @@ import type {
   WriteFileOptions,
 } from '@arch-platform/contracts';
 
+import { BaseFileSystemAdapter } from './base-filesystem-adapter.js';
 import { safeParse } from '../../serialization/safe-parse.js';
 import { safeStringify } from '../../serialization/safe-stringify.js';
 import {
@@ -25,7 +26,6 @@ import { normalizeDirectoryEntry } from '../paths/canonicalize-directory-entry.j
 import { NodePathService } from '../paths/node-path-service.js';
 import { shouldWriteFile } from '../policies/resolve-write-policy.js';
 
-import { BaseFileSystemAdapter } from './base-filesystem-adapter.js';
 
 export class NodeAsyncFileSystemAdapter
   extends BaseFileSystemAdapter

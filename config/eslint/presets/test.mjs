@@ -1,9 +1,14 @@
 export const TEST_FILES = [
-  'packages/**/test/**/*.ts',
-  'packages/**/__tests__/**/*.ts',
-  'packages/**/*.test.ts',
-  'packages/**/*.spec.ts',
+  '**/test/**/*.ts',
+  '**/test/**/*.tsx',
+  '**/__tests__/**/*.ts',
+  '**/__tests__/**/*.tsx',
+  '**/*.test.ts',
+  '**/*.test.tsx',
+  '**/*.spec.ts',
+  '**/*.spec.tsx',
 ];
+
 export const TEST_LANGUAGE_OPTIONS = {
   globals: {
     describe: 'readonly',

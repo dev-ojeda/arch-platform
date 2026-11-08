@@ -2,6 +2,7 @@
 
 import type { PublicationArtifactReader } from '@arch-platform/platform-model';
 
+import { FilesystemPublicationArtifactReader } from './filesystem-publication-artifact-reader.js';
 import { ArtifactStateProvider } from '../artifact/artifact-state-provider.js';
 import { ComplianceStateProvider } from '../compliance/compliance-state-provider.js';
 import { ArtifactDistributionPreparedProvider } from '../distribution/artifact-distribution-prepared-provider.js';
@@ -9,7 +10,6 @@ import { NodeSyncFileSystemAdapter } from '../filesystem/adapters/node-sync-file
 import { SecurityStateProvider } from '../security/security-state-provider.js';
 import { BuildStateLoader } from '../state/state-loader.js';
 
-import { FilesystemPublicationArtifactReader } from './filesystem-publication-artifact-reader.js';
 
 export class PublicationArtifactProvider {
   createReader(workspaceRoot: string): PublicationArtifactReader {

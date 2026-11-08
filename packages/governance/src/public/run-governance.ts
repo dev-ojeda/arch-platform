@@ -1,10 +1,10 @@
 // packages/governance/src/public/run-governance.ts
 
+import type { GovernanceOptions } from './governance-options.js';
+import type { GovernanceResult } from './governance-result.js';
 import { GovernanceCompositionRoot } from '../composition/governance-composition-root.js';
 import { buildGovernanceContext } from '../context/build-governance-context.js';
 
-import type { GovernanceOptions } from './governance-options.js';
-import type { GovernanceResult } from './governance-result.js';
 
 export async function runGovernance(options: GovernanceOptions): Promise<GovernanceResult> {
   const {

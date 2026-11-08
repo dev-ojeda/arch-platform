@@ -133,6 +133,8 @@ export class ArtifactOutputFingerprinter implements ArtifactOutputFingerprinterP
       });
     }
 
-    return result.sort((left, right) => left.path.localeCompare(right.path));
+    return result.sort((left, right) =>
+      left.path < right.path ? -1 : left.path > right.path ? 1 : 0,
+    );
   }
 }

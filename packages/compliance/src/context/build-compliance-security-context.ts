@@ -9,10 +9,10 @@ import type {
   WorkspaceDescriptor,
 } from '@arch-platform/platform-model';
 
-import type { SecurityOptions } from '../security/security-options.js';
 
 import { resolveComplianceSecurityScope } from './resolve-compliance-security-scope.js';
 import { resolveSecurityPackages } from './resolve-security-packages.js';
+import type { SecurityOptions } from '../security/security-options.js';
 
 export async function buildComplianceSecurityContext(
   options: SecurityOptions,

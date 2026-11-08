@@ -8,6 +8,7 @@ import { CrossPackageRelativeImportRule } from '../rules/cross-package-relative-
 import { CrossPackageRelativeImportScanner } from '../rules/cross-package-relative-import-scanner.js';
 import { DependencyLayerRule } from '../rules/dependency-layer-rule.js';
 import { ForbiddenDependencyRule } from '../rules/forbidden-dependency-rule.js';
+import { NoStarExportsRule } from '../rules/no-star-exports-rule.js';
 import { ValidatePackageStructureRule } from '../rules/package-structure/validate-package-structure.rule.js';
 import { DetectPrivateBarrelRule } from '../rules/public-api/detect-private-barrel-rule.js';
 import { OnlyPublicApiRule } from '../rules/public-api/only-public-api.rule.js';
@@ -29,6 +30,7 @@ export class GovernanceRulesFactory {
       new WorkspacePackageRule(),
       new DependencyLayerRule(),
       new DetectCyclesRule(),
+      new NoStarExportsRule(),
       new OnlyPublicApiRule(new PublicApiScanner()),
     ];
   }

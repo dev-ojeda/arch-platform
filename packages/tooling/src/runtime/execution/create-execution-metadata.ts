@@ -1,8 +1,8 @@
 // packages/tooling/src/runtime/execution/create-execution-metadata.ts
 
+import type { ExecutionMetadata, ExecutionMetadataInput } from "./execution-metadata.js";
 import { formatBytes } from '../../utils/format-bytes.js';
 import { formatDuration } from '../../utils/format-duration.js';
-import type { ExecutionMetadata, ExecutionMetadataInput } from '../execution/execution-metadata.js';
 
 export function createExecutionMetadata(options: ExecutionMetadataInput): ExecutionMetadata {
   const { command, args, commandLine, cwd, exitCode, durationMs, signal, stdout, stderr } = options;

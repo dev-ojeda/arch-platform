@@ -2,12 +2,12 @@
 
 import type { Diagnostic } from '@arch-platform/platform-model';
 
+import { ValidatePackageStructureDiagnostic } from './diagnostic-factory.js';
 import type { GovernanceContext } from '../../context/governance-context.js';
 import { GOVERNANCE_RULE_ID } from '../../engine/governance-rule-id.js';
 import type { GovernanceRule } from '../../engine/governance-rule.js';
 import type { GovernanceScope } from '../../public/governance-scope.js';
 
-import { ValidatePackageStructureDiagnostic } from './diagnostic-factory.js';
 
 export class ValidatePackageStructureRule implements GovernanceRule {
   readonly id = GOVERNANCE_RULE_ID.ValidatePackageStructure;

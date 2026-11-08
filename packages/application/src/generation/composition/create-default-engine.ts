@@ -8,11 +8,11 @@ import type {
   TemplateRendererPort,
 } from '@arch-platform/contracts';
 
+import { createDefaultPipeline } from './create-default-pipeline.js';
 import { DefaultGenerationEngine } from '../engine/default-generation-engine.js';
 import { PromptEngine } from '../engine/prompt-engine.js';
 import { GenerationContextFactory } from '../runtime/generation-context-factory.js';
 
-import { createDefaultPipeline } from './create-default-pipeline.js';
 
 export interface GenerationEngineFactoryOptions {
   promptAdapter: PromptAdapter;

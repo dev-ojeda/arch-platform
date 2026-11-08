@@ -51,7 +51,7 @@
     // -----------------------------------------------------------------------------
     // FILES
     // -----------------------------------------------------------------------------
-    "files.insertFinalNewline": false,
+    "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
     "files.eol": "\n",
     "files.exclude": {
@@ -116,12 +116,12 @@
     // -----------------------------------------------------------------------------
     "typescript.disableAutomaticTypeAcquisition": true,
     "typescript.tsdk": "⚓ Raíz del Proyecto\\node_modules\\typescript\\lib",
-    "typescript.tsserver.maxTsServerMemory": 4096,
+    "typescript.tsserver.maxTsServerMemory": 8192,
     "typescript.preferences.includePackageJsonAutoImports": "off",
     "typescript.tsserver.log": "off",
     "typescript.tsserver.watchOptions": {
-      "watchFile": "dynamicPriorityPolling",
-      "watchDirectory": "fixedPollingInterval",
+      "watchFile": "useFsEvents",
+      "watchDirectory": "useFsEvents",
     },
     "typescript.preferences.preferTypeOnlyAutoImports": true,
     "typescript.preferences.importModuleSpecifierEnding": "js",
@@ -169,8 +169,8 @@
     // -----------------------------------------------------------------------------
     // AUTO PATH HEADER
     // -----------------------------------------------------------------------------
-    "autoPathHeader.ignoredDirectories": ["temp", "**/node_modules", "dist/*"],
-    "autoPathHeader.allowedOnlyDirectories": ["src", "**/utils", "src/**/*.ts"],
+    // "autoPathHeader.ignoredDirectories": ["temp", "**/node_modules", "dist/*"],
+    // "autoPathHeader.allowedOnlyDirectories": ["src", "**/utils", "src/**/*.ts"],
 
     // -----------------------------------------------------------------------------
     // FOLDER TEMPLATES
@@ -180,7 +180,7 @@
         "structure": [
           {
             "fileName": "index.ts",
-            "template": "export * from './';",
+            "template": "export {} from '';",
           },
         ],
       },
@@ -197,10 +197,32 @@
     "[typescript]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode",
       "editor.formatOnSave": true,
+      "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit",
+      },
     },
     "[json]": {
-      "editor.defaultFormatter": "vscode.json-language-features",
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
       "editor.tabSize": 2,
+    },
+    // -----------------------------------------------------------------------------
+    // TERMINAL / POWERSHELL
+    // -----------------------------------------------------------------------------
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "terminal.integrated.enablePersistentSessions": false,
+    "terminal.integrated.cursorStyle": "line",
+    "terminal.integrated.profiles.windows": {
+      "PowerShell": {
+        "path": "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "icon": "terminal-powershell",
+      },
+    },
+    "terminal.integrated.env.windows": {
+      "NODE_OPTIONS": "--max-old-space-size=8192",
+      "UV_THREADPOOL_SIZE": "16",
+    },
+    "workbench.colorCustomizations": {
+      "terminal.background": "#121212",
     },
   },
 }

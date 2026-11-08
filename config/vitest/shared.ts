@@ -25,7 +25,7 @@ export function createVitestConfig(name: string) {
       // Desactivamos globals para forzar importaciones explícitas y evitar fallos del compilador/linter
       globals: false,
       isolate: true,
-      pool: 'forks',
+      pool: 'threads',
       passWithNoTests: true,
       silent: true,
       testTimeout: 5000, // Limite por defecto estándar

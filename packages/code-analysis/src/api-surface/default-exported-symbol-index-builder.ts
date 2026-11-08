@@ -1,12 +1,12 @@
 // packages/code-analysis/src/api-surface/default-exported-symbol-index-builder.ts
 
+import { DefaultExportedSymbolIndex } from './default-exported-symbol-index.js';
+import type { ExportedSymbolIndexBuilder } from './exported-symbol-index-builder.js';
 import type { SourceReader } from '../language/typescript/source/source-reader.js';
 import type { PackageResolver } from '../package/resolvers/package-resolver.js';
 import type { ExportedSymbolIndex } from '../public/exported-symbol-index.js';
 import type { ExportedSymbol } from '../public/exported-symbol.js';
 
-import { DefaultExportedSymbolIndex } from './default-exported-symbol-index.js';
-import type { ExportedSymbolIndexBuilder } from './exported-symbol-index-builder.js';
 
 export class DefaultExportedSymbolIndexBuilder implements ExportedSymbolIndexBuilder {
   build(sourceReader: SourceReader, packageResolver: PackageResolver): ExportedSymbolIndex {

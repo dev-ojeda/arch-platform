@@ -1,9 +1,9 @@
 // packages/code-analysis/src/language/typescript/scanners/reference-analyzer.ts
 
+import type { ReferenceScanner } from './reference-scanner.js';
 import type { SymbolEdge } from '../../../public/symbol-edge.js';
 import type { SourceReader } from '../source/source-reader.js';
 
-import type { ReferenceScanner } from './reference-scanner.js';
 
 export class ReferenceAnalyzer {
   constructor(

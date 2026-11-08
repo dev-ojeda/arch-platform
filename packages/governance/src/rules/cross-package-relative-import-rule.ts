@@ -2,12 +2,12 @@
 
 import type { Diagnostic } from '@arch-platform/platform-model';
 
+import { CrossPackageRelativeImportScanner } from './cross-package-relative-import-scanner.js';
 import type { GovernanceExecutionContext } from '../context/governance-execution-context.js';
 import { GOVERNANCE_RULE_ID } from '../engine/governance-rule-id.js';
 import type { GovernanceRule } from '../engine/governance-rule.js';
 import type { GovernanceScope } from '../public/governance-scope.js';
 
-import { CrossPackageRelativeImportScanner } from './cross-package-relative-import-scanner.js';
 
 export class CrossPackageRelativeImportRule implements GovernanceRule<GovernanceExecutionContext> {
   readonly id = GOVERNANCE_RULE_ID.CrossPackageRelativeImportRule;

@@ -2,9 +2,9 @@
 
 import type { ComplianceResult } from '@arch-platform/governance';
 
+import { formatterDiagnostic } from './formatter-diagnostic.js';
 import { terminal } from '../ui/terminal.js';
 
-import { formatterDiagnostic } from './formatter-diagnostic.js';
 
 export function renderComplianceResult(result: ComplianceResult): void {
   renderHeader(result);

@@ -1,3 +1,3 @@
 // packages/application/src/generation/telemetry/index.ts
-export * from './measure-step-execution.js';
-export * from './record-step-metric.js';
+export { measureStepExecution } from './measure-step-execution.js';
+export { recordStepMetric } from './record-step-metric.js';
