@@ -132,6 +132,7 @@ export class BuildCompositionRoot {
       comparator,
     );
   }
+
   createArtifactOutputPreparer(): ArtifactOutputPreparer {
     return new FilesystemArtifactOutputPreparer(this.fsAsync, this.pathService);
   }

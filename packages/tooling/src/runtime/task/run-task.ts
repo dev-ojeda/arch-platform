@@ -1,9 +1,9 @@
 // packages/tooling/src/runtime/task/run-task.ts
 
-import { logger } from '../../logging/logger.js';
 
 import type { RunTaskOptions } from './run-task-options.js';
 import type { TaskResult } from './task-result.js';
+import { logger } from '../../logging/logger.js';
 
 /**
  * Executes a tooling task with lifecycle tracking and error handling.

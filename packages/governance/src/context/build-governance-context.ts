@@ -2,11 +2,11 @@
 
 import type { ArchitectureManifest, WorkspaceDescriptor } from '@arch-platform/platform-model';
 
-import type { GovernanceOptions } from '../public/governance-options.js';
 
 import { DefaultPackageQuery } from './default-package-query.js';
 import type { GovernanceContext } from './governance-context.js';
 import { resolveGovernanceScope } from './resolve-governance-scope.js';
+import type { GovernanceOptions } from '../public/governance-options.js';
 
 export function buildGovernanceContext(
   options: GovernanceOptions,

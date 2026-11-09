@@ -8,11 +8,11 @@ import type {
   OutputValidator,
 } from '@arch-platform/platform-model';
 
+import type { CacheEvaluation } from './cache-evaluation.js';
+import type { ChangeReason } from './cache-types.js';
 import { HASH_SCHEMA_VERSION } from '../hash/hash-schema-version.js';
 import { logger } from '../logging/logger.js';
 
-import type { CacheEvaluation } from './cache-evaluation.js';
-import type { ChangeReason } from './cache-types.js';
 
 export class CacheEvaluator {
   constructor(
@@ -91,13 +91,22 @@ export class CacheEvaluator {
     const outputsExist = await this.outputValidator.exists(root, outputs);
 
     if (outputsExist && (await this.artifactCache.verifyOutputs(artifact, root))) {
-      const available = await this.artifactCache.exists(artifact);
+      let available = await this.artifactCache.exists(artifact);
+      const cacheRepaired = !available;
+
+      if (cacheRepaired) {
+        await this.artifactCache.save(artifact, root, outputs);
+        available = await this.artifactCache.exists(artifact);
+      }
+
       logger.trace('build.cache.evaluated', {
         category: 'cache',
         metadata: {
           packageName,
           decision: 'hit',
           changeReason: 'none',
+          available,
+          cacheRepaired,
         },
       });
 
@@ -105,7 +114,7 @@ export class CacheEvaluator {
         packageName,
         decision: 'hit',
         changeReason: 'none',
-        available: available,
+        available,
       };
     }
 

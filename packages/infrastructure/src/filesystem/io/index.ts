@@ -1,7 +1,6 @@
 // packages/infrastructure/src/filesystem/io/index.ts
 
 export {
-  collectTsBuildInfoFiles,
   copyPath,
   ensureDirAsync,
   pathExists,
@@ -10,6 +9,7 @@ export {
   readTextFile,
   removePath,
   removePaths,
+  removePathsByRimraf,
   removePathWithRetry,
   renamePath,
   writeTextFile,

@@ -1,8 +1,7 @@
 // packages/platform-model/src/compliance/compliance-state-change.ts
 
-import type { HashResult } from '../hashing/hash-result.js';
-
 import type { ArtifactComplianceStatus } from './compliance-status.js';
+import type { HashResult } from '../hashing/hash-result.js';
 import type { ComplianceEnvironment } from './environment/compliance-environment.js';
 
 export interface ComplianceStateChange {

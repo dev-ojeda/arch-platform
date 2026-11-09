@@ -1,2 +1,2 @@
-export * from './create-dependency-graph.js';
-export * from './security-correlation-expected.js';
+export { dependencyGraphFixture } from './create-dependency-graph.js';
+export { createSecurityCorrelationAdvisory } from './security-correlation-expected.js';

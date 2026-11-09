@@ -4,14 +4,14 @@ import process from 'node:process';
 
 import type { CAC } from 'cac';
 
-import { createPublishArtifactUseCase } from '@arch-platform/application';
-
 import type { PublishCliOptions } from '../contracts/publish-cli-options.js';
 import { renderPublishResult } from '../renderers/render-publish.js';
 import { logger } from '../ui/logger.js';
 
 export async function runPublishCommand(options: PublishCliOptions): Promise<number> {
   try {
+    const { createPublishArtifactUseCase } = await import('@arch-platform/application');
+
     const workspaceRoot = process.cwd();
     const useCase = createPublishArtifactUseCase(workspaceRoot);
 

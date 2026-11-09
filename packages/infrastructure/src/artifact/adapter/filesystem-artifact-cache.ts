@@ -29,6 +29,7 @@ export class FilesystemArtifactCache implements ArtifactCache {
   ) {}
   async save(artifact: Artifact, root: string, outputs: readonly string[]): Promise<void> {
     const layout = this.layoutFactory.create(artifact);
+
     const outputFingerprint = await this.fingerprinter.fingerprint(root, outputs);
 
     const manifest: ArtifactManifest = {
@@ -84,9 +85,9 @@ export class FilesystemArtifactCache implements ArtifactCache {
   }
 
   async restore(artifact: Artifact, root: string): Promise<boolean> {
-    const layout = this.layoutFactory.create(artifact);
-
     try {
+      const layout = this.layoutFactory.create(artifact);
+
       const manifest = await this.loadArtifactManifest(layout.manifest());
 
       if (!manifest || !this.hasValidFingerprints(manifest)) {
@@ -174,7 +175,7 @@ export class FilesystemArtifactCache implements ArtifactCache {
     const actual = await this.fingerprinter.fingerprint(root, manifest.outputs);
 
     if (actual.length !== manifest.outputs.length) {
-      this.logger.error('artifact.cache.fingerprint.count-mismatch', {
+      this.logger.warn('artifact.cache.fingerprint.count-mismatch', {
         metadata: {
           artifact: manifest.artifact.id,
           root,
@@ -191,7 +192,7 @@ export class FilesystemArtifactCache implements ArtifactCache {
     const comparison = this.comparator.compare(expected, actual);
 
     if (!comparison.isIdentical) {
-      this.logger.error('artifact.cache.fingerprint.mismatch', {
+      this.logger.warn('artifact.cache.fingerprint.mismatch', {
         metadata: {
           artifact: manifest.artifact.id,
           root,

@@ -2,16 +2,15 @@
 
 import type { CAC } from 'cac';
 
-import { createInspectArtifactUseCase } from '@arch-platform/application';
-
 import type { InspectCliOptions } from '../contracts/inspect-cli-options.js';
 import { renderInspectResult } from '../renderers/render-inspect.js';
 import { logger } from '../ui/logger.js';
 
 export async function runInspectCommand(options: InspectCliOptions): Promise<number> {
   try {
-    const workspaceRoot = process.cwd();
+    const { createInspectArtifactUseCase } = await import('@arch-platform/application');
 
+    const workspaceRoot = process.cwd();
     const useCase = await createInspectArtifactUseCase(workspaceRoot);
 
     const result = await useCase.execute({

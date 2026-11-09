@@ -1,14 +1,16 @@
 {
   "default": true,
 
-  "MD001": false,
+  "MD001": true,
 
   "MD003": {
     "style": "atx"
   },
 
   "MD007": {
-    "indent": 4
+    "indent": 2,
+    "start_indent": 2,
+    "start_indented": false
   },
 
   "MD009": {
@@ -40,7 +42,11 @@
     "style": "fenced"
   },
 
-  "MD055": false,
+  "MD051": {
+    "ignore_case": false
+  },
+
+  "MD055": true,
 
   "no-hard-tabs": false
 }

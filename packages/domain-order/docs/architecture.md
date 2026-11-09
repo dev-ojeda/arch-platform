@@ -15,7 +15,7 @@ El package define:
 
 ---
 
-# Arquitectura
+## Arquitectura
 
 ```txt
 contracts/
@@ -36,7 +36,7 @@ types/
 
 ---
 
-# Estructura Inicial
+## Estructura Inicial
 
 ```txt
 packages/domain-order
@@ -77,7 +77,7 @@ packages/domain-order
 
 ---
 
-# Implementación Inicial
+## Implementación Inicial
 
 ## src/models/order-status.ts
 
@@ -222,7 +222,7 @@ export * from './types/index.js';
 
 ---
 
-# Boundaries
+## Boundaries
 
 ## .boundaries.json
 
@@ -238,7 +238,7 @@ export * from './types/index.js';
 
 ---
 
-# Testing
+## Testing
 
 ## test/domain-order.spec.ts
 
@@ -278,7 +278,7 @@ describe('OrderService', () => {
 
 ---
 
-# Próximos pasos
+## Próximos pasos
 
 ## Fase 1
 

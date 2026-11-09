@@ -2,12 +2,12 @@
 
 import { NodeArchitectureProvider, NodeWorkspaceProvider } from '@arch-platform/infrastructure';
 
+import { GovernanceRulesFactory } from './governance-rules-factory.js';
 import { CodeAnalysisAdapter } from '../analysis/code-analysis/code-analysis-adapter.js';
 import { createGovernanceAnalysisContext } from '../analysis/code-analysis/create-governance-analysis-context.js';
 import type { GovernanceContext } from '../context/governance-context.js';
 import { GovernanceEngine } from '../engine/governance-engine.js';
 
-import { GovernanceRulesFactory } from './governance-rules-factory.js';
 
 export class GovernanceCompositionRoot {
   create() {

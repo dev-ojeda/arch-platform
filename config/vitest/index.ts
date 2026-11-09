@@ -1,1 +1,1 @@
-export * from './shared.js';
+export { createVitestConfig } from './shared.js';

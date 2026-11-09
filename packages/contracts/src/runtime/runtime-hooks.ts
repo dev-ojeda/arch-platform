@@ -1,9 +1,9 @@
 // packages/contracts/src/runtime/runtime-hooks.ts
 
-import type { NamedVariables } from '../variables/named-variables.js';
 
 import type { RuntimeContext } from './runtime-context.js';
 import type { RuntimePhase } from './runtime-phase.js';
+import type { NamedVariables } from '../variables/named-variables.js';
 
 export interface RuntimeHooks<TValues extends NamedVariables = NamedVariables> {
   beforePhase?(phase: RuntimePhase, context: RuntimeContext<TValues>): Promise<void>;

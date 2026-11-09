@@ -10,7 +10,7 @@ dist-arch/
 tmp/
 app/**/*.js
 app/**/*.js.map
-
+logs-ram/
 # dependencies
 node_modules/
 bower_components/

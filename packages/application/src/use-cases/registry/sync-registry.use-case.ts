@@ -6,9 +6,9 @@ import type {
   RegistryPublishedVersionsWriter,
 } from '@arch-platform/platform-model';
 
+import type { SyncRegistryResult } from './sync-registry-result.js';
 import { createStopwatch } from '../../helpers/create-stopwatch.js';
 
-import type { SyncRegistryResult } from './sync-registry-result.js';
 
 export interface SyncRegistryInput {
   readonly artifact?: string;

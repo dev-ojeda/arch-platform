@@ -12,6 +12,7 @@
     "artifactType": "runtime",
     "build": {
       "builder": "tsup",
+      "tsconfig": "tsconfig.json",
       "outputs": [
         "dist"
       ]
@@ -26,7 +27,8 @@
     "build": "tsup",
     "clean": "arch clean --package @arch-platform/cli",
     "compliance": "arch compliance --package @arch-platform/cli --env dev",
-    "typecheck": "arch typecheck --package @arch-platform/cli"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . --max-warnings 0 --no-warn-ignored --cache --cache-strategy content"
   },
   "dependencies": {
     "@arch-platform/application": "workspace:*",

@@ -10,7 +10,6 @@ describe('TypeScriptSourceUnit.getExports', () => {
     `);
 
     const exports = unit.getExports();
-    console.log(exports);
     expect(exports).toHaveLength(1);
 
     expect(exports[0]).toMatchObject({

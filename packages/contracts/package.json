@@ -31,7 +31,8 @@
     "arch": "arch build --package @arch-platform/contracts",
     "clean": "arch clean --package @arch-platform/contracts",
     "compliance": "arch compliance --package @arch-platform/contracts --env dev",
-    "typecheck": "arch typecheck --package @arch-platform/contracts"
+    "typecheck": "arch typecheck --package @arch-platform/contracts",
+    "lint": "arch lint --package @arch-platform/contracts"
   },
   "license": "MIT"
 }

@@ -1,4 +1,4 @@
 // packages/platform-model/src/security/cve/index.ts
 
-export * from './cve-advisory-adapter.js';
-export * from './cve-advisory-reader.js';
+export type { CVEAdvisoryAdapter } from './cve-advisory-adapter.js';
+export type { CVEAdvisoryReader } from './cve-advisory-reader.js';

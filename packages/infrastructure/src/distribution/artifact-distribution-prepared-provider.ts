@@ -7,10 +7,10 @@ import type {
   ArtifactDistributionPreparedWriter,
 } from '@arch-platform/platform-model';
 
-import { NodeAsyncFileSystemAdapter } from '../filesystem/adapters/node-async-filesystem-adapter.js';
 
 import { FilesystemArtifactDistributionReader } from './filesystem-artifact-distribution-prepared-reader.js';
 import { FilesystemArtifactDistributionPreparedWriter } from './filesystem-artifact-distribution-prepared-writer.js';
+import { NodeAsyncFileSystemAdapter } from '../filesystem/adapters/node-async-filesystem-adapter.js';
 
 export class ArtifactDistributionPreparedProvider implements ArtifactDistributionPreparedProviderPort {
   createReaderForWorkspace(workspaceRoot: string): ArtifactDistributionPreparedReader {

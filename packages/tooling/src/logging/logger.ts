@@ -1,9 +1,9 @@
-import { safeStringify } from '../serialization/safe-stringify.js';
 
 import { LOG_LEVELS } from './log-levels.js';
 import type { LogLevel, LogMetadata, LogOptions } from './log-types.js';
 import { sanitizeMetadata } from './sanitize-metadata.js';
 import { TRACE_ENABLED } from './trace-config.js';
+import { safeStringify } from '../serialization/safe-stringify.js';
 
 const ARCH_PREFIX = '[arch]';
 

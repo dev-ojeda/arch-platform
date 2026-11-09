@@ -1,8 +1,8 @@
 // packages/code-analysis/src/language/typescript/scanners/symbols/enum-symbol-scanner.ts
 
+import type { SymbolDefinition } from './symbol-types.js';
 import type { SourceUnit } from '../../source/source-unit.js';
 
-import type { SymbolDefinition } from './symbol-types.js';
 
 export class EnumSymbolScanner {
   scan(source: SourceUnit): readonly SymbolDefinition[] {

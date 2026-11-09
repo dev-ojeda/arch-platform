@@ -1,6 +1,6 @@
 {
   "name": "@arch-platform/distribution",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "ARCH Platform CLI for building workspace packages with artifact caching and restoration.",
   "author": "neo1sre",
   "license": "SEE LICENSE IN LICENSE",
@@ -29,14 +29,13 @@
   "scripts": {
     "build": "tsup",
     "clean": "arch clean --package @arch-platform/distribution",
-    "typecheck": "arch typecheck --package @arch-platform/distribution"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . --max-warnings 0 --no-warn-ignored --cache --cache-strategy content"
   },
   "dependencies": {
+    "@arch-platform/build-core": "workspace:*",
     "cac": "catalog:",
     "execa": "catalog:",
     "typescript": "catalog:"
-  },
-  "devDependencies": {
-    "@arch-platform/build-core": "workspace:*"
   }
 }

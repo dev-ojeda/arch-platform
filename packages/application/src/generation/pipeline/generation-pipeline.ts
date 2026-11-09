@@ -6,6 +6,7 @@ import type {
   TemplateVariables,
 } from '@arch-platform/contracts';
 
+import type { GenerationPipelineOptions } from './generation-pipeline-options.js';
 import type {
   PipelineCompletedEvent,
   PipelineFailedEvent,
@@ -20,7 +21,6 @@ import type {
 } from '../../runtime/execution/events/step-events.js';
 import { measureStepExecution } from '../telemetry/measure-step-execution.js';
 
-import type { GenerationPipelineOptions } from './generation-pipeline-options.js';
 
 export class GenerationPipeline<TVariables extends TemplateVariables = TemplateVariables> {
   constructor(private readonly options: GenerationPipelineOptions<TVariables>) {}

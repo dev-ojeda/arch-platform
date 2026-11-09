@@ -3,7 +3,12 @@
 import { describe, expect, it } from 'vitest';
 
 import type { BuildResult } from '../../../src/executor/build-result.js';
-import { createSuccessResult } from '../../helpers/build-result.js';
+import {
+  createCachedResult,
+  createFailedResult,
+  createRestoredResult,
+  createSuccessResult,
+} from '../../helpers/build-result.js';
 import { createBuildTaskRunner } from '../../helpers/build-task-runner.js';
 import { createDeferred } from '../../helpers/create-deferred.js';
 import { createNode, createPlan, createScheduler } from '../../helpers/execution-plan.js';
@@ -66,7 +71,7 @@ describe('ExecutionPlanScheduler', () => {
     expect(context.nodes.get('package-a')?.state).toBe('success');
     expect(context.triggers.get('package-b')).toEqual({
       package: 'package-a',
-      reason: 'dependency-changed',
+      reason: 'dependency-ready',
     });
   });
 
@@ -150,4 +155,112 @@ describe('ExecutionPlanScheduler', () => {
     expect(context.nodes.get('package-a')?.state).toBe('success');
     expect(context.nodes.get('package-b')?.state).toBe('success');
   });
+  it('should mark a node as failed when the runner returns a failed result', async () => {
+    const runner = createBuildTaskRunner(() => Promise.resolve(createFailedResult('package-a')));
+
+    const plan = createPlan(
+      createNode('package-a', {
+        dependents: ['package-b'],
+      }),
+      createNode('package-b', {
+        dependencies: ['package-a'],
+      }),
+    );
+
+    const { scheduler, context } = createScheduler(plan, runner);
+
+    const results = await scheduler.run(plan, context);
+
+    expect(runner.run).toHaveBeenCalledTimes(1);
+
+    expect(context.nodes.get('package-a')?.state).toBe('failed');
+    expect(context.nodes.get('package-b')?.state).toBe('skipped');
+
+    expect(results).toContainEqual(
+      expect.objectContaining({
+        package: 'package-a',
+        status: 'failed',
+      }),
+    );
+
+    expect(results).toContainEqual(
+      expect.objectContaining({
+        package: 'package-b',
+        status: 'skipped',
+        changeReason: 'dependency-failed',
+      }),
+    );
+  });
+  it('should propagate dependency failures to all transitive dependents', async () => {
+    const runner = createBuildTaskRunner(() => Promise.resolve(createFailedResult('package-a')));
+
+    const plan = createPlan(
+      createNode('package-a', {
+        dependents: ['package-b'],
+      }),
+      createNode('package-b', {
+        dependencies: ['package-a'],
+        dependents: ['package-c'],
+      }),
+      createNode('package-c', {
+        dependencies: ['package-b'],
+      }),
+    );
+
+    const { scheduler, context } = createScheduler(plan, runner);
+
+    const results = await scheduler.run(plan, context);
+
+    expect(runner.run).toHaveBeenCalledTimes(1);
+
+    expect(context.nodes.get('package-a')?.state).toBe('failed');
+    expect(context.nodes.get('package-b')?.state).toBe('skipped');
+    expect(context.nodes.get('package-c')?.state).toBe('skipped');
+
+    expect(results).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ package: 'package-a', status: 'failed' }),
+        expect.objectContaining({
+          package: 'package-b',
+          status: 'skipped',
+          changeReason: 'dependency-failed',
+        }),
+        expect.objectContaining({
+          package: 'package-c',
+          status: 'skipped',
+          changeReason: 'dependency-failed',
+        }),
+      ]),
+    );
+  });
+  it.each([
+    ['cached', createCachedResult],
+    ['restored', createRestoredResult],
+  ] as const)(
+    'should execute dependents when a dependency is %s',
+    async (_reason, createResult) => {
+      const runner = createBuildTaskRunner((name: string) =>
+        Promise.resolve(
+          name === 'package-a' ? createResult('package-a') : createSuccessResult(name),
+        ),
+      );
+
+      const plan = createPlan(
+        createNode('package-a', {
+          dependents: ['package-b'],
+        }),
+        createNode('package-b', {
+          dependencies: ['package-a'],
+        }),
+      );
+
+      const { scheduler, context } = createScheduler(plan, runner);
+
+      await scheduler.run(plan, context);
+
+      expect(runner.run).toHaveBeenCalledTimes(2);
+      expect(context.nodes.get('package-a')?.state).toBe('success');
+      expect(context.nodes.get('package-b')?.state).toBe('success');
+    },
+  );
 });

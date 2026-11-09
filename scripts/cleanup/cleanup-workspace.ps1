@@ -76,6 +76,7 @@ $CleanupDirectories = @(
   '.arch-cache',
   '.arch-platform',
   '.arch-platform-cache'
+  'logs-ram'
 )
 
 $CleanupFiles = @(

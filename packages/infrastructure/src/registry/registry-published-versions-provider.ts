@@ -7,10 +7,10 @@ import type {
   RegistryPublishedVersionsWriter,
 } from '@arch-platform/platform-model';
 
-import { NodeAsyncFileSystemAdapter } from '../filesystem/adapters/node-async-filesystem-adapter.js';
 
 import { FilesystemRegistryPublishedVersionsReader } from './filesystem-registry-published-versions-reader.js';
 import { FilesystemRegistryPublishedVersionsWriter } from './filesystem-registry-published-versions-writer.js';
+import { NodeAsyncFileSystemAdapter } from '../filesystem/adapters/node-async-filesystem-adapter.js';
 
 export class RegistryPublishedVersionsProvider implements RegistryPublishedVersionsProviderPort {
   createReaderForWorkspace(workspaceRoot: string): RegistryPublishedVersionsReader {

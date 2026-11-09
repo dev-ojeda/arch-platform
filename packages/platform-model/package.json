@@ -27,6 +27,7 @@
     "arch": "arch build --package @arch-platform/platform-model",
     "compliance": "arch compliance --package @arch-platform/platform-model --env dev",
     "clean": "arch clean --package @arch-platform/platform-model",
-    "typecheck": "arch typecheck --package @arch-platform/platform-model"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . --max-warnings 0 --no-warn-ignored --cache --cache-strategy content"
   }
 }

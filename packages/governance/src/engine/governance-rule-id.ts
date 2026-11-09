@@ -11,6 +11,7 @@ export const GOVERNANCE_RULE_ID = {
   WorkspacePackageRule: 'validate-workspace-package-structure',
   TypeOnlyImportRule: 'type-only-import-rule',
   TypeOnlyExportRule: 'type-only-export-rule',
+  NoStarExports: 'no-star-exports',
   TestSuccess: 'test-success',
   TestFailure: 'test-failure',
 } as const;

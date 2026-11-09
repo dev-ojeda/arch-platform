@@ -4,14 +4,14 @@ import process from 'node:process';
 
 import type { CAC } from 'cac';
 
-import { createVersionPackageUseCase } from '@arch-platform/application';
-
 import type { VersionCliOptions } from '../contracts/version-cli-options.js';
 import { renderVersionResult } from '../renderers/render-version.js';
 import { logger } from '../ui/logger.js';
 
 export async function runVersionCommand(options: VersionCliOptions): Promise<number> {
   try {
+    const { createVersionPackageUseCase } = await import('@arch-platform/application');
+
     const packageName = options.package?.replaceAll('\\', '/');
     const useCase = await createVersionPackageUseCase(process.cwd(), packageName);
 

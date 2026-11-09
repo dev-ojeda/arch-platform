@@ -20,3 +20,34 @@ export function createSuccessResult(packageName: string): BuildResult {
     },
   };
 }
+export function createFailedResult(packageName: string): BuildResult {
+  return {
+    package: packageName,
+    status: 'failed',
+    changeReason: 'source',
+    execution: {
+      reason: 'failed',
+    },
+  };
+}
+export function createCachedResult(packageName: string): BuildResult {
+  return {
+    package: packageName,
+    status: 'skipped',
+    changeReason: 'none',
+    execution: {
+      reason: 'cached',
+    },
+  };
+}
+
+export function createRestoredResult(packageName: string): BuildResult {
+  return {
+    package: packageName,
+    status: 'skipped',
+    changeReason: 'none',
+    execution: {
+      reason: 'restored',
+    },
+  };
+}

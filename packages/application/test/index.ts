@@ -1,1 +1,1 @@
-export * from './test-pipeline-execution.js';
+export type { TestPipelineExecution } from './test-pipeline-execution.js';

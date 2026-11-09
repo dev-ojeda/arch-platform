@@ -11,6 +11,7 @@ import type { ArchitectureManifest, WorkspaceDescriptor } from '@arch-platform/p
 import { CodeAnalysisAdapter } from '../../src/analysis/code-analysis/code-analysis-adapter.js';
 import { createGovernanceAnalysisContext } from '../../src/analysis/code-analysis/create-governance-analysis-context.js';
 import { buildGovernanceContext } from '../../src/context/build-governance-context.js';
+import { NoStarExportsRule } from '../../src/rules/no-star-exports-rule.js';
 import { createCrossPackageDescriptors } from '../fixtures/workspace/create-cross-package-descriptor.js';
 import { createPackageDescriptor } from '../fixtures/workspace/create-package-descriptor.js';
 import { createPackageDescriptors } from '../fixtures/workspace/create-package-descriptors.js';
@@ -112,6 +113,25 @@ describe('CodeAnalysisAdapter', () => {
 
     expect(analysis.symbolGraph.nodes.length).toBeGreaterThan(0);
     expect(analysis.packageGraph).toBeDefined();
+  }, 15_000);
+  it('detects star exports in package source through code analysis', async () => {
+    const executionContext = await analyzeWorkspace(fixturePathCodeAnalysis, {
+      hasPackageManifest: false,
+    });
+
+    const diagnostics = new NoStarExportsRule().run(executionContext);
+
+    expect(diagnostics).toHaveLength(1);
+    expect(diagnostics[0]).toMatchObject({
+      code: 'ARCH_STAR_EXPORT_FORBIDDEN',
+      severity: 'error',
+      location: {
+        file: expect.stringContaining('/src/model/index.ts'),
+      },
+      metadata: {
+        moduleSpecifier: './order-status.js',
+      },
+    });
   }, 15_000);
   it('detects type-only imports', async () => {
     const executionContext = await analyzeWorkspace(fixturePathCodeAnalysis, {

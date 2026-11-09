@@ -7,7 +7,7 @@
     "declaration": true,
     "declarationMap": false,
     "outDir": "./dist",
-    "tsBuildInfoFile": "./.turbo/contracts.tsbuildinfo"
+    "tsBuildInfoFile": "./dist/.tsbuildinfo"
   },
   "exclude": ["node_modules"]
 }

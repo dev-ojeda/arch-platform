@@ -2,6 +2,8 @@
 
 import { getSecurityConfig } from '@arch-platform/infrastructure';
 
+import { resolveSecurityAction } from './resolved-security-action.js';
+import type { SecurityResult } from './security-result.js';
 import { SecurityCompositionRoot } from '../composition/security-composition-root.js';
 import { buildComplianceSecurityContext } from '../context/build-compliance-security-context.js';
 import { buildComplianceSecurityExecutionContext } from '../context/build-compliance-security-execution-context.js';
@@ -10,8 +12,6 @@ import { DependencyLockfileQuery } from '../dependency/dependency-lock-file-quer
 import { createStopwatch } from '../helpers/create-stopwatch.js';
 import type { SecurityOptions } from '../security/security-options.js';
 
-import { resolveSecurityAction } from './resolved-security-action.js';
-import type { SecurityResult } from './security-result.js';
 
 export async function runSecurity(options: SecurityOptions): Promise<SecurityResult> {
   const stopwatch = createStopwatch();

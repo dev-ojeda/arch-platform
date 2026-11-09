@@ -1,1 +1,1 @@
-export * from './in-memory-generator-registry.js';
+export { InMemoryGeneratorRegistry } from './in-memory-generator-registry.js';

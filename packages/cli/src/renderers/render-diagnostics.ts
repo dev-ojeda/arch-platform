@@ -2,9 +2,9 @@
 
 import type { GovernanceResult } from '@arch-platform/governance';
 
+import { formatterDiagnostic } from './formatter-diagnostic.js';
 import { terminal } from '../ui/terminal.js';
 
-import { formatterDiagnostic } from './formatter-diagnostic.js';
 
 export function renderGovernanceResult(result: GovernanceResult): void {
   renderHeader(result);

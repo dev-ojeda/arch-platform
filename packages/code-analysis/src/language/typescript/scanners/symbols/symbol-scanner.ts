@@ -1,9 +1,9 @@
 // packages/code-analysis/src/language/typescript/scanners/symbols/symbol-scanner.ts
 
-import type { SourceReader } from '../../source/source-reader.js';
 
 import type { SymbolMetadataScanner } from './symbol-metadata-scanner.js';
 import type { SymbolDefinition } from './symbol-types.js';
+import type { SourceReader } from '../../source/source-reader.js';
 
 export class SymbolScanner {
   constructor(

@@ -4,6 +4,7 @@
     "noEmit": true,
     "baseUrl": "..",
     "skipLibCheck": true,
+    "allowJs": true,
     "paths": {
       "@arch-platform/*": ["../packages/*/src"],
       "@arch-platform/generator-mvc": ["../packages/generators/mvc/src"]

@@ -1,8 +1,6 @@
 // packages/compliance/src/security/index.ts
 
-export * from './default-security-evaluator.js';
-export * from './dependency-occurrence.js';
-
-export * from './security-options.js';
-
-export * from './security-vulnerability-matcher.js';
+export { DefaultSecurityEvaluator } from './default-security-evaluator.js';
+export type { DependencyOccurrence } from './dependency-occurrence.js';
+export type { SecurityOptions } from './security-options.js';
+export { SecurityVulnerabilityMatcher } from './security-vulnerability-matcher.js';

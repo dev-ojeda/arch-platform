@@ -2,6 +2,7 @@
 
 import type { HashService, SourceHashService } from '@arch-platform/contracts';
 
+import { normalizeTypeScriptComments } from './normalize-typescript-comments.js';
 import {
   isDirectory,
   readDirectoryEntriesSync,
@@ -9,7 +10,6 @@ import {
 } from '../filesystem/io/fs-sync.js';
 import { joinPath, packagePath, relativePath, resolvePath } from '../filesystem/io/path-utils.js';
 
-import { normalizeTypeScriptComments } from './normalize-typescript-comments.js';
 
 const IGNORED_DIRS = new Set(['node_modules', 'dist', '.turbo', '.git']);
 const IGNORED_FILES = new Set(['tsconfig.tsbuildinfo']);

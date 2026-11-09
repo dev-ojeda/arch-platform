@@ -5,7 +5,8 @@ import { describe, expect, it } from 'vitest';
 import type { GenerationPipelineStep } from '@arch-platform/contracts';
 import { createTestContext, createTestIdGenerator, createTestStep } from '@arch-platform/testing';
 
-import { GenerationPipeline, createRuntime } from '../../src/testing/index.js';
+import { GenerationPipeline } from '../../src/generation/pipeline/generation-pipeline.js';
+import { createRuntime } from '../../src/runtime/runtime-bootstrap.js';
 
 describe('TimelineAggregator Failure', () => {
   it('marks failed steps in execution timeline', async () => {

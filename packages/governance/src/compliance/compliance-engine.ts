@@ -6,10 +6,10 @@ import type {
   Diagnostic,
 } from '@arch-platform/platform-model';
 
-import type { ComplianceExecutionContext } from '../context/compliance-execution-context.js';
 
 import type { ComplianceEvaluation } from './compliance-evaluation.js';
 import type { ComplianceRule } from './compliance-rule.js';
+import type { ComplianceExecutionContext } from '../context/compliance-execution-context.js';
 
 export class ComplianceEngine {
   constructor(

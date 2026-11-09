@@ -1,8 +1,8 @@
 // packages/code-analysis/src/language/typescript/scanners/symbols/function-symbol-scanner.ts
 
+import type { SymbolDefinition } from './symbol-types.js';
 import type { SourceUnit } from '../../source/source-unit.js';
 
-import type { SymbolDefinition } from './symbol-types.js';
 
 export class FunctionSymbolScanner {
   scan(source: SourceUnit): readonly SymbolDefinition[] {

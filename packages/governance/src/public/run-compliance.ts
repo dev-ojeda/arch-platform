@@ -1,12 +1,12 @@
 // packages/governance/src/public/run-compliance.ts
 
+import type { ComplianceOptions } from './compliance-options.js';
+import type { ComplianceResult } from './compliance-result.js';
 import { ComplianceCompositionRoot } from '../composition/compliance-composition-root.js';
 import { buildComplianceContext } from '../context/build-compliance-context.js';
 import { resolveComplianceAction } from '../diagnostics/resolved-compliance-action.js';
 import { createStopwatch } from '../helpers/create-stopwatch.js';
 
-import type { ComplianceOptions } from './compliance-options.js';
-import type { ComplianceResult } from './compliance-result.js';
 
 export async function runCompliance(options: ComplianceOptions): Promise<ComplianceResult> {
   const stopwatch = createStopwatch();

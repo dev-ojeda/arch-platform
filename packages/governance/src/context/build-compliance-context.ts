@@ -6,10 +6,10 @@ import type {
   WorkspaceDescriptor,
 } from '@arch-platform/platform-model';
 
-import type { ComplianceOptions } from '../public/compliance-options.js';
 
 import type { ComplianceContext } from './compliance-context.js';
 import { resolveComplianceScope } from './resolve-compliance-scope.js';
+import type { ComplianceOptions } from '../public/compliance-options.js';
 
 export async function buildComplianceContext(
   options: ComplianceOptions,

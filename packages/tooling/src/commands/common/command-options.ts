@@ -28,13 +28,11 @@ export interface CleanCommandOptions {
   readonly packageName?: string;
   readonly removeDist?: boolean;
   readonly removeCoverage?: boolean;
-  readonly removeTsBuildInfo?: boolean;
 }
 export const DEFAULT_CLEAN_OPTIONS = {
   packageName: '',
   removeDist: true,
   removeCoverage: true,
-  removeTsBuildInfo: true,
 } as const satisfies Required<Omit<CleanCommandOptions, 'cwd'>>;
 
 export interface BuildCommandOptions extends CommandOptions {

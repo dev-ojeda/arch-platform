@@ -56,9 +56,9 @@ En ARCH Platform, los límites de composición deben representar **fronteras arq
 └─────────────────────────────────────────────┘
 ```
 
-## Interpretación
+### Interpretación
 
-### `platform-model`
+#### `platform-model`
 
 Define los **contratos y modelos** que representan las capacidades del sistema.
 
@@ -77,7 +77,7 @@ WorkspacePackage
 
 ---
 
-### `infrastructure`
+#### `infrastructure`
 
 Implementa esos contratos mediante mecanismos concretos.
 
@@ -106,7 +106,7 @@ Los consumidores no deberían necesitar conocer esos detalles internos.
 
 ---
 
-### Consumers
+#### Consumers
 
 Los paquetes consumidores utilizan las capacidades proporcionadas por Infrastructure mediante sus contratos y APIs públicas.
 
@@ -123,7 +123,7 @@ El consumidor debería expresar **qué necesita**, mientras Infrastructure deter
 
 ---
 
-# Regla arquitectónica
+## Regla arquitectónica
 
 > **No crear una abstracción porque podamos nombrarla. Crear una abstracción cuando exista una frontera de composición real.**
 
@@ -150,7 +150,7 @@ Si una abstracción únicamente introduce una clase intermedia utilizada por un 
 
 ---
 
-# Ejemplo: `PackageDescriptorFactory`
+## Ejemplo: `PackageDescriptorFactory`
 
 Una arquitectura innecesariamente fragmentada:
 
@@ -176,7 +176,7 @@ y desaparecer como componente público.
 
 ---
 
-# Frontera correcta
+## Frontera correcta
 
 ```text
 WorkspaceProvider
@@ -220,7 +220,7 @@ WorkspaceProjector
 
 ---
 
-# Principio para Infrastructure
+## Principio para Infrastructure
 
 Infrastructure es una pieza central de ARCH Platform, pero **no debe convertirse en un repositorio de pequeñas abstracciones**.
 
@@ -254,7 +254,7 @@ La organización debe reflejar **capacidades y fronteras arquitectónicas**, no 
 
 ---
 
-# Regla de diseño de ARCH
+## Regla de diseño de ARCH
 
 > **Una frontera arquitectónica debe justificar su existencia por el desacoplamiento que proporciona.**
 

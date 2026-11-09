@@ -1,12 +1,13 @@
-export const CONFIG_TS_FILES = ['config/**/*.ts'];
-export const SOURCE_FILES = ['packages/**/*.ts', 'packages/**/*.tsx'];
+// config/eslint/constants.mjs
+
+export const CONFIG_TS_FILES = ['config/**/*.ts', '**/arch-platform/config/**/*.ts'];
+export const SOURCE_FILES = ['packages/**/src/**/*.ts', 'packages/**/src/**/*.tsx'];
 
 /**
  * -----------------------------------------------------------------------------
  * Import Governance
  * -----------------------------------------------------------------------------
  */
-
 export const RESTRICTED_IMPORTS = {
   patterns: ['@arch-platform/*/src/**', '@arch-platform/*/dist/**'],
 

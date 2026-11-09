@@ -12,11 +12,15 @@ export type ExecutionState =
   | 'skipped';
 
 export type ExecutionTriggerReason =
+  | 'dependency-ready'
   | 'dependency-changed'
   | 'source-changed'
+  | 'config-changed'
   | 'first-build'
   | 'manual'
-  | 'cache-invalidated';
+  | 'cache-version-changed'
+  | 'output-integrity-failed'
+  | 'missing-output';
 
 export type ExecutionTrigger = {
   package: string;

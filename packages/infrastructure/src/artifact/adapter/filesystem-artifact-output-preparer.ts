@@ -52,11 +52,18 @@ export class FilesystemArtifactOutputPreparer implements ArtifactOutputPreparer 
 
       return target;
     });
-    // Only begin filesystem mutations after every path has passed validation.
+    // Check existence before performing filesystem mutations.
+    const existingTargets: string[] = [];
+
     for (const target of targets) {
-      if (!(await this.filesystem.exists(target))) {
-        await this.filesystem.remove(target);
+      if (await this.filesystem.exists(target)) {
+        existingTargets.push(target);
       }
+    }
+
+    // Only remove outputs that already exist.
+    for (const target of existingTargets) {
+      await this.filesystem.remove(target);
     }
   }
 }

@@ -2,11 +2,11 @@
 
 import type { GeneratorDefinition } from '@arch-platform/contracts';
 
-import type { MvcVariables } from '../variables/mvc.variables.js';
 
 import { mvcDescriptor } from './descriptor.js';
 import { mvcFiles } from './files.js';
 import { mvcSchema } from './schema.js';
+import type { MvcVariables } from '../variables/mvc.variables.js';
 
 export const mvcGenerator: GeneratorDefinition<MvcVariables> = {
   descriptor: mvcDescriptor,

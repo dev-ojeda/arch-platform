@@ -1,4 +1,4 @@
 // packages/infrastructure/src/security/cve/index.ts
 
-export * from './cve-record-response.js';
-export * from './filesystem-cve-advisory-reader.js';
+export type { CVERecordResponse } from './cve-record-response.js';
+export { FilesystemCVEAdvisoryReader } from './filesystem-cve-advisory-reader.js';

@@ -33,14 +33,18 @@
     "clean": "arch clean --package @arch-platform/code-analysis",
     "compliance": "arch compliance --package @arch-platform/code-analysis --env dev",
     "security": "arch security --package @arch-platform/code-analysis",
-    "typecheck": "arch typecheck --package @arch-platform/code-analysis",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . --max-warnings 0 --no-warn-ignored --cache --cache-strategy content",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",
     "test:watch": "vitest",
     "test:clear": "vitest --clearCache"
   },
   "dependencies": {
-    "ts-morph": "catalog:",
-    "typescript": "catalog:"
+    "ts-morph": "catalog:"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }

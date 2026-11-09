@@ -1,6 +1,6 @@
 // packages/application/src/runtime/execution/timeline/index.ts
 
-export * from './execution-timeline-step.js';
-export * from './execution-timeline.js';
-export * from './timeline-aggregator.js';
-export * from './timeline-console-renderer.js';
+export type { ExecutionTimelineStep } from './execution-timeline-step.js';
+export type { ExecutionTimeline } from './execution-timeline.js';
+export { TimelineAggregator } from './timeline-aggregator.js';
+export { TimelineConsoleRenderer } from './timeline-console-renderer.js';

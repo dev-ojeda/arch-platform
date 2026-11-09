@@ -9,10 +9,10 @@ import type {
   StateWriter,
 } from '@arch-platform/platform-model';
 
+import { MutableStateChanges } from './state-changes.js';
 import { HASH_SCHEMA_VERSION } from '../hashing/hash-schema-version.js';
 import { safeStringify } from '../serialization/safe-stringify.js';
 
-import { MutableStateChanges } from './state-changes.js';
 
 export class BuildStateWriter implements StateWriter {
   private readonly changes = new MutableStateChanges();

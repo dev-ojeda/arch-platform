@@ -4,7 +4,7 @@ import type { Options } from 'tsup';
 
 export function createBaseConfig(): Options {
   return {
-    clean: true,
+    clean: false,
     format: ['esm'],
     platform: 'node',
     target: 'node22',

@@ -31,7 +31,8 @@
     "arch": "arch build --package @arch-platform/build-core",
     "clean": "arch clean --package @arch-platform/build-core",
     "compliance": "arch compliance --package @arch-platform/build-core --env dev",
-    "typecheck": "arch typecheck --package @arch-platform/build-core",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . --max-warnings 0 --no-warn-ignored --cache --cache-strategy content",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",
     "test:watch": "vitest",
@@ -41,5 +42,8 @@
     "@arch-platform/contracts": "0.3.0-0",
     "@arch-platform/infrastructure": "workspace:*",
     "@arch-platform/platform-model": "workspace:*"
+  },
+  "devDependencies": {
+    "vitest": "catalog:"
   }
 }

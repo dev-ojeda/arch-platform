@@ -37,10 +37,14 @@
     "arch": "arch build --package @arch-platform/domain-order",
     "clean": "arch clean --package @arch-platform/domain-order",
     "compliance": "arch compliance --package @arch-platform/domain-order --env dev",
-    "typecheck": "arch typecheck --package @arch-platform/domain-order",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . --max-warnings 0 --no-warn-ignored --cache --cache-strategy content",
     "test": "vitest run -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",
     "test:watch": "vitest",
     "test:clear": "vitest --clearCache"
+  },
+  "devDependencies": {
+    "vitest": "catalog:"
   }
 }

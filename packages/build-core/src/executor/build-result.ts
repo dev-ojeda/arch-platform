@@ -1,10 +1,8 @@
 // packages/build-core/src/executor/build-result.ts
-
-import type { ArtifactStateReason } from '@arch-platform/platform-model';
-
-import type { ChangeReason } from '../cache/cache-types.js';
-
 import type { ExecutionReason } from './execution-types.js';
+import type { ChangeReason } from '../cache/cache-types.js';
+import type { ExecutionTriggerReason } from '../runtime/execution/execution-context.js';
+
 
 export type BuildResult = {
   package: string;
@@ -18,7 +16,7 @@ export type BuildResult = {
 
     triggeredBy?: {
       package: string;
-      reason: ArtifactStateReason;
+      reason: ExecutionTriggerReason;
     };
   };
 

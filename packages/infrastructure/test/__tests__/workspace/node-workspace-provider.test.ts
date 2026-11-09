@@ -50,12 +50,12 @@ describe('NodeWorkspaceProvider', () => {
   it('detects scripts/git when the directory exists', async () => {
     const root = await createWorkspace();
 
-    await ensureDirAsync(joinPath(root, 'scripts', 'git'));
+    await ensureDirAsync(joinPath(root, 'scripts'));
 
     const provider = new NodeWorkspaceProvider(createPackageProvider());
     const workspace = await provider.discover(root);
 
-    expect(workspace.layout.scriptPath).toBe(joinPath(root, 'scripts', 'git'));
+    expect(workspace.layout.scriptPath).toBe(joinPath(root, 'scripts'));
     expect(workspace.layout.hasScriptPath).toBe(true);
   });
 
@@ -64,7 +64,7 @@ describe('NodeWorkspaceProvider', () => {
 
     const provider = new NodeWorkspaceProvider(createPackageProvider());
     const workspace = await provider.discover(root);
-    expect(workspace.layout.scriptPath).toBe(joinPath(root, 'scripts', 'git'));
+    expect(workspace.layout.scriptPath).toBe(joinPath(root, 'scripts'));
     expect(workspace.layout.hasScriptPath).toBe(false);
   });
 });

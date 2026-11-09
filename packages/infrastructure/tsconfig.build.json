@@ -8,6 +8,6 @@
     "declarationMap": true,
     "sourceMap": true,
     "outDir": "./dist",
-    "tsBuildInfoFile": "./.turbo/infrastructure.tsbuildinfo"
+    "tsBuildInfoFile": "./dist/.tsbuildinfo"
   }
 }

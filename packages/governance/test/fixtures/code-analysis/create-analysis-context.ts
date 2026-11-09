@@ -2,9 +2,9 @@
 
 import type { AnalysisContext } from '@arch-platform/code-analysis';
 
+import { createExportedSymbolIndex } from './create-exported-symbol-index.js';
 import { createSymbolGraph } from '../graph/create-empty-symbol-graph.js';
 
-import { createExportedSymbolIndex } from './create-exported-symbol-index.js';
 
 export function createAnalysisContext(overrides: Partial<AnalysisContext> = {}): AnalysisContext {
   return {

@@ -2,7 +2,7 @@
 
 import type { SecurityStateChange } from '@arch-platform/platform-model';
 
-import type { SecurityAction } from '../public/security-action.js';
+import type { SecurityAction } from './security-action.js';
 
 export function resolveSecurityAction(change?: SecurityStateChange): SecurityAction {
   if (!change) {

@@ -1,13 +1,13 @@
 // packages/build-core/src/runtime/execution/execution-plan-scheduler.ts
 
+import type { ExecutionContext, ExecutionTriggerReason } from './execution-context.js';
+import { updateExecutionState } from './execution-context.js';
 import type { ChangeReason } from '../../cache/cache-types.js';
 import type { BuildResult } from '../../executor/build-result.js';
 import { BuildTaskRunner } from '../../graph/build-task-runner.js';
 import { logger } from '../../logging/logger.js';
 import type { ExecutionNode, ExecutionPlan } from '../../planning/execution-dag.js';
 
-import type { ExecutionContext, ExecutionTriggerReason } from './execution-context.js';
-import { updateExecutionState } from './execution-context.js';
 
 export class ExecutionPlanScheduler {
   constructor(
@@ -36,16 +36,16 @@ export class ExecutionPlanScheduler {
   private initializeReadyQueue(plan: ExecutionPlan, ctx: ExecutionContext): string[] {
     const ready: string[] = [];
 
-    for (const [name, node] of plan.nodes) {
+    for (const node of plan.nodes.values()) {
       if (node.dependencies.length > 0) {
         continue;
       }
 
-      updateExecutionState(ctx, name, 'ready');
+      updateExecutionState(ctx, node.name, 'ready');
 
       this.setTrigger(ctx, node);
 
-      ready.push(name);
+      ready.push(node.name);
     }
 
     return ready;
@@ -95,6 +95,18 @@ export class ExecutionPlanScheduler {
       }
 
       results.push(result);
+
+      if (result.status === 'failed') {
+        updateExecutionState(ctx, name, 'failed');
+
+        const node = plan.nodes.get(name);
+
+        if (node) {
+          this.notifyDependentsFailed(node, plan, ctx, results);
+        }
+
+        return;
+      }
 
       updateExecutionState(ctx, name, 'success');
 
@@ -173,7 +185,10 @@ export class ExecutionPlanScheduler {
     ctx: ExecutionContext,
     results: BuildResult[],
   ): void {
-    for (const dependent of node.dependents) {
+    const queue = [...node.dependents];
+
+    while (queue.length > 0) {
+      const dependent = queue.shift()!;
       const current = ctx.nodes.get(dependent);
 
       if (!current || current.state !== 'pending') {
@@ -190,6 +205,12 @@ export class ExecutionPlanScheduler {
           reason: 'failed',
         },
       });
+
+      const dependentNode = plan.nodes.get(dependent);
+
+      if (dependentNode) {
+        queue.push(...dependentNode.dependents);
+      }
     }
   }
 
@@ -213,13 +234,16 @@ export class ExecutionPlanScheduler {
   ): void {
     ctx.triggers.set(dependent.name, {
       package: dependency.name,
-      reason: 'dependency-changed',
+      reason: 'dependency-ready',
     });
   }
   private toExecutionTriggerReason(reason: ChangeReason): ExecutionTriggerReason | undefined {
     switch (reason) {
       case 'source':
         return 'source-changed';
+
+      case 'config':
+        return 'config-changed';
 
       case 'dependency':
         return 'dependency-changed';
@@ -228,14 +252,15 @@ export class ExecutionPlanScheduler {
         return 'first-build';
 
       case 'cache-version':
-      case 'config':
-      case 'missing-output':
+        return 'cache-version-changed';
+
       case 'output-integrity':
-        return 'cache-invalidated';
+        return 'output-integrity-failed';
+
+      case 'missing-output':
+        return 'missing-output';
 
       case 'dependency-failed':
-        return 'dependency-changed';
-
       case 'none':
         return undefined;
     }

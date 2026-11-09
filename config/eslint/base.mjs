@@ -1,7 +1,7 @@
 import { importX } from 'eslint-plugin-import-x';
 
 export const ESLINT_PLUGINS = {
-  import: importX,
+  'import-x': importX,
 };
 
 export default {

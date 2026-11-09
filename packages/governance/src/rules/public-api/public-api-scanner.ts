@@ -2,10 +2,10 @@
 
 import type { Diagnostic } from '@arch-platform/platform-model';
 
+import { PublicApiValidator } from './public-api-validator.js';
 import { ImportContextScanner } from '../../analysis/imports/import-context-scanner.js';
 import type { GovernanceExecutionContext } from '../../context/governance-execution-context.js';
 
-import { PublicApiValidator } from './public-api-validator.js';
 
 export class PublicApiScanner {
   constructor(

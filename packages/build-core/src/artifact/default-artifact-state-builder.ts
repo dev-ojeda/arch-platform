@@ -7,12 +7,12 @@ import type {
   Graph,
 } from '@arch-platform/platform-model';
 
+import type { ArtifactStateBuilder } from './artifact-state-builder.js';
 import type { BuildResult } from '../executor/build-result.js';
 import { BuildPlan } from '../planning/build-plan.js';
 import type { BuildPlanEntry } from '../planning/plan-entry.js';
 import type { ExecutionContext } from '../runtime/execution/execution-context.js';
 
-import type { ArtifactStateBuilder } from './artifact-state-builder.js';
 
 export class DefaultArtifactStateBuilder implements ArtifactStateBuilder {
   build(
@@ -24,7 +24,7 @@ export class DefaultArtifactStateBuilder implements ArtifactStateBuilder {
     const artifacts = new Map<string, ArtifactState>();
 
     for (const result of results) {
-      if (result.status === 'failed') {
+      if (result.status === 'failed' || result.execution.reason === 'failed') {
         continue;
       }
 
@@ -78,19 +78,23 @@ export class DefaultArtifactStateBuilder implements ArtifactStateBuilder {
       case 'none':
         return 'none';
 
+      case 'first-build':
+        return 'first-build';
+
       case 'source':
         return 'source-changed';
+
+      case 'config':
+        return 'config-changed';
 
       case 'dependency':
         return 'dependency-changed';
 
-      case 'first-build':
-        return 'first-build';
-
       case 'cache-version':
-      case 'config':
+        return 'cache-version-changed';
+
       case 'output-integrity':
-        return 'cache-invalidated';
+        return 'output-integrity-failed';
 
       case 'missing-output':
         return 'missing-output';

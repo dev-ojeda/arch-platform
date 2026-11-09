@@ -9,8 +9,6 @@ import type {
   Type,
 } from 'ts-morph';
 
-import type { ExportKind } from '../../api-surface/model/export-kind.js';
-import type { ExportedSymbol } from '../../public/exported-symbol.js';
 
 import type { ClassDeclaration } from './model/class-declaration.js';
 import type { EnumDeclaration } from './model/enum-declaration.js';
@@ -26,6 +24,8 @@ import type { VariableDeclaration } from './model/variable-declaration.js';
 import type { ImportedSymbol } from './scanners/symbols/imported-symbol.js';
 import type { SourceUnit } from './source/source-unit.js';
 import { createSymbolId, resolveSymbolId, resolveSymbolKind } from './typescript-source-symbol.js';
+import type { ExportKind } from '../../api-surface/model/export-kind.js';
+import type { ExportedSymbol } from '../../public/exported-symbol.js';
 
 export class TypeScriptSourceUnit implements SourceUnit {
   constructor(private readonly sourceFile: SourceFile) {}

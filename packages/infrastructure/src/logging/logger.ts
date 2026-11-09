@@ -7,11 +7,11 @@ import type {
   LoggerSource,
 } from '@arch-platform/contracts';
 
-import { safeStringify } from '../serialization/safe-stringify.js';
 
 import { LOG_LEVELS } from './log-levels.js';
 import { sanitizeMetadata } from './sanitize-metadata.js';
 import { getTraceComponent, isTraceEnabled } from './trace-config.js';
+import { safeStringify } from '../serialization/safe-stringify.js';
 
 export class LoggerFactory {
   createLogger(source: LoggerSource): LoggerPort {

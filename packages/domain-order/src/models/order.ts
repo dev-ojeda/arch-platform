@@ -1,8 +1,8 @@
 // packages/domain-order/src/models/order.ts
 
+import { OrderStatus } from './order-status.js';
 import { CustomerId, Money, OrderId } from '../value-objects/index.js';
 
-import { OrderStatus } from './order-status.js';
 
 export interface Order {
   id: OrderId;

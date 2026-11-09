@@ -1,6 +1,5 @@
 // packages/build-core/src/logging/logger.ts
 
-import { safeStringify } from '../serialization/safe-stringify.js';
 
 import { LOG_LEVELS } from './log-levels.js';
 import type { LogLevel, LogMetadata, LogOptions } from './log-types.js';
@@ -11,6 +10,7 @@ import {
   TRACE_HASH_ENABLED,
   type TraceCategory,
 } from './trace-config.js';
+import { safeStringify } from '../serialization/safe-stringify.js';
 
 const ARCH_PREFIX = '[arch]';
 

@@ -3,10 +3,10 @@
 import type { ExportedSymbolIndex } from '@arch-platform/code-analysis';
 import type { Diagnostic } from '@arch-platform/platform-model';
 
-import type { ImportContext } from '../../analysis/imports/import-context.js';
 
 import { ExportMapReader } from './export-map-reader.js';
 import { PrivatePathDetector } from './private-path-detector.js';
+import type { ImportContext } from '../../analysis/imports/import-context.js';
 
 export class PublicApiValidator {
   constructor(

@@ -1,5 +1,5 @@
 // packages/infrastructure/src/versioning/index.ts
-
-export * from './npm-artifact-registry-reader.js';
-export * from './package-version-provider.js';
-export * from './semantic-version-calculator.js';
+export { NpmArtifactRegistryReader } from './npm-artifact-registry-reader.js';
+export type { NpmArtifactRegistryPublishing } from './npm-artifact-registry-reader.js';
+export { PackageVersionProvider } from './package-version-provider.js';
+export { SemanticVersionCalculator } from './semantic-version-calculator.js';

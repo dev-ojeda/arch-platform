@@ -23,20 +23,43 @@ export type {
   ArtifactType,
   OutputFingerprint,
 } from './artifact/index.js';
-export * from './compliance/index.js';
 export type {
   ArtifactComplianceStatus,
   ComplianceArtifactEnvironmentState,
   ComplianceEnvironment,
   ComplianceEnvironmentDescriptor,
   ComplianceEnvironmentState,
+  ComplianceEvent,
+  ComplianceEventBus,
+  ComplianceEventHandler,
   ComplianceState,
   ComplianceStateChange,
   ComplianceStateChanges,
 } from './compliance/index.js';
-export * from './dependency/index.js';
+export type {
+  DependencyGraph,
+  DependencyLockfile,
+  DependencyLockfileAdapter,
+  DependencyLockfileCatalog,
+  DependencyLockfileImporter,
+  DependencyLockfilePackage,
+  DependencyLockfilePackageSpec,
+  DependencyLockfileReader,
+  DependencyLockfileSnapshot,
+  DependencyNode,
+} from './dependency/index.js';
 export type { Diagnostic, DiagnosticLocation, DiagnosticSeverity } from './diagnostics/index.js';
-export * from './distribution/index.js';
+export type {
+  ArtifactDistributionPrepared,
+  ArtifactDistributionPreparedProviderPort,
+  ArtifactDistributionPreparedReader,
+  ArtifactDistributionPreparedState,
+  ArtifactDistributionPreparedWriter,
+  ArtifactRegistrationStatus,
+  ArtifactRegistryPublisher,
+  ArtifactRegistryPublishing,
+  ArtifactRegistryPublishingReader,
+} from './distribution/index.js';
 export type {
   CycleDetectionResult,
   DagNode,
@@ -45,7 +68,12 @@ export type {
   MutableGraph,
 } from './graph/index.js';
 export type { HashContext, HashInput, HashResult, HashValidation } from './hashing/index.js';
-export * from './pack/index.js';
+export type {
+  PackedArtifactInspect,
+  PackedReader,
+  PackInspection,
+  PackInspectPort,
+} from './pack/index.js';
 export type {
   PackageBoundaries,
   PackageBuildConfig,
@@ -74,13 +102,63 @@ export type {
   StateLoader,
   StateWriter,
 } from './ports/index.js';
-export * from './process/index.js';
-export * from './publication/index.js';
-export * from './registry/index.js';
-export * from './security/index.js';
+export type { ExecutionProcess } from './process/index.js';
+export type {
+  PublicationArtifactContext,
+  PublicationArtifactReader,
+  PublicationBlockReason,
+  PublicationEligibility,
+  PublicationEligibilityEvaluator,
+  PublicationEligibilityStatus,
+} from './publication/index.js';
+export type {
+  RegistryPublishedPackage,
+  RegistryPublishedVersion,
+  RegistryPublishedVersions,
+  RegistryPublishedVersionsAdapterPort,
+  RegistryPublishedVersionsByScope,
+  RegistryPublishedVersionsPreparedState,
+  RegistryPublishedVersionsProviderPort,
+  RegistryPublishedVersionsReader,
+  RegistryPublishedVersionsWriter,
+} from './registry/index.js';
+export type {
+  AdvisoryIdentifier,
+  CVEAdvisoryAdapter,
+  CVEAdvisoryReader,
+  SecurityAdvisory,
+  SecurityAdvisoryAffected,
+  SecurityAdvisoryAffectedPort,
+  SecurityAdvisoryAffectedRecord,
+  SecurityAdvisoryAffectedVersion,
+  SecurityAdvisoryEvidence,
+  SecurityAdvisoryProvider,
+  SecurityArtifactState,
+  SecurityAssessment,
+  SecurityComplianceArtifact,
+  SecurityComplianceArtifactReader,
+  SecurityContext,
+  SecurityDecision,
+  SecurityDecisionStatus,
+  SecurityEnvironment,
+  SecurityEvaluation,
+  SecurityEvaluationStatus,
+  SecurityEvaluationSummary,
+  SecurityEvaluator,
+  SecurityExecutionContext,
+  SecurityFinding,
+  SecurityScope,
+  SecuritySeverity,
+  SecurityState,
+  SecurityStateChange,
+  SecurityStateChanges,
+  SecurityStateProviderPort,
+  SecurityVulnerabilitySummary,
+  TransformedAssessment,
+} from './security/index.js';
 export type { BuildState, BuildStateEntry, StateChanges } from './state/index.js';
 export type { MaybePromise } from './types/index.js';
-export * from './versioning/index.js';
+export type { PackageVersionProvider, PackageVersionWriter } from './versioning/index.js';
 export type {
   WorkspaceDescriptor,
   WorkspaceGraph,

@@ -5,7 +5,8 @@
     "package.json",
     "pnpm-lock.yaml",
     "pnpm-workspace.yaml",
-    "eslint.config.mjs"
+    "eslint.config.mjs",
+    "config/eslint/**/*"
   ],
 
   "globalEnv": ["NODE_ENV", "CI", "GITHUB_ACTIONS"],
@@ -29,17 +30,27 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$"],
-      "outputs": ["dist/**"]
+      "outputs": ["dist/**", "**/*.tsbuildinfo", ".tsbuildinfo"]
     },
 
     "typecheck": {
+      "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$"],
-      "outputs": []
+      "outputs": ["**/*.tsbuildinfo", ".tsbuildinfo"]
     },
 
+    // 1. Tarea estándar para todos los paquetes individuales del monorrepo
     "lint": {
       "inputs": ["$TURBO_DEFAULT$"],
-      "outputs": []
+      "outputs": [".eslintcache"]
+    },
+
+    // 2. OPTIMIZACIÓN CRUCIAL: Tarea de la raíz (Root Task) para auditar la carpeta global de scripts
+    // El prefijo '://#' le indica a Turborepo que esta tarea pertenece al package.json raíz.
+    "//#lint:scripts": {
+      "cache": true,
+      "inputs": ["scripts/**/*", "config/**/*", "eslint.config.mjs"],
+      "outputs": [".eslintcache"]
     },
 
     "test": {

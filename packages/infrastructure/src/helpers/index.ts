@@ -1,3 +1,3 @@
 // packages/infrastructure/src/helpers/index.ts
 
-export * from './create-stopwatch.js';
+export { createStopwatch } from './create-stopwatch.js';

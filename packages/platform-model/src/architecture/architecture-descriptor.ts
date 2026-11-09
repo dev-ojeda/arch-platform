@@ -1,9 +1,9 @@
 // packages/platform-model/src/architecture/architecture-descriptor.ts
 
-import type { WorkspaceDescriptor } from '../workspace/workspace-descriptor.js';
 
 import type { ArchitectureLayout } from './architecture-layout.js';
 import type { ArchitecturePackage } from './architecture-package.js';
+import type { WorkspaceDescriptor } from '../workspace/workspace-descriptor.js';
 
 export interface ArchitectureDescriptor {
   readonly root: string;

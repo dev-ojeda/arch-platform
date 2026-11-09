@@ -8,11 +8,10 @@ import type {
   WorkspaceProvider,
 } from '@arch-platform/platform-model';
 
+import { NodePackageProvider } from './node-package-provider.js';
 import { pathExists } from '../filesystem/io/fs-async.js';
 import { pathExistsSync } from '../filesystem/io/fs-sync.js';
 import { NodePathService } from '../filesystem/paths/node-path-service.js';
-
-import { NodePackageProvider } from './node-package-provider.js';
 
 const WORKSPACE_FILE = 'pnpm-workspace.yaml';
 export class NodeWorkspaceProvider implements WorkspaceProvider {
@@ -60,8 +59,8 @@ export class NodeWorkspaceProvider implements WorkspaceProvider {
     const configDirectory = this.pathService.join(root, 'config');
     const archManifestPath = this.pathService.join(configDirectory, 'arch.manifest.json');
 
-    const scriptDirectory = this.pathService.join(root, 'scripts');
-    const scriptPath = this.pathService.join(this.pathService.resolve(scriptDirectory), 'git');
+    const scriptPath = this.pathService.join(root, 'scripts');
+    // const scriptPath = this.pathService.join(this.pathService.resolve(scriptDirectory), 'git');
 
     const [hasPackageManifest, hasTsconfig, hasArchManifest, hasScriptPath] = await Promise.all([
       pathExists(packageJsonPath),

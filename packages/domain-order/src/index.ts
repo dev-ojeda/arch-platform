@@ -1,3 +1,21 @@
 // packages/domain-order/src/index.ts
-
-export * from './public/index.js';
+export {
+  CustomerId,
+  DomainError,
+  InvalidOrderError,
+  Money,
+  OrderCreatedEvent,
+  OrderId,
+  OrderNotFoundError,
+  OrderService,
+  OrderStatus,
+} from './public/index.js';
+export type {
+  CreateOrderInput,
+  DomainEvent,
+  EventPublisherContract,
+  Order,
+  OrderCreatedPayload,
+  OrderRepositoryContract,
+  OrderServiceContract,
+} from './public/index.js';
