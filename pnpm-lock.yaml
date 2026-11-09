@@ -6,9 +6,6 @@ settings:
 
 catalogs:
   default:
-    '@arch-platform/generator-mvc':
-      specifier: 0.1.1
-      version: 0.1.1
     '@changesets/cli':
       specifier: 3.0.2
       version: 3.0.2
@@ -217,6 +214,9 @@ importers:
       '@arch-platform/core':
         specifier: workspace:*
         version: link:../core
+      '@arch-platform/generator-mvc':
+        specifier: 0.1.2-dev.0
+        version: 0.1.2-dev.0
       '@arch-platform/infrastructure':
         specifier: workspace:*
         version: link:../infrastructure
@@ -227,9 +227,6 @@ importers:
         specifier: 'catalog:'
         version: 4.7.9
     devDependencies:
-      '@arch-platform/generator-mvc':
-        specifier: 'catalog:'
-        version: 0.1.1
       '@arch-platform/testing':
         specifier: workspace:*
         version: link:../testing
@@ -416,14 +413,14 @@ importers:
 
 packages:
 
-  '@arch-platform/contracts@0.2.1':
-    resolution: {integrity: sha512-mTYLuCvZrfZKZoe0MLULo+2elOFjgwtVK6CLvu1QManOXscevYjoh8N6VLqPaw/fXnLbxeP81c9B5rd2OXXyUA==}
+  '@arch-platform/contracts@0.2.2':
+    resolution: {integrity: sha512-88rqE//r5zgFJ7tubLaDvZ7vUxbAxMHpi9ae6RJzOT+fz8ytLZ23FQX0z9wzdpg5MLAr9T+IWwCKQQ2QPBvlKQ==}
 
   '@arch-platform/contracts@0.3.0-0':
     resolution: {integrity: sha512-61FXwdSykq2BnI0xXEP6JR0LjocZtv13AUa+3rUm6tpL3umo5CsWo8ARIbw/wt8HkRK6CjqCumlStFo+HX+InQ==}
 
-  '@arch-platform/generator-mvc@0.1.1':
-    resolution: {integrity: sha512-n8NP5kAUUjdO1CyizHZvAEOt16s5IraOXKjmwLXk8pQcZk6/uVQWUZP65376qsf/da+FKdSbgAhyqqi+2+YToQ==}
+  '@arch-platform/generator-mvc@0.1.2-dev.0':
+    resolution: {integrity: sha512-WbAClwKXvf6qxjc1DPZ1HmMeMQkdreMg+EsPFcw9LiQJGucTPYJvNokiODINeyv5T5DfP0+oVOif52wPSgSNFw==}
 
   '@babel/code-frame@7.29.7':
     resolution: {integrity: sha512-Aup7aUOfpbAUg2ROOJN6Iw5f9DMBlzu0mIkm/malLQFN/YQgO48wCj0Kxa3sEHJvPVFg7siR+qRInwXd2qhQKw==}
@@ -3575,13 +3572,13 @@ packages:
 
 snapshots:
 
-  '@arch-platform/contracts@0.2.1': {}
+  '@arch-platform/contracts@0.2.2': {}
 
   '@arch-platform/contracts@0.3.0-0': {}
 
-  '@arch-platform/generator-mvc@0.1.1':
+  '@arch-platform/generator-mvc@0.1.2-dev.0':
     dependencies:
-      '@arch-platform/contracts': 0.2.1
+      '@arch-platform/contracts': 0.2.2
 
   '@babel/code-frame@7.29.7':
     dependencies:

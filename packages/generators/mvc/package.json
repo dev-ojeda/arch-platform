@@ -35,7 +35,7 @@
     "lint": "arch lint --package @arch-platform/generator-mvc"
   },
   "dependencies": {
-    "@arch-platform/contracts": "catalog:"
+    "@arch-platform/contracts": "0.3.0-0"
   },
   "license": "MIT"
 }
