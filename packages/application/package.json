@@ -40,9 +40,9 @@
     "test:clear": "vitest --clearCache"
   },
   "dependencies": {
-    "@arch-platform/contracts": "0.3.0-0",
+    "@arch-platform/contracts": "workspace:*",
     "@arch-platform/core": "workspace:*",
-    "@arch-platform/generator-mvc": "0.1.2-dev.0",
+    "@arch-platform/generator-mvc": "workspace:*",
     "@arch-platform/infrastructure": "workspace:*",
     "@arch-platform/platform-model": "workspace:*",
     "handlebars": "catalog:"

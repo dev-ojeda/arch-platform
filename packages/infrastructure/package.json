@@ -39,7 +39,7 @@
     "test:clear": "vitest --clearCache"
   },
   "dependencies": {
-    "@arch-platform/contracts": "0.3.0-0",
+    "@arch-platform/contracts": "workspace:*",
     "@arch-platform/platform-model": "workspace:*",
     "@types/semver": "catalog:",
     "rimraf": "catalog:",
