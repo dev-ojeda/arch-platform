@@ -3,7 +3,7 @@
 import type { ErrnoException } from './errno-exception.js';
 
 export function isErrnoException(error: unknown): error is ErrnoException {
-  return error instanceof Error && 'code' in error;
+  return error instanceof Error && 'code' in error && typeof error.code === 'string';
 }
 
 export function hasErrorCode(error: unknown, ...codes: readonly string[]): error is ErrnoException {

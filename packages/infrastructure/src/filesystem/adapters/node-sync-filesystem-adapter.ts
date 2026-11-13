@@ -22,10 +22,8 @@ import {
 } from '../io/fs-sync.js';
 import { DEFAULT_FILE_SYSTEM_OPTIONS } from '../options/default-filesystem-option.js';
 import type { FileSystemAdapterOptions } from '../options/filesystem-options.js';
-import { normalizeDirectoryEntry } from '../paths/canonicalize-directory-entry.js';
 import { NodePathService } from '../paths/node-path-service.js';
 import { shouldWriteFile } from '../policies/resolve-write-policy.js';
-
 
 export class NodeSyncFileSystemAdapter extends BaseFileSystemAdapter implements FileSystemSyncPort {
   constructor(options: FileSystemAdapterOptions = DEFAULT_FILE_SYSTEM_OPTIONS) {
@@ -65,7 +63,11 @@ export class NodeSyncFileSystemAdapter extends BaseFileSystemAdapter implements 
   }
 
   readBuffer(filePath: string): Uint8Array {
-    return readBufferSync(this.resolvePath(filePath));
+    try {
+      return readBufferSync(this.resolvePath(filePath));
+    } catch (error) {
+      this.logAndThrow(error, 'readBuffer');
+    }
   }
 
   readJson<T>(filePath: string): T {
@@ -73,12 +75,15 @@ export class NodeSyncFileSystemAdapter extends BaseFileSystemAdapter implements 
   }
 
   readDirectory(directoryPath: string): DirectoryEntry[] {
-    const entries = readDirectoryEntriesSync(this.resolvePath(directoryPath));
-
-    return entries.map((entry) => ({
-      ...normalizeDirectoryEntry(entry),
-      path: this.toVirtualPath(entry.path),
-    }));
+    try {
+      const entries = readDirectoryEntriesSync(this.resolvePath(directoryPath));
+      return entries.map((entry) => ({
+        ...entry,
+        path: this.toVirtualPath(entry.path),
+      }));
+    } catch (error) {
+      this.logAndThrow(error, 'readDirectory');
+    }
   }
 
   rename(source: string, destination: string): void {
@@ -90,13 +95,13 @@ export class NodeSyncFileSystemAdapter extends BaseFileSystemAdapter implements 
   }
 
   write(filePath: string, content: string, options?: WriteFileOptions): void {
-    const exists = this.exists(filePath);
-
-    if (!shouldWriteFile(exists, options)) {
-      return;
-    }
-
     try {
+      const exists = this.exists(filePath);
+
+      if (!shouldWriteFile(exists, options)) {
+        return;
+      }
+
       const resolvedPath = this.resolvePath(filePath);
       const parentDirectory = this.pathService.dirname(resolvedPath);
 
