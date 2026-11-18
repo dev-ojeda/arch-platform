@@ -1,9 +1,11 @@
 // packages/infrastructure/src/filesystem/io/fs-sync.ts
 
 import {
+  appendFileSync,
   cpSync,
   lstatSync,
   mkdirSync,
+  mkdtempSync,
   readdirSync,
   readFileSync,
   renameSync,
@@ -111,7 +113,9 @@ export function readJsonFileSync<T>(filePath: string): T {
 //#endregion
 
 //#region write
-
+export function createTempDirectorySync(prefix: string): string {
+  return mkdtempSync(prefix);
+}
 export function ensureDirSync(targetPath: string): void {
   try {
     const info = statSync(targetPath);
@@ -134,6 +138,9 @@ export function ensureDirSync(targetPath: string): void {
 
 export function writeTextFileSync(filePath: string, data: string | Uint8Array): void {
   writeFileSync(filePath, data);
+}
+export function appendTextFileSync(filePath: string, content: string): void {
+  appendFileSync(filePath, content, 'utf8');
 }
 export function copyPathSync(
   source: string,

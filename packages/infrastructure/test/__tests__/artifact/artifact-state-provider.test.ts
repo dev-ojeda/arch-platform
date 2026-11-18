@@ -1,7 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { ArtifactStateProvider } from '@arch-platform/infrastructure';
-
+import { ArtifactStateProvider } from '../../../src/artifact/artifact-state-provider.js';
 import {
   ensureDirAsync,
   removePathWithRetry,

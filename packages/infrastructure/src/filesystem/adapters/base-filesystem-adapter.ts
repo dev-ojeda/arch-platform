@@ -96,6 +96,20 @@ export abstract class BaseFileSystemAdapter {
     throw mapped;
   }
 
+  protected resolveTempPrefix(prefix = 'tmp-'): {
+    resolvedPrefix: string;
+    parentDirectory: string;
+  } {
+    const normalizedPrefix = normalizeSeparators(prefix);
+    const isDirectoryTarget = normalizedPrefix === '' || normalizedPrefix.endsWith('/');
+
+    const safePrefix = isDirectoryTarget ? `${normalizedPrefix}tmp-` : normalizedPrefix;
+    const resolvedPrefix = this.resolvePath(safePrefix);
+    const parentDirectory = this.pathService.dirname(resolvedPrefix);
+
+    return { resolvedPrefix, parentDirectory };
+  }
+
   private sanitizeErrorPath(error: unknown): unknown {
     if (!isErrnoException(error)) {
       return error;

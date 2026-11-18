@@ -6,21 +6,23 @@ import { ArtifactOutputComparator } from '../../../src/artifact/adapter/artifact
 import { ArtifactOutputFingerprinter } from '../../../src/artifact/adapter/artifact-output-fingerprinter.js';
 import { FilesystemArtifactCache } from '../../../src/artifact/adapter/filesystem-artifact-cache.js';
 import { ARTIFACT_SCHEMA_VERSION } from '../../../src/artifact/artifact-schema-version.js';
+import { MemoryAsyncFileSystemAdapter } from '../../../src/filesystem/adapters/memory-async-filesystem-adapter.js';
+import { MemoryFileSystem } from '../../../src/filesystem/memory/memory-filesystem.js';
+import { PosixPathService } from '../../../src/filesystem/paths/posix-path-service.js';
 import { NodeHashService } from '../../../src/hashing/node-hash-service.js';
 import { createMockArtifactOutputFingerprinter } from '../../helpers/create-artifact-output-fingerprint-fixtures.js';
 import { createTestArtifact } from '../../helpers/create-artifact.js';
 import { createMockArtifactLayoutFactory } from '../../helpers/create-mock-artifact-layout-factory.js';
 import { createMockArtifactLayout } from '../../helpers/create-mock-artifact-layout.js';
 import { createMockArtifactPublisher } from '../../helpers/create-mock-artifact-publisher.js';
-import { createMockFilesystem } from '../../helpers/create-mock-filesystem.js';
-import { createTestPathService } from '../../helpers/create-path-service.js';
 
 describe('FilesystemArtifactCache', () => {
   it('should publish artifact manifest when saving an artifact', async () => {
     const artifact = createTestArtifact();
-    const filesystem = createMockFilesystem();
+    const pathService = new PosixPathService();
+    const memoryFilesystem = new MemoryFileSystem(pathService);
+    const filesystem = new MemoryAsyncFileSystemAdapter(memoryFilesystem);
     const publisher = createMockArtifactPublisher();
-    const pathService = createTestPathService();
     const layout = createMockArtifactLayout();
     const fingerprinter = createMockArtifactOutputFingerprinter();
     const comparator = new ArtifactOutputComparator();
@@ -50,8 +52,9 @@ describe('FilesystemArtifactCache', () => {
   });
   it('restores a directory output when a file inside it is missing', async () => {
     const artifact = createTestArtifact();
-    const filesystem = createMockFilesystem();
-    const pathService = createTestPathService();
+    const pathService = new PosixPathService();
+    const memoryFilesystem = new MemoryFileSystem(pathService);
+    const filesystem = new MemoryAsyncFileSystemAdapter(memoryFilesystem);
     const layout = createMockArtifactLayout();
     const fingerprinter = new ArtifactOutputFingerprinter(
       filesystem,

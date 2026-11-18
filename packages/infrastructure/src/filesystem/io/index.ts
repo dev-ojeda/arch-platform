@@ -13,6 +13,8 @@ export {
   removePathWithRetry,
   renamePath,
   writeTextFile,
+  appendTextFile,
+  createTempDirectoryAsync,
 } from './fs-async.js';
 export {
   copyPathSync,
@@ -31,6 +33,8 @@ export {
   renamePathSync,
   tryFileSize,
   writeTextFileSync,
+  appendTextFileSync,
+  createTempDirectorySync,
 } from './fs-sync.js';
 export {
   baseName,

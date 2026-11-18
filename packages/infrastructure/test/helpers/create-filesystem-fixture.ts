@@ -6,6 +6,7 @@ export function createFilesystem() {
   return {
     copy: vi.fn().mockResolvedValue(undefined),
     createDirectory: vi.fn().mockResolvedValue(undefined),
+    createTempDirectory: vi.fn().mockResolvedValue(undefined),
     exists: vi.fn().mockResolvedValue(false),
     read: vi.fn(),
     readJson: vi.fn(),

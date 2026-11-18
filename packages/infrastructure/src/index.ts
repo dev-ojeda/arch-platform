@@ -62,5 +62,11 @@ export {
   SecurityStateProvider,
   SemanticVersionCalculator,
   WorkspacePackageProjector,
+  NodeIdGenerator,
+  HandlebarsTemplateRenderer,
+  PosixPathService,
+  MemoryAsyncFileSystemAdapter,
+  MemoryFileSystem,
+  createTempDirectorySync,
 } from './public/index.js';
 export type { CVERecordResponse, NpmArtifactRegistryPublishing } from './public/index.js';

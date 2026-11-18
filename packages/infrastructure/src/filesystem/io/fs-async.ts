@@ -1,6 +1,17 @@
 // packages/infrastructure/src/filesystem/io/fs-async.ts
 
-import { cp, lstat, mkdir, readdir, readFile, rename, stat, writeFile } from 'node:fs/promises';
+import {
+  appendFile,
+  cp,
+  lstat,
+  mkdir,
+  mkdtemp,
+  readdir,
+  readFile,
+  rename,
+  stat,
+  writeFile,
+} from 'node:fs/promises';
 
 import { rimraf } from 'rimraf';
 
@@ -55,6 +66,9 @@ export async function readBuffer(filePath: string): Promise<Buffer> {
 }
 //#endregion
 //#region write
+export async function createTempDirectoryAsync(prefix: string): Promise<string> {
+  return mkdtemp(prefix);
+}
 export async function ensureDirAsync(targetPath: string): Promise<void> {
   try {
     const info = await stat(targetPath);
@@ -94,6 +108,9 @@ export async function copyPath(
 
 export async function writeTextFile(filePath: string, content: string): Promise<void> {
   await writeFile(filePath, content, 'utf8');
+}
+export async function appendTextFile(filePath: string, content: string): Promise<void> {
+  await appendFile(filePath, content, 'utf8');
 }
 //#endregion
 //#region delete

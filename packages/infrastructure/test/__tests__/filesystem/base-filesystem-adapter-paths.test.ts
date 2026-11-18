@@ -35,6 +35,13 @@ class TestFileSystemAdapter extends BaseFileSystemAdapter {
   public exposeToVirtualPath(targetPath: string): string {
     return this.toVirtualPath(targetPath);
   }
+
+  public exposeResolveTempPrefix(prefix?: string): {
+    resolvedPrefix: string;
+    parentDirectory: string;
+  } {
+    return this.resolveTempPrefix(prefix);
+  }
 }
 
 describe.each([
@@ -118,6 +125,63 @@ describe.each([
 
     it('throws when converting a physical path outside root', () => {
       expect(() => adapter.exposeToVirtualPath(outsidePhysical)).toThrow(
+        /Path outside filesystem root/,
+      );
+    });
+  });
+
+  describe('resolveTempPrefix (Temp directory prefix resolution)', () => {
+    it('uses default "tmp-" prefix in root when no prefix is provided', () => {
+      const result = adapter.exposeResolveTempPrefix();
+
+      expect(result).toEqual({
+        resolvedPrefix: `${root}${sep}tmp-`,
+        parentDirectory: root,
+      });
+    });
+
+    it('appends "tmp-" when prefix is empty or virtual root "/"', () => {
+      expect(adapter.exposeResolveTempPrefix('')).toEqual({
+        resolvedPrefix: `${root}${sep}tmp-`,
+        parentDirectory: root,
+      });
+
+      expect(adapter.exposeResolveTempPrefix('/')).toEqual({
+        resolvedPrefix: `${root}${sep}tmp-`,
+        parentDirectory: root,
+      });
+    });
+
+    it('appends "tmp-" when prefix ends with a forward or backward slash', () => {
+      const expectedParent = `${root}${sep}builds`;
+      const expectedPrefix = `${expectedParent}${sep}tmp-`;
+
+      expect(adapter.exposeResolveTempPrefix('builds/')).toEqual({
+        resolvedPrefix: expectedPrefix,
+        parentDirectory: expectedParent,
+      });
+
+      expect(adapter.exposeResolveTempPrefix('builds\\')).toEqual({
+        resolvedPrefix: expectedPrefix,
+        parentDirectory: expectedParent,
+      });
+    });
+
+    it('preserves custom prefix name inside nested directories', () => {
+      const expectedParent = `${root}${sep}builds${sep}sessions`;
+      const expectedPrefix = `${expectedParent}${sep}worker-`;
+
+      expect(adapter.exposeResolveTempPrefix('/builds/sessions/worker-')).toEqual({
+        resolvedPrefix: expectedPrefix,
+        parentDirectory: expectedParent,
+      });
+    });
+
+    it('throws when temp prefix attempts path traversal outside root', () => {
+      expect(() => adapter.exposeResolveTempPrefix('../outside-')).toThrow(
+        /Path outside filesystem root/,
+      );
+      expect(() => adapter.exposeResolveTempPrefix('..\\..\\outside\\')).toThrow(
         /Path outside filesystem root/,
       );
     });

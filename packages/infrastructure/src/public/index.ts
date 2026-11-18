@@ -28,6 +28,7 @@ export {
   FilesystemArtifactDistributionReader,
   NpmArtifactRegistryPublisher,
 } from '../distribution/index.js';
+export { HandlebarsTemplateRenderer } from '../render/index.js';
 export {
   NodeAsyncFileSystemAdapter,
   NodePathService,
@@ -38,6 +39,10 @@ export {
   removePaths,
   removePathsByRimraf,
   resolvePath,
+  MemoryFileSystem,
+  PosixPathService,
+  MemoryAsyncFileSystemAdapter,
+  createTempDirectorySync,
 } from '../filesystem/index.js';
 export {
   NodeConfigHashService,
@@ -46,6 +51,7 @@ export {
   NodeHashService,
   NodeSourceHashService,
 } from '../hashing/index.js';
+export { NodeIdGenerator } from '../identity/index.js';
 export { PackArtifactInspectProvider } from '../inspect/index.js';
 export { NodeExecutionProcess } from '../process/index.js';
 export {

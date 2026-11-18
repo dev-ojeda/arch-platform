@@ -16,11 +16,8 @@ describe('NpmArtifactRegistryReader', () => {
   });
 
   it('not exist version artifact in registry', async () => {
-    expect(await reader.find('@arch-platform/contracts', '')).toEqual({
-      integrity: undefined,
-      packageName: '@arch-platform/contracts',
-      version: undefined,
-    });
+    expect(await reader.find('@arch-platform/contracts', '99.99.99')).toBeUndefined();
+    expect(await reader.find('@arch-platform/contracts', '')).toBeUndefined();
   });
 
   it('get all versions artifacts in registry', async () => {

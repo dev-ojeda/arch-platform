@@ -9,7 +9,9 @@ import type {
 import { BaseFileSystemAdapter } from './base-filesystem-adapter.js';
 import { safeStringify } from '../../serialization/safe-stringify.js';
 import {
+  appendTextFileSync,
   copyPathSync,
+  createTempDirectorySync,
   ensureDirSync,
   pathExistsSync,
   readBufferSync,
@@ -32,6 +34,18 @@ export class NodeSyncFileSystemAdapter extends BaseFileSystemAdapter implements 
       options.root ?? DEFAULT_FILE_SYSTEM_OPTIONS.root,
       new NodePathService(),
     );
+  }
+  createTempDirectory(prefix?: string): string {
+    try {
+      const { resolvedPrefix, parentDirectory } = this.resolveTempPrefix(prefix);
+
+      ensureDirSync(parentDirectory);
+
+      const createdRealPath = createTempDirectorySync(resolvedPrefix);
+      return this.toVirtualPath(createdRealPath);
+    } catch (error) {
+      this.logAndThrow(error, 'createTempDirectory');
+    }
   }
 
   exists(targetPath: string): boolean {
@@ -96,6 +110,7 @@ export class NodeSyncFileSystemAdapter extends BaseFileSystemAdapter implements 
 
   write(filePath: string, content: string, options?: WriteFileOptions): void {
     try {
+      const policy = options?.overwrite ?? 'overwrite';
       const exists = this.exists(filePath);
 
       if (!shouldWriteFile(exists, options)) {
@@ -106,6 +121,12 @@ export class NodeSyncFileSystemAdapter extends BaseFileSystemAdapter implements 
       const parentDirectory = this.pathService.dirname(resolvedPath);
 
       ensureDirSync(parentDirectory);
+
+      if (policy === 'append') {
+        appendTextFileSync(resolvedPath, content);
+        return;
+      }
+
       writeTextFileSync(resolvedPath, content);
     } catch (error) {
       this.logAndThrow(error, 'write');

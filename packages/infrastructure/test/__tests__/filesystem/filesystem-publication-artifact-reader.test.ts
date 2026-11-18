@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { PublicationArtifactProvider } from '@arch-platform/infrastructure';
 import type { ComplianceEnvironment } from '@arch-platform/platform-model';
 
+import { PublicationArtifactProvider } from '../../../src/publication/publication-artifact-provider.js';
 import { FIXTURE_PATHS } from '../../fixture/fixture-paths.js';
 
 describe('FilesystemPublicationArtifactReader', () => {

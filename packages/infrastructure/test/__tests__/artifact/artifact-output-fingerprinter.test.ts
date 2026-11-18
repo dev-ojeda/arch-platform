@@ -1,16 +1,20 @@
 import { describe, expect, it } from 'vitest';
 
 import { ArtifactOutputFingerprinter } from '../../../src/artifact/adapter/artifact-output-fingerprinter.js';
+import { MemoryAsyncFileSystemAdapter } from '../../../src/filesystem/adapters/memory-async-filesystem-adapter.js';
+import { MemoryFileSystem } from '../../../src/filesystem/memory/memory-filesystem.js';
+import { PosixPathService } from '../../../src/filesystem/paths/posix-path-service.js';
 import { NodeHashService } from '../../../src/hashing/node-hash-service.js';
-import { createMemoryFilesystem } from '../../helpers/create-memory-filesystem.js';
-import { createTestPathService } from '../../helpers/create-path-service.js';
 
 describe('ArtifactOutputFingerprinter', () => {
   async function createFixture() {
-    const filesystem = createMemoryFilesystem();
+    const posixPathService = new PosixPathService();
+    const memoryFilesystem = new MemoryFileSystem(posixPathService);
+
+    const filesystem = new MemoryAsyncFileSystemAdapter(memoryFilesystem);
     const fingerprinter = new ArtifactOutputFingerprinter(
       filesystem,
-      createTestPathService(),
+      posixPathService,
       new NodeHashService(),
     );
 

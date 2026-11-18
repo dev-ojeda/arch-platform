@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { NodeAsyncFileSystemAdapter } from '../../../src/filesystem/adapters/node-async-filesystem-adapter.js';
+import { removePath } from '../../../src/filesystem/io/fs-async.js';
 import { FilesystemPackageVersionWriter } from '../../../src/versioning/filesystem-package-version-writer.js';
 import { createTestFilesystemRoot } from '../../helpers/create-filesystem-root.js';
 
@@ -36,40 +37,23 @@ const manifest = {
 describe('FilesystemPackageVersionWriter', () => {
   it('actualiza solamente la versión del package.json', async () => {
     const root = createTestFilesystemRoot('package-version-writer');
-    const filesystem = new NodeAsyncFileSystemAdapter({ root });
 
-    await filesystem.writeJson('/package.json', manifest);
+    try {
+      const filesystem = new NodeAsyncFileSystemAdapter({ root });
 
-    const writer = new FilesystemPackageVersionWriter(filesystem);
+      await filesystem.writeJson('/package.json', manifest);
 
-    await writer.write('/package.json', '0.2.0');
+      const writer = new FilesystemPackageVersionWriter(filesystem);
 
-    const result = await filesystem.readJson<Record<string, unknown>>('/package.json');
-    expect(result.version).toBe('0.2.0');
-    expect(result.name).toBe('@arch-platform/contracts');
-    expect(result.type).toBe('module');
-    expect(result.types).toBe('./dist/index.d.ts');
-    expect(result.exports).toEqual({
-      '.': {
-        types: './dist/index.d.ts',
-      },
-    });
-    expect(result.files).toEqual(['dist']);
-    expect(result.arch).toEqual({
-      artifactType: 'declaration',
-      build: {
-        builder: 'tsc-declaration',
-        outputs: ['dist'],
-      },
-      kind: 'tooling',
-    });
-    expect(result.scripts).toEqual({
-      build: 'pnpm build:dts',
-      'build:dts': 'tsc -p tsconfig.build.json',
-      arch: 'arch build --package @arch-platform/contracts',
-      clean: 'arch clean',
-      compliance: 'arch compliance --package @arch-platform/contracts --env dev',
-      typecheck: 'arch typecheck',
-    });
+      await writer.write('/package.json', '0.2.0');
+
+      const result = await filesystem.readJson<Record<string, unknown>>('/package.json');
+      expect(result).toEqual({
+        ...manifest,
+        version: '0.2.0',
+      });
+    } finally {
+      await removePath(root);
+    }
   });
 });

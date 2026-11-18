@@ -1,10 +1,28 @@
 // packages/infrastructure/test/__tests__/registry/npm-registry-published-versions-adapter.test.ts
-import { describe, expect, it } from 'vitest';
+import { afterAll, describe, expect, it, vi } from 'vitest';
 
-import { NpmRegistryPublishedVersionsAdapter } from '@arch-platform/infrastructure';
+import { NpmRegistryPublishedVersionsAdapter } from '../../../src/registry/npm-registry-published-versions-adapter.js';
 
 describe('NpmRegistryPublishedVersionsAdapter', () => {
   const readerNpm = new NpmRegistryPublishedVersionsAdapter();
+  const responses: Response[] = [];
+
+  const originalFetch = globalThis.fetch;
+  const fetchSpy = vi.spyOn(globalThis, 'fetch').mockImplementation(async (input, init) => {
+    const res = await originalFetch(input, init);
+    responses.push(res);
+    return res;
+  });
+
+  afterAll(() => {
+    fetchSpy.mockRestore();
+
+    // Verifica que ninguna respuesta dejó su stream abierto sin leer ni cancelar
+    for (const res of responses) {
+      const isStreamClosed = res.body === null || res.bodyUsed || !res.body.locked;
+      expect(isStreamClosed).toBe(true);
+    }
+  });
 
   // 1. CASO ÉXITO: Un paquete específico
   it('should fetch published versions for a specific package', async () => {

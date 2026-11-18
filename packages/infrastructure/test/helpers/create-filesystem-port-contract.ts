@@ -42,6 +42,31 @@ export function defineFileSystemPortContract(harness: FileSystemContractHarness)
         expect(read).toBeInstanceOf(Uint8Array);
         expect(Array.from(read)).toEqual(Array.from(expected));
       });
+      it('appends content to an existing file', async () => {
+        await fs.write('/src/source.ts', 'initial');
+        await fs.write('/src/source.ts', ' appended', {
+          overwrite: 'append',
+        });
+
+        expect(await fs.read('/src/source.ts')).toBe('initial appended');
+      });
+
+      it('creates a file when appending to a non-existing file', async () => {
+        await fs.write('/src/new.ts', 'initial', {
+          overwrite: 'append',
+        });
+
+        expect(await fs.read('/src/new.ts')).toBe('initial');
+      });
+
+      it('appends content without inserting an implicit line break', async () => {
+        await fs.write('/src/source.ts', 'line 1');
+        await fs.write('/src/source.ts', 'line 2', {
+          overwrite: 'append',
+        });
+
+        expect(await fs.read('/src/source.ts')).toBe('line 1line 2');
+      });
 
       it('renames files', async () => {
         await fs.write('/src/source.ts', 'export {};');
@@ -109,6 +134,54 @@ export function defineFileSystemPortContract(harness: FileSystemContractHarness)
               isFile: true,
             }),
           ]),
+        );
+      });
+
+      it('creates a unique temporary directory with default prefix in root', async () => {
+        const tempDir1 = await fs.createTempDirectory();
+        const tempDir2 = await fs.createTempDirectory();
+
+        expect(tempDir1).toMatch(/^\/tmp-[^/]+$/);
+        expect(tempDir2).toMatch(/^\/tmp-[^/]+$/);
+        expect(tempDir1).not.toBe(tempDir2);
+        expect(await fs.exists(tempDir1)).toBe(true);
+        expect(await fs.exists(tempDir2)).toBe(true);
+      });
+
+      it('creates a temporary directory inside a nested folder with custom prefix', async () => {
+        const tempDir = await fs.createTempDirectory('/builds/session-');
+
+        expect(tempDir).toMatch(/^\/builds\/session-[^/]+$/);
+        expect(await fs.exists(tempDir)).toBe(true);
+
+        await fs.write(`${tempDir}/output.txt`, 'build artifact');
+        expect(await fs.read(`${tempDir}/output.txt`)).toBe('build artifact');
+      });
+
+      it('creates a temporary directory inside a folder when prefix ends with a slash', async () => {
+        const tempDirForward = await fs.createTempDirectory('workspace/');
+        const tempDirBackward = await fs.createTempDirectory('workspace\\');
+
+        expect(tempDirForward).toMatch(/^\/workspace\/tmp-[^/]+$/);
+        expect(tempDirBackward).toMatch(/^\/workspace\/tmp-[^/]+$/);
+        expect(await fs.exists(tempDirForward)).toBe(true);
+        expect(await fs.exists(tempDirBackward)).toBe(true);
+      });
+
+      it('throws when creating a temporary directory inside a path occupied by a file', async () => {
+        await fs.write('/blocking-file.txt', 'content');
+
+        await expect(async () =>
+          fs.createTempDirectory('/blocking-file.txt/session-'),
+        ).rejects.toThrow();
+      });
+
+      it('blocks path traversal attempts in createTempDirectory', async () => {
+        await expect(async () => fs.createTempDirectory('/../../outside-')).rejects.toThrow(
+          /Path outside filesystem root/,
+        );
+        await expect(async () => fs.createTempDirectory('..\\..\\outside\\')).rejects.toThrow(
+          /Path outside filesystem root/,
         );
       });
     });

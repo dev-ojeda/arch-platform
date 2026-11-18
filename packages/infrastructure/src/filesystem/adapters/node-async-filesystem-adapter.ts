@@ -10,7 +10,9 @@ import { BaseFileSystemAdapter } from './base-filesystem-adapter.js';
 import { safeParse } from '../../serialization/safe-parse.js';
 import { safeStringify } from '../../serialization/safe-stringify.js';
 import {
+  appendTextFile,
   copyPath,
+  createTempDirectoryAsync,
   ensureDirAsync,
   pathExists,
   readBuffer,
@@ -35,6 +37,18 @@ export class NodeAsyncFileSystemAdapter
       options.root ?? DEFAULT_FILE_SYSTEM_OPTIONS.root,
       new NodePathService(),
     );
+  }
+  async createTempDirectory(prefix?: string): Promise<string> {
+    try {
+      const { resolvedPrefix, parentDirectory } = this.resolveTempPrefix(prefix);
+
+      await ensureDirAsync(parentDirectory);
+
+      const createdRealPath = await createTempDirectoryAsync(resolvedPrefix);
+      return this.toVirtualPath(createdRealPath);
+    } catch (error) {
+      this.logAndThrow(error, 'createTempDirectory');
+    }
   }
 
   async readJson<T>(filePath: string): Promise<T> {
@@ -63,6 +77,7 @@ export class NodeAsyncFileSystemAdapter
 
   async write(filePath: string, content: string, options?: WriteFileOptions): Promise<void> {
     try {
+      const policy = options?.overwrite ?? 'overwrite';
       const exists = await this.exists(filePath);
 
       if (!shouldWriteFile(exists, options)) {
@@ -73,6 +88,12 @@ export class NodeAsyncFileSystemAdapter
       const parentDirectory = this.pathService.dirname(resolvedPath);
 
       await ensureDirAsync(parentDirectory);
+
+      if (policy === 'append') {
+        await appendTextFile(resolvedPath, content);
+        return;
+      }
+
       await writeTextFile(resolvedPath, content);
     } catch (error) {
       this.logAndThrow(error, 'write');
