@@ -28,6 +28,7 @@ export type {
   GeneratorCapabilities,
   GeneratorDefinition,
   GeneratorDescriptor,
+  GeneratorMetadata,
   GeneratorModule,
   GeneratorRegistry,
   GeneratorRuntime,
@@ -43,7 +44,11 @@ export type {
 } from './hashing/index.js';
 
 export type { GenerationHooks } from './hooks/index.js';
-export type { FolderLayout, LanguageConvention } from './languages/index.js';
+export type {
+  FolderLayout,
+  LanguageConvention,
+  LanguageConventionRegistry,
+} from './languages/index.js';
 export type {
   LoggerLevel,
   LoggerMetadata,
@@ -51,7 +56,7 @@ export type {
   LoggerPort,
   LoggerSource,
 } from './logging/index.js';
-export type { ResolvedFileDefinition, ResolvedTemplate } from './pipeline/index.js';
+export type { ResolvedTemplate } from './pipeline/index.js';
 export type {
   BooleanField,
   PromptAdapter,

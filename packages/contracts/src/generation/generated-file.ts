@@ -1,5 +1,7 @@
 // packages/contracts/src/generation/generated-file.ts
 
+import type { OverwritePolicy } from '../filesystem/overwrite-policy.js';
+
 export interface GeneratedFile {
   /*
    * Relative output path
@@ -17,5 +19,5 @@ export interface GeneratedFile {
    * Indicates overwrite behavior
    */
 
-  readonly overwrite?: boolean;
+  readonly overwrite?: OverwritePolicy;
 }

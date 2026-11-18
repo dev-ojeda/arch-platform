@@ -1,13 +1,15 @@
 // packages/contracts/src/generators/generator-registry.ts
 
 import type { GeneratorDefinition } from './generator-definition.js';
-import type { TemplateVariables } from '../variables/template-variables.js';
-
+import type { RegisteredGeneratorDefinition } from './generator-type-erasure.js';
+import type { NamedVariables } from '../variables/named-variables.js';
 
 export interface GeneratorRegistry {
-  register<TValues extends TemplateVariables>(generator: GeneratorDefinition<TValues>): void;
+  register<TVariables extends NamedVariables>(generator: GeneratorDefinition<TVariables>): void;
 
-  get<TValues extends TemplateVariables>(id: string): Promise<GeneratorDefinition<TValues>>;
+  get(id: string): RegisteredGeneratorDefinition | undefined;
 
-  list(): Promise<readonly GeneratorDefinition[]>;
+  has(id: string): boolean;
+
+  list(): readonly RegisteredGeneratorDefinition[];
 }

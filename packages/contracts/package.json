@@ -27,12 +27,12 @@
   },
   "scripts": {
     "build": "pnpm build:dts",
-    "build:dts": "tsc -p tsconfig.build.json",
+    "build:dts": "tsc -b tsconfig.build.json",
     "arch": "arch build --package @arch-platform/contracts",
     "clean": "arch clean --package @arch-platform/contracts",
     "compliance": "arch compliance --package @arch-platform/contracts --env dev",
-    "typecheck": "arch typecheck --package @arch-platform/contracts",
-    "lint": "arch lint --package @arch-platform/contracts"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . --max-warnings 0 --no-warn-ignored --cache --cache-strategy content"
   },
   "license": "MIT"
 }

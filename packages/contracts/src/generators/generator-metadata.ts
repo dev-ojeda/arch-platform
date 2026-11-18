@@ -1,4 +1,4 @@
-// packages/contracts/src/generators/generator.metadata.ts
+// packages/contracts/src/generators/generator-metadata.ts
 
 export interface GeneratorMetadata {
   readonly tags?: readonly string[];

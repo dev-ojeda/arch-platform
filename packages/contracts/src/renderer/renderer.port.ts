@@ -2,7 +2,7 @@
 
 export interface RenderTemplateInput {
   template: string;
-  path: string;
+  output: string;
   variables: Record<string, unknown>;
 }
 
@@ -12,5 +12,10 @@ export interface RenderedFile {
 }
 
 export interface TemplateRendererPort {
+  /**
+   * Renders the supplied templates.
+   *
+   * Results preserve the same order as the input files.
+   */
   render(files: RenderTemplateInput[]): Promise<RenderedFile[]>;
 }
