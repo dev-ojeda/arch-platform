@@ -2,9 +2,13 @@
 import * as path from 'node:path';
 
 import { GeneratorRuntime, GenerateProjectUseCase } from '@arch-platform/application';
-import { GeneratorRegistry, LanguageConventionRegistry, TypeScriptConvention } from '@arch-platform/core';
-import { registerMvcGenerator } from '@arch-platform/generator-mvc';
-import { NodeFileSystemAdapter } from '@arch-platform/infrastructure';
+import {
+  GeneratorRegistry,
+  LanguageConventionRegistry,
+  TypeScriptConvention,
+} from '@arch-platform/core';
+import { mvcModule } from '@arch-platform/generator-mvc';
+import { NodeSyncFileSystemAdapter } from '@arch-platform/infrastructure';
 import type { ExtensionContext } from 'vscode';
 
 import { VSCodePromptAdapter } from '../adapters/vscode-prompt-adapter.js';
@@ -26,7 +30,7 @@ export function createContainer(context: ExtensionContext): Container {
    */
   const generatorRegistry = new GeneratorRegistry();
 
-  registerMvcGenerator(generatorRegistry);
+  mvcModule.register(generatorRegistry);
 
   /*
    * Runtime
@@ -38,7 +42,7 @@ export function createContainer(context: ExtensionContext): Container {
 
     languageRegistry,
 
-    defaultFs: new NodeFileSystemAdapter(),
+    defaultFs: new NodeSyncFileSystemAdapter(),
   });
 
   /*

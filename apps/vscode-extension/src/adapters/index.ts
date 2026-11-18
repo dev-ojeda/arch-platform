@@ -1,3 +1,3 @@
 // apps/vscode-extension/src/adapters/index.ts
 
-export * from './vscode/index.js';
+export { VSCodePromptAdapter } from './vscode-prompt-adapter.js';
