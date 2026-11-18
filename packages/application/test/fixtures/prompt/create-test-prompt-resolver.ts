@@ -1,0 +1,17 @@
+import type { NamedVariables, PromptResolver, PromptSchema } from '@arch-platform/contracts';
+
+function restoreVariables<TVariables extends NamedVariables>(
+  variables: NamedVariables,
+): TVariables {
+  return variables as TVariables;
+}
+
+export function createTestPromptResolver(variables: NamedVariables = {}): PromptResolver {
+  return {
+    collect<TVariables extends NamedVariables>(
+      _schema: PromptSchema<TVariables>,
+    ): Promise<TVariables> {
+      return Promise.resolve(restoreVariables<TVariables>(variables));
+    },
+  };
+}

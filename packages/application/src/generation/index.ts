@@ -17,11 +17,9 @@ export {
   CompositeGenerationHooks,
   EventGenerationHooks,
   LoggingGenerationHooks,
-  TelemetryGenerationHooks,
 } from './hooks/index.js';
 export { GenerationPipeline } from './pipeline/index.js';
 export type { GenerationPipelineOptions } from './pipeline/index.js';
-export { InMemoryGeneratorRegistry } from './registry/index.js';
 export { createGenerationReport } from './reports/index.js';
 export type { CreateGenerationReportOptions } from './reports/index.js';
 export {

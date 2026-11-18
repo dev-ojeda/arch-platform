@@ -3,18 +3,24 @@
 import type {
   GenerationContext,
   GenerationPipelineStep,
+  LanguageConventionRegistry,
   TemplateVariables,
 } from '@arch-platform/contracts';
 
-import { deriveTemplateVariables } from '../variables/derive-template-variables.js';
+import { buildVariables } from '../variables/derive-template-variables.js';
 
 export class ResolveVariablesStep<
   TVariables extends TemplateVariables = TemplateVariables,
 > implements GenerationPipelineStep<TVariables> {
-  readonly name = 'resolve-variable';
+  readonly name = 'resolve-variables';
+
+  constructor(private readonly languageConventionRegistry: LanguageConventionRegistry) {}
 
   execute(context: GenerationContext<TVariables>): Promise<void> {
-    context.resolvedVariables = deriveTemplateVariables(context.variables);
+    const convention = this.languageConventionRegistry.get(context.languageId);
+
+    context.resolvedVariables = buildVariables(context.variables, convention);
+
     return Promise.resolve();
   }
 }

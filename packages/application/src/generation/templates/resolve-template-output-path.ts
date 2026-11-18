@@ -1,6 +1,6 @@
 // packages/application/src/generation/templates/resolve-template-output-path.ts
 
-import { compile } from 'handlebars';
+import Handlebars from 'handlebars';
 
 import type { NamedVariables } from '@arch-platform/contracts';
 
@@ -9,5 +9,5 @@ export function resolveTemplateOutputPath(
 
   variables: NamedVariables,
 ): string {
-  return compile(output)(variables);
+  return Handlebars.compile(output)(variables);
 }

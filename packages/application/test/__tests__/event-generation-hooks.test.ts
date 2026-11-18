@@ -29,7 +29,7 @@ describe('CreateTestEventGenerationHooks', () => {
     const hooks = new EventGenerationHooks();
     const context = {} as GenerationContext;
 
-    await hooks.afterPipeline(context);
+    await hooks.onSuccess(context);
 
     expect(publishGenerationEvent).toHaveBeenCalledWith(context, 'GENERATION_COMPLETED');
   });

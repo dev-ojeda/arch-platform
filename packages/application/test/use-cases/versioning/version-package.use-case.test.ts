@@ -21,7 +21,9 @@ function createPackageDescriptor(version?: string): PackageDescriptor {
     manifest: {
       name: packageName,
       ...(version === undefined ? {} : { version }),
-      arch: undefined,
+      arch: {
+        artifactType: 'runtime',
+      },
     },
     internalDependencies: [],
     layout: {} as PackageDescriptor['layout'],

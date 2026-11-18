@@ -1,13 +1,13 @@
-// packages\application\test\__tests__\generate-project.use-case.test.ts
+// packages\application\test\__tests__\generate-project-use-case.test.ts
 
 import { describe, expect, it, vi } from 'vitest';
 
 import type { GenerationResult } from '@arch-platform/contracts';
-import { createTestGenerator } from '@arch-platform/testing';
+import { GeneratorRegistry } from '@arch-platform/core';
 
 import type { GenerationEngine } from '../../src/generation/engine/generation-engine.js';
-import { InMemoryGeneratorRegistry } from '../../src/generation/registry/in-memory-generator-registry.js';
-import { GenerateProjectUseCase } from '../../src/use-cases/generate-project/generate-project.use-case.js';
+import { GenerateProjectUseCase } from '../../src/use-cases/generate-project/generate-project-use-case.js';
+import { createTestGenerator } from '../fixtures/generators/create-test-generator.js';
 
 describe('GenerateProjectUseCase', () => {
   it('delegates generation to engine', async () => {
@@ -21,7 +21,7 @@ describe('GenerateProjectUseCase', () => {
       },
     });
 
-    const registry = new InMemoryGeneratorRegistry();
+    const registry = new GeneratorRegistry();
 
     registry.register(generator);
 
@@ -39,7 +39,7 @@ describe('GenerateProjectUseCase', () => {
     const useCase = new GenerateProjectUseCase(registry, engine);
 
     const output = await useCase.execute({
-      generator,
+      generatorId: 'mvc',
       targetDir: '/tmp',
     });
 

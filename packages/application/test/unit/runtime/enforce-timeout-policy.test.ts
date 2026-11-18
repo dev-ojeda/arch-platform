@@ -3,9 +3,9 @@
 import { describe, expect, it, vi } from 'vitest';
 
 import type { GenerationContext } from '@arch-platform/contracts';
-import { createTestPipelineContext } from '@arch-platform/testing';
 
 import { enforceTimeoutPolicy } from '../../../src/generation/runtime/enforce-timeout-policy.js';
+import { createTestPipelineContext } from '../../fixtures/pipeline/create-test-pipeline-context.js';
 
 describe('CreateTestEnforceTmeoutPolicy', () => {
   it('does nothing when timeout policy is not configured', () => {

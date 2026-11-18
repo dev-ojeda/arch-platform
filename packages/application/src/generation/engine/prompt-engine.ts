@@ -23,7 +23,6 @@ export class PromptEngine {
     ctx?: PromptEngineContext,
   ): Promise<TValues> {
     const result = Object.create(null) as TValues;
-
     const output = result as Record<string, unknown>;
 
     for (const field of schema.fields) {
@@ -34,8 +33,9 @@ export class PromptEngine {
       }
 
       const value = await this.resolveField(field, result);
-
       const transformed = await this.applyTransform(field, value);
+
+      await this.validateField(field, transformed, result);
 
       output[field.name as string] = transformed;
     }
@@ -77,8 +77,6 @@ export class PromptEngine {
 
     const value = input?.trim() ? input : (field.defaultValue?.toString() ?? '');
 
-    this.validateRequired(field, value);
-
     return value;
   }
 
@@ -88,10 +86,12 @@ export class PromptEngine {
   ): Promise<string> {
     const options = await this.resolveSelectOptions(field, values);
 
-    const value =
-      (await this.adapter.select(field, options)) ?? field.defaultValue?.toString() ?? '';
+    const selected = await this.adapter.select(field, options);
+    const value = selected ?? field.defaultValue?.toString() ?? '';
 
-    this.validateRequired(field, value);
+    if (value !== '' && !options.some((option) => option.value === value)) {
+      throw new Error(`Field "${String(field.name)}" has an invalid selection: "${value}"`);
+    }
 
     return value;
   }
@@ -99,12 +99,25 @@ export class PromptEngine {
   private async resolveBoolean<TValues extends NamedVariables>(
     field: BooleanField<TValues>,
   ): Promise<boolean> {
-    return (await this.adapter.boolean(field)) ?? Boolean(field.defaultValue);
+    const value = await this.adapter.boolean(field);
+
+    if (value !== undefined) {
+      return value;
+    }
+
+    if (field.defaultValue !== undefined) {
+      return field.defaultValue;
+    }
+
+    if (field.required) {
+      throw new Error(`Field "${String(field.name)}" is required`);
+    }
+
+    return false;
   }
 
   private async resolveSelectOptions<TValues extends NamedVariables>(
     field: SelectField<TValues>,
-
     values: TValues,
   ): Promise<SelectOption[]> {
     if (typeof field.options !== 'function') {
@@ -112,6 +125,28 @@ export class PromptEngine {
     }
 
     return await field.options(values);
+  }
+
+  private async validateField<TValues extends NamedVariables>(
+    field: PromptField<TValues>,
+    value: unknown,
+    values: TValues,
+  ): Promise<void> {
+    this.validateRequired(field, value);
+
+    if (field.type === 'string' && typeof value === 'string') {
+      this.validateString(field, value);
+    }
+
+    if (!field.validate) {
+      return;
+    }
+
+    const message = await field.validate(value as never, values);
+
+    if (message) {
+      throw new Error(`Field "${String(field.name)}": ${message}`);
+    }
   }
 
   private validateRequired<TValues extends NamedVariables>(
@@ -129,6 +164,33 @@ export class PromptEngine {
     }
 
     throw new Error(`Field "${String(field.name)}" is required`);
+  }
+
+  private validateString<TValues extends NamedVariables>(
+    field: StringField<TValues>,
+    value: string,
+  ): void {
+    if (field.minLength !== undefined && value.length < field.minLength) {
+      throw new Error(
+        `Field "${String(field.name)}" must contain at least ${field.minLength} characters`,
+      );
+    }
+
+    if (field.maxLength !== undefined && value.length > field.maxLength) {
+      throw new Error(
+        `Field "${String(field.name)}" must contain at most ${field.maxLength} characters`,
+      );
+    }
+
+    if (field.pattern) {
+      field.pattern.lastIndex = 0;
+      const matches = field.pattern.test(value);
+      field.pattern.lastIndex = 0;
+
+      if (!matches) {
+        throw new Error(`Field "${String(field.name)}" has an invalid format`);
+      }
+    }
   }
 
   private async applyTransform<TValues extends NamedVariables, TValue>(

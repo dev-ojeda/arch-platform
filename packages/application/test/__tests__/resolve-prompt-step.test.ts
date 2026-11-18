@@ -2,13 +2,10 @@
 
 import { describe, expect, it, vi } from 'vitest';
 
-import {
-  createTestGenerator,
-  createTestPipelineContext,
-  createTestPromptResolver,
-} from '@arch-platform/testing';
-
 import { ResolvePromptsStep } from '../../src/generation/steps/resolve-prompts.step.js';
+import { testGenerator } from '../fixtures/generators/test-generator.js';
+import { createTestPipelineContext } from '../fixtures/pipeline/create-test-pipeline-context.js';
+import { createTestPromptResolver } from '../fixtures/prompt/create-test-prompt-resolver.js';
 
 describe('CreateResolvePromptStep', () => {
   it('overrides existing variables with resolved values', async () => {
@@ -20,7 +17,7 @@ describe('CreateResolvePromptStep', () => {
     const step = new ResolvePromptsStep(resolver);
 
     const context = createTestPipelineContext({
-      generator: createTestGenerator(),
+      generator: testGenerator,
     });
 
     await step.execute(context);

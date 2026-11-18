@@ -21,14 +21,8 @@ export class ResolveTemplatesStep<
       throw new GeneratorValidationError('Generator not loaded');
     }
 
-    const variables = context.resolvedVariables;
-
-    if (!variables) {
-      throw new GeneratorValidationError('Resolved variables not available');
-    }
-
     context.resolvedTemplates = generator.templates.map((template) =>
-      resolveTemplateDefinition(template, variables),
+      resolveTemplateDefinition(template),
     );
 
     return Promise.resolve();

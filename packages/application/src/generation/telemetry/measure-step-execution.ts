@@ -17,14 +17,32 @@ export async function measureStepExecution<
 ): Promise<void> {
   const startedAt = performance.now();
 
-  await execution();
+  let executionError: unknown;
+  let hasExecutionError = false;
 
-  const completedAt = performance.now();
+  try {
+    await execution();
+  } catch (error) {
+    executionError = error;
+    hasExecutionError = true;
+  }
 
-  await recordStepMetric(context, {
-    step: step.name,
-    startedAt,
-    finishedAt: completedAt,
-    duration: completedAt - startedAt,
-  });
+  const finishedAt = performance.now();
+
+  try {
+    await recordStepMetric(context, {
+      step: step.name,
+      startedAt,
+      finishedAt,
+      duration: finishedAt - startedAt,
+    });
+  } catch (metricError) {
+    if (!hasExecutionError) {
+      throw metricError;
+    }
+  }
+
+  if (hasExecutionError) {
+    throw executionError;
+  }
 }

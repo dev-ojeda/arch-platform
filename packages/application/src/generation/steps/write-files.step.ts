@@ -13,11 +13,9 @@ export class WriteFilesStep<
 
   async execute(context: GenerationContext<TVariables>): Promise<void> {
     for (const file of context.files) {
-      await context.fs.write(
-        file.path,
-
-        file.content,
-      );
+      await context.fs.write(file.path, file.content, {
+        overwrite: file.overwrite,
+      });
 
       context.logger.info(`[arch] created ${file.path}`);
     }

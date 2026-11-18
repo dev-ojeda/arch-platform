@@ -14,9 +14,13 @@ export async function recordStepMetric<TVariables extends TemplateVariables = Te
 ): Promise<void> {
   context.metrics.push(metric);
 
-  await publishGenerationEvent(context, 'STEP_METRIC_RECORDED', {
-    duration: metric.duration,
-    startedAt: metric.startedAt,
-    completedAt: metric.finishedAt,
-  });
+  try {
+    await publishGenerationEvent(context, 'STEP_METRIC_RECORDED', {
+      duration: metric.duration,
+      startedAt: metric.startedAt,
+      completedAt: metric.finishedAt,
+    });
+  } catch {
+    // Metric persistence is local; event publication is best-effort.
+  }
 }

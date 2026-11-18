@@ -3,54 +3,63 @@
 import { describe, expect, it } from 'vitest';
 
 import {
-  createMockFilesystem,
-  createTestGenerator,
-  createTestLogger,
-} from '@arch-platform/testing';
+  MemoryAsyncFileSystemAdapter,
+  MemoryFileSystem,
+  PosixPathService,
+} from '@arch-platform/infrastructure';
 
 import { GenerationContextFactory } from '../../../src/generation/runtime/generation-context-factory.js';
+import { createTestGenerator } from '../../fixtures/generators/create-test-generator.js';
+import { TestLogger } from '../../fixtures/logging/test-logger.js';
 
 describe('GenerationContextFactory', () => {
-  it('uses request logger when provided', () => {
-    const fs = createMockFilesystem();
-    const defaultLogger = createTestLogger();
+  function createFilesystem() {
+    const pathService = new PosixPathService();
 
-    const factory = new GenerationContextFactory(fs, defaultLogger);
+    return new MemoryAsyncFileSystemAdapter(new MemoryFileSystem(pathService));
+  }
+  it('uses request filesystem when provided', () => {
+    const defaultFs = createFilesystem();
+    const requestFs = createFilesystem();
+    const logger = new TestLogger();
 
-    const customLogger = createTestLogger();
+    const factory = new GenerationContextFactory(defaultFs, logger);
 
     const context = factory.create({
-      targetDir: 'output',
       generator: createTestGenerator(),
-      logger: customLogger,
+      targetDir: 'output',
+      languageId: 'typescript',
+      fs: requestFs,
     });
 
-    expect(context.logger).toBe(customLogger);
+    expect(context.fs).toBe(requestFs);
   });
 
-  it('uses factory logger when request logger is not provided', () => {
-    const fs = createMockFilesystem();
-    const defaultLogger = createTestLogger();
+  it('uses factory filesystem when request filesystem is not provided', () => {
+    const defaultFs = createFilesystem();
+    const logger = new TestLogger();
 
-    const factory = new GenerationContextFactory(fs, defaultLogger);
+    const factory = new GenerationContextFactory(defaultFs, logger);
 
     const context = factory.create({
-      targetDir: 'output',
       generator: createTestGenerator(),
+      languageId: 'typescript',
+      targetDir: 'output',
     });
 
-    expect(context.logger).toBe(defaultLogger);
+    expect(context.fs).toBe(defaultFs);
   });
 
   it('initializes context collections', () => {
-    const fs = createMockFilesystem();
-    const logger = createTestLogger();
+    const fs = createFilesystem();
+    const logger = new TestLogger();
 
     const factory = new GenerationContextFactory(fs, logger);
 
     const context = factory.create({
-      targetDir: 'output',
       generator: createTestGenerator(),
+      languageId: 'typescript',
+      targetDir: 'output',
     });
 
     expect(context.files).toEqual([]);
@@ -60,14 +69,15 @@ describe('GenerationContextFactory', () => {
   });
 
   it('initializes variables with an empty object when not provided', () => {
-    const fs = createMockFilesystem();
-    const logger = createTestLogger();
+    const fs = createFilesystem();
+    const logger = new TestLogger();
 
     const factory = new GenerationContextFactory(fs, logger);
 
     const context = factory.create({
-      targetDir: 'output',
       generator: createTestGenerator(),
+      languageId: 'typescript',
+      targetDir: 'output',
     });
 
     expect(context.variables).toEqual({});

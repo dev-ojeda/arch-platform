@@ -42,6 +42,11 @@ export class CompositeGenerationHooks<
     }
   }
 
+  async onSuccess(context: GenerationContext<TVariables>): Promise<void> {
+    for (const hook of this.hooks) {
+      await hook.onSuccess?.(context);
+    }
+  }
   async onError(error: unknown, context: GenerationContext<TVariables>): Promise<void> {
     for (const hook of this.hooks) {
       await hook.onError?.(error, context);

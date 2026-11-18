@@ -1,16 +1,11 @@
 // packages/application/src/generation/variables/derive-template-variables.ts
 
 import type {
-  GenerationContext,
   LanguageConvention,
-  NamedVariables,
   ResolvedTemplateVariables,
+  TemplateVariables,
   VariableValue,
 } from '@arch-platform/contracts';
-
-export interface TemplateVariables extends NamedVariables {
-  readonly name: string;
-}
 
 export function deriveTemplateVariables<TVariables extends TemplateVariables>(
   variables: TVariables,
@@ -44,30 +39,24 @@ export function deriveTemplateVariables<TVariables extends TemplateVariables>(
 }
 
 export function buildVariables<TVariables extends TemplateVariables>(
-  ctx: GenerationContext<TVariables>,
-
+  variables: TVariables,
   language: LanguageConvention,
 ): ResolvedTemplateVariables<TVariables> {
-  const resourceName = getStringVariable(ctx.variables.name, 'name');
+  const resourceName = getStringVariable(variables.name, 'name');
+
   return {
-    ...ctx.variables,
+    ...variables,
 
     className: language.formatName(resourceName),
-
     controllerName: language.controllerName(resourceName),
-
     serviceName: language.serviceName(resourceName),
-
     repositoryName: language.repositoryName(resourceName),
-
     modelName: language.modelName(resourceName),
 
     fileExtension: language.fileExtension,
-
     folderLayout: language.folderLayout,
   };
 }
-
 export function getStringVariable(value: VariableValue, variableName: string): string {
   if (typeof value !== 'string') {
     throw new Error(`Variable "${variableName}" must be a string`);
