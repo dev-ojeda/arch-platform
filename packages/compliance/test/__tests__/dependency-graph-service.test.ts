@@ -2,8 +2,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { DependencyGraphService } from '@arch-platform/compliance';
-
+import { DependencyGraphService } from '../../src/services/dependency-graph-service.js';
 import { dependencyGraphFixture } from '../fixture/create-dependency-graph.js';
 
 describe('DependencyGraphService', () => {

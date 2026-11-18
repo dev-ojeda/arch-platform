@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import type { SecurityDecision } from '@arch-platform/compliance';
+import type { SecurityDecision } from '@arch-platform/platform-model';
 
 describe('SecurityDecision', () => {
   it('supports an allowed decision', () => {

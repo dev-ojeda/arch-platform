@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { DependencyLockfileQuery } from '@arch-platform/compliance';
-
+import { DependencyLockfileQuery } from '../../src/dependency/dependency-lock-file-query.js';
 import { dependencyLockfileFixture } from '../fixture/create-dependency-lockfile.js';
 
 describe('DependencyLockfileQuery', () => {
@@ -10,7 +9,7 @@ describe('DependencyLockfileQuery', () => {
   it('returns a dependency from a catalog', () => {
     const dependency = query.getCatalogDependency('default', '@changesets/cli');
     expect(dependency?.specifier).toBe('2.31.0');
-    expect(dependency.version).toBe('2.31.0');
+    expect(dependency?.version).toBe('2.31.0');
   });
 
   it('returns an importer by workspace path', () => {

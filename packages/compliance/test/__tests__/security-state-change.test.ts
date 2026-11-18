@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import type { SecurityStateChange } from '@arch-platform/compliance';
+import type { SecurityStateChange } from '@arch-platform/platform-model';
 
 describe('SecurityStateChange', () => {
   it('should represent a security status transition', () => {
@@ -13,6 +13,11 @@ describe('SecurityStateChange', () => {
         artifactHash: 'abc123',
         evaluatedAt: '2026-09-07T21:00:00.000Z',
         findings: [],
+        summary: {
+          totalFindings: 0,
+          blockingFindings: 0,
+          vulnerabilities: [],
+        },
       },
 
       decision: {
@@ -46,6 +51,11 @@ describe('SecurityStateChange', () => {
         artifactHash: 'def456',
         evaluatedAt: '2026-09-07T21:01:00.000Z',
         findings: [],
+        summary: {
+          totalFindings: 0,
+          blockingFindings: 0,
+          vulnerabilities: [],
+        },
       },
 
       decision: {

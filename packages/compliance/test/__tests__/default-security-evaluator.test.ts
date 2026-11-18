@@ -1,9 +1,9 @@
 // packages\compliance\test\__tests__\default-security-evaluator.test.ts
-import { describe, expect, it } from 'vitest';
+import { assert, describe, expect, it } from 'vitest';
 
-import { DefaultSecurityEvaluator, SecurityVulnerabilityMatcher } from '@arch-platform/compliance';
-
-import { securityAdvisoryFixtures } from '../fixture/create-security-advisory.js';
+import { DefaultSecurityEvaluator } from '../../src/security/default-security-evaluator.js';
+import { SecurityVulnerabilityMatcher } from '../../src/security/security-vulnerability-matcher.js';
+import { securityAdvisoryFixtureCVE13149 } from '../fixture/create-security-advisory.js';
 import { createSecurityExecutionContext } from '../fixture/create-security-execution-context.js';
 
 describe('DefaultSecurityEvaluator', () => {
@@ -13,8 +13,8 @@ describe('DefaultSecurityEvaluator', () => {
     const context = createSecurityExecutionContext();
 
     const result = await evaluator.evaluate(context);
-    const evaluation = result.changes[0].evaluation;
-
+    const evaluation = result.changes[0]?.evaluation;
+    assert(evaluation);
     expect(evaluation.status).toBe('blocked');
     expect(evaluation.artifactHash).toBe('sha256:H1');
 
@@ -33,7 +33,7 @@ describe('DefaultSecurityEvaluator', () => {
 
   it('uses the advisory severity when creating findings', async () => {
     const advisory = {
-      ...securityAdvisoryFixtures[0],
+      ...securityAdvisoryFixtureCVE13149,
       assessments: [
         {
           version: '4.0',
@@ -49,8 +49,8 @@ describe('DefaultSecurityEvaluator', () => {
     });
 
     const result = await evaluator.evaluate(context);
-    const evaluation = result.changes[0].evaluation;
-
+    const evaluation = result.changes[0]?.evaluation;
+    assert(evaluation);
     expect(
       evaluation.findings.find((finding) => finding.advisory?.value === 'CVE-2026-13149')?.severity,
     ).toBe('critical');
