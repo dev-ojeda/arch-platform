@@ -3,11 +3,11 @@
   "compilerOptions": {
     "composite": true,
     "noEmit": false,
-    "emitDeclarationOnly": false, // Asegura que emita tanto .js como .d.ts
+    "emitDeclarationOnly": false,
     "declaration": true,
     "declarationMap": true,
-    "sourceMap": true, // Mapeo para el código JavaScript ejecutable
+    "sourceMap": true,
     "outDir": "./dist",
-    "tsBuildInfoFile": "./dist/.tsbuildinfo" // Archivo de caché único para este paquete
+    "tsBuildInfoFile": "./dist/.tsbuildinfo"
   }
 }
