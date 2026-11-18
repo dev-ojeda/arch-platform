@@ -1,16 +1,17 @@
-// packages/governance/test/integration/code-analysis-adapter.test.ts
+// packages/governance/test/integration/code-analysis-adapter.integration.test.ts
 
-import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { describe, expect, it } from 'vitest';
 
-import { CrossPackageRelativeImportScanner, type GovernanceScope } from '@arch-platform/governance';
+import { resolvePath } from '@arch-platform/infrastructure';
 import type { ArchitectureManifest, WorkspaceDescriptor } from '@arch-platform/platform-model';
 
 import { CodeAnalysisAdapter } from '../../src/analysis/code-analysis/code-analysis-adapter.js';
 import { createGovernanceAnalysisContext } from '../../src/analysis/code-analysis/create-governance-analysis-context.js';
 import { buildGovernanceContext } from '../../src/context/build-governance-context.js';
+import type { GovernanceScope } from '../../src/public/governance-scope.js';
+import { CrossPackageRelativeImportScanner } from '../../src/rules/cross-package-relative-import-scanner.js';
 import { NoStarExportsRule } from '../../src/rules/no-star-exports-rule.js';
 import { createCrossPackageDescriptors } from '../fixtures/workspace/create-cross-package-descriptor.js';
 import { createPackageDescriptor } from '../fixtures/workspace/create-package-descriptor.js';
@@ -30,7 +31,7 @@ async function analyzeWorkspace(
     packages?: WorkspaceDescriptor['packages'];
   } = {},
 ) {
-  const workspaceRoot = resolve(fixturePath);
+  const workspaceRoot = resolvePath(fixturePath);
 
   const packages =
     options.packages ??
@@ -106,7 +107,7 @@ describe('CodeAnalysisAdapter', () => {
       hasPackageManifest: false,
     });
 
-    expect(executionContext.workspace.root).toBe(resolve(fixturePathCodeAnalysis));
+    expect(executionContext.workspace.root).toBe(resolvePath(fixturePathCodeAnalysis));
     expect(executionContext.scope.kind).toBe('workspace');
 
     const analysis = getAnalysis(executionContext);
@@ -192,7 +193,7 @@ describe('CodeAnalysisAdapter', () => {
     );
   });
   it('builds cross-package import metadata', async () => {
-    const workspaceRoot = resolve(fixturePathCrossPackageRelativeImport);
+    const workspaceRoot = resolvePath(fixturePathCrossPackageRelativeImport);
 
     const executionContext = await analyzeWorkspace(fixturePathCrossPackageRelativeImport, {
       packages: createCrossPackageDescriptors(workspaceRoot),
@@ -212,7 +213,7 @@ describe('CodeAnalysisAdapter', () => {
   });
   it('detects cross-package relative imports', async () => {
     const scanner = new CrossPackageRelativeImportScanner();
-    const workspaceRoot = resolve(fixturePathCrossPackageRelativeImport);
+    const workspaceRoot = resolvePath(fixturePathCrossPackageRelativeImport);
 
     const executionContext = await analyzeWorkspace(fixturePathCrossPackageRelativeImport, {
       packages: createCrossPackageDescriptors(workspaceRoot),

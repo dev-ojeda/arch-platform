@@ -11,7 +11,14 @@ describe('ForbiddenDependencyRule', () => {
     const context = createGovernanceContext({
       workspace: {
         root: '/workspace',
-        layout: undefined,
+        layout: {
+          packageJsonPath: '',
+          tsconfigPath: '',
+          archManifestPath: '',
+          hasPackageManifest: false,
+          hasTsconfig: false,
+          hasArchManifest: false,
+        },
 
         packages: [
           createPackageDescriptor({
@@ -43,7 +50,14 @@ describe('ForbiddenDependencyRule', () => {
     const context = createGovernanceContext({
       workspace: {
         root: '/workspace',
-        layout: undefined,
+        layout: {
+          packageJsonPath: '',
+          tsconfigPath: '',
+          archManifestPath: '',
+          hasPackageManifest: false,
+          hasTsconfig: false,
+          hasArchManifest: false,
+        },
         packages: [
           createPackageDescriptor({
             name: '@arch-platform/application',
@@ -65,7 +79,14 @@ describe('ForbiddenDependencyRule', () => {
     const context = createGovernanceContext({
       workspace: {
         root: '/workspace',
-        layout: undefined,
+        layout: {
+          packageJsonPath: '',
+          tsconfigPath: '',
+          archManifestPath: '',
+          hasPackageManifest: false,
+          hasTsconfig: false,
+          hasArchManifest: false,
+        },
         packages: [
           createPackageDescriptor({
             name: '@arch-platform/application',

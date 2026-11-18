@@ -14,7 +14,9 @@ export function createCrossPackageDescriptors(
       manifestPath: `${workspaceRoot}/package-a/package.json`,
       manifest: {
         name: '@fixture/package-a',
-        arch: undefined,
+        arch: {
+          artifactType: 'runtime',
+        },
       },
       internalDependencies: ['@fixture/package-b'],
       layout: createPackageLayout({
@@ -33,7 +35,9 @@ export function createCrossPackageDescriptors(
         exports: {
           '.': './src/index.ts',
         },
-        arch: undefined,
+        arch: {
+          artifactType: 'runtime',
+        },
       },
       internalDependencies: [],
       layout: createPackageLayout({
