@@ -1,9 +1,9 @@
 // packages/platform-model/src/package/package-metadata.ts
 
 import type { PackageBuildConfig } from './package-config.js';
+import type { PackagePackConfig } from './package-pack-config.js';
 import type { Layer } from '../architecture/layer.js';
 import type { ArtifactType } from '../artifact/artifact-type.js';
-
 
 export interface PackageMetadata {
   readonly kind?: Layer;
@@ -13,4 +13,6 @@ export interface PackageMetadata {
   readonly tags?: readonly string[];
 
   readonly build?: PackageBuildConfig;
+
+  readonly pack?: PackagePackConfig;
 }

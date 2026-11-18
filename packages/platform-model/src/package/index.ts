@@ -1,5 +1,6 @@
 // packages/platform-model/src/package/index.ts
 
+export type { PackagePackConfig } from './package-pack-config.js';
 export type { PackageBoundaries } from './package-boundaries.js';
 export type { PackageBuildConfig } from './package-config.js';
 export type { PackageDescriptor } from './package-descriptor.js';
