@@ -128,6 +128,11 @@ describe('BuildTaskRunner', () => {
     const result = await h.runner.run(node.name);
 
     expect(result.status).toBe('success');
+    expect(result).toMatchObject({
+      package: node.name,
+      status: 'success',
+      execution: { reason: 'executed' },
+    });
     expect(h.events).toEqual(['prepare', 'execute', 'validate', 'save', 'commit']);
     expect(h.artifactOutputPreparer.prepare).toHaveBeenCalledWith(node.root, node.outputs);
     expect(h.artifactCache.save).toHaveBeenCalledWith(
@@ -179,6 +184,12 @@ describe('BuildTaskRunner', () => {
       status: 'skipped',
       execution: { reason: 'restored' },
     });
+    expect(h.events).toEqual(['commit']);
+    expect(h.artifactCache.restore).toHaveBeenCalledWith(
+      { packageName: node.name, id: hash.hash },
+      node.root,
+    );
+    expect(h.outputValidator.exists).not.toHaveBeenCalled();
     expect(h.artifactOutputPreparer.prepare).not.toHaveBeenCalled();
     expect(h.executor.execute).not.toHaveBeenCalled();
     expect(h.artifactCache.save).not.toHaveBeenCalled();

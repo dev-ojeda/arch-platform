@@ -9,5 +9,13 @@
     "sourceMap": true,
     "outDir": "./dist",
     "tsBuildInfoFile": "./dist/.tsbuildinfo"
-  }
+  },
+  "references": [
+    {
+      "path": "../platform-model/tsconfig.build.json"
+    },
+    {
+      "path": "../infrastructure/tsconfig.build.json"
+    }
+  ]
 }

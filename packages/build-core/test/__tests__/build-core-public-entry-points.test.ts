@@ -1,7 +1,7 @@
 // packages\build-core\test\__tests__\build-core-public-entry-points.test.ts
 import { describe, expect, it } from 'vitest';
 
-import { BuildApplicationFactory } from '@arch-platform/build-core';
+import { BuildApplicationFactory } from '../../src/public/build-application-factory.js';
 
 describe('@arch-platform/build-core public API', () => {
   it('should expose build entry points', () => {

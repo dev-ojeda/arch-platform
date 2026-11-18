@@ -7,7 +7,6 @@ import type { BuildAction } from './plan-entry.js';
 import { CacheEvaluator } from '../cache/cache-evaluator.js';
 import type { CacheDecision } from '../cache/cache-types.js';
 
-
 export class ChangePlanner {
   constructor(private evaluator: CacheEvaluator) {}
 
@@ -26,7 +25,7 @@ export class ChangePlanner {
       plan.set(name, {
         package: name,
 
-        buildAction: this.resolveBuildAction(evaluation.decision, evaluation.available),
+        buildAction: this.resolveBuildAction(evaluation.decision),
 
         cache: {
           decision: evaluation.decision,
@@ -39,11 +38,7 @@ export class ChangePlanner {
 
     return plan;
   }
-  private resolveBuildAction(decision: CacheDecision, available: boolean): BuildAction {
-    if (available && decision !== 'hit') {
-      return 'restore';
-    }
-
+  private resolveBuildAction(decision: CacheDecision): BuildAction {
     switch (decision) {
       case 'restore':
         return 'restore';
