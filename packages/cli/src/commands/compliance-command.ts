@@ -2,14 +2,13 @@
 
 import type { CAC } from 'cac';
 
-import { runCompliance } from '@arch-platform/governance';
-
 import type { ComplianceCliOptions } from '../contracts/compliance-cli-options.js';
 import { renderComplianceResult } from '../renderers/render-compliance.js';
 import { logger } from '../ui/logger.js';
 
 export async function runComplianceCommand(options: ComplianceCliOptions): Promise<number> {
   try {
+    const { runCompliance } = await import('@arch-platform/governance');
     const result = await runCompliance({
       workspaceRoot: process.cwd(),
       packageName: options.package,
