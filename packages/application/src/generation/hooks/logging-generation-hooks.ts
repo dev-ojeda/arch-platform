@@ -35,7 +35,7 @@ export class LoggingGenerationHooks<
     return Promise.resolve();
   }
 
-  afterPipeline(context: GenerationContext<TVariables>): Promise<void> {
+  onSuccess(context: GenerationContext<TVariables>): Promise<void> {
     context.logger.info('[arch] generation completed');
 
     return Promise.resolve();

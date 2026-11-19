@@ -21,7 +21,6 @@ import type {
 } from '../../runtime/execution/events/step-events.js';
 import { measureStepExecution } from '../telemetry/measure-step-execution.js';
 
-
 export class GenerationPipeline<TVariables extends TemplateVariables = TemplateVariables> {
   constructor(private readonly options: GenerationPipelineOptions<TVariables>) {}
 
@@ -38,6 +37,9 @@ export class GenerationPipeline<TVariables extends TemplateVariables = TemplateV
 
     const executionId = idGenerator.generate();
 
+    let executionError: unknown;
+    let hasExecutionError = false;
+
     try {
       await this.emitEvent(this.createPipelineStartedEvent(executionId, pipelineId));
 
@@ -46,19 +48,40 @@ export class GenerationPipeline<TVariables extends TemplateVariables = TemplateV
       for (const step of steps) {
         await this.executeStep(executionId, pipelineId, step, context);
       }
-
-      await this.emitEvent(this.createPipelineCompletedEvent(executionId, pipelineId));
-
-      await this.hooks?.onSuccess?.(context);
     } catch (error) {
-      await this.emitEvent(this.createPipelineFailedEvent(executionId, pipelineId, error));
-
-      await this.hooks?.onError?.(error, context);
-
-      throw error;
-    } finally {
-      await this.hooks?.afterPipeline?.(context);
+      executionError = error;
+      hasExecutionError = true;
     }
+
+    try {
+      await this.hooks?.afterPipeline?.(context);
+    } catch (error) {
+      if (!hasExecutionError) {
+        executionError = error;
+        hasExecutionError = true;
+      }
+    }
+    if (!hasExecutionError) {
+      try {
+        await this.hooks?.onSuccess?.(context);
+      } catch (error) {
+        executionError = error;
+        hasExecutionError = true;
+      }
+    }
+    if (hasExecutionError) {
+      await this.emitEvent(this.createPipelineFailedEvent(executionId, pipelineId, executionError));
+
+      try {
+        await this.hooks?.onError?.(executionError, context);
+      } catch {
+        // Preserve the original pipeline error.
+      }
+
+      throw executionError;
+    }
+
+    await this.emitEvent(this.createPipelineCompletedEvent(executionId, pipelineId));
   }
 
   private async executeStep(
@@ -79,10 +102,6 @@ export class GenerationPipeline<TVariables extends TemplateVariables = TemplateV
 
         await this.hooks?.afterStep?.(step, context);
       });
-
-      await this.emitEvent(
-        this.createStepCompletedEvent(executionId, pipelineId, step, startedAt, Date.now()),
-      );
     } catch (error) {
       await this.emitEvent(
         this.createStepFailedEvent(executionId, pipelineId, step, startedAt, Date.now(), error),
@@ -90,10 +109,18 @@ export class GenerationPipeline<TVariables extends TemplateVariables = TemplateV
 
       throw error;
     }
+
+    await this.emitEvent(
+      this.createStepCompletedEvent(executionId, pipelineId, step, startedAt, Date.now()),
+    );
   }
 
-  private emitEvent(event: RuntimeEvent): Promise<void> {
-    return this.runtimeEvents?.emit(event) ?? Promise.resolve();
+  private async emitEvent(event: RuntimeEvent): Promise<void> {
+    try {
+      await this.runtimeEvents?.emit(event);
+    } catch {
+      // Runtime events are best-effort observability notifications.
+    }
   }
 
   private createPipelineStartedEvent(

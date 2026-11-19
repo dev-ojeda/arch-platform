@@ -82,6 +82,7 @@ export type {
   PackageManifest,
   PackageMetadata,
   PackageProvider,
+  PackagePackConfig,
 } from './package/index.js';
 export type {
   ArtifactCache,

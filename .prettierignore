@@ -11,3 +11,6 @@ dependency-graph.svg
 
 # Handlebars templates
 templates/**/*.hbs
+
+# VS Code workspace configuration
+arch-platform.code-workspace

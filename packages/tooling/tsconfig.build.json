@@ -7,5 +7,9 @@
     "declarationMap": true,
     "outDir": "./dist",
     "tsBuildInfoFile": "./dist/.tsbuildinfo"
-  }
+  },
+  "references": [
+    { "path": "../build-core/tsconfig.build.json" },
+    { "path": "../infrastructure/tsconfig.build.json" }
+  ]
 }

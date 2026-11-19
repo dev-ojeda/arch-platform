@@ -1,5 +1,3 @@
-// packages/testing/src/runtime/create-deferred.ts
-
 export interface Deferred<T> {
   readonly promise: Promise<T>;
 

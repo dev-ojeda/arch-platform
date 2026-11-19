@@ -1,71 +1,92 @@
-import { defineConfig } from 'vitest/config';
+// config/vitest/shared.js
+import { defineConfig, mergeConfig } from 'vitest/config';
 
 import { packageSource, PLATFORM_PACKAGES } from './base.js';
 
 export const workspaceAliases = PLATFORM_PACKAGES.flatMap((pkg) => [
   {
-    find: new RegExp(`^@arch-platform/${pkg}$`),
-    replacement: packageSource(pkg),
+    find: new RegExp(`^@arch-platform/${pkg.name}$`),
+    replacement: packageSource(pkg.path),
   },
   {
-    find: new RegExp(`^@arch-platform/${pkg}/(.*)$`),
-    replacement: `${packageSource(pkg)}/$1`,
+    find: new RegExp(`^@arch-platform/${pkg.name}/(.*)$`),
+    replacement: `${packageSource(pkg.path)}/$1`,
   },
 ]);
 
-export function createVitestConfig(name: string) {
-  return defineConfig({
-    resolve: {
-      alias: workspaceAliases,
-    },
+export function createVitestConfig(name, overrides = {}) {
+  return defineConfig((env) => {
+    const isIntegration = env.mode === 'integration';
+    const isRunningInTurbo = Boolean(process.env.TURBO_HASH);
+    const maxWorkers = process.env.VITEST_MAX_WORKERS
+      ? Number(process.env.VITEST_MAX_WORKERS)
+      : isRunningInTurbo
+        ? 1
+        : 2;
 
-    test: {
-      name,
-      environment: 'node',
-      // Desactivamos globals para forzar importaciones explícitas y evitar fallos del compilador/linter
-      globals: false,
-      isolate: true,
-      pool: 'threads',
-      passWithNoTests: true,
-      silent: true,
-      testTimeout: 5000, // Limite por defecto estándar
-
-      sequence: {
-        concurrent: false,
+    const baseConfig = {
+      resolve: {
+        alias: workspaceAliases,
       },
 
-      typecheck: {
-        tsconfig: './tsconfig.test.json',
-      },
+      test: {
+        name,
+        environment: 'node',
+        globals: false,
+        isolate: true,
+        pool: 'threads',
+        maxWorkers,
+        passWithNoTests: true,
+        silent: true,
+        testTimeout: isIntegration ? 15000 : 5000,
 
-      coverage: {
-        provider: 'v8',
-        reporter: ['text', 'html'],
+        include: isIntegration ? ['**/*.integration.test.ts'] : ['**/*.{test,spec}.ts'],
 
-        thresholds: {
-          autoUpdate: false,
-          lines: 40,
-          statements: 40,
-          branches: 25,
-          functions: 25,
+        exclude: isIntegration
+          ? ['**/node_modules/**', '**/dist/**']
+          : ['**/node_modules/**', '**/dist/**', '**/*.integration.test.ts'],
+
+        sequence: {
+          concurrent: false,
         },
 
-        include: ['src/**/*.ts'],
+        typecheck: {
+          tsconfig: './tsconfig.test.json',
+        },
 
-        exclude: [
-          '**/*.d.ts',
-          '**/index.ts',
-          '**/test/**',
-          '**/__tests__/**',
-          '**/contracts/**',
-          '**/types/**',
-          '**/*types.ts',
-          '**/interfaces/**',
-          '**/dto/**',
-          '**/*input.ts',
-          '**/*output.ts',
-        ],
+        coverage: {
+          provider: 'v8',
+          reporter: ['text', 'html'],
+
+          thresholds: {
+            autoUpdate: false,
+            lines: 40,
+            statements: 40,
+            branches: 25,
+            functions: 25,
+          },
+
+          include: ['src/**/*.ts'],
+
+          exclude: [
+            '**/*.d.ts',
+            '**/index.ts',
+            '**/test/**',
+            '**/__tests__/**',
+            '**/contracts/**',
+            '**/types/**',
+            '**/*types.ts',
+            '**/interfaces/**',
+            '**/dto/**',
+            '**/*input.ts',
+            '**/*output.ts',
+          ],
+        },
       },
-    },
+    };
+
+    const resolvedOverrides = typeof overrides === 'function' ? overrides(env) : overrides;
+
+    return mergeConfig(baseConfig, resolvedOverrides);
   });
 }

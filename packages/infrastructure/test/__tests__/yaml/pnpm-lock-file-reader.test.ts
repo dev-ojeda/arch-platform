@@ -2,8 +2,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { DependencyLockfileProvider } from '@arch-platform/infrastructure';
-
+import { DependencyLockfileProvider } from '../../../src/security/dependency-lockfile-provider.js';
 import { FIXTURE_PATHS } from '../../fixture/fixture-paths.js';
 
 describe('DependencyLockfileProvider', async () => {

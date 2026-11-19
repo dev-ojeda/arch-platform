@@ -1,7 +1,10 @@
-import { mkdtempSync } from 'node:fs';
+// packages/infrastructure/test/helpers/create-filesystem-root.ts
+
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+
+import { createTempDirectorySync } from '../../src/filesystem/io/fs-sync.js';
+import { joinPath } from '../../src/filesystem/io/path-utils.js';
 
 export function createTestFilesystemRoot(prefix = 'arch-test'): string {
-  return mkdtempSync(join(tmpdir(), `${prefix}-`));
+  return createTempDirectorySync(joinPath(tmpdir(), `${prefix}-`));
 }

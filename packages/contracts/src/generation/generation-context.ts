@@ -20,6 +20,8 @@ export interface GenerationContext<TVariables extends TemplateVariables = Templa
 
   readonly targetDir: string;
 
+  readonly languageId: string;
+
   readonly signal?: AbortSignal;
   /*
    * Runtime Services

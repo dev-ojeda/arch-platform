@@ -6,7 +6,7 @@ import type { GenerationContext, GenerationPipelineStep } from '@arch-platform/c
 
 import { LoggingGenerationHooks } from '../../src/generation/hooks/logging-generation-hooks.js';
 
-describe('CreateTestLoggingGenerationHook', () => {
+describe('LoggingGenerationHooks', () => {
   function createLoggerMock() {
     return {
       trace: vi.fn(),
@@ -28,14 +28,14 @@ describe('CreateTestLoggingGenerationHook', () => {
 
     expect(logger.info).toHaveBeenCalledWith('[arch] generation started');
   });
-  it('logs generation afterPipeline info', async () => {
+  it('logs generation onSuccess info', async () => {
     const hooks = new LoggingGenerationHooks();
     const logger = createLoggerMock();
     const context = {
-      logger: logger,
+      logger,
     } as unknown as GenerationContext;
 
-    await hooks.afterPipeline(context);
+    await hooks.onSuccess(context);
 
     expect(logger.info).toHaveBeenCalledWith('[arch] generation completed');
   });

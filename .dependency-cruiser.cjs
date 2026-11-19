@@ -15,8 +15,6 @@ const PATHS = {
 
   generators: '^packages/generators/.+/src',
 
-  testing: '^packages/testing/src',
-
   internal: 'src/internal',
 
   sharedPackages: '^packages/(shared|common|utils|helpers)',

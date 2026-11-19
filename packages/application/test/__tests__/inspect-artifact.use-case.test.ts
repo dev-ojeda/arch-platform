@@ -37,7 +37,16 @@ const contractsPackage: PackageDescriptor = {
     },
   },
   internalDependencies: [],
-  layout: undefined,
+  layout: {
+    sourceDirectory: '',
+    hasSourceDirectory: false,
+    testsDirectory: '',
+    hasTestsDirectory: false,
+    distributionDirectory: '',
+    hasDistributionDirectory: false,
+    tsconfigPath: '',
+    hasTsconfig: false,
+  },
 };
 
 const generatorInspection: PackedArtifactInspect = {
@@ -67,7 +76,16 @@ const generatorPackage: PackageDescriptor = {
     },
   },
   internalDependencies: [],
-  layout: undefined,
+  layout: {
+    sourceDirectory: '',
+    hasSourceDirectory: false,
+    testsDirectory: '',
+    hasTestsDirectory: false,
+    distributionDirectory: '',
+    hasDistributionDirectory: false,
+    tsconfigPath: '',
+    hasTsconfig: false,
+  },
 };
 
 function createWriter(): ArtifactDistributionPreparedWriter {

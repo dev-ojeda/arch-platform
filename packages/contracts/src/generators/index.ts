@@ -1,6 +1,7 @@
 // packages/contracts/src/generators/index.ts
 
 export type { GeneratorCapabilities } from './generator-capabilities.js';
+export type { GeneratorMetadata } from './generator-metadata.js';
 export type { GeneratorDefinition } from './generator-definition.js';
 export type { GeneratorDescriptor } from './generator-descriptor.js';
 export type { GeneratorModule } from './generator-module.js';

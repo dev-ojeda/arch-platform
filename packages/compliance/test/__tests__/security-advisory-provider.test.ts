@@ -2,11 +2,10 @@
 
 import { describe, expect, it } from 'vitest';
 
-import {
-  DefaultSecurityAdvisoryProvider,
-  SecurityVulnerabilityMatcher,
-  type SecurityAdvisory,
-} from '@arch-platform/compliance';
+import type { SecurityAdvisory } from '@arch-platform/platform-model';
+
+import { DefaultSecurityAdvisoryProvider } from '../../src/advisories/default-security-advisory-provider.js';
+import { SecurityVulnerabilityMatcher } from '../../src/security/security-vulnerability-matcher.js';
 
 describe('DefaultSecurityAdvisoryProvider', () => {
   const advisory: SecurityAdvisory = {
@@ -28,6 +27,7 @@ describe('DefaultSecurityAdvisoryProvider', () => {
         ],
       },
     ],
+    cweIds: [],
   };
 
   it('returns advisories affecting the package version', async () => {

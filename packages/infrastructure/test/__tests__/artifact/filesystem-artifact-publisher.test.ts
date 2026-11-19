@@ -5,14 +5,14 @@ import { describe, expect, it, vi } from 'vitest';
 import type { ArtifactManifest } from '@arch-platform/platform-model';
 
 import { ArtifactPublisherAdapter } from '../../../src/artifact/adapter/artifact-publisher-adapter.js';
+import { PosixPathService } from '../../../src/filesystem/paths/posix-path-service.js';
 import { createArtifactLoyout } from '../../helpers/create-artifact-layout.js';
 import { createFilesystem } from '../../helpers/create-filesystem-fixture.js';
-import { createTestPathService } from '../../helpers/create-path-service.js';
 
 describe('ArtifactPublisherAdapter', () => {
   it('publishes the manifest and outputs using a temporary directory', async () => {
     const filesystem = createFilesystem();
-    const pathService = createTestPathService();
+    const pathService = new PosixPathService();
 
     const root = '/workspace';
     const artifactRoot = '/cache/artifact';
@@ -63,7 +63,7 @@ describe('ArtifactPublisherAdapter', () => {
 
   it('replaces an existing publication using a backup', async () => {
     const filesystem = createFilesystem();
-    const pathService = createTestPathService();
+    const pathService = new PosixPathService();
 
     const root = '/workspace';
     const artifactRoot = '/cache/artifact';
@@ -107,7 +107,7 @@ describe('ArtifactPublisherAdapter', () => {
 
   it('restores the previous publication when the new publication fails', async () => {
     const filesystem = createFilesystem();
-    const pathService = createTestPathService();
+    const pathService = new PosixPathService();
 
     const root = '/workspace';
     const artifactRoot = '/cache/artifact';
@@ -153,7 +153,7 @@ describe('ArtifactPublisherAdapter', () => {
   });
   it('throws an AggregateError when publication and rollback fail', async () => {
     const filesystem = createFilesystem();
-    const pathService = createTestPathService();
+    const pathService = new PosixPathService();
 
     const root = '/workspace';
     const artifactRoot = '/cache/artifact';
@@ -214,7 +214,7 @@ describe('ArtifactPublisherAdapter', () => {
 
   it('recovers the previous publication after an interrupted replacement', async () => {
     const filesystem = createFilesystem();
-    const pathService = createTestPathService();
+    const pathService = new PosixPathService();
 
     const root = '/workspace';
     const artifactRoot = '/cache/artifact';

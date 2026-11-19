@@ -19,34 +19,32 @@ export const TSUP_ROOT = resolve(CONFIG_ROOT, 'tsup');
 export const TSCONFIG_ROOT = resolve(CONFIG_ROOT, 'tsconfig');
 
 export const PLATFORM_PACKAGES = [
-  'application',
-  'build-core',
-  'cli',
-  'code-analysis',
-  'contracts',
-  'core',
-  'domain-order',
-  'distribution',
-  'governance',
-  'infrastructure',
-  'platform-model',
-  'testing',
-  'tooling',
-  'compliance',
+  { name: 'application', path: 'application' },
+  { name: 'build-core', path: 'build-core' },
+  { name: 'cli', path: 'cli' },
+  { name: 'code-analysis', path: 'code-analysis' },
+  { name: 'compliance', path: 'compliance' },
+  { name: 'contracts', path: 'contracts' },
+  { name: 'core', path: 'core' },
+  { name: 'distribution', path: 'distribution' },
+  { name: 'domain-order', path: 'domain-order' },
+  { name: 'generator-mvc', path: 'generators/mvc' },
+  { name: 'governance', path: 'governance' },
+  { name: 'infrastructure', path: 'infrastructure' },
+  { name: 'platform-model', path: 'platform-model' },
+  { name: 'tooling', path: 'tooling' },
 ] as const;
-
-export type PlatformPackage = (typeof PLATFORM_PACKAGES)[number];
 
 /**
  * Package root.
  */
-export function packageRoot(name: PlatformPackage): string {
-  return resolve(PACKAGES_ROOT, name);
+export function packageRoot(relativePath) {
+  return resolve(PACKAGES_ROOT, relativePath);
 }
 
 /**
  * Source directory.
  */
-export function packageSource(name: PlatformPackage): string {
-  return resolve(packageRoot(name), 'src');
+export function packageSource(relativePath) {
+  return resolve(packageRoot(relativePath), 'src');
 }

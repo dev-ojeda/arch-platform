@@ -29,21 +29,30 @@ export class RenderFilesStep<
     }
 
     const renderedFiles = await this.renderer.render(
-      templates.map((resolvedTemplate) => ({
-        template: resolvedTemplate.template.template,
-        path: resolvedTemplate.outputPath,
+      templates.map(({ template }) => ({
+        template: template.template,
+        output: template.output,
         variables,
       })),
     );
 
-    const generatedFiles: GeneratedFile[] = [];
-
-    for (const [index, resolvedTemplate] of templates.entries()) {
-      generatedFiles.push({
-        path: resolvedTemplate.outputPath,
-        content: renderedFiles[index]?.content ?? '',
-      });
+    if (renderedFiles.length !== templates.length) {
+      throw new Error(
+        `Expected ${templates.length} rendered files, received ${renderedFiles.length}`,
+      );
     }
+
+    const generatedFiles: GeneratedFile[] = renderedFiles.map((renderedFile, index) => {
+      if (!renderedFile.path?.trim()) {
+        throw new Error(`Renderer returned an empty output path for template at index ${index}`);
+      }
+
+      return {
+        path: renderedFile.path,
+        content: renderedFile.content,
+        overwrite: templates[index]?.template.overwrite,
+      };
+    });
 
     context.files.push(...generatedFiles);
   }

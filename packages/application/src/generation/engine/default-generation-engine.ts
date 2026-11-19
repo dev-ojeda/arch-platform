@@ -1,4 +1,4 @@
-// packages/application/src/application/engine/default-generation-engine.ts
+// packages/application/src/generation/engine/default-generation-engine.ts
 
 import type {
   GenerationContext,
@@ -25,20 +25,15 @@ export class DefaultGenerationEngine<
 
   async generate(request: GenerationRequest<TVariables>): Promise<GenerationResult> {
     const context = this.contextFactory.create(request);
-
     const startedAt = Date.now();
+
+    let success = true;
 
     try {
       await this.pipeline.execute(context);
-
-      return await this.createResult(
-        context,
-
-        true,
-
-        startedAt,
-      );
     } catch (error) {
+      success = false;
+
       context.logger.error('Generation failed', {
         source: {
           component: 'DefaultGenerationEngine',
@@ -46,19 +41,12 @@ export class DefaultGenerationEngine<
         },
         metadata: {
           name: error instanceof Error ? error.name : 'UnknownError',
-
           message: error instanceof Error ? error.message : String(error),
         },
       });
-
-      return await this.createResult(
-        context,
-
-        false,
-
-        startedAt,
-      );
     }
+
+    return this.createResult(context, success, startedAt);
   }
 
   private async createResult(

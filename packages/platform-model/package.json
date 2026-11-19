@@ -23,7 +23,7 @@
     "kind": "tooling"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -b tsconfig.build.json",
     "arch": "arch build --package @arch-platform/platform-model",
     "compliance": "arch compliance --package @arch-platform/platform-model --env dev",
     "clean": "arch clean --package @arch-platform/platform-model",

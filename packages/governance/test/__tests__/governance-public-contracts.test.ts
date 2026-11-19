@@ -12,7 +12,6 @@ describe('@arch-platform/governance public contracts', () => {
   it('should expose public governance contracts', () => {
     const options = {
       workspaceRoot: process.cwd(),
-      scope: 'workspace',
     } satisfies GovernanceOptions;
 
     const scope = {

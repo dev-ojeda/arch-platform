@@ -2,12 +2,11 @@
 
 import type { CAC } from 'cac';
 
-import { runGovernance } from '@arch-platform/governance';
-
 import type { ValidateCliOptions } from '../contracts/validate-cli-options.js';
 import { renderGovernanceResult } from '../renderers/render-diagnostics.js';
 
 export async function runValidateCommand(options: ValidateCliOptions): Promise<number> {
+  const { runGovernance } = await import('@arch-platform/governance');
   const result = await runGovernance({
     workspaceRoot: process.cwd(),
     packageName: options.package,

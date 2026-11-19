@@ -1,9 +1,10 @@
 // packages\compliance\test\__tests__\dependency-graph-builder.test.ts
 import { describe, expect, it } from 'vitest';
 
-import { DependencyGraphBuilder, DependencyLockfileQuery } from '@arch-platform/compliance';
 import type { ArchitectureManifest } from '@arch-platform/platform-model';
 
+import { DependencyGraphBuilder } from '../../src/dependency/dependency-graph-builder.js';
+import { DependencyLockfileQuery } from '../../src/dependency/dependency-lock-file-query.js';
 import {
   dependencyLockfileFixtureCodeAnalisys,
   governanceLockfile,

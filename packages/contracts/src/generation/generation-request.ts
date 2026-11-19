@@ -7,6 +7,8 @@ import type { NamedVariables } from '../variables/named-variables.js';
 export interface GenerationRequest<TVariables extends NamedVariables = NamedVariables> {
   generator: GeneratorDefinition<TVariables>;
 
+  languageId: string;
+
   targetDir: string;
 
   variables?: Partial<TVariables>;

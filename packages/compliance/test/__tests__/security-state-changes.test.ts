@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import type { SecurityStateChanges } from '@arch-platform/compliance';
+import type { SecurityStateChanges } from '@arch-platform/platform-model';
 
 describe('SecurityStateChanges', () => {
   it('should contain security state changes', () => {
@@ -15,6 +15,11 @@ describe('SecurityStateChanges', () => {
             artifactHash: 'abc123',
             evaluatedAt: '2026-09-07T21:00:00.000Z',
             findings: [],
+            summary: {
+              totalFindings: 0,
+              blockingFindings: 0,
+              vulnerabilities: [],
+            },
           },
 
           decision: {

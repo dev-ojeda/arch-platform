@@ -14,66 +14,34 @@ export class EventGenerationHooks<
   TVariables extends TemplateVariables = TemplateVariables,
 > implements GenerationHooks<TVariables> {
   async beforePipeline(context: GenerationContext<TVariables>): Promise<void> {
-    await publishGenerationEvent(
-      context,
-
-      'GENERATION_STARTED',
-    );
-  }
-
-  async afterPipeline(context: GenerationContext<TVariables>): Promise<void> {
-    await publishGenerationEvent(
-      context,
-
-      'GENERATION_COMPLETED',
-    );
+    await publishGenerationEvent(context, 'GENERATION_STARTED');
   }
 
   async beforeStep(
     step: GenerationPipelineStep<TVariables>,
-
     context: GenerationContext<TVariables>,
   ): Promise<void> {
-    await publishGenerationEvent(
-      context,
-
-      'STEP_STARTED',
-
-      {
-        step: step.name,
-      },
-    );
+    await publishGenerationEvent(context, 'STEP_STARTED', {
+      step: step.name,
+    });
   }
 
   async afterStep(
     step: GenerationPipelineStep<TVariables>,
-
     context: GenerationContext<TVariables>,
   ): Promise<void> {
-    await publishGenerationEvent(
-      context,
-
-      'STEP_COMPLETED',
-
-      {
-        step: step.name,
-      },
-    );
+    await publishGenerationEvent(context, 'STEP_COMPLETED', {
+      step: step.name,
+    });
   }
 
-  async onError(
-    error: unknown,
+  async onSuccess(context: GenerationContext<TVariables>): Promise<void> {
+    await publishGenerationEvent(context, 'GENERATION_COMPLETED');
+  }
 
-    context: GenerationContext<TVariables>,
-  ): Promise<void> {
-    await publishGenerationEvent(
-      context,
-
-      'GENERATION_FAILED',
-
-      {
-        error: error instanceof Error ? error.message : errorMessage(error),
-      },
-    );
+  async onError(error: unknown, context: GenerationContext<TVariables>): Promise<void> {
+    await publishGenerationEvent(context, 'GENERATION_FAILED', {
+      error: error instanceof Error ? error.message : errorMessage(error),
+    });
   }
 }

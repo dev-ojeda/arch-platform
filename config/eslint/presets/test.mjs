@@ -7,6 +7,7 @@ export const TEST_FILES = [
   '**/*.test.tsx',
   '**/*.spec.ts',
   '**/*.spec.tsx',
+  '**/*.integration.test.ts',
 ];
 
 export const TEST_LANGUAGE_OPTIONS = {
@@ -14,12 +15,13 @@ export const TEST_LANGUAGE_OPTIONS = {
     describe: 'readonly',
     it: 'readonly',
     test: 'readonly',
-
     expect: 'readonly',
-
+    beforeAll: 'readonly',
+    afterAll: 'readonly',
     beforeEach: 'readonly',
     afterEach: 'readonly',
-
     vi: 'readonly',
+    Buffer: 'readonly',
+    process: 'readonly',
   },
 };

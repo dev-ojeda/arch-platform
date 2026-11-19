@@ -29,43 +29,46 @@ export interface NpmArtifactRegistryPublishing extends ArtifactRegistryPublishin
 
 export class NpmArtifactRegistryReader implements ArtifactRegistryPublishingReader {
   private readonly calculator = new SemanticVersionCalculator();
+  private readonly registryUrl: string;
 
-  constructor(private readonly registryUrl = 'https://registry.npmjs.org') {}
+  constructor(
+    registryUrl = 'https://registry.npmjs.org',
+    private readonly requestTimeoutMs = 10_000,
+  ) {
+    this.registryUrl = registryUrl.replace(/\/+$/, '');
+  }
 
   /**
    * Busca los metadatos de una versión específica de un paquete
+   * leyendo el manifiesto raíz del paquete (igual que arch sync).
    */
   async find(
     packageName: string,
     version: string,
   ): Promise<ArtifactRegistryPublishing | undefined> {
+    if (!version.trim()) {
+      return undefined;
+    }
     const packagePath = this.escapePackageName(packageName);
-    const url = `${this.registryUrl}/${packagePath}/${encodeURIComponent(version)}`;
+    const url = `${this.registryUrl}/${packagePath}`;
 
-    const response = await fetch(url);
-    if (response.status === 404) return undefined;
-    if (!response.ok) {
-      throw new Error(`Npm registry request failed: ${response.status} ${response.statusText}`);
+    const rootMetadata = await this.fetchJsonOrUndefined<NpmPackageRootMetadata>(url);
+    if (!rootMetadata) {
+      return undefined;
     }
 
-    const metadata = (await response.json()) as {
-      name: string;
-      version: string;
-      dist?: {
-        integrity?: string;
-        tarball?: string;
-      };
-    };
+    const metadata = rootMetadata.versions?.[version];
+    if (!metadata) {
+      return undefined;
+    }
 
-    const artifactRegistryPublishing = {
-      packageName: metadata.name,
+    return {
+      packageName: rootMetadata.name,
       version: metadata.version,
       integrity: metadata.dist?.integrity,
       tarball: metadata.dist?.tarball,
       tag: this.calculator.getPrereleaseTag(metadata.version),
     };
-
-    return artifactRegistryPublishing;
   }
 
   /**
@@ -76,14 +79,12 @@ export class NpmArtifactRegistryReader implements ArtifactRegistryPublishingRead
     const packagePath = this.escapePackageName(packageName);
     const url = `${this.registryUrl}/${packagePath}`;
 
-    const response = await fetch(url);
-    if (response.status === 404) return [];
-    if (!response.ok) {
-      throw new Error(`Npm registry request failed: ${response.status} ${response.statusText}`);
+    const rootMetadata = await this.fetchJsonOrUndefined<NpmPackageRootMetadata>(url);
+    if (!rootMetadata) {
+      return [];
     }
 
-    const rootMetadata = (await response.json()) as NpmPackageRootMetadata;
-    const rawVersions = Object.keys(rootMetadata.versions);
+    const rawVersions = Object.keys(rootMetadata.versions ?? {});
     const sortedVersions = this.calculator.sortDescending(rawVersions);
 
     return sortedVersions.map((version) => {
@@ -108,20 +109,17 @@ export class NpmArtifactRegistryReader implements ArtifactRegistryPublishingRead
     const packagePath = this.escapePackageName(packageName);
     const url = `${this.registryUrl}/${packagePath}`;
 
-    const response = await fetch(url);
-    if (response.status === 404) return undefined;
-    if (!response.ok) {
-      throw new Error(`Npm registry request failed: ${response.status} ${response.statusText}`);
+    const rootMetadata = await this.fetchJsonOrUndefined<NpmPackageRootMetadata>(url);
+    if (!rootMetadata) {
+      return undefined;
     }
-
-    const rootMetadata = (await response.json()) as NpmPackageRootMetadata;
 
     const tagVersion: unknown = rootMetadata['dist-tags']?.[distTag];
     let latestVersionString: string | undefined =
       typeof tagVersion === 'string' ? tagVersion : undefined;
 
     if (!latestVersionString) {
-      const versionList = Object.keys(rootMetadata.versions);
+      const versionList = Object.keys(rootMetadata.versions ?? {});
       latestVersionString = this.calculator.getLatest(versionList);
     }
 
@@ -140,6 +138,27 @@ export class NpmArtifactRegistryReader implements ArtifactRegistryPublishingRead
       tarball: latestVersionMetadata.dist?.tarball,
       tag: this.calculator.getPrereleaseTag(latestVersionString),
     };
+  }
+
+  /**
+   * Ejecuta una petición GET asegurando el cierre inmediato del stream en 404 o errores HTTP.
+   */
+  private async fetchJsonOrUndefined<T>(url: string): Promise<T | undefined> {
+    const response = await fetch(url, {
+      signal: AbortSignal.timeout(this.requestTimeoutMs),
+    });
+
+    if (response.status === 404) {
+      await response.body?.cancel();
+      return undefined;
+    }
+
+    if (!response.ok) {
+      await response.body?.cancel();
+      throw new Error(`Npm registry request failed: ${response.status} ${response.statusText}`);
+    }
+
+    return (await response.json()) as T;
   }
 
   /**

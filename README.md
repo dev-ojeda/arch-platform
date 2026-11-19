@@ -220,8 +220,6 @@ arquitectónico
 `@arch-platform/compliance` Evaluación y gestión del estado de
 cumplimiento
 
-`@arch-platform/testing` Utilidades compartidas para pruebas
-
 `@arch-platform/application` Casos de uso de aplicación
 
 `@arch-platform/distribution` CLI distribuida para ejecutar el

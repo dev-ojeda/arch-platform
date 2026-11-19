@@ -9,7 +9,9 @@ import type {
 import { BaseFileSystemAdapter } from './base-filesystem-adapter.js';
 import { safeStringify } from '../../serialization/safe-stringify.js';
 import {
+  appendTextFileSync,
   copyPathSync,
+  createTempDirectorySync,
   ensureDirSync,
   pathExistsSync,
   readBufferSync,
@@ -22,10 +24,8 @@ import {
 } from '../io/fs-sync.js';
 import { DEFAULT_FILE_SYSTEM_OPTIONS } from '../options/default-filesystem-option.js';
 import type { FileSystemAdapterOptions } from '../options/filesystem-options.js';
-import { normalizeDirectoryEntry } from '../paths/canonicalize-directory-entry.js';
 import { NodePathService } from '../paths/node-path-service.js';
 import { shouldWriteFile } from '../policies/resolve-write-policy.js';
-
 
 export class NodeSyncFileSystemAdapter extends BaseFileSystemAdapter implements FileSystemSyncPort {
   constructor(options: FileSystemAdapterOptions = DEFAULT_FILE_SYSTEM_OPTIONS) {
@@ -34,6 +34,18 @@ export class NodeSyncFileSystemAdapter extends BaseFileSystemAdapter implements 
       options.root ?? DEFAULT_FILE_SYSTEM_OPTIONS.root,
       new NodePathService(),
     );
+  }
+  createTempDirectory(prefix?: string): string {
+    try {
+      const { resolvedPrefix, parentDirectory } = this.resolveTempPrefix(prefix);
+
+      ensureDirSync(parentDirectory);
+
+      const createdRealPath = createTempDirectorySync(resolvedPrefix);
+      return this.toVirtualPath(createdRealPath);
+    } catch (error) {
+      this.logAndThrow(error, 'createTempDirectory');
+    }
   }
 
   exists(targetPath: string): boolean {
@@ -65,7 +77,11 @@ export class NodeSyncFileSystemAdapter extends BaseFileSystemAdapter implements 
   }
 
   readBuffer(filePath: string): Uint8Array {
-    return readBufferSync(this.resolvePath(filePath));
+    try {
+      return readBufferSync(this.resolvePath(filePath));
+    } catch (error) {
+      this.logAndThrow(error, 'readBuffer');
+    }
   }
 
   readJson<T>(filePath: string): T {
@@ -73,12 +89,15 @@ export class NodeSyncFileSystemAdapter extends BaseFileSystemAdapter implements 
   }
 
   readDirectory(directoryPath: string): DirectoryEntry[] {
-    const entries = readDirectoryEntriesSync(this.resolvePath(directoryPath));
-
-    return entries.map((entry) => ({
-      ...normalizeDirectoryEntry(entry),
-      path: this.toVirtualPath(entry.path),
-    }));
+    try {
+      const entries = readDirectoryEntriesSync(this.resolvePath(directoryPath));
+      return entries.map((entry) => ({
+        ...entry,
+        path: this.toVirtualPath(entry.path),
+      }));
+    } catch (error) {
+      this.logAndThrow(error, 'readDirectory');
+    }
   }
 
   rename(source: string, destination: string): void {
@@ -90,17 +109,24 @@ export class NodeSyncFileSystemAdapter extends BaseFileSystemAdapter implements 
   }
 
   write(filePath: string, content: string, options?: WriteFileOptions): void {
-    const exists = this.exists(filePath);
-
-    if (!shouldWriteFile(exists, options)) {
-      return;
-    }
-
     try {
+      const policy = options?.overwrite ?? 'overwrite';
+      const exists = this.exists(filePath);
+
+      if (!shouldWriteFile(exists, options)) {
+        return;
+      }
+
       const resolvedPath = this.resolvePath(filePath);
       const parentDirectory = this.pathService.dirname(resolvedPath);
 
       ensureDirSync(parentDirectory);
+
+      if (policy === 'append') {
+        appendTextFileSync(resolvedPath, content);
+        return;
+      }
+
       writeTextFileSync(resolvedPath, content);
     } catch (error) {
       this.logAndThrow(error, 'write');

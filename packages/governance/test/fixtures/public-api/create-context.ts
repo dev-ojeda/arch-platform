@@ -64,7 +64,9 @@ export function createContext(
             name: sourcePackage,
             manifest: {
               name: sourcePackage,
-              arch: undefined,
+              arch: {
+                artifactType: 'runtime',
+              },
             },
           }),
 
@@ -75,7 +77,9 @@ export function createContext(
               exports: {
                 '.': './dist/index.js',
               },
-              arch: undefined,
+              arch: {
+                artifactType: 'runtime',
+              },
             },
           }),
         ],

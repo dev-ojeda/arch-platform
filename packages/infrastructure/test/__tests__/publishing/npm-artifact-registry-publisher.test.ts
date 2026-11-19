@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import { NpmArtifactRegistryPublisher } from '@arch-platform/infrastructure';
 import type {
   ArtifactRegistryPublishingReader,
   ExecutionProcess,
 } from '@arch-platform/platform-model';
 
+import { NpmArtifactRegistryPublisher } from '../../../src/distribution/npm-artifact-registry-publisher.js';
 import { joinPath } from '../../../src/filesystem/io/path-utils.js';
 import { FIXTURE_PATHS } from '../../fixture/fixture-paths.js';
 

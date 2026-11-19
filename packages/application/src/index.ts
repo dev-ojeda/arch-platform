@@ -9,3 +9,5 @@ export { createSyncRegistryUseCase } from './use-cases/registry/create-sync-regi
 export type { SyncRegistryResult } from './use-cases/registry/sync-registry-result.js';
 export { createVersionPackageUseCase } from './use-cases/versioning/index.js';
 export type { VersionResult } from './use-cases/versioning/index.js';
+export { GenerateProjectUseCase } from './use-cases/generate-project/index.js';
+export { GeneratorRuntime, DefaultGenerationEngine } from './generation/index.js';

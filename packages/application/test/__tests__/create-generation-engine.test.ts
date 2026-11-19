@@ -2,16 +2,23 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { createMockFilesystem, createMockPromptAdapter } from '@arch-platform/testing';
+import {
+  PosixPathService,
+  MemoryFileSystem,
+  MemoryAsyncFileSystemAdapter,
+} from '@arch-platform/infrastructure';
 
 import { createGenerationEngine } from '../../src/generation/composition/create-default-engine.js';
+import { createMockPromptAdapter } from '../fixtures/prompt/create-mock-prompt-adapter.js';
 
 describe('createGenerationEngine', () => {
   it('creates a generation engine', () => {
+    const pathService = new PosixPathService();
+    const memoryFilesystem = new MemoryFileSystem(pathService);
+    const filesystem = new MemoryAsyncFileSystemAdapter(memoryFilesystem);
     const engine = createGenerationEngine({
       promptAdapter: createMockPromptAdapter(),
-
-      filesystem: createMockFilesystem(),
+      filesystem: filesystem,
 
       idGenerator: {
         generate: () => 'id',
@@ -27,9 +34,14 @@ describe('createGenerationEngine', () => {
       },
 
       templateRenderer: {
-        render() {
-          return Promise.resolve([]);
+        render: () => Promise.resolve([]),
+      },
+
+      languageConventionRegistry: {
+        get: () => {
+          throw new Error('Language convention not expected in this test');
         },
+        list: () => [],
       },
     });
 

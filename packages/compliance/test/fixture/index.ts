@@ -16,4 +16,3 @@ export {
 export { createSecurityExecutionContext } from './create-security-execution-context.js';
 export { securityStateFixture } from './create-security-state.fixture.js';
 export { snapshotsFixture, snapshotsFixtureCodeAnalisys } from './create-snapshots-reader.js';
-export type { CVERecordResponse } from './services-cve.js';

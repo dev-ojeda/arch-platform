@@ -8,6 +8,8 @@ export interface FileSystemAsyncPort {
 
   createDirectory(directoryPath: string): Promise<void>;
 
+  createTempDirectory(prefix?: string): Promise<string>;
+
   exists(targetPath: string): Promise<boolean>;
 
   read(filePath: string): Promise<string>;

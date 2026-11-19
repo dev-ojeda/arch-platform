@@ -7,47 +7,36 @@ import type {
   GenerationReportExporter,
   GenerationRequest,
 } from '@arch-platform/contracts';
-import { createTestGenerator, TestLogger } from '@arch-platform/testing';
 
 import { DefaultGenerationEngine } from '../../src/generation/engine/default-generation-engine.js';
+import { createTestGenerator } from '../fixtures/generators/create-test-generator.js';
+import { TestLogger } from '../fixtures/logging/test-logger.js';
+import { createTestContext } from '../fixtures/runtime/create-test-context.js';
 
 describe('DefaultGenerationEngine', () => {
   function createRequest(): GenerationRequest {
     return {
       generator: createTestGenerator(),
+      languageId: 'typescript',
       targetDir: '/tmp',
     };
   }
 
   function createContext(logger: TestLogger = new TestLogger()): GenerationContext {
-    return {
-      generator: createTestGenerator(),
-
-      targetDir: '/tmp',
-
-      files: [
-        {
-          path: 'user.ts',
-          content: 'export class User {}',
-        },
-      ],
-
-      diagnostics: [],
-
-      prompts: {},
-
-      resolvedVariables: {},
-
-      resolvedTemplates: [],
-
+    const context = createTestContext({
       logger,
+      languageId: 'typescript',
+      targetDir: '/tmp',
+    });
 
-      fs: {} as never,
+    context.generator = createTestGenerator();
 
-      executionId: 'test-execution',
+    context.files.push({
+      path: 'user.ts',
+      content: 'export class User {}',
+    });
 
-      startedAt: new Date(),
-    } as unknown as GenerationContext;
+    return context;
   }
 
   it('executes pipeline and returns successful result', async () => {
@@ -176,5 +165,61 @@ describe('DefaultGenerationEngine', () => {
         },
       },
     });
+  });
+
+  it('does not execute report exporters twice when an exporter fails', async () => {
+    const context = createContext();
+
+    const pipeline = {
+      execute: vi.fn().mockResolvedValue(undefined),
+    };
+
+    const contextFactory = {
+      create: vi.fn().mockReturnValue(context),
+    };
+
+    const exportSpy = vi.fn().mockRejectedValue(new Error('export failed'));
+
+    const exporter: GenerationReportExporter = {
+      export: exportSpy,
+    };
+
+    const engine = new DefaultGenerationEngine(pipeline as never, contextFactory as never, [
+      exporter,
+    ]);
+
+    await expect(engine.generate(createRequest())).rejects.toThrow('export failed');
+
+    expect(pipeline.execute).toHaveBeenCalledTimes(1);
+    expect(exportSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not classify report exporter failures as pipeline failures', async () => {
+    const logger = new TestLogger();
+    const context = createContext(logger);
+
+    const pipeline = {
+      execute: vi.fn().mockResolvedValue(undefined),
+    };
+
+    const contextFactory = {
+      create: vi.fn().mockReturnValue(context),
+    };
+
+    const exporter: GenerationReportExporter = {
+      export: vi.fn().mockRejectedValue(new Error('export failed')),
+    };
+
+    const engine = new DefaultGenerationEngine(pipeline as never, contextFactory as never, [
+      exporter,
+    ]);
+
+    await expect(engine.generate(createRequest())).rejects.toThrow('export failed');
+
+    expect(logger.logs).not.toContainEqual(
+      expect.objectContaining({
+        message: 'Generation failed',
+      }),
+    );
   });
 });

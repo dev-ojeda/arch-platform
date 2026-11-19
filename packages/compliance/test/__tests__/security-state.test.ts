@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import type { SecurityState } from '@arch-platform/compliance';
+import type { SecurityState } from '@arch-platform/platform-model';
 
 import { securityStateFixture } from '../fixture/create-security-state.fixture.js';
 
@@ -16,6 +16,11 @@ describe('SecurityState', () => {
             artifactHash: 'abc123',
             evaluatedAt: '2026-09-07T20:00:00.000Z',
             findings: [],
+            summary: {
+              totalFindings: 0,
+              blockingFindings: 0,
+              vulnerabilities: [],
+            },
           },
           decision: {
             status: 'allowed',
@@ -49,6 +54,11 @@ describe('SecurityState', () => {
             artifactHash: 'abc123',
             evaluatedAt: '2026-09-07T20:00:00.000Z',
             findings: [],
+            summary: {
+              totalFindings: 0,
+              blockingFindings: 0,
+              vulnerabilities: [],
+            },
           },
           decision: {
             status: 'blocked',

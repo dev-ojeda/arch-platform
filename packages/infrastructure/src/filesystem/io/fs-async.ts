@@ -1,6 +1,17 @@
 // packages/infrastructure/src/filesystem/io/fs-async.ts
 
-import { access, cp, mkdir, readdir, readFile, rename, stat, writeFile } from 'node:fs/promises';
+import {
+  appendFile,
+  cp,
+  lstat,
+  mkdir,
+  mkdtemp,
+  readdir,
+  readFile,
+  rename,
+  stat,
+  writeFile,
+} from 'node:fs/promises';
 
 import { rimraf } from 'rimraf';
 
@@ -13,18 +24,20 @@ import { hasErrorCode } from '../errors/errno-utils.js';
 type CopyPathAsyncOptions = Parameters<typeof cp>[2];
 
 //#region existence
+
 export async function pathExists(targetPath: string): Promise<boolean> {
   try {
-    await access(targetPath);
+    await lstat(targetPath);
     return true;
   } catch (error) {
-    if (typeof error === 'object' && error !== null && 'code' in error && error.code === 'ENOENT') {
+    if (hasErrorCode(error, 'ENOENT')) {
       return false;
     }
 
     throw error;
   }
 }
+
 //#endregion
 //#region read
 export async function readDirectoryEntries(directoryPath: string): Promise<DirectoryEntry[]> {
@@ -40,6 +53,9 @@ export async function readDirectoryEntries(directoryPath: string): Promise<Direc
     isSymbolicLink: entry.isSymbolicLink(),
   }));
 }
+export async function readNormalizedTextFile(filePath: string): Promise<string> {
+  return (await readFile(filePath, 'utf-8')).replace(/\r\n/g, '\n');
+}
 
 export async function readTextFile(filePath: string): Promise<string> {
   return readFile(filePath, 'utf-8');
@@ -50,6 +66,9 @@ export async function readBuffer(filePath: string): Promise<Buffer> {
 }
 //#endregion
 //#region write
+export async function createTempDirectoryAsync(prefix: string): Promise<string> {
+  return mkdtemp(prefix);
+}
 export async function ensureDirAsync(targetPath: string): Promise<void> {
   try {
     const info = await stat(targetPath);
@@ -89,6 +108,9 @@ export async function copyPath(
 
 export async function writeTextFile(filePath: string, content: string): Promise<void> {
   await writeFile(filePath, content, 'utf8');
+}
+export async function appendTextFile(filePath: string, content: string): Promise<void> {
+  await appendFile(filePath, content, 'utf8');
 }
 //#endregion
 //#region delete

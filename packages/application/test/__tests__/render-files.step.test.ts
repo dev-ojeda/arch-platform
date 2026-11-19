@@ -1,6 +1,6 @@
 // packages/application/test/__tests__/render-files.step.test.ts
 
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import type {
   RenderTemplateInput,
@@ -8,19 +8,17 @@ import type {
   ResolvedTemplate,
   TemplateRendererPort,
 } from '@arch-platform/contracts';
-import { createTestPipelineContext } from '@arch-platform/testing';
 
 import { RenderFilesStep } from '../../src/generation/steps/render-files.step.js';
 import { createResolvedTemplateVariables } from '../createResolvedTemplateVariables.js';
+import { createTestPipelineContext } from '../fixtures/pipeline/create-test-pipeline-context.js';
 
 class FakeTemplateRenderer implements TemplateRendererPort {
   async render(files: RenderTemplateInput[]): Promise<RenderedFile[]> {
-    return Promise.resolve(
-      files.map((file) => ({
-        path: file.path,
-        content: `rendered:${file.template}`,
-      })),
-    );
+    return files.map((file) => ({
+      path: 'controllers/UserController.ts',
+      content: `rendered:${file.template}`,
+    }));
   }
 }
 
@@ -36,8 +34,6 @@ describe('RenderFilesStep', () => {
           template: 'controller.hbs',
           output: 'controllers/{{controllerName}}{{fileExtension}}',
         },
-
-        outputPath: 'controllers/UserController.ts',
       },
     ] as ResolvedTemplate[];
 
@@ -69,5 +65,80 @@ describe('RenderFilesStep', () => {
     const step = new RenderFilesStep(new FakeTemplateRenderer());
 
     await expect(step.execute(context)).rejects.toThrow('Resolved templates not available');
+  });
+  it('delegates output path resolution to the renderer', async () => {
+    const context = createTestPipelineContext({
+      resolvedVariables: createResolvedTemplateVariables(),
+    });
+
+    context.resolvedTemplates = [
+      {
+        template: {
+          template: 'controller.hbs',
+          output: 'controllers/{{controllerName}}{{fileExtension}}',
+        },
+      },
+    ] as ResolvedTemplate[];
+
+    const renderer = new FakeTemplateRenderer();
+    const renderSpy = vi.spyOn(renderer, 'render');
+
+    const step = new RenderFilesStep(renderer);
+
+    await step.execute(context);
+
+    expect(renderSpy).toHaveBeenCalledWith([
+      {
+        template: 'controller.hbs',
+        output: 'controllers/{{controllerName}}{{fileExtension}}',
+        variables: context.resolvedVariables,
+      },
+    ]);
+
+    expect(context.files[0]?.path).toBe('controllers/UserController.ts');
+  });
+  it.each(['skip', 'overwrite', 'error', 'append', 'merge'] as const)(
+    'preserves the %s overwrite policy',
+    async (overwrite) => {
+      const context = createTestPipelineContext({
+        resolvedVariables: createResolvedTemplateVariables(),
+      });
+
+      context.resolvedTemplates = [
+        {
+          template: {
+            template: 'controller.hbs',
+            output: 'controllers/UserController.ts',
+            overwrite,
+          },
+        },
+      ] as ResolvedTemplate[];
+
+      const step = new RenderFilesStep(new FakeTemplateRenderer());
+
+      await step.execute(context);
+
+      expect(context.files[0]?.overwrite).toBe(overwrite);
+    },
+  );
+  it('keeps overwrite undefined when no policy is declared', async () => {
+    const context = createTestPipelineContext({
+      resolvedVariables: createResolvedTemplateVariables(),
+    });
+
+    context.resolvedTemplates = [
+      {
+        template: {
+          template: 'controller.hbs',
+          output: 'controllers/UserController.ts',
+        },
+      },
+    ] as ResolvedTemplate[];
+
+    const step = new RenderFilesStep(new FakeTemplateRenderer());
+
+    await step.execute(context);
+
+    expect(context.files[0]?.overwrite).toBeUndefined();
   });
 });

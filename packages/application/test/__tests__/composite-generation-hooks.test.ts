@@ -140,4 +140,41 @@ describe('CreateTestCompositeGenerationReportExport', () => {
     expect(hookA.onError).toHaveBeenCalledWith(error, context);
     expect(hookB.onError).toHaveBeenCalledWith(error, context);
   });
+
+  it('calls onSuccess on all hooks', async () => {
+    const hookA = {
+      onSuccess: vi.fn().mockResolvedValue(undefined),
+    };
+
+    const hookB = {
+      onSuccess: vi.fn().mockResolvedValue(undefined),
+    };
+
+    const hooks = new CompositeGenerationHooks([hookA, hookB]);
+    const context = {} as GenerationContext;
+
+    await hooks.onSuccess(context);
+
+    expect(hookA.onSuccess).toHaveBeenCalledWith(context);
+    expect(hookB.onSuccess).toHaveBeenCalledWith(context);
+  });
+
+  it('stops execution when a hook fails', async () => {
+    const error = new Error('hook failure');
+
+    const hookA = {
+      beforePipeline: vi.fn().mockRejectedValue(error),
+    };
+
+    const hookB = {
+      beforePipeline: vi.fn().mockResolvedValue(undefined),
+    };
+
+    const hooks = new CompositeGenerationHooks([hookA, hookB]);
+
+    await expect(hooks.beforePipeline({} as GenerationContext)).rejects.toBe(error);
+
+    expect(hookA.beforePipeline).toHaveBeenCalledOnce();
+    expect(hookB.beforePipeline).not.toHaveBeenCalled();
+  });
 });

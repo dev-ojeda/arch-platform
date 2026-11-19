@@ -27,26 +27,28 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -b tsconfig.build.json",
     "arch": "arch build --package @arch-platform/infrastructure",
     "clean": "arch clean --package @arch-platform/infrastructure",
     "compliance": "arch compliance --package @arch-platform/infrastructure --env dev",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint . --max-warnings 0 --no-warn-ignored --cache --cache-strategy content",
     "test": "vitest run -c ./vitest.config.ts",
+    "test:integration": "vitest run --mode integration -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",
     "test:watch": "vitest",
     "test:clear": "vitest --clearCache"
   },
   "dependencies": {
-    "@arch-platform/contracts": "0.3.0-0",
+    "@arch-platform/contracts": "workspace:*",
     "@arch-platform/platform-model": "workspace:*",
     "@types/semver": "catalog:",
     "rimraf": "catalog:",
     "semver": "catalog:",
     "tar": "catalog:",
     "typescript": "catalog:",
-    "yaml": "catalog:"
+    "yaml": "catalog:",
+    "handlebars": "catalog:"
   },
   "devDependencies": {
     "vitest": "catalog:"

@@ -8,6 +8,8 @@ export interface FileSystemSyncPort {
 
   createDirectory(directoryPath: string): void;
 
+  createTempDirectory(prefix?: string): string;
+
   exists(targetPath: string): boolean;
 
   remove(targetPath: string): void;

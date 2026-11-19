@@ -9,6 +9,9 @@
   "references": [
     {
       "path": "../platform-model/tsconfig.build.json"
+    },
+    {
+      "path": "../contracts/tsconfig.build.json"
     }
   ]
 }

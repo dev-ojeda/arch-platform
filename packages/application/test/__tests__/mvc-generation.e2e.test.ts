@@ -8,22 +8,36 @@ import type {
   RenderTemplateInput,
   TemplateRendererPort,
 } from '@arch-platform/contracts';
-import { createTestGenerator, createTestPipelineContext } from '@arch-platform/testing';
 
 import { GeneratorValidationError } from '../../src/generation/errors/generator-validation-error.js';
 import { RenderFilesStep } from '../../src/generation/steps/render-files.step.js';
 import { ResolveTemplatesStep } from '../../src/generation/steps/resolve-templates.step.js';
 import { createResolvedTemplateVariables } from '../createResolvedTemplateVariables.js';
+import { createTestGenerator } from '../fixtures/generators/create-test-generator.js';
+import { createTestPipelineContext } from '../fixtures/pipeline/create-test-pipeline-context.js';
 
 class FakeMvcRenderer implements TemplateRendererPort {
   async render(files: RenderTemplateInput[]): Promise<RenderedFile[]> {
-    return Promise.resolve(
-      files.map((file) => ({
-        path: file.path,
+    return files.map((file) => {
+      const output = file.output.replace(/{{\s*([^}]+)\s*}}/g, (_, key: string) => {
+        const value = key
+          .split('.')
+          .reduce<unknown>(
+            (current, segment) =>
+              current && typeof current === 'object'
+                ? (current as Record<string, unknown>)[segment]
+                : undefined,
+            file.variables,
+          );
 
-        content: `generated:${file.path}`,
-      })),
-    );
+        return String(value ?? '');
+      });
+
+      return {
+        path: output,
+        content: `generated:${output}`,
+      };
+    });
   }
 }
 
@@ -56,7 +70,6 @@ describe('MVC Generation', () => {
     });
 
     await new ResolveTemplatesStep().execute(context);
-
     await new RenderFilesStep(new FakeMvcRenderer()).execute(context);
 
     expect(context.files).toHaveLength(4);
@@ -68,6 +81,7 @@ describe('MVC Generation', () => {
       'models/User.ts',
     ]);
   });
+
   it('throws when generator is missing', async () => {
     const step = new ResolveTemplatesStep();
 

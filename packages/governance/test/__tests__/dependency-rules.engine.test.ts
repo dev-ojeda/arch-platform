@@ -9,7 +9,14 @@ describe('DependencyRulesEngine', () => {
     const context = createGovernanceContext({
       workspace: {
         root: '/workspace',
-        layout: undefined,
+        layout: {
+          packageJsonPath: '',
+          tsconfigPath: '',
+          archManifestPath: '',
+          hasPackageManifest: false,
+          hasTsconfig: false,
+          hasArchManifest: false,
+        },
 
         packages: [
           createPackageDescriptor({
@@ -58,7 +65,14 @@ describe('DependencyRulesEngine', () => {
     const context = createGovernanceContext({
       workspace: {
         root: '/workspace',
-        layout: undefined,
+        layout: {
+          packageJsonPath: '',
+          tsconfigPath: '',
+          archManifestPath: '',
+          hasPackageManifest: false,
+          hasTsconfig: false,
+          hasArchManifest: false,
+        },
 
         packages: [
           createPackageDescriptor({
@@ -96,7 +110,14 @@ describe('DependencyRulesEngine', () => {
     const context = createGovernanceContext({
       workspace: {
         root: '/workspace',
-        layout: undefined,
+        layout: {
+          packageJsonPath: '',
+          tsconfigPath: '',
+          archManifestPath: '',
+          hasPackageManifest: false,
+          hasTsconfig: false,
+          hasArchManifest: false,
+        },
 
         packages: [
           createPackageDescriptor({
@@ -127,7 +148,14 @@ describe('DependencyRulesEngine', () => {
     const context = createGovernanceContext({
       workspace: {
         root: '/workspace',
-        layout: undefined,
+        layout: {
+          packageJsonPath: '',
+          tsconfigPath: '',
+          archManifestPath: '',
+          hasPackageManifest: false,
+          hasTsconfig: false,
+          hasArchManifest: false,
+        },
 
         packages: [
           createPackageDescriptor({
@@ -154,7 +182,14 @@ describe('DependencyRulesEngine', () => {
     const context = createGovernanceContext({
       workspace: {
         root: '/workspace',
-        layout: undefined,
+        layout: {
+          packageJsonPath: '',
+          tsconfigPath: '',
+          archManifestPath: '',
+          hasPackageManifest: false,
+          hasTsconfig: false,
+          hasArchManifest: false,
+        },
 
         packages: [
           createPackageDescriptor({

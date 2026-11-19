@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { getSecurityConfig } from '@arch-platform/infrastructure';
+import { getSecurityConfig } from '../../../src/security/security-config.ts';
 
 describe('getSecurityConfig', () => {
   it('uses the advisory path from the environment', () => {

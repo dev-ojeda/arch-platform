@@ -17,8 +17,6 @@ updateConfig:
 packages:
   - 'packages/*'
   - 'packages/generators/*'
-  - '!packages/contracts'
-  - '!packages/generators/mvc'
 
 # -----------------------------------------------------------------------------
 # SHARED DEPENDENCY CATALOG
@@ -40,8 +38,6 @@ catalog:
   # RELEASE / VERSIONING
   # ===========================================================================
 
-  '@arch-platform/contracts': 0.3.0-0
-  '@arch-platform/generator-mvc': 0.1.2-dev.0
   '@changesets/cli': 3.0.2
 
   # ===========================================================================
@@ -124,9 +120,7 @@ catalog:
 # Fail installation if Node version does not match.
 engineStrict: true
 minimumReleaseAge: 4320
-minimumReleaseAgeExclude:
-  - '@arch-platform/contracts'
-  - '@arch-platform/generator-mvc'
+
 # Future applications
 # - "apps/*"
 
@@ -151,11 +145,11 @@ nodeVersion: 22.19.0
 # - supply-chain attacks
 # -----------------------------------------------------------------------------
 onlyBuiltDependencies:
-  # Native bundler runtime
-
   # Native SWC compiler
   - '@swc/core'
   - '@unrs/resolver-binding-win32-x64-msvc'
+  - '@unrs/resolver-binding-linux-x64-gnu'
+  - '@unrs/resolver-binding-linux-x64-musl'
 
   # VSCode extension signing
   - '@vscode/vsce-sign'
@@ -182,6 +176,7 @@ overrides:
   lodash: ^4.17.24
   tmp: ^0.2.4
   'tsup>esbuild': 0.28.2
+  'brace-expansion@^5.0.0': 5.0.12
 # -----------------------------------------------------------------------------
 # PEER DEPENDENCY RULES
 # -----------------------------------------------------------------------------

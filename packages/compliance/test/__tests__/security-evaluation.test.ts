@@ -2,7 +2,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import type { SecurityEvaluation, SecurityFinding } from '@arch-platform/compliance';
+import type { SecurityEvaluation, SecurityFinding } from '@arch-platform/platform-model';
 
 describe('SecurityEvaluation', () => {
   it('associates the evaluation with an exact artifact hash', () => {
@@ -19,6 +19,11 @@ describe('SecurityEvaluation', () => {
       artifactHash: 'sha256:abc123',
       evaluatedAt: '2026-09-06T23:00:00.000Z',
       findings: [finding],
+      summary: {
+        totalFindings: 0,
+        blockingFindings: 0,
+        vulnerabilities: [],
+      },
     };
 
     expect(evaluation.artifactHash).toBe('sha256:abc123');
@@ -32,6 +37,11 @@ describe('SecurityEvaluation', () => {
       artifactHash: 'sha256:abc123',
       evaluatedAt: '2026-09-06T23:00:00.000Z',
       findings: [],
+      summary: {
+        totalFindings: 0,
+        blockingFindings: 0,
+        vulnerabilities: [],
+      },
     };
 
     expect(evaluation.status).toBe('secure');
@@ -44,6 +54,11 @@ describe('SecurityEvaluation', () => {
       artifactHash: 'sha256:old',
       evaluatedAt: '2026-09-06T22:00:00.000Z',
       findings: [],
+      summary: {
+        totalFindings: 0,
+        blockingFindings: 0,
+        vulnerabilities: [],
+      },
     };
 
     expect(evaluation.status).toBe('stale');

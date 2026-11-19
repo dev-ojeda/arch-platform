@@ -1,15 +1,19 @@
 // packages/tooling/src/commands/pack/run.ts
 
-import { NodeWorkspaceProvider, resolvePath } from '@arch-platform/infrastructure';
+import {
+  NodeWorkspaceProvider,
+  resolvePath,
+  NodeAsyncFileSystemAdapter,
+} from '@arch-platform/infrastructure';
 
 import { createPackArguments } from './create-pack-arguments.js';
+import { preparePackageForPack } from './prepare-package-for-pack.js';
 import { logger } from '../../logging/logger.js';
 import { ToolingTasks } from '../../runtime/events/tooling-task-events.js';
 import { executeProcess } from '../../runtime/process/execute-process.js';
 import { createProcessTaskResult } from '../../runtime/task/create-process-task-result.js';
 import type { TaskProcessResult } from '../../runtime/task/task-process-result.js';
 import type { PackCommandOptions } from '../common/command-options.js';
-
 
 export async function runPackCommand(options: PackCommandOptions): Promise<TaskProcessResult> {
   const { args = [], cwd, packageName, outputDirectory = 'artifacts' } = options;
@@ -36,19 +40,33 @@ export async function runPackCommand(options: PackCommandOptions): Promise<TaskP
     ...packagePathSegments,
     version,
   );
-  const result = await executeProcess('pnpm', createPackArguments(absoluteOutputDirectory, args), {
-    cwd: packageDescriptor.rootPath,
+
+  const stagingPath = await preparePackageForPack({
+    workspaceRoot: workspace.root,
+    packageRoot: packageDescriptor.rootPath,
   });
 
-  logger.success(ToolingTasks.pack.events.completed, {
-    metadata: {
-      command: result.command,
-      stderr: result.stderr,
-      stdout: result.stdout,
-      exitCode: result.exitCode,
-      durationMs: result.durationMs,
-    },
-  });
+  const fsAdapter = new NodeAsyncFileSystemAdapter({ root: workspace.root });
 
-  return createProcessTaskResult(result);
+  try {
+    const result = await executeProcess(
+      'pnpm',
+      createPackArguments(absoluteOutputDirectory, args),
+      { cwd: resolvePath(workspace.root, stagingPath) },
+    );
+
+    logger.success(ToolingTasks.pack.events.completed, {
+      metadata: {
+        command: result.command,
+        stderr: result.stderr,
+        stdout: result.stdout,
+        exitCode: result.exitCode,
+        durationMs: result.durationMs,
+      },
+    });
+
+    return createProcessTaskResult(result);
+  } finally {
+    await fsAdapter.remove(stagingPath);
+  }
 }

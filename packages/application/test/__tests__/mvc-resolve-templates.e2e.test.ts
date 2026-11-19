@@ -2,39 +2,30 @@
 
 import { describe, expect, it } from 'vitest';
 
-import type { MvcVariables } from '@arch-platform/generator-mvc';
-import { mvcGenerator } from '@arch-platform/generator-mvc';
-import { createTestPipelineContext } from '@arch-platform/testing';
+import type { TemplateVariables } from '@arch-platform/contracts';
 
 import { ResolveTemplatesStep } from '../../src/generation/steps/resolve-templates.step.js';
-import { deriveTemplateVariables } from '../../src/generation/variables/derive-template-variables.js';
+import { testGenerator } from '../fixtures/generators/test-generator.js';
+import { createTestPipelineContext } from '../fixtures/pipeline/create-test-pipeline-context.js';
 
 describe('MVC ResolveTemplatesStep', () => {
-  it('resolves mvc output paths', async () => {
-    const variables: MvcVariables = {
-      name: 'user',
-      framework: 'express',
-      language: 'typescript',
-    };
-
+  it('preserves mvc output path expressions', async () => {
     const context = createTestPipelineContext({
-      generator: mvcGenerator,
-      variables,
-      resolvedVariables: deriveTemplateVariables(variables),
+      generator: testGenerator,
     });
 
-    const step = new ResolveTemplatesStep<MvcVariables>();
+    const step = new ResolveTemplatesStep<TemplateVariables>();
 
     await step.execute(context);
 
-    const outputPaths = context.resolvedTemplates?.map((template) => template.outputPath) ?? [];
+    const outputPaths =
+      context.resolvedTemplates?.map((template) => template.template.output) ?? [];
 
-    expect(outputPaths).toContain('controllers/UserController.ts');
-
-    expect(outputPaths).toContain('services/UserService.ts');
-
-    expect(outputPaths).toContain('repositories/UserRepository.ts');
-
-    expect(outputPaths).toContain('models/User.ts');
+    expect(outputPaths).toEqual([
+      '{{folderLayout.controller}}/{{controllerName}}{{fileExtension}}',
+      '{{folderLayout.service}}/{{serviceName}}{{fileExtension}}',
+      '{{folderLayout.repository}}/{{repositoryName}}{{fileExtension}}',
+      '{{folderLayout.model}}/{{modelName}}{{fileExtension}}',
+    ]);
   });
 });

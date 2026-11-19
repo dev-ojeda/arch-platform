@@ -36,6 +36,7 @@ module.exports = {
         'config',
         'contracts',
         'compliance',
+        'distribution',
         'security',
         'core',
         'cli',
@@ -76,6 +77,7 @@ module.exports = {
         'testing/runtime',
         'infrastructure/logging',
         'infrastructure/persistence',
+        'workflows',
       ],
     ],
 

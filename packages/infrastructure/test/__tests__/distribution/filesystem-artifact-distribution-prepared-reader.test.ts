@@ -1,8 +1,7 @@
 // packages\infrastructure\test\__tests__\distribution\filesystem-artifact-distribution-prepared-reader.test.ts
 import { describe, expect, it } from 'vitest';
 
-import { ArtifactDistributionPreparedProvider } from '@arch-platform/infrastructure';
-
+import { ArtifactDistributionPreparedProvider } from '../../../src/distribution/artifact-distribution-prepared-provider.js';
 import { FIXTURE_PATHS } from '../../fixture/fixture-paths.js';
 
 describe('FilesystemArtifactDistributionReader', () => {

@@ -27,15 +27,15 @@
     "kind": "tooling"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -b tsconfig.build.json",
     "arch": "arch build --package @arch-platform/generator-mvc",
     "clean": "arch clean --package @arch-platform/generator-mvc",
     "compliance": "arch compliance --package @arch-platform/generator-mvc --env dev",
-    "typecheck": "arch typecheck --package @arch-platform/generator-mvc",
-    "lint": "arch lint --package @arch-platform/generator-mvc"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . --max-warnings 0 --no-warn-ignored --cache --cache-strategy content"
   },
   "dependencies": {
-    "@arch-platform/contracts": "0.3.0-0"
+    "@arch-platform/contracts": "workspace:*"
   },
   "license": "MIT"
 }

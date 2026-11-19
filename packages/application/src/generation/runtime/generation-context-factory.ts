@@ -20,12 +20,13 @@ export class GenerationContextFactory {
   ): GenerationContext<TVariables> {
     return {
       targetDir: request.targetDir,
+      languageId: request.languageId,
       signal: request.signal,
 
       logger: request.logger ?? this.logger,
       eventBus: new InMemoryGenerationEventBus(),
 
-      fs: this.fs,
+      fs: request.fs ?? this.fs,
 
       generator: request.generator,
 

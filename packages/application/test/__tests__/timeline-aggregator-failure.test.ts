@@ -3,10 +3,12 @@
 import { describe, expect, it } from 'vitest';
 
 import type { GenerationPipelineStep } from '@arch-platform/contracts';
-import { createTestContext, createTestIdGenerator, createTestStep } from '@arch-platform/testing';
 
 import { GenerationPipeline } from '../../src/generation/pipeline/generation-pipeline.js';
 import { createRuntime } from '../../src/runtime/runtime-bootstrap.js';
+import { createTestStep } from '../fixtures/pipeline/create-test-step.js';
+import { createTestContext } from '../fixtures/runtime/create-test-context.js';
+import { createTestIdGenerator } from '../fixtures/runtime/create-test-id-generator.js';
 
 describe('TimelineAggregator Failure', () => {
   it('marks failed steps in execution timeline', async () => {

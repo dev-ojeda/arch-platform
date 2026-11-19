@@ -1,7 +1,10 @@
 // packages\core\src\languages\language-convention-registry.ts
-import type { LanguageConvention } from '@arch-platform/contracts';
+import type {
+  LanguageConvention,
+  LanguageConventionRegistry as LanguageConventionRegistryPort,
+} from '@arch-platform/contracts';
 
-export class LanguageConventionRegistry {
+export class LanguageConventionRegistry implements LanguageConventionRegistryPort {
   readonly #registry = new Map<string, LanguageConvention>();
 
   register(convention: LanguageConvention): void {

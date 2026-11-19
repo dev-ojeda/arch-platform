@@ -25,6 +25,11 @@ export class ValidateGeneratorStep<
     if (!generator.templates) {
       throw new GeneratorValidationError('Generator templates missing');
     }
-    return Promise.resolve();
+
+    if (!generator.descriptor.languages.includes(context.languageId)) {
+      throw new GeneratorValidationError(
+        `Generator '${generator.descriptor.id}' does not support language '${context.languageId}'`,
+      );
+    }
   }
 }

@@ -7,3 +7,4 @@ export {
 } from './canonicalize-directory-entry.js';
 export { formatPathForMessage } from './format-path-for-message.js';
 export { NodePathService } from './node-path-service.js';
+export { PosixPathService } from './posix-path-service.js';

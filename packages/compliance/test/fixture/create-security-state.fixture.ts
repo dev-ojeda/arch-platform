@@ -11,7 +11,11 @@ export const securityStateFixture: SecurityState = {
         artifactHash: 'hash-contracts',
         evaluatedAt: '2026-09-07T21:00:00.000Z',
         findings: [],
-        summary: undefined,
+        summary: {
+          totalFindings: 0,
+          blockingFindings: 0,
+          vulnerabilities: [],
+        },
       },
 
       decision: {
@@ -42,7 +46,11 @@ export const securityStateFixture: SecurityState = {
             blocking: true,
           },
         ],
-        summary: undefined,
+        summary: {
+          totalFindings: 0,
+          blockingFindings: 0,
+          vulnerabilities: [],
+        },
       },
 
       decision: {

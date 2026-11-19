@@ -2,17 +2,25 @@
 
 import type { CAC } from 'cac';
 
-import { lintCommand } from '@arch-platform/tooling';
-
 import type { LintCliOptions } from '../contracts/lint-cli-options.js';
+import { logger } from '../ui/logger.js';
 
 export async function runLintCommand(options: LintCliOptions): Promise<number> {
-  return await lintCommand({
-    workspaceRoot: process.cwd(),
-    packageName: options.package,
-    fix: options.fix,
-    debug: options.debug,
-  });
+  try {
+    const { lintCommand } = await import('@arch-platform/tooling');
+    const result = await lintCommand({
+      workspaceRoot: process.cwd(),
+      packageName: options.package,
+      fix: options.fix,
+      debug: options.debug,
+    });
+    return result ? 0 : 1;
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+
+    logger.error(message);
+    return 1;
+  }
 }
 export function registerLintCommand(cli: CAC): void {
   cli

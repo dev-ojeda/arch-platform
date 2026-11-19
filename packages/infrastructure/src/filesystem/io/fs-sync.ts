@@ -1,9 +1,11 @@
 // packages/infrastructure/src/filesystem/io/fs-sync.ts
 
 import {
+  appendFileSync,
   cpSync,
   lstatSync,
   mkdirSync,
+  mkdtempSync,
   readdirSync,
   readFileSync,
   renameSync,
@@ -18,7 +20,7 @@ import type { DirectoryEntry } from '@arch-platform/contracts';
 
 import { joinPath } from './path-utils.js';
 import { safeParse } from '../../serialization/safe-parse.js';
-
+import { hasErrorCode } from '../errors/errno-utils.js';
 
 //#region existence
 /**
@@ -27,14 +29,14 @@ import { safeParse } from '../../serialization/safe-parse.js';
  * Supports:
  * - files
  * - directories
- * - valid symlinks
+ * - symbolic links, including broken symbolic links
  */
 export function pathExistsSync(targetPath: string): boolean {
   try {
     lstatSync(targetPath);
     return true;
   } catch (error) {
-    if (error instanceof Error && 'code' in error && error.code === 'ENOENT') {
+    if (hasErrorCode(error, 'ENOENT')) {
       return false;
     }
 
@@ -54,12 +56,24 @@ export function fileSizeSync(filePath: string): number {
 export function isDirectory(path: string): boolean {
   try {
     return lstatSync(path).isDirectory();
-  } catch {
-    return false;
+  } catch (error) {
+    if (hasErrorCode(error, 'ENOENT', 'ENOTDIR')) {
+      return false;
+    }
+
+    throw error;
   }
 }
 export function isFile(filePath: string): boolean {
-  return statSync(filePath).isFile();
+  try {
+    return statSync(filePath).isFile();
+  } catch (error) {
+    if (hasErrorCode(error, 'ENOENT', 'ENOTDIR')) {
+      return false;
+    }
+
+    throw error;
+  }
 }
 export function tryFileSize(filePath: string): number | undefined {
   try {
@@ -99,7 +113,9 @@ export function readJsonFileSync<T>(filePath: string): T {
 //#endregion
 
 //#region write
-
+export function createTempDirectorySync(prefix: string): string {
+  return mkdtempSync(prefix);
+}
 export function ensureDirSync(targetPath: string): void {
   try {
     const info = statSync(targetPath);
@@ -110,7 +126,7 @@ export function ensureDirSync(targetPath: string): void {
 
     return;
   } catch (error) {
-    if (error instanceof Error && 'code' in error && error.code !== 'ENOENT') {
+    if (!hasErrorCode(error, 'ENOENT')) {
       throw error;
     }
   }
@@ -123,26 +139,22 @@ export function ensureDirSync(targetPath: string): void {
 export function writeTextFileSync(filePath: string, data: string | Uint8Array): void {
   writeFileSync(filePath, data);
 }
+export function appendTextFileSync(filePath: string, content: string): void {
+  appendFileSync(filePath, content, 'utf8');
+}
 export function copyPathSync(
   source: string,
   destination: string,
   options: CopySyncOptions = {},
 ): void {
-  if (pathExistsSync(destination)) {
-    const stat = statSync(destination);
-    console.debug('fs-sync: copyPathSync - destination state', {
-      exists: true,
-      isDirectory: stat.isDirectory(),
-      isFile: stat.isFile(),
-    });
-  } else {
-    console.log({
-      exists: false,
-    });
-  }
+  const info = statSync(source);
 
-  cpSync(source, destination, options);
+  cpSync(source, destination, {
+    recursive: info.isDirectory(),
+    ...options,
+  });
 }
+
 export function renamePathSync(source: string, destination: string): void {
   renameSync(source, destination);
 }

@@ -2,14 +2,14 @@
 
 import type { CAC } from 'cac';
 
-import { runSecurity } from '@arch-platform/compliance';
-
 import type { SecurityCliOptions } from '../contracts/security-cli-options.js';
 import { renderSecurityResult } from '../renderers/render-security.js';
 import { logger } from '../ui/logger.js';
 
 export async function runSecurityCommand(options: SecurityCliOptions): Promise<number> {
   try {
+    const { runSecurity } = await import('@arch-platform/compliance');
+
     const result = await runSecurity({
       workspaceRoot: process.cwd(),
       packageName: options.package,

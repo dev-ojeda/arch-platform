@@ -1,5 +1,5 @@
 {
-  "$schema": "https://turbo.build/schema.json",
+  "$schema": "./node_modules/turbo/schema.json",
   "noUpdateNotifier": true,
   "globalDependencies": [
     "package.json",
@@ -8,55 +8,55 @@
     "eslint.config.mjs",
     "config/eslint/**/*"
   ],
-
-  "globalEnv": ["NODE_ENV", "CI", "GITHUB_ACTIONS"],
-
+  "globalEnv": ["NODE_ENV", "CI", "GITHUB_ACTIONS", "NODE_OPTIONS", "UV_THREADPOOL_SIZE"],
   "tasks": {
     "doctor": {
       "cache": false,
       "outputs": []
     },
-
     "clean": {
       "cache": false,
       "outputs": []
     },
-
     "dev": {
       "cache": false,
       "persistent": true
     },
-
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$"],
       "outputs": ["dist/**", "**/*.tsbuildinfo", ".tsbuildinfo"]
     },
-
     "typecheck": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$"],
-      "outputs": ["**/*.tsbuildinfo", ".tsbuildinfo"]
+      "outputs": []
     },
-
-    // 1. Tarea estándar para todos los paquetes individuales del monorrepo
     "lint": {
+      "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$"],
       "outputs": [".eslintcache"]
     },
-
-    // 2. OPTIMIZACIÓN CRUCIAL: Tarea de la raíz (Root Task) para auditar la carpeta global de scripts
-    // El prefijo '://#' le indica a Turborepo que esta tarea pertenece al package.json raíz.
     "//#lint:scripts": {
+      "dependsOn": ["@arch-platform/cli#build"],
       "cache": true,
       "inputs": ["scripts/**/*", "config/**/*", "eslint.config.mjs"],
       "outputs": [".eslintcache"]
     },
-
     "test": {
       "dependsOn": ["build"],
       "inputs": ["$TURBO_DEFAULT$"],
       "outputs": []
+    },
+    "test:integration": {
+      "dependsOn": ["build"],
+      "cache": false,
+      "outputs": []
+    },
+    "coverage": {
+      "dependsOn": ["build"],
+      "inputs": ["$TURBO_DEFAULT$"],
+      "outputs": ["coverage/**"]
     }
   }
 }

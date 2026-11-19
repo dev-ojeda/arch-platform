@@ -2,7 +2,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import type { SecurityFinding, SecuritySeverity } from '@arch-platform/compliance';
+import type { SecurityFinding, SecuritySeverity } from '@arch-platform/platform-model';
 
 describe('SecurityFinding', () => {
   it('supports a critical vulnerability finding', () => {

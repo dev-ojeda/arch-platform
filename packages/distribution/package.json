@@ -1,6 +1,6 @@
 {
   "name": "@arch-platform/distribution",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "ARCH Platform CLI for building workspace packages with artifact caching and restoration.",
   "author": "neo1sre",
   "license": "SEE LICENSE IN LICENSE",
@@ -21,7 +21,12 @@
         "dist"
       ]
     },
-    "kind": "app"
+    "kind": "app",
+    "pack": {
+      "bundledDependencies": [
+        "@arch-platform/build-core"
+      ]
+    }
   },
   "bin": {
     "arch-cli": "./bin/arch-cli.js"

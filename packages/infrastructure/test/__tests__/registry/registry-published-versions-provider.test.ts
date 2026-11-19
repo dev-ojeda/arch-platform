@@ -1,12 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
-import { RegistryPublishedVersionsProvider } from '@arch-platform/infrastructure';
 import type {
   RegistryPublishedVersions,
   RegistryPublishedVersionsPreparedState,
 } from '@arch-platform/platform-model';
 
 import { NodeAsyncFileSystemAdapter } from '../../../src/filesystem/adapters/node-async-filesystem-adapter.js';
+import { removePath } from '../../../src/filesystem/io/fs-async.js';
+import { RegistryPublishedVersionsProvider } from '../../../src/registry/registry-published-versions-provider.js';
 import { FIXTURE_PATHS } from '../../fixture/fixture-paths.js';
 import { createTestFilesystemRoot } from '../../helpers/create-filesystem-root.js';
 
@@ -50,75 +51,80 @@ describe('RegistryPublishedVersionsProvider', () => {
   });
   it('creates a writer that preserves existing catalogs when updating one artifact', async () => {
     const root = createTestFilesystemRoot('registry-published-versions-provider');
-    const filesystem = new NodeAsyncFileSystemAdapter({ root });
 
-    const contracts: RegistryPublishedVersions = {
-      schemaVersion: 1,
-      registry: 'https://registry.npmjs.org',
-      synchronizedAt: '2026-10-13T00:00:00.000Z',
-      package: {
-        packageName: '@arch-platform/contracts',
-        'dist-tags': { latest: '0.2.1' },
-        versions: {
-          '0.2.1': {
-            name: '@arch-platform/contracts',
-            version: '0.2.1',
+    try {
+      const filesystem = new NodeAsyncFileSystemAdapter({ root });
+
+      const contracts: RegistryPublishedVersions = {
+        schemaVersion: 1,
+        registry: 'https://registry.npmjs.org',
+        synchronizedAt: '2026-10-13T00:00:00.000Z',
+        package: {
+          packageName: '@arch-platform/contracts',
+          'dist-tags': { latest: '0.2.1' },
+          versions: {
+            '0.2.1': {
+              name: '@arch-platform/contracts',
+              version: '0.2.1',
+            },
           },
         },
-      },
-    };
+      };
 
-    const generator: RegistryPublishedVersions = {
-      schemaVersion: 1,
-      registry: 'https://registry.npmjs.org',
-      synchronizedAt: '2026-10-13T00:00:00.000Z',
-      package: {
-        packageName: '@arch-platform/generator-mvc',
-        'dist-tags': { latest: '0.1.0' },
-        versions: {
-          '0.1.0': {
-            name: '@arch-platform/generator-mvc',
-            version: '0.1.0',
+      const generator: RegistryPublishedVersions = {
+        schemaVersion: 1,
+        registry: 'https://registry.npmjs.org',
+        synchronizedAt: '2026-10-13T00:00:00.000Z',
+        package: {
+          packageName: '@arch-platform/generator-mvc',
+          'dist-tags': { latest: '0.1.0' },
+          versions: {
+            '0.1.0': {
+              name: '@arch-platform/generator-mvc',
+              version: '0.1.0',
+            },
           },
         },
-      },
-    };
+      };
 
-    await filesystem.writeJson('/.arch-platform/registry/registry-state.json', {
-      schemaVersion: 1,
-      artifacts: {
-        '@arch-platform/contracts': contracts,
-        '@arch-platform/generator-mvc': generator,
-      },
-    });
+      await filesystem.writeJson('/.arch-platform/registry/registry-state.json', {
+        schemaVersion: 1,
+        artifacts: {
+          '@arch-platform/contracts': contracts,
+          '@arch-platform/generator-mvc': generator,
+        },
+      });
 
-    const provider = new RegistryPublishedVersionsProvider();
-    const writer = await provider.createWriterForWorkspace(root);
+      const provider = new RegistryPublishedVersionsProvider();
+      const writer = await provider.createWriterForWorkspace(root);
 
-    const updatedContracts: RegistryPublishedVersions = {
-      ...contracts,
-      synchronizedAt: '2026-10-13T12:00:00.000Z',
-      package: {
-        ...contracts.package,
-        'dist-tags': { latest: '0.2.2' },
-        versions: {
-          ...contracts.package.versions,
-          '0.2.2': {
-            name: '@arch-platform/contracts',
-            version: '0.2.2',
+      const updatedContracts: RegistryPublishedVersions = {
+        ...contracts,
+        synchronizedAt: '2026-10-13T12:00:00.000Z',
+        package: {
+          ...contracts.package,
+          'dist-tags': { latest: '0.2.2' },
+          versions: {
+            ...contracts.package.versions,
+            '0.2.2': {
+              name: '@arch-platform/contracts',
+              version: '0.2.2',
+            },
           },
         },
-      },
-    };
+      };
 
-    writer.apply('@arch-platform/contracts', updatedContracts);
-    await writer.write();
+      writer.apply('@arch-platform/contracts', updatedContracts);
+      await writer.write();
 
-    const state = await filesystem.readJson<RegistryPublishedVersionsPreparedState>(
-      '/.arch-platform/registry/registry-state.json',
-    );
+      const state = await filesystem.readJson<RegistryPublishedVersionsPreparedState>(
+        '/.arch-platform/registry/registry-state.json',
+      );
 
-    expect(state.artifacts['@arch-platform/contracts']).toEqual(updatedContracts);
-    expect(state.artifacts['@arch-platform/generator-mvc']).toEqual(generator);
+      expect(state.artifacts['@arch-platform/contracts']).toEqual(updatedContracts);
+      expect(state.artifacts['@arch-platform/generator-mvc']).toEqual(generator);
+    } finally {
+      await removePath(root);
+    }
   });
 });

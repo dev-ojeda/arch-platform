@@ -10,4 +10,5 @@ export const IGNORES = [
   'apps/**',
   '**/fixture/**',
   '**/fixtures/**',
+  '**/*.eslintcache',
 ];

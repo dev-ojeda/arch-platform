@@ -32,9 +32,6 @@
       "path": "./packages/build-core"
     },
     {
-      "path": "./packages/testing"
-    },
-    {
       "path": "./packages/application"
     },
     {

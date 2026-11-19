@@ -10,7 +10,6 @@ import type {
 import { knownPackages } from './registry-know-packages.js';
 import { SemanticVersionCalculator } from '../versioning/semantic-version-calculator.js';
 
-
 interface NpmPackageRootMetadata {
   name: string;
   'dist-tags': Record<string, string>;
@@ -40,8 +39,13 @@ interface NpmSearchResponse {
 
 export class NpmRegistryPublishedVersionsAdapter implements RegistryPublishedVersionsAdapterPort {
   private readonly calculator = new SemanticVersionCalculator();
-
-  constructor(private readonly registryUrl = 'https://registry.npmjs.org') {}
+  private readonly registryUrl: string;
+  constructor(
+    registryUrl = 'https://registry.npmjs.org',
+    private readonly requestTimeoutMs = 10_000,
+  ) {
+    this.registryUrl = registryUrl.replace(/\/+$/, '');
+  }
 
   /**
    * Obtiene el histórico completo y los metadatos de distribución de un único paquete.
@@ -52,13 +56,17 @@ export class NpmRegistryPublishedVersionsAdapter implements RegistryPublishedVer
     const packagePath = this.escapePackageName(packageName);
     const url = `${this.registryUrl}/${packagePath}`;
 
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      signal: AbortSignal.timeout(this.requestTimeoutMs),
+    });
 
     if (response.status === 404) {
+      await response.body?.cancel();
       return undefined;
     }
 
     if (!response.ok) {
+      await response.body?.cancel();
       throw new Error(
         `Failed to fetch registry metadata for "${packageName}": ${response.status} ${response.statusText}`,
       );
@@ -120,9 +128,12 @@ export class NpmRegistryPublishedVersionsAdapter implements RegistryPublishedVer
       const expectedPrefix = `@${cleanScope}/`;
       const searchUrl = `${this.registryUrl}/-/v1/search?text=scope:${encodeURIComponent(cleanScope)}&size=250`;
 
-      const searchResponse = await fetch(searchUrl);
+      const searchResponse = await fetch(searchUrl, {
+        signal: AbortSignal.timeout(this.requestTimeoutMs),
+      });
 
       if (!searchResponse.ok) {
+        await searchResponse.body?.cancel();
         throw new Error(
           `Failed to search scope "${scopeName}": ${searchResponse.status} ${searchResponse.statusText}`,
         );

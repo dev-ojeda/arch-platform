@@ -10,7 +10,9 @@ import { BaseFileSystemAdapter } from './base-filesystem-adapter.js';
 import { safeParse } from '../../serialization/safe-parse.js';
 import { safeStringify } from '../../serialization/safe-stringify.js';
 import {
+  appendTextFile,
   copyPath,
+  createTempDirectoryAsync,
   ensureDirAsync,
   pathExists,
   readBuffer,
@@ -22,10 +24,8 @@ import {
 } from '../io/fs-async.js';
 import { DEFAULT_FILE_SYSTEM_OPTIONS } from '../options/default-filesystem-option.js';
 import type { FileSystemAdapterOptions } from '../options/filesystem-options.js';
-import { normalizeDirectoryEntry } from '../paths/canonicalize-directory-entry.js';
 import { NodePathService } from '../paths/node-path-service.js';
 import { shouldWriteFile } from '../policies/resolve-write-policy.js';
-
 
 export class NodeAsyncFileSystemAdapter
   extends BaseFileSystemAdapter
@@ -38,6 +38,18 @@ export class NodeAsyncFileSystemAdapter
       new NodePathService(),
     );
   }
+  async createTempDirectory(prefix?: string): Promise<string> {
+    try {
+      const { resolvedPrefix, parentDirectory } = this.resolveTempPrefix(prefix);
+
+      await ensureDirAsync(parentDirectory);
+
+      const createdRealPath = await createTempDirectoryAsync(resolvedPrefix);
+      return this.toVirtualPath(createdRealPath);
+    } catch (error) {
+      this.logAndThrow(error, 'createTempDirectory');
+    }
+  }
 
   async readJson<T>(filePath: string): Promise<T> {
     return safeParse<T>(await this.read(filePath));
@@ -47,8 +59,12 @@ export class NodeAsyncFileSystemAdapter
     await this.write(filePath, safeStringify(value, 2), options);
   }
 
-  readBuffer(filePath: string): Promise<Uint8Array> {
-    return readBuffer(this.resolvePath(filePath));
+  async readBuffer(filePath: string): Promise<Uint8Array> {
+    try {
+      return await readBuffer(this.resolvePath(filePath));
+    } catch (error) {
+      this.logAndThrow(error, 'readBuffer');
+    }
   }
 
   async read(filePath: string): Promise<string> {
@@ -60,17 +76,24 @@ export class NodeAsyncFileSystemAdapter
   }
 
   async write(filePath: string, content: string, options?: WriteFileOptions): Promise<void> {
-    const exists = await this.exists(filePath);
-
-    if (!shouldWriteFile(exists, options)) {
-      return;
-    }
-
     try {
+      const policy = options?.overwrite ?? 'overwrite';
+      const exists = await this.exists(filePath);
+
+      if (!shouldWriteFile(exists, options)) {
+        return;
+      }
+
       const resolvedPath = this.resolvePath(filePath);
       const parentDirectory = this.pathService.dirname(resolvedPath);
 
       await ensureDirAsync(parentDirectory);
+
+      if (policy === 'append') {
+        await appendTextFile(resolvedPath, content);
+        return;
+      }
+
       await writeTextFile(resolvedPath, content);
     } catch (error) {
       this.logAndThrow(error, 'write');
@@ -111,14 +134,17 @@ export class NodeAsyncFileSystemAdapter
   }
 
   async readDirectory(directoryPath: string): Promise<DirectoryEntry[]> {
-    const realPath = this.resolvePath(directoryPath);
+    try {
+      const realPath = this.resolvePath(directoryPath);
+      const entries = await readDirectoryEntries(realPath);
 
-    const entries = await readDirectoryEntries(realPath);
-
-    return entries.map((entry) => ({
-      ...normalizeDirectoryEntry(entry),
-      path: this.toVirtualPath(entry.path),
-    }));
+      return entries.map((entry) => ({
+        ...entry,
+        path: this.toVirtualPath(entry.path),
+      }));
+    } catch (error) {
+      this.logAndThrow(error, 'readDirectory');
+    }
   }
 
   async rename(source: string, destination: string): Promise<void> {

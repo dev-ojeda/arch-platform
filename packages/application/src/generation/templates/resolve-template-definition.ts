@@ -1,34 +1,9 @@
 // packages/application/src/generation/templates/resolve-template-definition.ts
 
-import type {
-  FileDefinition,
-  NamedVariables,
-  ResolvedFileDefinition,
-  ResolvedTemplate,
-} from '@arch-platform/contracts';
-
-import { resolveTemplateOutputPath } from './resolve-template-output-path.js';
+import type { FileDefinition, NamedVariables, ResolvedTemplate } from '@arch-platform/contracts';
 
 export function resolveTemplateDefinition<TVariables extends NamedVariables>(
   template: FileDefinition<TVariables>,
-
-  variables: TVariables,
 ): ResolvedTemplate<TVariables> {
-  const outputPath = resolveTemplateOutputPath(
-    template.output,
-
-    variables,
-  );
-
-  const resolvedTemplate: ResolvedFileDefinition<TVariables> = {
-    ...template,
-
-    output: outputPath,
-  };
-
-  return {
-    template: resolvedTemplate,
-
-    outputPath,
-  };
+  return { template };
 }

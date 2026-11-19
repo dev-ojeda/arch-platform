@@ -8,6 +8,5 @@
     "declarationMap": false,
     "outDir": "./dist",
     "tsBuildInfoFile": "./dist/.tsbuildinfo"
-  },
-  "exclude": ["node_modules"]
+  }
 }

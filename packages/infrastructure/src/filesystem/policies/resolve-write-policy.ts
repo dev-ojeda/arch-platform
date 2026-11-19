@@ -18,7 +18,6 @@ export function shouldWriteFile(exists: boolean, options?: WriteFileOptions): bo
 
     case 'overwrite':
     case 'append':
-    case 'merge':
     default:
       return true;
   }
