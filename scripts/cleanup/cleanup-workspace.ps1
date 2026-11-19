@@ -82,7 +82,8 @@ $CleanupDirectories = @(
 $CleanupFiles = @(
   '*.tsbuildinfo',
   '*.tmp',
-  '*.cache'
+  '*.cache',
+  '*.eslintcache'
 )
 
 # =========================================================
