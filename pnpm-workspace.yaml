@@ -145,11 +145,11 @@ nodeVersion: 22.19.0
 # - supply-chain attacks
 # -----------------------------------------------------------------------------
 onlyBuiltDependencies:
-  # Native bundler runtime
-
   # Native SWC compiler
   - '@swc/core'
   - '@unrs/resolver-binding-win32-x64-msvc'
+  - '@unrs/resolver-binding-linux-x64-gnu'
+  - '@unrs/resolver-binding-linux-x64-musl'
 
   # VSCode extension signing
   - '@vscode/vsce-sign'
@@ -176,6 +176,7 @@ overrides:
   lodash: ^4.17.24
   tmp: ^0.2.4
   'tsup>esbuild': 0.28.2
+  'brace-expansion@^5.0.0': 5.0.12
 # -----------------------------------------------------------------------------
 # PEER DEPENDENCY RULES
 # -----------------------------------------------------------------------------
