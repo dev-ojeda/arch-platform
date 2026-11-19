@@ -11,7 +11,7 @@
 
   "fixed": [],
 
-  "linked": [["@arch/core", "@arch/contracts", "@arch/application"]],
+  "linked": [],
 
   "updateInternalDependencies": "patch",
 

@@ -37,12 +37,17 @@
     "**/coverage": true
   },
   "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
     "**/.pnpm-store/**": true,
     "**/.turbo/**": true,
     "**/node_modules/**": true,
     "**/dist/**": true,
     "**/coverage/**": true
   },
+  // -----------------------------------------------------------------------------
+  // FILES (ajustes en files.associations)
+  // -----------------------------------------------------------------------------
   "files.associations": {
     "*.ts": "typescript",
     "*.js": "javascript",
@@ -50,10 +55,11 @@
     "*.bat": "bat",
     "*.scpt": "shellscript",
     ".npmrc": "ini",
-    ".json": "json",
+    "tsconfig*.json": "jsonc",
     ".env": "ini",
     ".env.local": "ini"
   },
+
   // -----------------------------------------------------------------------------
   // SEARCH
   // -----------------------------------------------------------------------------
@@ -71,14 +77,15 @@
   // GIT
   // -----------------------------------------------------------------------------
   "git.autoStash": true,
-  "git.confirmForcePush": false,
+  "git.confirmForcePush": true,
   "git.openRepositoryInParentFolders": "always",
   // -----------------------------------------------------------------------------
   // TASKS
   // -----------------------------------------------------------------------------
-  "task.allowAutomaticTasks": "on",
+  "task.allowAutomaticTasks": "off",
   "task.quickOpen.history": 30,
   "task.quickOpen.skip": true,
+
   // -----------------------------------------------------------------------------
   // TESTING
   // -----------------------------------------------------------------------------
@@ -88,7 +95,7 @@
   // -----------------------------------------------------------------------------
   "typescript.disableAutomaticTypeAcquisition": true,
   "typescript.tsdk": "./node_modules/typescript/lib",
-  "typescript.tsserver.maxTsServerMemory": 8192,
+  "typescript.tsserver.maxTsServerMemory": 3072,
   "typescript.tsserver.experimental.enableProjectDiagnostics": false,
   "typescript.preferences.includePackageJsonAutoImports": "off",
   "typescript.tsserver.log": "off",
@@ -99,12 +106,14 @@
   "typescript.preferences.preferTypeOnlyAutoImports": true,
   "typescript.preferences.importModuleSpecifierEnding": "js",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "typescript.tsserver.useSyntaxServer": "never",
+  "typescript.tsserver.useSyntaxServer": "auto",
   "javascript.updateImportsOnFileMove.enabled": "always",
   "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
   // -----------------------------------------------------------------------------
   // ESLINT
   // --
+  "eslint.useFlatConfig": true,
+  "eslint.execArgv": ["--max-old-space-size=3072"],
   "eslint.validate": ["javascript", "typescript", "typescriptreact"],
   "eslint.workingDirectories": [
     {
@@ -112,9 +121,10 @@
     }
   ],
   // -----------------------------------------------------------------------------
-  // TERMINAL / POWERSHELL
+  // TERMINAL / POWERSHELL / BASH
   // -----------------------------------------------------------------------------
   "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.integrated.defaultProfile.linux": "bash",
   "terminal.integrated.enablePersistentSessions": false,
   "terminal.integrated.cursorStyle": "line",
   "terminal.integrated.profiles.windows": {
@@ -124,9 +134,12 @@
     }
   },
   "terminal.integrated.env.windows": {
-    "NODE_OPTIONS": "--max-old-space-size=8192",
-    "UV_THREADPOOL_SIZE": "16",
-    "TIMING": "1"
+    "NODE_OPTIONS": "--max-old-space-size=3072",
+    "UV_THREADPOOL_SIZE": "8"
+  },
+  "terminal.integrated.env.linux": {
+    "NODE_OPTIONS": "--max-old-space-size=3072",
+    "UV_THREADPOOL_SIZE": "8"
   },
   // -----------------------------------------------------------------------------
   // PACKAGE MANAGERS
@@ -184,6 +197,7 @@
   // TODO TREE
   // -----------------------------------------------------------------------------
   "todo-tree.general.tags": ["todo", "fix", "hack", "perf", "deprecated"],
+  "todo-tree.filtering.useBuiltInExcludes": "file and search excludes",
   // -----------------------------------------------------------------------------
   // AUTO PATH HEADER
   // -----------------------------------------------------------------------------
@@ -202,10 +216,7 @@
       ]
     }
   ],
-  // -----------------------------------------------------------------------------
-  // RUFF
-  // -----------------------------------------------------------------------------
-  "ruff.format.preview": true,
+
   // -----------------------------------------------------------------------------
   // LANGUAGE SPECIFIC
   // -----------------------------------------------------------------------------
@@ -218,7 +229,12 @@
   },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": false,
     "editor.tabSize": 2
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": false
   },
   "[yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -250,10 +266,10 @@
     "editor.tabCompletion": "onlySnippets",
     "editor.snippetSuggestions": "inline",
     "editor.suggest.insertMode": "replace",
-    "diffEditor.ignoreTrimWhitespace": true,
-    "editor.defaultFormatter": "toramameseven.bat-tools"
+    "diffEditor.ignoreTrimWhitespace": true
   },
   "terminal.integrated.tabs.defaultColor": "terminal.ansiGreen",
-  "terminal.explorerKind": "external",
+  "terminal.explorerKind": "integrated",
+  "terminal.integrated.fontSize": 18,
   "terminal.integrated.allowChords": false
 }

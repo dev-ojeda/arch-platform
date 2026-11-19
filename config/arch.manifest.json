@@ -38,7 +38,7 @@
     },
     {
       "name": "@arch-platform/generator-mvc",
-      "path": "packages/generator-mvc"
+      "path": "packages/generators/mvc"
     },
     {
       "name": "@arch-platform/governance",
@@ -51,10 +51,6 @@
     {
       "name": "@arch-platform/platform-model",
       "path": "packages/platform-model"
-    },
-    {
-      "name": "@arch-platform/testing",
-      "path": "packages/testing"
     },
     {
       "name": "@arch-platform/tooling",
