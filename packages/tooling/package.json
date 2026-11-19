@@ -28,14 +28,15 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:dts": "tsc -p tsconfig.build.json --emitDeclarationOnly",
+    "build": "tsc -b tsconfig.build.json",
+    "build:dts": "tsc -b tsconfig.build.json --emitDeclarationOnly",
     "arch": "arch build --package @arch-platform/tooling",
     "clean": "arch clean --package @arch-platform/tooling",
     "compliance": "arch compliance --package @arch-platform/tooling --env dev",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck": "tsc -p tsconfig.test.json --noEmit",
     "lint": "eslint . --max-warnings 0 --no-warn-ignored --cache --cache-strategy content",
     "test": "vitest run -c ./vitest.config.ts",
+    "test:integration": "vitest run --mode integration -c ./vitest.config.ts",
     "coverage": "vitest run --coverage -c ./vitest.config.ts",
     "test:watch": "vitest",
     "test:clear": "vitest --clearCache"
@@ -43,10 +44,10 @@
   "dependencies": {
     "@arch-platform/build-core": "workspace:*",
     "@arch-platform/infrastructure": "workspace:*",
-    "execa": "catalog:",
-    "vitest": "catalog:"
+    "execa": "catalog:"
   },
   "devDependencies": {
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }

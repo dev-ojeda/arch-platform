@@ -11,12 +11,20 @@
   "files": [
     "dist"
   ],
+  "dependencies": {
+    "@arch-platform/internal-shared": "0.1.0"
+  },
   "arch": {
     "artifactType": "declaration",
     "build": {
       "builder": "tsc-declaration",
       "outputs": [
         "dist"
+      ]
+    },
+    "pack": {
+      "bundledDependencies": [
+        "@arch-platform/internal-shared"
       ]
     },
     "kind": "tooling"

@@ -1,7 +1,7 @@
-import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { createTempDirectorySync } from '@arch-platform/infrastructure';
 
 export function createTestFilesystemRoot(prefix = 'arch-test'): string {
-  return mkdtempSync(join(tmpdir(), `${prefix}-`));
+  return createTempDirectorySync(join(tmpdir(), `${prefix}-`));
 }

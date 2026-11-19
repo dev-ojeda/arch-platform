@@ -16,19 +16,14 @@ describe('pack', { timeout: 15000 }, () => {
       const artifactsRoot = join(testRoot, 'artifacts');
       const consumerRoot = join(testRoot, 'consumer');
 
-      const workspaceRoot = fileURLToPath(
-        new URL('../fixtures/workspace/packages', import.meta.url),
-      );
+      const workspaceRoot = fileURLToPath(new URL('../fixtures/workspace', import.meta.url));
 
-      const packageRoot = join(workspaceRoot, 'package-to-pack');
+      const packageRoot = join(workspaceRoot, 'packages', 'package-to-pack');
       const packageJsonPath = join(packageRoot, 'package.json');
 
       await mkdir(artifactsRoot, { recursive: true });
 
-      const fixtureRoot = fileURLToPath(
-        new URL('../fixtures/workspace/packages/package-consumer/', import.meta.url),
-      );
-
+      const fixtureRoot = join(workspaceRoot, 'packages', 'package-consumer');
       await cp(fixtureRoot, consumerRoot, { recursive: true });
 
       const packageJson = JSON.parse(await readFile(packageJsonPath, 'utf8')) as {
@@ -64,7 +59,19 @@ describe('pack', { timeout: 15000 }, () => {
         cwd: consumerRoot,
       });
       expect(installResult.exitCode).toBe(0);
+      const installedManifestPath = join(
+        consumerRoot,
+        'node_modules',
+        '@arch-platform',
+        'contracts',
+        'package.json',
+      );
 
+      const installedManifest = JSON.parse(await readFile(installedManifestPath, 'utf8')) as {
+        dependencies?: Record<string, string>;
+      };
+
+      expect(installedManifest.dependencies).toBeUndefined();
       const typecheckResult = await executeProcess('pnpm', ['exec', 'tsc', '--noEmit'], {
         cwd: consumerRoot,
       });
