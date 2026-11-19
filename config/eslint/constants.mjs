@@ -29,3 +29,5 @@ export const RESTRICTED_IMPORTS = {
     },
   ],
 };
+
+export const SOURCE_RESTRICTED_IMPORTS = RESTRICTED_IMPORTS;

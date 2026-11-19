@@ -1,3 +1,4 @@
+// config/eslint/rules/imports.mjs
 import { existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -49,16 +50,6 @@ export const COMMON_IMPORT_RULES = {
   'import-x/no-named-as-default': 'off',
   'import-x/no-named-as-default-member': 'off',
   'import-x/no-deprecated': 'off',
-
-  // Acotamos la búsqueda de package.json para acelerar en monorepo pnpm
-  'import-x/no-extraneous-dependencies': [
-    'error',
-    {
-      devDependencies: TEST_FILES,
-      packageDir: [repositoryRoot, process.cwd()],
-    },
-  ],
-
   // Ordenamiento estricto (muy rápido, solo lee el AST local)
   'import-x/order': [
     'error',
@@ -102,4 +93,16 @@ const IMPORT_SETTINGS = {
 
 export function createImportSettings() {
   return IMPORT_SETTINGS;
+}
+
+export function createNoExtraneousDependenciesRule(packageDir) {
+  return {
+    'import-x/no-extraneous-dependencies': [
+      'error',
+      {
+        devDependencies: TEST_FILES,
+        packageDir,
+      },
+    ],
+  };
 }

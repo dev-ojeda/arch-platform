@@ -1,18 +1,24 @@
 // config/eslint/rules/typescript.mjs
-
+import { existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { parser } from 'typescript-eslint';
 
 const currentDir = dirname(fileURLToPath(import.meta.url));
-
 const repositoryRoot = resolve(currentDir, '../../../');
+
+const localTsconfig = resolve(process.cwd(), 'tsconfig.json');
+const sourceProjects =
+  existsSync(localTsconfig) && process.cwd() !== repositoryRoot
+    ? [localTsconfig]
+    : ['./packages/*/tsconfig.json', './packages/generators/*/tsconfig.json'];
 
 export const TYPESCRIPT_LANGUAGE_OPTIONS = {
   parser: parser,
   parserOptions: {
-    projectService: true,
+    projectService: false,
+    project: sourceProjects,
     tsconfigRootDir: repositoryRoot,
   },
 };
