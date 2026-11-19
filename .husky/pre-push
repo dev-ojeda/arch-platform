@@ -1,4 +1,4 @@
 # .husky/pre-push
-pnpm validate
+pnpm validate:full
 pnpm cruiser
 pnpm syncpack:lint
