@@ -40,7 +40,7 @@ jobs:
           cache-dependency-path: pnpm-lock.yaml
 
       - name: Restore Turborepo cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: .turbo
           key: ${{ runner.os }}-turbo-${{ github.sha }}
